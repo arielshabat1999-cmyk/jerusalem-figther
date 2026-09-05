@@ -18,7 +18,7 @@ export class Player {
     this.onGround = false;
     this.onStair = null;
     this.stairEntryY = 0;
-    this.gaitPhase = 0; // distance-based walk/run cycle phase — see PLAYER.gaitStrideLength
+    this.gaitPhase = 0; // distance-based walk/run animation frame index — see PLAYER.gaitPxPerFrame
 
     this.crouching = false;
     this.wantsCrouch = false;
@@ -91,7 +91,7 @@ export class Player {
     // cadence naturally scales with actual horizontal speed rather than
     // wall-clock time.
     if (this.onGround) {
-      this.gaitPhase += Math.abs(this.vx) * dt / PLAYER.gaitStrideLength;
+      this.gaitPhase += Math.abs(this.vx) * dt / PLAYER.gaitPxPerFrame;
     }
 
     // Weapon handling stays live even mid-stun so an equipped auto weapon

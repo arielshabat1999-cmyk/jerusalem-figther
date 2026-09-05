@@ -88,6 +88,19 @@ export class AssetRegistry {
     return this.getSprite(anim.frames[i]);
   }
 
+  // Like getAnimationFrame, but the caller supplies the frame index
+  // directly (as a float, floored here) instead of a wall-clock time -
+  // used for walk/run so cadence tracks actual distance travelled rather
+  // than elapsed time (see Player.gaitPhase).
+  getAnimationFrameAtPhase(animKey, phase) {
+    const anim = this.animations.get(animKey);
+    if (!anim) return null;
+    const frameIndex = Math.floor(phase);
+    const n = anim.frames.length;
+    const i = anim.loop ? ((frameIndex % n) + n) % n : Math.min(Math.max(frameIndex, 0), n - 1);
+    return this.getSprite(anim.frames[i]);
+  }
+
   getSprite(spriteKey) {
     const sprite = this.sprites.get(spriteKey);
     if (!sprite) return null;

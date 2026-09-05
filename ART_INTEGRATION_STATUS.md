@@ -50,25 +50,40 @@ rewritten to fit the art — the art was extracted and adapted to the
 existing gameplay foundation's data (logical hitboxes, AI, spawn/stage
 systems are unchanged).
 
-## ⚠ Open issue: player character art may be superseded
+## ✅ Resolved: player characters replaced with the approved soldier design
 
-`art-pack/PLAYER_CHARACTERS_FINAL.md` (added after this pass started)
-states the approved protagonists are **soldier-look, olive/tactical
-clothing**, and explicitly rejects "the earlier civilian/blue-shirt
-protagonist variants" as final art. The male/female sprites extracted and
-wired in below (from `runtime/characters/{male,female}_master_strip.png`
-in the ZIP) show **civilian clothing** — white button-up shirt +
-suspenders (male), grey tank top (female), khaki pants on both — which
-matches the description of the *rejected* look, not the approved
-soldier look.
+The civilian-look male/female sprites flagged below as possibly-rejected
+have been **replaced**. The user supplied the actual final reference
+boards (Israeli-soldier-inspired, olive/tactical gear, visible IDF/flag
+patches, full idle/walk/run/jump/crouch/shoot/hit/death animation grids —
+15 frames per row for male, 16 for female) and both characters were
+re-extracted and re-integrated from that reference:
 
-The corrected reference image was attempted
-(`art-pack/PLAYER_CHARACTERS_FINAL_REFERENCE.b64.txt`) but committed
-empty/incomplete and then removed — so the actual corrected art is not
-yet available anywhere this session can reach. **This needs the real
-corrected reference before the character art can be considered final.**
-Everything else in this document (enemies, environment, props,
-backgrounds, FX) is unaffected and unrelated to this issue.
+- Real multi-frame walk/run/idle/crouch/shoot/hit cycles (15-16 frames
+  each, not a single pose) plus a proper multi-frame death fall and a
+  jump arc split into rising (`jump`) and falling (`fall`) halves — no
+  gait-mirroring hack needed anymore since genuine distinct frames exist.
+  `Player.gaitPhase` (distance-based) now indexes directly into the real
+  cycle via `AssetRegistry.getAnimationFrameAtPhase`, so leg cadence still
+  scales with actual speed and freezes solid when idle, but drives real
+  frames instead of a mirrored single pose.
+- Both characters visibly carry the Israeli flag patch on the sleeve/
+  shoulder in the extracted frames, olive/tactical clothing throughout,
+  no scarves — matches the approved reference, not the earlier civilian
+  look.
+- Old single-frame `player_male`/`player_female` sheets, sprites, and
+  animations were fully removed from the manifest before writing the new
+  ones (not layered on top).
+- Verified live in a mobile-Safari-emulated smoke test: both genders
+  render correctly in-game (including switching gender mid-session via
+  the Inventory), no console errors, flag patch visible on screen.
+- 4 render-transform tests were rewritten (the old ones tested the
+  now-removed mirror hack) to instead assert: the real cycle advances by
+  distance not time, a frozen phase keeps drawing the same frame, idle
+  never touches the phase-indexed lookup, and the feet anchor is
+  pixel-identical across every frame in the cycle.
+
+Collision boxes, physics, and hitbox dimensions were not touched.
 
 ## How this differs from the raw ZIP
 
@@ -87,20 +102,31 @@ pixel rects for future re-extraction/maintenance.
 
 ## Completed by group
 
-### Characters — DONE
-- Male + female, 8 of 9 required states each with real extracted art:
-  idle, walk, run, jump, crouch, shoot, hit, death.
-- **No dedicated `fall` art**: the source strip ships an unused "Melee"
-  pose in that slot instead (the player never melees per the gameplay
-  spec, so that frame has no use). `fall` reuses the `jump` sprite — the
-  closest airborne pose — per the "keep the closest placeholder for that
-  one asset" rule. Documented here rather than silently invented.
-- Character select: a Male/Female toggle was added to the Inventory
-  overlay (`src/ui/InventoryUI.js`), persisted via
-  `SaveSystem.setCharacterGender`. No dedicated character-select *screen*
-  (with the pack's portrait art) was built — out of time budget for this
-  pass; the toggle is functional but plain.
+### Characters — DONE (final approved soldier design)
+- Male + female, all 9 required states, each with a real multi-frame
+  cycle (not a single pose): idle (15/16 frames), walk (15/16), run
+  (15/16), jump (split from one launch-to-land arc: rising half is
+  `jump`, falling half is `fall`), crouch, shoot, hit, death (a real
+  fall-to-ground sequence, plays once and freezes on the last frame
+  rather than looping back to standing).
+- Source: the user-supplied final reference boards (soldier-look,
+  olive/tactical gear, Israeli flag patch visible on the sleeve/shoulder
+  in-frame, IDF-inspired equipment), extracted via a fixed-grid slice
+  (uniform column pitch per row, content-detected row bands) plus the
+  same chroma-key background removal used elsewhere in this pack. This
+  **replaced** the earlier civilian-look single-pose extraction
+  entirely — old sprites/sheets/animations were deleted before the new
+  ones were written, not layered on top.
+- Character select: a Male/Female toggle in the Inventory overlay
+  (`src/ui/InventoryUI.js`), persisted via `SaveSystem.setCharacterGender`.
+  No dedicated character-select *screen* (with the pack's portrait art)
+  was built — out of time budget for this pass; the toggle is functional
+  but plain.
 - No scarves on either character, matching the locked art direction.
+- Walk/run cadence is distance-driven (`Player.gaitPhase`, indexed via
+  `AssetRegistry.getAnimationFrameAtPhase`) so leg speed tracks actual
+  horizontal speed and freezes solid when idle; every other state uses
+  the normal clock-driven animation lookup.
 
 ### Enemies — DONE (3 of 4 families)
 - `shooter` -> `enemy_ranged`, `heavy` -> `enemy_ranged_strong`, `melee` ->

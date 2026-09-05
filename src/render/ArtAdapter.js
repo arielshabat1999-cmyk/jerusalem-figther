@@ -165,18 +165,19 @@ export function createArtAdapter(assets, placeholder) {
     drawPlayer: (ctx, player, cam) => {
       const actorId = playerActorId(player);
       const state = getPlayerAnimState(player);
-      const sprite = actorFrame(actorId, state) || actorFrame(actorId, 'idle');
+      // Walk/run play a real extracted multi-frame cycle, advanced by
+      // distance travelled (player.gaitPhase) rather than wall-clock time,
+      // so leg cadence tracks actual speed and freezes solid when idle.
+      // Every other state (idle/jump/fall/crouch/shoot/hit/death) uses the
+      // normal clock-driven animation lookup.
+      const isGaited = state === 'walk' || state === 'run';
+      const sprite = isGaited
+        ? assets.getAnimationFrameAtPhase(`${actorId}.${state}`, player.gaitPhase) || actorFrame(actorId, 'idle')
+        : actorFrame(actorId, state) || actorFrame(actorId, 'idle');
       if (!sprite) return placeholder.drawPlayer(ctx, player, cam);
       const footX = player.x + player.w / 2;
       const footY = player.y + player.h;
-      // Only one walk/run pose exists per gender (see ART_INTEGRATION_
-      // STATUS.md) — mirror it every other half-step so the legs actually
-      // alternate instead of sliding a frozen mid-stride pose across the
-      // ground. The mirror is about the same foot anchor used below, so it
-      // never shifts the sprite's feet from the hitbox's feet position.
-      const gaitMirror = (state === 'walk' || state === 'run') && Math.floor(player.gaitPhase) % 2 === 1;
-      const renderDir = player.facingDir * (gaitMirror ? -1 : 1);
-      drawAnchoredSprite(ctx, sprite, footX, footY, cam, renderDir);
+      drawAnchoredSprite(ctx, sprite, footX, footY, cam, player.facingDir);
     },
 
     drawEnemy: (ctx, enemy, cam) => {

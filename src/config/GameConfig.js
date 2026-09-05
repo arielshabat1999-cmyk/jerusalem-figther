@@ -27,13 +27,12 @@ export const PLAYER = {
     invulnSec: 0.45,
   },
   backtrackDistanceMeters: 20,
-  // Only one walk/run pose exists in the extracted art (no real frame-by-
-  // frame cycle - see ART_INTEGRATION_STATUS.md), so the renderer fakes a
-  // 2-phase gait by mirroring that single pose left/right. This is the
-  // distance (px) of travel per half-step; smaller = faster leg cadence for
-  // a given speed. Phase advances with distance, not time, so cadence
-  // scales naturally with actual movement speed.
-  gaitStrideLength: 55,
+  // Walk/run use real multi-frame cycles (see ART_INTEGRATION_STATUS.md).
+  // This is the distance (px) of horizontal travel per animation frame
+  // advance, so cadence scales with actual movement speed rather than
+  // wall-clock time - a fast run visibly cycles the legs faster than a
+  // slow walk, and standing still never advances a frame.
+  gaitPxPerFrame: 10,
 };
 
 // Weapon ids double as inventory keys and save-file keys.

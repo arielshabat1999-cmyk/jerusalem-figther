@@ -14,150 +14,6 @@
     "bg_night": "runtime/backgrounds/night.png"
   },
   "sprites": {
-    "player_male.idle.0": {
-      "sheet": "player_male",
-      "x": 0,
-      "y": 0,
-      "w": 66,
-      "h": 114,
-      "anchorX": 0.5,
-      "anchorY": 1.0
-    },
-    "player_male.walk.0": {
-      "sheet": "player_male",
-      "x": 66,
-      "y": 0,
-      "w": 66,
-      "h": 114,
-      "anchorX": 0.5,
-      "anchorY": 1.0
-    },
-    "player_male.run.0": {
-      "sheet": "player_male",
-      "x": 132,
-      "y": 1,
-      "w": 67,
-      "h": 113,
-      "anchorX": 0.5,
-      "anchorY": 1.0
-    },
-    "player_male.jump.0": {
-      "sheet": "player_male",
-      "x": 199,
-      "y": 14,
-      "w": 66,
-      "h": 100,
-      "anchorX": 0.5,
-      "anchorY": 1.0
-    },
-    "player_male.crouch.0": {
-      "sheet": "player_male",
-      "x": 265,
-      "y": 25,
-      "w": 59,
-      "h": 89,
-      "anchorX": 0.5,
-      "anchorY": 1.0
-    },
-    "player_male.shoot.0": {
-      "sheet": "player_male",
-      "x": 324,
-      "y": 1,
-      "w": 62,
-      "h": 113,
-      "anchorX": 0.5,
-      "anchorY": 1.0
-    },
-    "player_male.hit.0": {
-      "sheet": "player_male",
-      "x": 386,
-      "y": 8,
-      "w": 66,
-      "h": 106,
-      "anchorX": 0.5,
-      "anchorY": 1.0
-    },
-    "player_male.death.0": {
-      "sheet": "player_male",
-      "x": 452,
-      "y": 43,
-      "w": 66,
-      "h": 71,
-      "anchorX": 0.5,
-      "anchorY": 1.0
-    },
-    "player_female.idle.0": {
-      "sheet": "player_female",
-      "x": 0,
-      "y": 0,
-      "w": 50,
-      "h": 119,
-      "anchorX": 0.5,
-      "anchorY": 1.0
-    },
-    "player_female.walk.0": {
-      "sheet": "player_female",
-      "x": 50,
-      "y": 0,
-      "w": 66,
-      "h": 119,
-      "anchorX": 0.5,
-      "anchorY": 1.0
-    },
-    "player_female.run.0": {
-      "sheet": "player_female",
-      "x": 116,
-      "y": 6,
-      "w": 66,
-      "h": 113,
-      "anchorX": 0.5,
-      "anchorY": 1.0
-    },
-    "player_female.jump.0": {
-      "sheet": "player_female",
-      "x": 182,
-      "y": 8,
-      "w": 58,
-      "h": 111,
-      "anchorX": 0.5,
-      "anchorY": 1.0
-    },
-    "player_female.crouch.0": {
-      "sheet": "player_female",
-      "x": 240,
-      "y": 31,
-      "w": 57,
-      "h": 88,
-      "anchorX": 0.5,
-      "anchorY": 1.0
-    },
-    "player_female.shoot.0": {
-      "sheet": "player_female",
-      "x": 297,
-      "y": 8,
-      "w": 65,
-      "h": 111,
-      "anchorX": 0.5,
-      "anchorY": 1.0
-    },
-    "player_female.hit.0": {
-      "sheet": "player_female",
-      "x": 362,
-      "y": 18,
-      "w": 67,
-      "h": 101,
-      "anchorX": 0.5,
-      "anchorY": 1.0
-    },
-    "player_female.death.0": {
-      "sheet": "player_female",
-      "x": 429,
-      "y": 73,
-      "w": 66,
-      "h": 46,
-      "anchorX": 0.5,
-      "anchorY": 1.0
-    },
     "enemy_melee_v0.pose.0": {
       "sheet": "enemy_melee",
       "x": 0,
@@ -607,135 +463,2232 @@
       "h": 120,
       "anchorX": 0.0,
       "anchorY": 0.0
+    },
+    "player_male.idle.0": {
+      "sheet": "player_male",
+      "x": 0,
+      "y": 13,
+      "w": 35,
+      "h": 58,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.idle.1": {
+      "sheet": "player_male",
+      "x": 35,
+      "y": 13,
+      "w": 35,
+      "h": 58,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.idle.2": {
+      "sheet": "player_male",
+      "x": 70,
+      "y": 13,
+      "w": 35,
+      "h": 58,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.idle.3": {
+      "sheet": "player_male",
+      "x": 105,
+      "y": 13,
+      "w": 35,
+      "h": 58,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.idle.4": {
+      "sheet": "player_male",
+      "x": 140,
+      "y": 12,
+      "w": 33,
+      "h": 59,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.idle.5": {
+      "sheet": "player_male",
+      "x": 173,
+      "y": 13,
+      "w": 34,
+      "h": 58,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.idle.6": {
+      "sheet": "player_male",
+      "x": 207,
+      "y": 13,
+      "w": 33,
+      "h": 58,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.idle.7": {
+      "sheet": "player_male",
+      "x": 240,
+      "y": 13,
+      "w": 35,
+      "h": 58,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.idle.8": {
+      "sheet": "player_male",
+      "x": 275,
+      "y": 13,
+      "w": 34,
+      "h": 58,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.idle.9": {
+      "sheet": "player_male",
+      "x": 309,
+      "y": 13,
+      "w": 34,
+      "h": 58,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.idle.10": {
+      "sheet": "player_male",
+      "x": 343,
+      "y": 13,
+      "w": 33,
+      "h": 58,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.idle.11": {
+      "sheet": "player_male",
+      "x": 376,
+      "y": 12,
+      "w": 35,
+      "h": 59,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.idle.12": {
+      "sheet": "player_male",
+      "x": 411,
+      "y": 13,
+      "w": 34,
+      "h": 58,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.idle.13": {
+      "sheet": "player_male",
+      "x": 445,
+      "y": 13,
+      "w": 35,
+      "h": 58,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.idle.14": {
+      "sheet": "player_male",
+      "x": 480,
+      "y": 13,
+      "w": 35,
+      "h": 58,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.walk.0": {
+      "sheet": "player_male",
+      "x": 0,
+      "y": 82,
+      "w": 69,
+      "h": 60,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.walk.1": {
+      "sheet": "player_male",
+      "x": 69,
+      "y": 82,
+      "w": 70,
+      "h": 60,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.walk.2": {
+      "sheet": "player_male",
+      "x": 139,
+      "y": 82,
+      "w": 70,
+      "h": 60,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.walk.3": {
+      "sheet": "player_male",
+      "x": 209,
+      "y": 82,
+      "w": 70,
+      "h": 60,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.walk.4": {
+      "sheet": "player_male",
+      "x": 279,
+      "y": 82,
+      "w": 70,
+      "h": 60,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.walk.5": {
+      "sheet": "player_male",
+      "x": 349,
+      "y": 83,
+      "w": 70,
+      "h": 59,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.walk.6": {
+      "sheet": "player_male",
+      "x": 419,
+      "y": 83,
+      "w": 70,
+      "h": 59,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.walk.7": {
+      "sheet": "player_male",
+      "x": 489,
+      "y": 83,
+      "w": 70,
+      "h": 59,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.walk.8": {
+      "sheet": "player_male",
+      "x": 559,
+      "y": 82,
+      "w": 70,
+      "h": 60,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.walk.9": {
+      "sheet": "player_male",
+      "x": 629,
+      "y": 82,
+      "w": 70,
+      "h": 60,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.walk.10": {
+      "sheet": "player_male",
+      "x": 699,
+      "y": 83,
+      "w": 67,
+      "h": 59,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.walk.11": {
+      "sheet": "player_male",
+      "x": 766,
+      "y": 83,
+      "w": 69,
+      "h": 59,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.walk.12": {
+      "sheet": "player_male",
+      "x": 835,
+      "y": 83,
+      "w": 70,
+      "h": 59,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.walk.13": {
+      "sheet": "player_male",
+      "x": 905,
+      "y": 83,
+      "w": 70,
+      "h": 59,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.walk.14": {
+      "sheet": "player_male",
+      "x": 975,
+      "y": 82,
+      "w": 44,
+      "h": 60,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.run.0": {
+      "sheet": "player_male",
+      "x": 0,
+      "y": 155,
+      "w": 64,
+      "h": 58,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.run.1": {
+      "sheet": "player_male",
+      "x": 64,
+      "y": 155,
+      "w": 46,
+      "h": 58,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.run.2": {
+      "sheet": "player_male",
+      "x": 110,
+      "y": 156,
+      "w": 48,
+      "h": 57,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.run.3": {
+      "sheet": "player_male",
+      "x": 158,
+      "y": 157,
+      "w": 50,
+      "h": 56,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.run.4": {
+      "sheet": "player_male",
+      "x": 208,
+      "y": 156,
+      "w": 52,
+      "h": 57,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.run.5": {
+      "sheet": "player_male",
+      "x": 260,
+      "y": 156,
+      "w": 49,
+      "h": 57,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.run.6": {
+      "sheet": "player_male",
+      "x": 309,
+      "y": 156,
+      "w": 45,
+      "h": 57,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.run.7": {
+      "sheet": "player_male",
+      "x": 354,
+      "y": 159,
+      "w": 70,
+      "h": 54,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.run.8": {
+      "sheet": "player_male",
+      "x": 424,
+      "y": 158,
+      "w": 70,
+      "h": 55,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.run.9": {
+      "sheet": "player_male",
+      "x": 494,
+      "y": 155,
+      "w": 70,
+      "h": 58,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.run.10": {
+      "sheet": "player_male",
+      "x": 564,
+      "y": 156,
+      "w": 70,
+      "h": 57,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.run.11": {
+      "sheet": "player_male",
+      "x": 634,
+      "y": 156,
+      "w": 70,
+      "h": 57,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.run.12": {
+      "sheet": "player_male",
+      "x": 704,
+      "y": 157,
+      "w": 70,
+      "h": 56,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.run.13": {
+      "sheet": "player_male",
+      "x": 774,
+      "y": 157,
+      "w": 70,
+      "h": 56,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.run.14": {
+      "sheet": "player_male",
+      "x": 844,
+      "y": 155,
+      "w": 45,
+      "h": 58,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.jump.0": {
+      "sheet": "player_male",
+      "x": 0,
+      "y": 213,
+      "w": 70,
+      "h": 71,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.jump.1": {
+      "sheet": "player_male",
+      "x": 70,
+      "y": 213,
+      "w": 70,
+      "h": 71,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.jump.2": {
+      "sheet": "player_male",
+      "x": 140,
+      "y": 213,
+      "w": 70,
+      "h": 71,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.jump.3": {
+      "sheet": "player_male",
+      "x": 210,
+      "y": 213,
+      "w": 70,
+      "h": 71,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.jump.4": {
+      "sheet": "player_male",
+      "x": 280,
+      "y": 213,
+      "w": 70,
+      "h": 71,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.jump.5": {
+      "sheet": "player_male",
+      "x": 350,
+      "y": 213,
+      "w": 70,
+      "h": 71,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.jump.6": {
+      "sheet": "player_male",
+      "x": 420,
+      "y": 213,
+      "w": 70,
+      "h": 71,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.jump.7": {
+      "sheet": "player_male",
+      "x": 490,
+      "y": 213,
+      "w": 70,
+      "h": 71,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.jump.8": {
+      "sheet": "player_male",
+      "x": 560,
+      "y": 213,
+      "w": 70,
+      "h": 71,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.jump.9": {
+      "sheet": "player_male",
+      "x": 630,
+      "y": 213,
+      "w": 70,
+      "h": 71,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.jump.10": {
+      "sheet": "player_male",
+      "x": 700,
+      "y": 213,
+      "w": 70,
+      "h": 71,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.jump.11": {
+      "sheet": "player_male",
+      "x": 770,
+      "y": 213,
+      "w": 70,
+      "h": 71,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.jump.12": {
+      "sheet": "player_male",
+      "x": 840,
+      "y": 213,
+      "w": 70,
+      "h": 71,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.jump.13": {
+      "sheet": "player_male",
+      "x": 910,
+      "y": 213,
+      "w": 70,
+      "h": 71,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.jump.14": {
+      "sheet": "player_male",
+      "x": 980,
+      "y": 213,
+      "w": 59,
+      "h": 71,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.crouch.0": {
+      "sheet": "player_male",
+      "x": 0,
+      "y": 307,
+      "w": 33,
+      "h": 48,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.crouch.1": {
+      "sheet": "player_male",
+      "x": 33,
+      "y": 307,
+      "w": 37,
+      "h": 48,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.crouch.2": {
+      "sheet": "player_male",
+      "x": 70,
+      "y": 310,
+      "w": 35,
+      "h": 45,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.crouch.3": {
+      "sheet": "player_male",
+      "x": 105,
+      "y": 309,
+      "w": 34,
+      "h": 46,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.crouch.4": {
+      "sheet": "player_male",
+      "x": 139,
+      "y": 309,
+      "w": 32,
+      "h": 46,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.crouch.5": {
+      "sheet": "player_male",
+      "x": 171,
+      "y": 314,
+      "w": 33,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.crouch.6": {
+      "sheet": "player_male",
+      "x": 204,
+      "y": 316,
+      "w": 33,
+      "h": 39,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.crouch.7": {
+      "sheet": "player_male",
+      "x": 237,
+      "y": 316,
+      "w": 34,
+      "h": 39,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.crouch.8": {
+      "sheet": "player_male",
+      "x": 271,
+      "y": 317,
+      "w": 34,
+      "h": 38,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.crouch.9": {
+      "sheet": "player_male",
+      "x": 305,
+      "y": 318,
+      "w": 26,
+      "h": 37,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.crouch.10": {
+      "sheet": "player_male",
+      "x": 331,
+      "y": 317,
+      "w": 70,
+      "h": 38,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.crouch.11": {
+      "sheet": "player_male",
+      "x": 401,
+      "y": 315,
+      "w": 70,
+      "h": 40,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.crouch.12": {
+      "sheet": "player_male",
+      "x": 471,
+      "y": 311,
+      "w": 70,
+      "h": 44,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.crouch.13": {
+      "sheet": "player_male",
+      "x": 541,
+      "y": 310,
+      "w": 31,
+      "h": 45,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.crouch.14": {
+      "sheet": "player_male",
+      "x": 572,
+      "y": 306,
+      "w": 37,
+      "h": 49,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.shoot.0": {
+      "sheet": "player_male",
+      "x": 0,
+      "y": 366,
+      "w": 70,
+      "h": 60,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.shoot.1": {
+      "sheet": "player_male",
+      "x": 70,
+      "y": 366,
+      "w": 70,
+      "h": 60,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.shoot.2": {
+      "sheet": "player_male",
+      "x": 140,
+      "y": 366,
+      "w": 70,
+      "h": 60,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.shoot.3": {
+      "sheet": "player_male",
+      "x": 210,
+      "y": 366,
+      "w": 70,
+      "h": 60,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.shoot.4": {
+      "sheet": "player_male",
+      "x": 280,
+      "y": 366,
+      "w": 70,
+      "h": 60,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.shoot.5": {
+      "sheet": "player_male",
+      "x": 350,
+      "y": 366,
+      "w": 70,
+      "h": 60,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.shoot.6": {
+      "sheet": "player_male",
+      "x": 420,
+      "y": 366,
+      "w": 70,
+      "h": 60,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.shoot.7": {
+      "sheet": "player_male",
+      "x": 490,
+      "y": 366,
+      "w": 70,
+      "h": 60,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.shoot.8": {
+      "sheet": "player_male",
+      "x": 560,
+      "y": 366,
+      "w": 70,
+      "h": 60,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.shoot.9": {
+      "sheet": "player_male",
+      "x": 630,
+      "y": 366,
+      "w": 70,
+      "h": 60,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.shoot.10": {
+      "sheet": "player_male",
+      "x": 700,
+      "y": 366,
+      "w": 70,
+      "h": 60,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.shoot.11": {
+      "sheet": "player_male",
+      "x": 770,
+      "y": 366,
+      "w": 70,
+      "h": 60,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.shoot.12": {
+      "sheet": "player_male",
+      "x": 840,
+      "y": 366,
+      "w": 70,
+      "h": 60,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.shoot.13": {
+      "sheet": "player_male",
+      "x": 910,
+      "y": 366,
+      "w": 70,
+      "h": 60,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.shoot.14": {
+      "sheet": "player_male",
+      "x": 980,
+      "y": 375,
+      "w": 57,
+      "h": 51,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.hit.0": {
+      "sheet": "player_male",
+      "x": 0,
+      "y": 440,
+      "w": 68,
+      "h": 57,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.hit.1": {
+      "sheet": "player_male",
+      "x": 68,
+      "y": 440,
+      "w": 70,
+      "h": 57,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.hit.2": {
+      "sheet": "player_male",
+      "x": 138,
+      "y": 441,
+      "w": 70,
+      "h": 56,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.hit.3": {
+      "sheet": "player_male",
+      "x": 208,
+      "y": 441,
+      "w": 70,
+      "h": 56,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.hit.4": {
+      "sheet": "player_male",
+      "x": 278,
+      "y": 442,
+      "w": 70,
+      "h": 55,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.hit.5": {
+      "sheet": "player_male",
+      "x": 348,
+      "y": 444,
+      "w": 70,
+      "h": 53,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.hit.6": {
+      "sheet": "player_male",
+      "x": 418,
+      "y": 445,
+      "w": 70,
+      "h": 52,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.hit.7": {
+      "sheet": "player_male",
+      "x": 488,
+      "y": 447,
+      "w": 36,
+      "h": 50,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.hit.8": {
+      "sheet": "player_male",
+      "x": 524,
+      "y": 444,
+      "w": 38,
+      "h": 53,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.hit.9": {
+      "sheet": "player_male",
+      "x": 562,
+      "y": 445,
+      "w": 48,
+      "h": 52,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.hit.10": {
+      "sheet": "player_male",
+      "x": 610,
+      "y": 444,
+      "w": 51,
+      "h": 53,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.hit.11": {
+      "sheet": "player_male",
+      "x": 661,
+      "y": 442,
+      "w": 43,
+      "h": 55,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.hit.12": {
+      "sheet": "player_male",
+      "x": 704,
+      "y": 446,
+      "w": 70,
+      "h": 51,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.hit.13": {
+      "sheet": "player_male",
+      "x": 774,
+      "y": 445,
+      "w": 70,
+      "h": 52,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.hit.14": {
+      "sheet": "player_male",
+      "x": 844,
+      "y": 443,
+      "w": 29,
+      "h": 54,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.death.0": {
+      "sheet": "player_male",
+      "x": 0,
+      "y": 538,
+      "w": 70,
+      "h": 30,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.death.1": {
+      "sheet": "player_male",
+      "x": 70,
+      "y": 540,
+      "w": 70,
+      "h": 28,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.death.2": {
+      "sheet": "player_male",
+      "x": 140,
+      "y": 541,
+      "w": 70,
+      "h": 27,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.death.3": {
+      "sheet": "player_male",
+      "x": 210,
+      "y": 538,
+      "w": 63,
+      "h": 30,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.death.4": {
+      "sheet": "player_male",
+      "x": 273,
+      "y": 542,
+      "w": 51,
+      "h": 26,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.death.5": {
+      "sheet": "player_male",
+      "x": 324,
+      "y": 534,
+      "w": 70,
+      "h": 34,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.death.6": {
+      "sheet": "player_male",
+      "x": 394,
+      "y": 533,
+      "w": 70,
+      "h": 35,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.death.7": {
+      "sheet": "player_male",
+      "x": 464,
+      "y": 536,
+      "w": 68,
+      "h": 32,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.death.8": {
+      "sheet": "player_male",
+      "x": 532,
+      "y": 533,
+      "w": 52,
+      "h": 35,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.death.9": {
+      "sheet": "player_male",
+      "x": 584,
+      "y": 545,
+      "w": 70,
+      "h": 23,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.death.10": {
+      "sheet": "player_male",
+      "x": 654,
+      "y": 534,
+      "w": 70,
+      "h": 34,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.death.11": {
+      "sheet": "player_male",
+      "x": 724,
+      "y": 531,
+      "w": 70,
+      "h": 37,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.death.12": {
+      "sheet": "player_male",
+      "x": 794,
+      "y": 531,
+      "w": 50,
+      "h": 37,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.death.13": {
+      "sheet": "player_male",
+      "x": 844,
+      "y": 534,
+      "w": 69,
+      "h": 34,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_male.death.14": {
+      "sheet": "player_male",
+      "x": 913,
+      "y": 545,
+      "w": 55,
+      "h": 23,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.idle.0": {
+      "sheet": "player_female",
+      "x": 0,
+      "y": 2,
+      "w": 29,
+      "h": 42,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.idle.1": {
+      "sheet": "player_female",
+      "x": 29,
+      "y": 2,
+      "w": 29,
+      "h": 42,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.idle.2": {
+      "sheet": "player_female",
+      "x": 58,
+      "y": 2,
+      "w": 62,
+      "h": 42,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.idle.3": {
+      "sheet": "player_female",
+      "x": 120,
+      "y": 2,
+      "w": 63,
+      "h": 42,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.idle.4": {
+      "sheet": "player_female",
+      "x": 183,
+      "y": 2,
+      "w": 63,
+      "h": 42,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.idle.5": {
+      "sheet": "player_female",
+      "x": 246,
+      "y": 2,
+      "w": 63,
+      "h": 42,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.idle.6": {
+      "sheet": "player_female",
+      "x": 309,
+      "y": 2,
+      "w": 63,
+      "h": 42,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.idle.7": {
+      "sheet": "player_female",
+      "x": 372,
+      "y": 2,
+      "w": 63,
+      "h": 42,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.idle.8": {
+      "sheet": "player_female",
+      "x": 435,
+      "y": 2,
+      "w": 63,
+      "h": 42,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.idle.9": {
+      "sheet": "player_female",
+      "x": 498,
+      "y": 2,
+      "w": 63,
+      "h": 42,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.idle.10": {
+      "sheet": "player_female",
+      "x": 561,
+      "y": 2,
+      "w": 63,
+      "h": 42,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.idle.11": {
+      "sheet": "player_female",
+      "x": 624,
+      "y": 2,
+      "w": 63,
+      "h": 42,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.idle.12": {
+      "sheet": "player_female",
+      "x": 687,
+      "y": 2,
+      "w": 63,
+      "h": 42,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.idle.13": {
+      "sheet": "player_female",
+      "x": 750,
+      "y": 2,
+      "w": 63,
+      "h": 42,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.idle.14": {
+      "sheet": "player_female",
+      "x": 813,
+      "y": 2,
+      "w": 63,
+      "h": 42,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.idle.15": {
+      "sheet": "player_female",
+      "x": 876,
+      "y": 2,
+      "w": 25,
+      "h": 42,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.walk.0": {
+      "sheet": "player_female",
+      "x": 0,
+      "y": 49,
+      "w": 63,
+      "h": 39,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.walk.1": {
+      "sheet": "player_female",
+      "x": 63,
+      "y": 49,
+      "w": 63,
+      "h": 39,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.walk.2": {
+      "sheet": "player_female",
+      "x": 126,
+      "y": 49,
+      "w": 63,
+      "h": 39,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.walk.3": {
+      "sheet": "player_female",
+      "x": 189,
+      "y": 49,
+      "w": 63,
+      "h": 39,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.walk.4": {
+      "sheet": "player_female",
+      "x": 252,
+      "y": 49,
+      "w": 63,
+      "h": 39,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.walk.5": {
+      "sheet": "player_female",
+      "x": 315,
+      "y": 49,
+      "w": 63,
+      "h": 39,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.walk.6": {
+      "sheet": "player_female",
+      "x": 378,
+      "y": 49,
+      "w": 63,
+      "h": 39,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.walk.7": {
+      "sheet": "player_female",
+      "x": 441,
+      "y": 49,
+      "w": 63,
+      "h": 39,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.walk.8": {
+      "sheet": "player_female",
+      "x": 504,
+      "y": 49,
+      "w": 63,
+      "h": 39,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.walk.9": {
+      "sheet": "player_female",
+      "x": 567,
+      "y": 49,
+      "w": 63,
+      "h": 39,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.walk.10": {
+      "sheet": "player_female",
+      "x": 630,
+      "y": 49,
+      "w": 63,
+      "h": 39,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.walk.11": {
+      "sheet": "player_female",
+      "x": 693,
+      "y": 49,
+      "w": 63,
+      "h": 39,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.walk.12": {
+      "sheet": "player_female",
+      "x": 756,
+      "y": 49,
+      "w": 63,
+      "h": 39,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.walk.13": {
+      "sheet": "player_female",
+      "x": 819,
+      "y": 49,
+      "w": 63,
+      "h": 39,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.walk.14": {
+      "sheet": "player_female",
+      "x": 882,
+      "y": 49,
+      "w": 63,
+      "h": 39,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.walk.15": {
+      "sheet": "player_female",
+      "x": 945,
+      "y": 58,
+      "w": 13,
+      "h": 30,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.run.0": {
+      "sheet": "player_female",
+      "x": 0,
+      "y": 91,
+      "w": 63,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.run.1": {
+      "sheet": "player_female",
+      "x": 63,
+      "y": 91,
+      "w": 63,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.run.2": {
+      "sheet": "player_female",
+      "x": 126,
+      "y": 91,
+      "w": 63,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.run.3": {
+      "sheet": "player_female",
+      "x": 189,
+      "y": 91,
+      "w": 63,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.run.4": {
+      "sheet": "player_female",
+      "x": 252,
+      "y": 91,
+      "w": 63,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.run.5": {
+      "sheet": "player_female",
+      "x": 315,
+      "y": 91,
+      "w": 63,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.run.6": {
+      "sheet": "player_female",
+      "x": 378,
+      "y": 91,
+      "w": 63,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.run.7": {
+      "sheet": "player_female",
+      "x": 441,
+      "y": 91,
+      "w": 63,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.run.8": {
+      "sheet": "player_female",
+      "x": 504,
+      "y": 91,
+      "w": 63,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.run.9": {
+      "sheet": "player_female",
+      "x": 567,
+      "y": 91,
+      "w": 63,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.run.10": {
+      "sheet": "player_female",
+      "x": 630,
+      "y": 91,
+      "w": 63,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.run.11": {
+      "sheet": "player_female",
+      "x": 693,
+      "y": 91,
+      "w": 63,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.run.12": {
+      "sheet": "player_female",
+      "x": 756,
+      "y": 91,
+      "w": 63,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.run.13": {
+      "sheet": "player_female",
+      "x": 819,
+      "y": 91,
+      "w": 63,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.run.14": {
+      "sheet": "player_female",
+      "x": 882,
+      "y": 91,
+      "w": 63,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.run.15": {
+      "sheet": "player_female",
+      "x": 945,
+      "y": 91,
+      "w": 33,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.jump.0": {
+      "sheet": "player_female",
+      "x": 0,
+      "y": 135,
+      "w": 29,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.jump.1": {
+      "sheet": "player_female",
+      "x": 29,
+      "y": 135,
+      "w": 36,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.jump.2": {
+      "sheet": "player_female",
+      "x": 65,
+      "y": 135,
+      "w": 33,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.jump.3": {
+      "sheet": "player_female",
+      "x": 98,
+      "y": 135,
+      "w": 30,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.jump.4": {
+      "sheet": "player_female",
+      "x": 128,
+      "y": 135,
+      "w": 29,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.jump.5": {
+      "sheet": "player_female",
+      "x": 157,
+      "y": 135,
+      "w": 32,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.jump.6": {
+      "sheet": "player_female",
+      "x": 189,
+      "y": 136,
+      "w": 29,
+      "h": 40,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.jump.7": {
+      "sheet": "player_female",
+      "x": 218,
+      "y": 136,
+      "w": 31,
+      "h": 40,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.jump.8": {
+      "sheet": "player_female",
+      "x": 249,
+      "y": 136,
+      "w": 32,
+      "h": 40,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.jump.9": {
+      "sheet": "player_female",
+      "x": 281,
+      "y": 137,
+      "w": 32,
+      "h": 39,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.jump.10": {
+      "sheet": "player_female",
+      "x": 313,
+      "y": 135,
+      "w": 34,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.jump.11": {
+      "sheet": "player_female",
+      "x": 347,
+      "y": 136,
+      "w": 36,
+      "h": 40,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.jump.12": {
+      "sheet": "player_female",
+      "x": 383,
+      "y": 137,
+      "w": 34,
+      "h": 39,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.jump.13": {
+      "sheet": "player_female",
+      "x": 417,
+      "y": 137,
+      "w": 30,
+      "h": 39,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.jump.14": {
+      "sheet": "player_female",
+      "x": 447,
+      "y": 136,
+      "w": 36,
+      "h": 40,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.jump.15": {
+      "sheet": "player_female",
+      "x": 483,
+      "y": 135,
+      "w": 40,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.crouch.0": {
+      "sheet": "player_female",
+      "x": 0,
+      "y": 180,
+      "w": 28,
+      "h": 40,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.crouch.1": {
+      "sheet": "player_female",
+      "x": 28,
+      "y": 180,
+      "w": 33,
+      "h": 40,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.crouch.2": {
+      "sheet": "player_female",
+      "x": 61,
+      "y": 180,
+      "w": 32,
+      "h": 40,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.crouch.3": {
+      "sheet": "player_female",
+      "x": 93,
+      "y": 181,
+      "w": 30,
+      "h": 39,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.crouch.4": {
+      "sheet": "player_female",
+      "x": 123,
+      "y": 181,
+      "w": 34,
+      "h": 39,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.crouch.5": {
+      "sheet": "player_female",
+      "x": 157,
+      "y": 181,
+      "w": 33,
+      "h": 39,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.crouch.6": {
+      "sheet": "player_female",
+      "x": 190,
+      "y": 182,
+      "w": 33,
+      "h": 38,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.crouch.7": {
+      "sheet": "player_female",
+      "x": 223,
+      "y": 182,
+      "w": 33,
+      "h": 38,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.crouch.8": {
+      "sheet": "player_female",
+      "x": 256,
+      "y": 183,
+      "w": 33,
+      "h": 37,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.crouch.9": {
+      "sheet": "player_female",
+      "x": 289,
+      "y": 183,
+      "w": 34,
+      "h": 37,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.crouch.10": {
+      "sheet": "player_female",
+      "x": 323,
+      "y": 183,
+      "w": 33,
+      "h": 37,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.crouch.11": {
+      "sheet": "player_female",
+      "x": 356,
+      "y": 183,
+      "w": 32,
+      "h": 37,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.crouch.12": {
+      "sheet": "player_female",
+      "x": 388,
+      "y": 182,
+      "w": 32,
+      "h": 38,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.crouch.13": {
+      "sheet": "player_female",
+      "x": 420,
+      "y": 182,
+      "w": 33,
+      "h": 38,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.crouch.14": {
+      "sheet": "player_female",
+      "x": 453,
+      "y": 180,
+      "w": 30,
+      "h": 40,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.shoot.0": {
+      "sheet": "player_female",
+      "x": 0,
+      "y": 222,
+      "w": 43,
+      "h": 42,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.shoot.1": {
+      "sheet": "player_female",
+      "x": 43,
+      "y": 222,
+      "w": 48,
+      "h": 42,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.shoot.2": {
+      "sheet": "player_female",
+      "x": 91,
+      "y": 222,
+      "w": 43,
+      "h": 42,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.shoot.3": {
+      "sheet": "player_female",
+      "x": 134,
+      "y": 222,
+      "w": 63,
+      "h": 42,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.shoot.4": {
+      "sheet": "player_female",
+      "x": 197,
+      "y": 222,
+      "w": 63,
+      "h": 42,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.shoot.5": {
+      "sheet": "player_female",
+      "x": 260,
+      "y": 222,
+      "w": 63,
+      "h": 42,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.shoot.6": {
+      "sheet": "player_female",
+      "x": 323,
+      "y": 223,
+      "w": 63,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.shoot.7": {
+      "sheet": "player_female",
+      "x": 386,
+      "y": 223,
+      "w": 63,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.shoot.8": {
+      "sheet": "player_female",
+      "x": 449,
+      "y": 223,
+      "w": 63,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.shoot.9": {
+      "sheet": "player_female",
+      "x": 512,
+      "y": 223,
+      "w": 63,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.shoot.10": {
+      "sheet": "player_female",
+      "x": 575,
+      "y": 223,
+      "w": 63,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.shoot.11": {
+      "sheet": "player_female",
+      "x": 638,
+      "y": 223,
+      "w": 63,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.shoot.12": {
+      "sheet": "player_female",
+      "x": 701,
+      "y": 223,
+      "w": 52,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.shoot.13": {
+      "sheet": "player_female",
+      "x": 753,
+      "y": 223,
+      "w": 52,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.shoot.14": {
+      "sheet": "player_female",
+      "x": 805,
+      "y": 223,
+      "w": 54,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.shoot.15": {
+      "sheet": "player_female",
+      "x": 859,
+      "y": 223,
+      "w": 46,
+      "h": 41,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.hit.0": {
+      "sheet": "player_female",
+      "x": 0,
+      "y": 265,
+      "w": 28,
+      "h": 43,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.hit.1": {
+      "sheet": "player_female",
+      "x": 28,
+      "y": 265,
+      "w": 30,
+      "h": 43,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.hit.2": {
+      "sheet": "player_female",
+      "x": 58,
+      "y": 264,
+      "w": 30,
+      "h": 44,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.hit.3": {
+      "sheet": "player_female",
+      "x": 88,
+      "y": 264,
+      "w": 31,
+      "h": 44,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.hit.4": {
+      "sheet": "player_female",
+      "x": 119,
+      "y": 264,
+      "w": 28,
+      "h": 44,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.hit.5": {
+      "sheet": "player_female",
+      "x": 147,
+      "y": 264,
+      "w": 30,
+      "h": 44,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.hit.6": {
+      "sheet": "player_female",
+      "x": 177,
+      "y": 265,
+      "w": 31,
+      "h": 43,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.hit.7": {
+      "sheet": "player_female",
+      "x": 208,
+      "y": 265,
+      "w": 31,
+      "h": 43,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.hit.8": {
+      "sheet": "player_female",
+      "x": 239,
+      "y": 266,
+      "w": 26,
+      "h": 42,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.hit.9": {
+      "sheet": "player_female",
+      "x": 265,
+      "y": 265,
+      "w": 63,
+      "h": 43,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.hit.10": {
+      "sheet": "player_female",
+      "x": 328,
+      "y": 265,
+      "w": 63,
+      "h": 43,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.hit.11": {
+      "sheet": "player_female",
+      "x": 391,
+      "y": 265,
+      "w": 25,
+      "h": 43,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.hit.12": {
+      "sheet": "player_female",
+      "x": 416,
+      "y": 265,
+      "w": 32,
+      "h": 43,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.hit.13": {
+      "sheet": "player_female",
+      "x": 448,
+      "y": 265,
+      "w": 32,
+      "h": 43,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.hit.14": {
+      "sheet": "player_female",
+      "x": 480,
+      "y": 265,
+      "w": 34,
+      "h": 43,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.hit.15": {
+      "sheet": "player_female",
+      "x": 514,
+      "y": 266,
+      "w": 32,
+      "h": 42,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.death.0": {
+      "sheet": "player_female",
+      "x": 0,
+      "y": 321,
+      "w": 63,
+      "h": 31,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.death.1": {
+      "sheet": "player_female",
+      "x": 63,
+      "y": 324,
+      "w": 41,
+      "h": 28,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.death.2": {
+      "sheet": "player_female",
+      "x": 104,
+      "y": 324,
+      "w": 63,
+      "h": 28,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.death.3": {
+      "sheet": "player_female",
+      "x": 167,
+      "y": 322,
+      "w": 51,
+      "h": 30,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.death.4": {
+      "sheet": "player_female",
+      "x": 218,
+      "y": 326,
+      "w": 47,
+      "h": 26,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.death.5": {
+      "sheet": "player_female",
+      "x": 265,
+      "y": 328,
+      "w": 63,
+      "h": 24,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.death.6": {
+      "sheet": "player_female",
+      "x": 328,
+      "y": 319,
+      "w": 47,
+      "h": 33,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.death.7": {
+      "sheet": "player_female",
+      "x": 375,
+      "y": 319,
+      "w": 57,
+      "h": 33,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.death.8": {
+      "sheet": "player_female",
+      "x": 432,
+      "y": 320,
+      "w": 63,
+      "h": 32,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.death.9": {
+      "sheet": "player_female",
+      "x": 495,
+      "y": 326,
+      "w": 63,
+      "h": 26,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.death.10": {
+      "sheet": "player_female",
+      "x": 558,
+      "y": 330,
+      "w": 54,
+      "h": 22,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.death.11": {
+      "sheet": "player_female",
+      "x": 612,
+      "y": 321,
+      "w": 54,
+      "h": 31,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.death.12": {
+      "sheet": "player_female",
+      "x": 666,
+      "y": 320,
+      "w": 63,
+      "h": 32,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.death.13": {
+      "sheet": "player_female",
+      "x": 729,
+      "y": 320,
+      "w": 63,
+      "h": 32,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.death.14": {
+      "sheet": "player_female",
+      "x": 792,
+      "y": 326,
+      "w": 63,
+      "h": 26,
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "player_female.death.15": {
+      "sheet": "player_female",
+      "x": 855,
+      "y": 332,
+      "w": 59,
+      "h": 20,
+      "anchorX": 0.5,
+      "anchorY": 1.0
     }
   },
   "animations": {
-    "player_male.idle": {
-      "frames": [
-        "player_male.idle.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "player_male.walk": {
-      "frames": [
-        "player_male.walk.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "player_male.run": {
-      "frames": [
-        "player_male.run.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "player_male.jump": {
-      "frames": [
-        "player_male.jump.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "player_male.crouch": {
-      "frames": [
-        "player_male.crouch.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "player_male.shoot": {
-      "frames": [
-        "player_male.shoot.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "player_male.hit": {
-      "frames": [
-        "player_male.hit.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "player_male.death": {
-      "frames": [
-        "player_male.death.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "player_male.fall": {
-      "frames": [
-        "player_male.jump.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "player_female.idle": {
-      "frames": [
-        "player_female.idle.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "player_female.walk": {
-      "frames": [
-        "player_female.walk.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "player_female.run": {
-      "frames": [
-        "player_female.run.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "player_female.jump": {
-      "frames": [
-        "player_female.jump.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "player_female.crouch": {
-      "frames": [
-        "player_female.crouch.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "player_female.shoot": {
-      "frames": [
-        "player_female.shoot.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "player_female.hit": {
-      "frames": [
-        "player_female.hit.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "player_female.death": {
-      "frames": [
-        "player_female.death.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "player_female.fall": {
-      "frames": [
-        "player_female.jump.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
     "enemy_melee_v0.idle": {
       "frames": [
         "enemy_melee_v0.pose.0"
@@ -1666,6 +3619,361 @@
       ],
       "fps": 1,
       "loop": true
+    },
+    "player_male.idle": {
+      "frames": [
+        "player_male.idle.0",
+        "player_male.idle.1",
+        "player_male.idle.2",
+        "player_male.idle.3",
+        "player_male.idle.4",
+        "player_male.idle.5",
+        "player_male.idle.6",
+        "player_male.idle.7",
+        "player_male.idle.8",
+        "player_male.idle.9",
+        "player_male.idle.10",
+        "player_male.idle.11",
+        "player_male.idle.12",
+        "player_male.idle.13",
+        "player_male.idle.14"
+      ],
+      "fps": 6,
+      "loop": true
+    },
+    "player_male.walk": {
+      "frames": [
+        "player_male.walk.0",
+        "player_male.walk.1",
+        "player_male.walk.2",
+        "player_male.walk.3",
+        "player_male.walk.4",
+        "player_male.walk.5",
+        "player_male.walk.6",
+        "player_male.walk.7",
+        "player_male.walk.8",
+        "player_male.walk.9",
+        "player_male.walk.10",
+        "player_male.walk.11",
+        "player_male.walk.12",
+        "player_male.walk.13",
+        "player_male.walk.14"
+      ],
+      "fps": 10,
+      "loop": true
+    },
+    "player_male.run": {
+      "frames": [
+        "player_male.run.0",
+        "player_male.run.1",
+        "player_male.run.2",
+        "player_male.run.3",
+        "player_male.run.4",
+        "player_male.run.5",
+        "player_male.run.6",
+        "player_male.run.7",
+        "player_male.run.8",
+        "player_male.run.9",
+        "player_male.run.10",
+        "player_male.run.11",
+        "player_male.run.12",
+        "player_male.run.13",
+        "player_male.run.14"
+      ],
+      "fps": 14,
+      "loop": true
+    },
+    "player_male.jump": {
+      "frames": [
+        "player_male.jump.0",
+        "player_male.jump.1",
+        "player_male.jump.2",
+        "player_male.jump.3",
+        "player_male.jump.4",
+        "player_male.jump.5",
+        "player_male.jump.6"
+      ],
+      "fps": 12,
+      "loop": false
+    },
+    "player_male.fall": {
+      "frames": [
+        "player_male.jump.7",
+        "player_male.jump.8",
+        "player_male.jump.9",
+        "player_male.jump.10",
+        "player_male.jump.11",
+        "player_male.jump.12",
+        "player_male.jump.13",
+        "player_male.jump.14"
+      ],
+      "fps": 12,
+      "loop": false
+    },
+    "player_male.crouch": {
+      "frames": [
+        "player_male.crouch.0",
+        "player_male.crouch.1",
+        "player_male.crouch.2",
+        "player_male.crouch.3",
+        "player_male.crouch.4",
+        "player_male.crouch.5",
+        "player_male.crouch.6",
+        "player_male.crouch.7",
+        "player_male.crouch.8",
+        "player_male.crouch.9",
+        "player_male.crouch.10",
+        "player_male.crouch.11",
+        "player_male.crouch.12",
+        "player_male.crouch.13",
+        "player_male.crouch.14"
+      ],
+      "fps": 6,
+      "loop": true
+    },
+    "player_male.shoot": {
+      "frames": [
+        "player_male.shoot.0",
+        "player_male.shoot.1",
+        "player_male.shoot.2",
+        "player_male.shoot.3",
+        "player_male.shoot.4",
+        "player_male.shoot.5",
+        "player_male.shoot.6",
+        "player_male.shoot.7",
+        "player_male.shoot.8",
+        "player_male.shoot.9",
+        "player_male.shoot.10",
+        "player_male.shoot.11",
+        "player_male.shoot.12",
+        "player_male.shoot.13",
+        "player_male.shoot.14"
+      ],
+      "fps": 12,
+      "loop": true
+    },
+    "player_male.hit": {
+      "frames": [
+        "player_male.hit.0",
+        "player_male.hit.1",
+        "player_male.hit.2",
+        "player_male.hit.3",
+        "player_male.hit.4",
+        "player_male.hit.5",
+        "player_male.hit.6",
+        "player_male.hit.7",
+        "player_male.hit.8",
+        "player_male.hit.9",
+        "player_male.hit.10",
+        "player_male.hit.11",
+        "player_male.hit.12",
+        "player_male.hit.13",
+        "player_male.hit.14"
+      ],
+      "fps": 10,
+      "loop": true
+    },
+    "player_male.death": {
+      "frames": [
+        "player_male.death.0",
+        "player_male.death.1",
+        "player_male.death.2",
+        "player_male.death.3",
+        "player_male.death.4",
+        "player_male.death.5",
+        "player_male.death.6",
+        "player_male.death.7",
+        "player_male.death.8",
+        "player_male.death.9",
+        "player_male.death.10",
+        "player_male.death.11",
+        "player_male.death.12",
+        "player_male.death.13",
+        "player_male.death.14"
+      ],
+      "fps": 10,
+      "loop": false
+    },
+    "player_female.idle": {
+      "frames": [
+        "player_female.idle.0",
+        "player_female.idle.1",
+        "player_female.idle.2",
+        "player_female.idle.3",
+        "player_female.idle.4",
+        "player_female.idle.5",
+        "player_female.idle.6",
+        "player_female.idle.7",
+        "player_female.idle.8",
+        "player_female.idle.9",
+        "player_female.idle.10",
+        "player_female.idle.11",
+        "player_female.idle.12",
+        "player_female.idle.13",
+        "player_female.idle.14",
+        "player_female.idle.15"
+      ],
+      "fps": 6,
+      "loop": true
+    },
+    "player_female.walk": {
+      "frames": [
+        "player_female.walk.0",
+        "player_female.walk.1",
+        "player_female.walk.2",
+        "player_female.walk.3",
+        "player_female.walk.4",
+        "player_female.walk.5",
+        "player_female.walk.6",
+        "player_female.walk.7",
+        "player_female.walk.8",
+        "player_female.walk.9",
+        "player_female.walk.10",
+        "player_female.walk.11",
+        "player_female.walk.12",
+        "player_female.walk.13",
+        "player_female.walk.14",
+        "player_female.walk.15"
+      ],
+      "fps": 10,
+      "loop": true
+    },
+    "player_female.run": {
+      "frames": [
+        "player_female.run.0",
+        "player_female.run.1",
+        "player_female.run.2",
+        "player_female.run.3",
+        "player_female.run.4",
+        "player_female.run.5",
+        "player_female.run.6",
+        "player_female.run.7",
+        "player_female.run.8",
+        "player_female.run.9",
+        "player_female.run.10",
+        "player_female.run.11",
+        "player_female.run.12",
+        "player_female.run.13",
+        "player_female.run.14",
+        "player_female.run.15"
+      ],
+      "fps": 14,
+      "loop": true
+    },
+    "player_female.jump": {
+      "frames": [
+        "player_female.jump.0",
+        "player_female.jump.1",
+        "player_female.jump.2",
+        "player_female.jump.3",
+        "player_female.jump.4",
+        "player_female.jump.5",
+        "player_female.jump.6",
+        "player_female.jump.7"
+      ],
+      "fps": 12,
+      "loop": false
+    },
+    "player_female.fall": {
+      "frames": [
+        "player_female.jump.8",
+        "player_female.jump.9",
+        "player_female.jump.10",
+        "player_female.jump.11",
+        "player_female.jump.12",
+        "player_female.jump.13",
+        "player_female.jump.14",
+        "player_female.jump.15"
+      ],
+      "fps": 12,
+      "loop": false
+    },
+    "player_female.crouch": {
+      "frames": [
+        "player_female.crouch.0",
+        "player_female.crouch.1",
+        "player_female.crouch.2",
+        "player_female.crouch.3",
+        "player_female.crouch.4",
+        "player_female.crouch.5",
+        "player_female.crouch.6",
+        "player_female.crouch.7",
+        "player_female.crouch.8",
+        "player_female.crouch.9",
+        "player_female.crouch.10",
+        "player_female.crouch.11",
+        "player_female.crouch.12",
+        "player_female.crouch.13",
+        "player_female.crouch.14"
+      ],
+      "fps": 6,
+      "loop": true
+    },
+    "player_female.shoot": {
+      "frames": [
+        "player_female.shoot.0",
+        "player_female.shoot.1",
+        "player_female.shoot.2",
+        "player_female.shoot.3",
+        "player_female.shoot.4",
+        "player_female.shoot.5",
+        "player_female.shoot.6",
+        "player_female.shoot.7",
+        "player_female.shoot.8",
+        "player_female.shoot.9",
+        "player_female.shoot.10",
+        "player_female.shoot.11",
+        "player_female.shoot.12",
+        "player_female.shoot.13",
+        "player_female.shoot.14",
+        "player_female.shoot.15"
+      ],
+      "fps": 12,
+      "loop": true
+    },
+    "player_female.hit": {
+      "frames": [
+        "player_female.hit.0",
+        "player_female.hit.1",
+        "player_female.hit.2",
+        "player_female.hit.3",
+        "player_female.hit.4",
+        "player_female.hit.5",
+        "player_female.hit.6",
+        "player_female.hit.7",
+        "player_female.hit.8",
+        "player_female.hit.9",
+        "player_female.hit.10",
+        "player_female.hit.11",
+        "player_female.hit.12",
+        "player_female.hit.13",
+        "player_female.hit.14",
+        "player_female.hit.15"
+      ],
+      "fps": 10,
+      "loop": true
+    },
+    "player_female.death": {
+      "frames": [
+        "player_female.death.0",
+        "player_female.death.1",
+        "player_female.death.2",
+        "player_female.death.3",
+        "player_female.death.4",
+        "player_female.death.5",
+        "player_female.death.6",
+        "player_female.death.7",
+        "player_female.death.8",
+        "player_female.death.9",
+        "player_female.death.10",
+        "player_female.death.11",
+        "player_female.death.12",
+        "player_female.death.13",
+        "player_female.death.14",
+        "player_female.death.15"
+      ],
+      "fps": 10,
+      "loop": false
     }
   }
 }
