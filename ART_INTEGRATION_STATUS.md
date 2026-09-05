@@ -38,6 +38,59 @@ No gameplay rule, physics constant, or collision dimension changed —
 only the stair-ramp *landing candidate* logic and the player's animation
 bookkeeping/render transform.
 
+## Character-scale + muzzle-origin architecture (this pass)
+
+Two long-standing visual bugs are now fixed at the code/config level,
+using the current stable, already-integrated sprites — no sprite
+extraction was touched (see "Player art on hold" below for why):
+
+1. **Scale consistency.** `player_male`, `player_female`, and every enemy
+   family were each extracted from a different source sheet at a
+   different native pixel-per-character size (male idle 58px tall vs.
+   female idle 42px tall vs. enemies 58-74px tall), and `ArtAdapter` drew
+   every sprite at that raw native size — so the female character in
+   particular read as visibly shorter than the male and than enemies.
+   Fixed with `CHARACTER_SCALE` (`src/config/GameConfig.js`): every actor
+   is now scaled, around its existing bottom-center anchor, from its own
+   idle frame's native height to one shared `targetHeightPx`
+   (`ArtAdapter.getActorScale`, cached per actor). "Strong"/heavy enemy
+   variants get an extra `heavyMultiplier` on top so they still read as
+   intentionally bigger. Only the destination draw size changes — the
+   source crop is never resampled, and collision hitboxes
+   (`PLAYER.standHeight`/`crouchHeight`, enemy `w`/`h`) are completely
+   untouched.
+2. **Muzzle origin.** `Player._muzzleSpawn` used to derive the projectile
+   spawn point purely from the tiny collision box (`this.x/y/w/h`), which
+   put both the bullet and the rendered muzzle-flash effect (`main.js`
+   spawns it at that same spawn point) near the player's center instead
+   of the rifle. Fixed with a `MUZZLE` anchor table (`GameConfig.js`) keyed
+   by pose (idle/walk/run/jump/fall/crouch/shoot), each entry a height
+   fraction of the shared visual height plus a forward offset in the
+   facing direction, mirrored automatically for `facingDir === -1`.
+   `_muzzleSpawn` picks the crouch anchor specifically when grounded +
+   crouching (the one pose where `AnimationState.getPlayerAnimState`
+   shows the crouch sprite instead of the shoot sprite while firing) so
+   the anchor always matches whatever pose is actually on screen.
+
+11 new targeted tests cover both (mirroring for left-facing muzzle
+offsets, crouch/airborne pose selection, male/female/enemy sharing the
+same on-screen height, heavy enemies scaling up on top of that, and the
+source crop never being distorted). All 20 pre-existing tests
+(unit/stair-jump/gait/render-gait) still pass unmodified.
+
+## Player art on hold — do not extract until new production frames arrive
+
+A newly attached combined male/female/enemy sheet was investigated as a
+replacement for the current player sprites, but it turned out to be a
+visual *reference* board, not a uniform production sprite atlas — an
+automated grid crop produced frames with partial/missing body pieces.
+Per explicit instruction, that extraction attempt was abandoned and
+**no player/enemy sprite files were changed**; the game continues to run
+on the same approved sprites as before this pass. The scale + muzzle
+architecture above already applies to whatever sprites are loaded, so
+once proper production-ready transparent character frames are supplied
+separately, dropping them in should need no further code changes here.
+
 
 Tracks progress against `art-pack/README.md`, `art-pack/asset-manifest.json`,
 and `art-pack/CLAUDE_ART_INTEGRATION_PROMPT.txt`, using the binary ZIP

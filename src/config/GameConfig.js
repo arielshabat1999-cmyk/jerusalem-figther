@@ -35,6 +35,37 @@ export const PLAYER = {
   gaitPxPerFrame: 10,
 };
 
+// Visual-only scale normalization: every actor sheet was authored/extracted
+// at its own native pixel size, so ArtAdapter scales each actor's rendered
+// sprite (never the source crop, only the destination draw size) around its
+// existing bottom-center anchor to this shared on-screen height. Collision
+// hitboxes (PLAYER.standHeight/crouchHeight above, enemy w/h in Enemy.js)
+// are completely unaffected by this — visible size stays independent of
+// collision size by design.
+export const CHARACTER_SCALE = {
+  targetHeightPx: 72,
+  heavyMultiplier: 1.3, // "strong" enemy variants read as intentionally larger, not just re-skinned
+};
+
+// Rifle muzzle anchor for the player, expressed in world pixels relative to
+// the player's own feet (bottom-center, same point ArtAdapter anchors the
+// sprite to) and the shared CHARACTER_SCALE visual height above it — NOT the
+// small collision hitbox — so the projectile spawn point (and the
+// muzzle-flash effect main.js spawns at that same x/y) both read as coming
+// from the barrel instead of the player's center. heightFraction is measured
+// up from the feet as a fraction of CHARACTER_SCALE.targetHeightPx;
+// forwardPx is how far past the body centerline the muzzle sits in the
+// current facing direction (mirrored automatically for facingDir -1).
+export const MUZZLE = {
+  idle: { heightFraction: 0.62, forwardPx: 20 },
+  walk: { heightFraction: 0.62, forwardPx: 21 },
+  run: { heightFraction: 0.62, forwardPx: 23 },
+  jump: { heightFraction: 0.60, forwardPx: 20 },
+  fall: { heightFraction: 0.60, forwardPx: 20 },
+  crouch: { heightFraction: 0.50, forwardPx: 20 },
+  shoot: { heightFraction: 0.62, forwardPx: 24 },
+};
+
 // Weapon ids double as inventory keys and save-file keys.
 export const WEAPONS = {
   pistol: {

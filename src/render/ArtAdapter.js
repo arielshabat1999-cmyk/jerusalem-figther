@@ -1,4 +1,5 @@
 import { getPlayerAnimState, getEnemyAnimState, playerActorId, enemyActorId } from './AnimationState.js';
+import { CHARACTER_SCALE } from '../config/GameConfig.js';
 
 // Wraps PlaceholderAdapter with a real-art lookup per entity, per the
 // art-pack rule: "If an asset cannot be cleanly extracted ... keep the
@@ -18,20 +19,42 @@ export function createArtAdapter(assets, placeholder) {
   const clockStart = performance.now();
   const clock = () => (performance.now() - clockStart) / 1000;
 
-  function drawAnchoredSprite(ctx, sprite, footX, footY, cam, facingDir = 1) {
-    const w = sprite.w;
-    const h = sprite.h;
+  // `scale` resizes only the DESTINATION rect — the source crop (sprite.x/
+  // y/w/h) is always read at its native pixel size, so this never stretches
+  // or distorts a sprite based on its own source dimensions; it only
+  // normalizes how big that already-correct crop reads on screen.
+  function drawAnchoredSprite(ctx, sprite, footX, footY, cam, facingDir = 1, scale = 1) {
+    const w = sprite.w * scale;
+    const h = sprite.h * scale;
     const drawY = footY - cam.y - sprite.anchorY * h;
     ctx.save();
     if (facingDir < 0) {
       ctx.translate(footX - cam.x, 0);
       ctx.scale(-1, 1);
-      ctx.drawImage(sprite.image, sprite.x, sprite.y, w, h, -sprite.anchorX * w, drawY, w, h);
+      ctx.drawImage(sprite.image, sprite.x, sprite.y, sprite.w, sprite.h, -sprite.anchorX * w, drawY, w, h);
     } else {
       const drawX = footX - cam.x - sprite.anchorX * w;
-      ctx.drawImage(sprite.image, sprite.x, sprite.y, w, h, drawX, drawY, w, h);
+      ctx.drawImage(sprite.image, sprite.x, sprite.y, sprite.w, sprite.h, drawX, drawY, w, h);
     }
     ctx.restore();
+  }
+
+  // Per-actor visual scale cache: normalizes every actor to the same
+  // on-screen height (CHARACTER_SCALE.targetHeightPx) using that actor's OWN
+  // idle frame as the reference, regardless of how big it was authored/
+  // extracted at natively — this is the fix for player/enemy sprites that
+  // came from different source sheets at different native pixel scales.
+  // "Heavy" (strong) enemy variants get an extra multiplier on top so they
+  // still read as intentionally larger, not just a differently-scaled copy.
+  const scaleCache = new Map();
+  function getActorScale(actorId, heavy) {
+    if (scaleCache.has(actorId)) return scaleCache.get(actorId);
+    const idleSprite = actorFrame(actorId, 'idle');
+    const nativeH = idleSprite ? idleSprite.h : CHARACTER_SCALE.targetHeightPx;
+    let scale = CHARACTER_SCALE.targetHeightPx / nativeH;
+    if (heavy) scale *= CHARACTER_SCALE.heavyMultiplier;
+    scaleCache.set(actorId, scale);
+    return scale;
   }
 
   function actorFrame(actorId, animState) {
@@ -177,7 +200,7 @@ export function createArtAdapter(assets, placeholder) {
       if (!sprite) return placeholder.drawPlayer(ctx, player, cam);
       const footX = player.x + player.w / 2;
       const footY = player.y + player.h;
-      drawAnchoredSprite(ctx, sprite, footX, footY, cam, player.facingDir);
+      drawAnchoredSprite(ctx, sprite, footX, footY, cam, player.facingDir, getActorScale(actorId, false));
     },
 
     drawEnemy: (ctx, enemy, cam) => {
@@ -187,7 +210,7 @@ export function createArtAdapter(assets, placeholder) {
       if (!sprite) return placeholder.drawEnemy(ctx, enemy, cam);
       const footX = enemy.x + enemy.w / 2;
       const footY = enemy.y + enemy.h;
-      drawAnchoredSprite(ctx, sprite, footX, footY, cam, enemy.facingDir);
+      drawAnchoredSprite(ctx, sprite, footX, footY, cam, enemy.facingDir, getActorScale(actorId, !!enemy.strong));
     },
 
     drawExplosion: (ctx, x, y, radius, cam, kind = 'explosion') => {

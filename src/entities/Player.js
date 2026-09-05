@@ -1,4 +1,4 @@
-import { PLAYER, WEAPONS } from '../config/GameConfig.js';
+import { PLAYER, WEAPONS, CHARACTER_SCALE, MUZZLE } from '../config/GameConfig.js';
 import { WeaponRuntime, shouldFire } from '../systems/WeaponSystem.js';
 
 const SHOOT_POSE_SEC = 0.12; // how long the "shoot" animation state reads as active after a shot
@@ -111,12 +111,21 @@ export class Player {
     this._regenHealth(dt);
   }
 
+  // Muzzle position is derived from the visible rifle, not the collision
+  // box: same feet anchor ArtAdapter draws the sprite from, plus a
+  // per-pose offset (spec: "add/use a muzzle anchor for every relevant
+  // player animation state"). onGround+crouching is the one pose where the
+  // rendered sprite is 'crouch' rather than 'shoot' while firing (see
+  // AnimationState.getPlayerAnimState) — mirrored here so the anchor always
+  // matches whatever pose is actually on screen this frame.
   _muzzleSpawn(weapon) {
-    const muzzleY = this.y + (this.crouching ? this.h * 0.4 : this.h * 0.32);
-    const muzzleX = this.facingDir > 0 ? this.x + this.w : this.x;
+    const state = this.onGround && this.crouching ? 'crouch' : 'shoot';
+    const anchor = MUZZLE[state];
+    const feetX = this.x + this.w / 2;
+    const feetY = this.y + this.h;
     return {
-      x: muzzleX,
-      y: muzzleY,
+      x: feetX + this.facingDir * anchor.forwardPx,
+      y: feetY - anchor.heightFraction * CHARACTER_SCALE.targetHeightPx,
       vx: weapon.stats.projectileSpeed * this.facingDir,
       damage: weapon.stats.damage,
       isExplosive: !!weapon.stats.isExplosive,
