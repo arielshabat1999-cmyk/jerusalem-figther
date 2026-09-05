@@ -1,6 +1,8 @@
 import { PLAYER, WEAPONS } from '../config/GameConfig.js';
 import { WeaponRuntime, shouldFire } from '../systems/WeaponSystem.js';
 
+const SHOOT_POSE_SEC = 0.12; // how long the "shoot" animation state reads as active after a shot
+
 // Logical collision bounds only — no visual/sprite sizing lives here so a
 // future art pass can mount different sprite dimensions without touching
 // movement or collision code (spec section 33).
@@ -30,6 +32,8 @@ export class Player {
     this.alive = true;
 
     this.progressionX = x;
+    this.gender = save.data.characterGender === 'female' ? 'female' : 'male';
+    this.lastFireTimer = 0;
 
     this.weapons = {};
     for (const id of Object.keys(WEAPONS)) {
@@ -58,6 +62,7 @@ export class Player {
     this.timeSinceDamage += dt;
     if (this.hitStunTimer > 0) this.hitStunTimer -= dt;
     if (this.invulnTimer > 0) this.invulnTimer -= dt;
+    if (this.lastFireTimer > 0) this.lastFireTimer -= dt;
 
     const stunned = this.hitStunTimer > 0;
 
@@ -89,6 +94,7 @@ export class Player {
       if (!stunned && shouldFire(weapon, input.fireHeld, pressedEdge)) {
         weapon.consumeShot();
         spawnProjectile(this._muzzleSpawn(weapon));
+        this.lastFireTimer = SHOOT_POSE_SEC;
       }
     }
     this._prevFireHeld = input.fireHeld;

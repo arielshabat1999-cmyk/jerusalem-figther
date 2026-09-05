@@ -20,6 +20,7 @@ function defaultSave() {
     weaponUpgradeLevels,
     activeWeaponId: 'pistol',
     shieldUpgradeLevel: 0,
+    characterGender: 'male', // art-pack: male/female are both selectable, no gameplay difference
   };
 }
 
@@ -93,6 +94,11 @@ export class SaveSystem {
 
   setShieldUpgradeLevel(level) {
     this.data.shieldUpgradeLevel = level;
+    this.persist();
+  }
+
+  setCharacterGender(gender) {
+    this.data.characterGender = gender === 'female' ? 'female' : 'male';
     this.persist();
   }
 }

@@ -1,0 +1,6 @@
+{
+  "_comment": "AssetRegistry manifest (src/render/AssetRegistry.js). Empty until the art-pack ZIP is extracted into assets/art/runtime/** — see art-pack/README.md and ART_INTEGRATION_STATUS.md for the extraction plan and the exact sprite/animation key contract each asset group must satisfy. The game runs entirely on PlaceholderAdapter fallbacks while this stays empty.",
+  "sheets": {},
+  "sprites": {},
+  "animations": {}
+}

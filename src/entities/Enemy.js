@@ -1,5 +1,6 @@
 import { ENEMIES } from '../config/GameConfig.js';
 
+const HIT_POSE_SEC = 0.18;
 let nextId = 1;
 
 // One shared entity shape for both enemy classes (spec section 20/21) — the
@@ -34,6 +35,8 @@ export class Enemy {
     this.deathTimer = 0;
     this.knockbackTimer = 0;
     this.crouching = false;
+    this.lastHitTimer = 0; // drives the 'hit' animation state, independent of melee knockback physics
+    this.lastFireTimer = 0; // drives the 'shoot' animation state (ranged only)
 
     // AI scratch state, populated/used by systems/EnemyAI.js.
     this.ai = {
@@ -49,6 +52,7 @@ export class Enemy {
   applyDamage(amount, fromDirSign) {
     if (this.dead) return;
     this.hp -= amount;
+    this.lastHitTimer = HIT_POSE_SEC;
     if (this.kind === 'melee') {
       this.vx = -fromDirSign * ENEMIES.melee.knockbackOnHitSpeed;
       this.knockbackTimer = 0.22;
@@ -58,5 +62,10 @@ export class Enemy {
       this.dead = true;
       this.deathTimer = ENEMIES.deathLingerSec;
     }
+  }
+
+  tickTimers(dt) {
+    if (this.lastHitTimer > 0) this.lastHitTimer -= dt;
+    if (this.lastFireTimer > 0) this.lastFireTimer -= dt;
   }
 }

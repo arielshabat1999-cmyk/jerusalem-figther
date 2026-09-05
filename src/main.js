@@ -12,6 +12,9 @@ import { InventorySystem } from './systems/InventorySystem.js';
 import { updateRangedAI, updateMeleeAI } from './systems/EnemyAI.js';
 import { applyExplosion, applyMeleeHit } from './systems/DamageSystem.js';
 import { Renderer } from './render/Renderer.js';
+import { AssetRegistry } from './render/AssetRegistry.js';
+import { createArtAdapter } from './render/ArtAdapter.js';
+import { PlaceholderAdapter } from './render/PlaceholderAdapter.js';
 import { HUD } from './ui/HUD.js';
 import { InventoryUI } from './ui/InventoryUI.js';
 
@@ -30,7 +33,9 @@ const inventory = new InventorySystem(save, player);
 inventory.applySavedShieldCapacity();
 
 const canvas = document.getElementById('gameCanvas');
-const renderer = new Renderer(canvas);
+const assets = new AssetRegistry();
+await assets.loadManifest('assets/art/manifest.json');
+const renderer = new Renderer(canvas, createArtAdapter(assets, PlaceholderAdapter));
 const camera = new CameraSystem(window.innerWidth, window.innerHeight);
 const hud = new HUD();
 const inventoryUI = new InventoryUI(inventory, save, player);
@@ -122,9 +127,17 @@ function update(dt) {
   });
 
   for (const enemy of stage.enemies) {
+    enemy.tickTimers(dt);
     if (enemy.dead) continue;
     if (enemy.kind === 'ranged') {
-      updateRangedAI(enemy, dt, { player, world, spawnProjectile: (spec) => projectileSystem.spawn(spec) });
+      updateRangedAI(enemy, dt, {
+        player,
+        world,
+        spawnProjectile: (spec) => {
+          projectileSystem.spawn(spec);
+          enemy.lastFireTimer = 0.12;
+        },
+      });
     } else {
       updateMeleeAI(enemy, dt, {
         player,
