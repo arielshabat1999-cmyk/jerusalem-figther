@@ -78,6 +78,34 @@ same on-screen height, heavy enemies scaling up on top of that, and the
 source crop never being distorted). All 20 pre-existing tests
 (unit/stair-jump/gait/render-gait) still pass unmodified.
 
+## Renderer is now ready for a separate-PNG-per-frame character pack
+
+`AssetRegistry` supports a second, simpler sprite declaration alongside the
+existing shared-sheet-plus-rect one: `{ "file": "path/to/frame.png",
+"anchorX", "anchorY", "refH" }`. No `sheets` entry is needed for these —
+each file is loaded and drawn as its own standalone image, in full, never
+cropped or repacked into an atlas. This is the drop-in shape for a
+production pack that ships one runtime PNG per animation frame (per
+character per state per frame index), which is the format the next
+character delivery is expected in.
+
+`refH` is optional and only matters for `ArtAdapter`'s per-actor scale
+normalization: if a delivered frame is a padded fixed-size canvas (e.g.
+256x256) rather than a tight crop, its raw pixel height isn't the actual
+character height, so `refH` lets the manifest say what that real height
+is (e.g. from the pack's own bbox metadata) without requiring any crop of
+the file itself. Sprites without `refH` behave exactly as before
+(fall back to the sprite's own height) — zero effect on current art.
+
+8 new tests cover the standalone-file path (loads with no pre-declared
+sheet, defaults size to the file's natural dimensions, `refH`/anchor
+pass-through, missing files are skipped gracefully, legacy sheet+rect
+sprites keep working unchanged). All 31 prior tests still pass unmodified.
+
+**No sprite files were replaced by this change** — `manifest.json` and
+every runtime PNG are untouched; this is registry/renderer plumbing only,
+prepared ahead of the next character-pack delivery per instruction.
+
 ## Player art on hold — do not extract until new production frames arrive
 
 A newly attached combined male/female/enemy sheet was investigated as a

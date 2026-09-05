@@ -50,7 +50,11 @@ export function createArtAdapter(assets, placeholder) {
   function getActorScale(actorId, heavy) {
     if (scaleCache.has(actorId)) return scaleCache.get(actorId);
     const idleSprite = actorFrame(actorId, 'idle');
-    const nativeH = idleSprite ? idleSprite.h : CHARACTER_SCALE.targetHeightPx;
+    // `refH` (set by AssetRegistry from an optional manifest field) is the
+    // true character height when the sprite is a padded fixed-size canvas
+    // (e.g. a 256x256 production frame) rather than a tight crop — falls
+    // back to the sprite's own pixel height for tightly-cropped art.
+    const nativeH = idleSprite ? idleSprite.refH || idleSprite.h : CHARACTER_SCALE.targetHeightPx;
     let scale = CHARACTER_SCALE.targetHeightPx / nativeH;
     if (heavy) scale *= CHARACTER_SCALE.heavyMultiplier;
     scaleCache.set(actorId, scale);

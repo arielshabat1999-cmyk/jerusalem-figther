@@ -17,6 +17,18 @@
 //     }
 //   }
 //
+// A sprite may instead be declared as its own standalone image, with no
+// pre-declared "sheets" entry needed:
+//   "<spriteKey>": { "file": "relative/path/to/frame.png",
+//                     "anchorX":0.5, "anchorY":1, "refH": 144 }
+// This is the drop-in path for a production pack that ships one runtime
+// PNG per animation frame (art-pack rule: never crop/repack those files
+// into a shared atlas) — each file is loaded as its own private sheet and
+// drawn in full, exactly like any other sprite. `refH` is optional: the
+// true on-screen character height to use for CHARACTER_SCALE normalization
+// when the file itself is a padded fixed-size canvas (e.g. 256x256) whose
+// pixel height isn't the actual character height — ArtAdapter falls back
+// to the sprite's own height when refH is absent.
 // Sprite/animation key convention: "<actorId>.<animState>[.<frameIndex>]",
 // e.g. "player_male.walk.2" / animation key "player_male.walk". This keeps
 // ArtAdapter's lookups mechanical instead of hard-coding filenames.
@@ -43,13 +55,35 @@ export class AssetRegistry {
       sheetEntries.map(([id, path]) => this._loadSheet(id, new URL(path, absManifestUrl).href).catch(() => {}))
     );
 
-    for (const [key, def] of Object.entries(manifest.sprites || {})) {
+    const spriteEntries = Object.entries(manifest.sprites || {});
+    const standaloneEntries = spriteEntries.filter(([, def]) => def.file);
+    await Promise.all(
+      standaloneEntries.map(([key, def]) =>
+        this._loadSheet(this._standaloneSheetId(key), new URL(def.file, absManifestUrl).href).catch(() => {})
+      )
+    );
+
+    for (const [key, def] of spriteEntries) {
+      if (def.file) {
+        const sheetId = this._standaloneSheetId(key);
+        const img = this.sheets.get(sheetId);
+        if (!img) continue; // this frame failed to load — skip, adapter falls back
+        this.sprites.set(key, {
+          sheet: sheetId,
+          x: 0, y: 0, w: def.w ?? img.naturalWidth, h: def.h ?? img.naturalHeight,
+          anchorX: def.anchorX ?? 0.5,
+          anchorY: def.anchorY ?? 1,
+          refH: def.refH,
+        });
+        continue;
+      }
       if (!this.sheets.has(def.sheet)) continue; // sheet failed to load — skip, adapter falls back
       this.sprites.set(key, {
         sheet: def.sheet,
         x: def.x, y: def.y, w: def.w, h: def.h,
         anchorX: def.anchorX ?? 0.5,
         anchorY: def.anchorY ?? 1,
+        refH: def.refH,
       });
     }
     for (const [key, def] of Object.entries(manifest.animations || {})) {
@@ -59,6 +93,12 @@ export class AssetRegistry {
 
     this.loaded = true;
     return this;
+  }
+
+  // Private sheet id for a standalone (`file`) sprite — namespaced so it can
+  // never collide with an explicitly declared shared sheet id.
+  _standaloneSheetId(spriteKey) {
+    return `__frame__:${spriteKey}`;
   }
 
   async _loadSheet(id, href) {
