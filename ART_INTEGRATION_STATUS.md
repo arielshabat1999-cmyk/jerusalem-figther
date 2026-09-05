@@ -11,6 +11,26 @@ rewritten to fit the art — the art was extracted and adapted to the
 existing gameplay foundation's data (logical hitboxes, AI, spawn/stage
 systems are unchanged).
 
+## ⚠ Open issue: player character art may be superseded
+
+`art-pack/PLAYER_CHARACTERS_FINAL.md` (added after this pass started)
+states the approved protagonists are **soldier-look, olive/tactical
+clothing**, and explicitly rejects "the earlier civilian/blue-shirt
+protagonist variants" as final art. The male/female sprites extracted and
+wired in below (from `runtime/characters/{male,female}_master_strip.png`
+in the ZIP) show **civilian clothing** — white button-up shirt +
+suspenders (male), grey tank top (female), khaki pants on both — which
+matches the description of the *rejected* look, not the approved
+soldier look.
+
+The corrected reference image was attempted
+(`art-pack/PLAYER_CHARACTERS_FINAL_REFERENCE.b64.txt`) but committed
+empty/incomplete and then removed — so the actual corrected art is not
+yet available anywhere this session can reach. **This needs the real
+corrected reference before the character art can be considered final.**
+Everything else in this document (enemies, environment, props,
+backgrounds, FX) is unaffected and unrelated to this issue.
+
 ## How this differs from the raw ZIP
 
 Every file in the ZIP's `runtime/` folder turned out to be a "handoff
