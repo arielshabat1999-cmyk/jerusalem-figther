@@ -1,0 +1,109 @@
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
+html, body {
+  margin: 0; width: 100%; height: 100%; overflow: hidden;
+  background: #0d1115; color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  overscroll-behavior: none;
+}
+button { font: inherit; }
+
+#app {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #9bcbe1;
+  touch-action: none;
+}
+#gameCanvas { display: block; width: 100%; height: 100%; touch-action: none; }
+
+/* HUD */
+#hud {
+  position: absolute; top: 0; left: 0; right: 0;
+  padding: max(10px, env(safe-area-inset-top)) 12px 0;
+  display: flex; align-items: flex-start; gap: 10px;
+  z-index: 8; pointer-events: none;
+  text-shadow: 0 1px 4px rgba(0,0,0,.6);
+}
+#bars { flex: 1; display: flex; flex-direction: column; gap: 4px; max-width: 220px; }
+.barTrack { height: 10px; border-radius: 5px; background: rgba(0,0,0,.45); overflow: hidden; }
+.shieldTrack { height: 5px; }
+.barFill { height: 100%; width: 100%; transform-origin: left; }
+.barFill.health { background: #4caf50; }
+.barFill.shield { background: #5ec8ff; }
+#hudRight { text-align: right; font-size: 12px; font-weight: 700; line-height: 1.5; }
+.iconBtn {
+  pointer-events: auto;
+  background: rgba(20,24,26,.8); color: #fff; border: 1px solid rgba(255,255,255,.25);
+  border-radius: 10px; width: 40px; height: 36px; font-weight: 800;
+}
+
+#ammoBox {
+  position: absolute; top: 68px; left: 12px; z-index: 8;
+  background: rgba(20,24,26,.7); border-radius: 8px; padding: 4px 10px;
+  font-size: 11px; font-weight: 700; display: flex; gap: 8px; align-items: center;
+}
+#reloadingLabel { color: #ffb64c; }
+
+#toast {
+  position: absolute; top: 90px; left: 50%; transform: translateX(-50%);
+  padding: 8px 16px; border-radius: 10px; background: rgba(20,24,26,.85);
+  font-weight: 800; letter-spacing: .5px; font-size: 13px;
+  opacity: 0; transition: opacity .25s; pointer-events: none; z-index: 9;
+}
+#toast.show { opacity: 1; }
+
+#controls {
+  position: absolute; left: 0; right: 0; bottom: max(18px, env(safe-area-inset-bottom));
+  display: flex; align-items: flex-end; justify-content: space-between;
+  padding: 0 20px; z-index: 8;
+}
+#joystick {
+  width: 96px; height: 96px; border-radius: 50%;
+  background: rgba(255,255,255,.12); border: 2px solid rgba(255,255,255,.3);
+  touch-action: none; pointer-events: auto; position: relative;
+}
+#joyKnob {
+  position: absolute; left: 50%; top: 50%; width: 42px; height: 42px; margin: -21px 0 0 -21px;
+  border-radius: 50%; background: rgba(255,255,255,.55);
+  transition: transform .05s linear;
+}
+#inventoryBtn { align-self: flex-start; margin-bottom: 40px; }
+#fireBtn {
+  width: 84px; height: 84px; border-radius: 50%;
+  background: rgba(220,60,60,.85); color: #fff; border: 2px solid rgba(255,255,255,.35);
+  font-weight: 900; letter-spacing: 1px; pointer-events: auto;
+}
+
+.overlay {
+  position: absolute; inset: 0; z-index: 20;
+  background: rgba(6,8,10,.82);
+  display: flex; align-items: center; justify-content: center;
+}
+/* Author styles win over the UA [hidden] rule by default — restate it
+   explicitly so setting the `hidden` attribute actually hides overlays. */
+.overlay[hidden] { display: none; }
+.panel {
+  background: #1b2226; border-radius: 16px; padding: 22px 24px;
+  min-width: 240px; max-width: 92vw; max-height: 84vh; overflow-y: auto;
+  border: 1px solid rgba(255,255,255,.12);
+}
+.panel.wide { width: 340px; }
+.panel h1 { margin: 0 0 12px; font-size: 20px; letter-spacing: 1px; text-align: center; }
+.panelHead { display: flex; align-items: center; justify-content: space-between; }
+.bigBtn {
+  display: block; width: 100%; margin-top: 14px; padding: 12px; border: none;
+  border-radius: 10px; background: #3c8cdc; color: #fff; font-weight: 800; font-size: 14px;
+}
+#inventoryCoins { text-align: center; font-weight: 800; margin: 4px 0 12px; color: #f0c93d; }
+.invRow {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,.08);
+  font-size: 13px;
+}
+.invRow button {
+  padding: 6px 10px; border: none; border-radius: 8px; background: #2f6f4f; color: #fff; font-weight: 700;
+}
+.invRow button:disabled { background: #3a4046; color: #888; }
+.invRow button.active { background: #3c8cdc; }

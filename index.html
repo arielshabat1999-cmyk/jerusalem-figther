@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="theme-color" content="#0f1518" />
+<title>Jerusalem Fighter</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app">
+  <canvas id="gameCanvas"></canvas>
+
+  <div id="hud">
+    <div id="bars">
+      <div class="barTrack"><div id="healthFill" class="barFill health"></div></div>
+      <div class="barTrack shieldTrack"><div id="shieldFill" class="barFill shield"></div></div>
+    </div>
+    <div id="hudRight">
+      <div id="stageLabel">STAGE 1</div>
+      <div id="scoreLabel">SCORE 0</div>
+      <div id="coinsLabel">COINS 0</div>
+    </div>
+    <button id="pauseBtn" class="iconBtn" aria-label="Pause">II</button>
+  </div>
+
+  <div id="ammoBox">
+    <span id="weaponName">Pistol</span>
+    <span id="ammoCount">8/8</span>
+    <span id="reloadingLabel" hidden>RELOADING</span>
+  </div>
+
+  <div id="toast"></div>
+
+  <div id="controls">
+    <div id="joystick"><div id="joyKnob"></div></div>
+    <button id="inventoryBtn" class="iconBtn" aria-label="Inventory">INV</button>
+    <button id="fireBtn" aria-label="Fire">FIRE</button>
+  </div>
+
+  <div id="pauseOverlay" class="overlay" hidden>
+    <div class="panel">
+      <h1>PAUSED</h1>
+      <button id="resumeBtn" class="bigBtn">RESUME</button>
+    </div>
+  </div>
+
+  <div id="inventoryOverlay" class="overlay" hidden>
+    <div class="panel wide">
+      <div class="panelHead">
+        <h1>INVENTORY</h1>
+        <button id="closeInventoryBtn" class="iconBtn">X</button>
+      </div>
+      <div id="inventoryCoins"></div>
+      <div id="weaponList"></div>
+      <div id="shieldRow"></div>
+      <div id="healRow"></div>
+    </div>
+  </div>
+
+  <div id="gameOverOverlay" class="overlay" hidden>
+    <div class="panel">
+      <h1>YOU DIED</h1>
+      <p id="gameOverStage"></p>
+      <button id="restartBtn" class="bigBtn">RESTART STAGE</button>
+    </div>
+  </div>
+</div>
+<script type="module" src="src/main.js"></script>
+</body>
+</html>
