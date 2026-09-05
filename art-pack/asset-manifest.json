@@ -1,0 +1,38 @@
+{
+  "package": "Jerusalem Fighter Art Handoff",
+  "version": "1.0",
+  "artDirection": {
+    "style": "Stylized Realistic + Premium Arcade",
+    "setting": "Jerusalem Old City",
+    "masterEnvironment": "Classic Stone Alleys",
+    "parallax": "Cinematic 6-7 layer target",
+    "lighting": ["day", "sunset", "night"],
+    "playerScarves": false,
+    "enemyHeadwear": "varied scarves/head coverings as fictional visual styling",
+    "enemyVests": false,
+    "portraitMobile": true
+  },
+  "requiredRuntimeFolders": [
+    "runtime/characters",
+    "runtime/enemies",
+    "runtime/environment",
+    "runtime/props",
+    "runtime/backgrounds",
+    "runtime/fx",
+    "runtime/ui"
+  ],
+  "requiredCharacterAnimations": [
+    "idle", "walk", "run", "jump", "fall", "shoot", "crouch", "hit", "death"
+  ],
+  "integrationRules": [
+    "Gameplay code must not depend on art dimensions.",
+    "Keep collision boxes separate from sprite bounds.",
+    "Use an asset registry instead of hard-coded paths throughout gameplay systems.",
+    "Character anchors should be feet/bottom-center.",
+    "Do not stretch sprites non-uniformly.",
+    "Preserve portrait mobile framing and forward camera visibility.",
+    "The Temple Mount / Old City skyline is a distant parallax landmark, not collision geometry.",
+    "Remove labels/borders from source sheets when producing transparent runtime sprites.",
+    "Do not redesign approved characters, colors, clothing, UI, or environment without approval."
+  ]
+}
