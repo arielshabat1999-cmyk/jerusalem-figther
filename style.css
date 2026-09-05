@@ -55,7 +55,10 @@ button { font: inherit; }
 #toast.show { opacity: 1; }
 
 #controls {
-  position: absolute; left: 0; right: 0; bottom: max(18px, env(safe-area-inset-bottom));
+  position: absolute; left: 0; right: 0;
+  /* Raised ~70px off the safe-area-respecting baseline so the joystick and
+     FIRE button sit comfortably above the Safari bottom bar on iPhone. */
+  bottom: calc(max(18px, env(safe-area-inset-bottom)) + 70px);
   display: flex; align-items: flex-end; justify-content: space-between;
   padding: 0 20px; z-index: 8;
 }

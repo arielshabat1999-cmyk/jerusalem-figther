@@ -18,6 +18,7 @@ export class Player {
     this.onGround = false;
     this.onStair = null;
     this.stairEntryY = 0;
+    this.gaitPhase = 0; // distance-based walk/run cycle phase — see PLAYER.gaitStrideLength
 
     this.crouching = false;
     this.wantsCrouch = false;
@@ -84,6 +85,14 @@ export class Player {
 
     world.step(this, dt, { crouchHeld: this.crouching });
     this.progressionX = Math.max(this.progressionX, this.x);
+
+    // Distance-based gait phase: only advances on the ground, so airborne
+    // time never "banks" steps that play back instantly on landing, and
+    // cadence naturally scales with actual horizontal speed rather than
+    // wall-clock time.
+    if (this.onGround) {
+      this.gaitPhase += Math.abs(this.vx) * dt / PLAYER.gaitStrideLength;
+    }
 
     // Weapon handling stays live even mid-stun so an equipped auto weapon
     // doesn't desync, but firing itself is suppressed while stunned.

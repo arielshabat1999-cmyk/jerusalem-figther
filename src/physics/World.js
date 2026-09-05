@@ -1,5 +1,12 @@
 import { WORLD } from '../config/GameConfig.js';
 
+// How close (px) an actor's feet must be to a stair ramp's local surface to
+// be considered "walking on it" rather than "falling toward it from a real
+// height". Must comfortably exceed one step's slope-induced vertical shift
+// at realistic speeds (a few px) while staying well below how far a jump
+// clears the ramp within a frame or two, so it can't mask a jump.
+const STAIR_SNAP_TOLERANCE = 24;
+
 // The single authoritative collision system (spec section 32). Every actor
 // (player or enemy) moves through here so there is exactly one place that
 // understands solids, stairs, and head collision.
@@ -11,11 +18,18 @@ import { WORLD } from '../config/GameConfig.js';
 // placeholder geometry this foundation ships with.
 //
 // Stairs are ramps that bridge two elevations that are not otherwise
-// walkable between. While an actor's x is inside a stair's span:
-//   - normal (not holding crouch): y is interpolated along the ramp, so
-//     walking across auto-ascends/descends (spec section 6/35.5).
-//   - crouch/down held: y is pinned to whichever elevation the actor
-//     entered the stair span at, so the actor does not ascend (spec
+// walkable between. The ramp is just another landing surface considered
+// alongside solids in the same sweep-gated vertical resolution below,
+// EXCEPT it's only ever a landing candidate while the actor is falling or
+// resting (vy >= 0) — never while rising (vy < 0). That's what lets a jump
+// off a stair leave immediately: the instant the player jumps, vy goes
+// negative and the ramp stops being consulted at all until gravity brings
+// them back down, so normal airborne physics/collision fully take over
+// mid-air and the ramp only "recaptures" them on an actual landing.
+//   - normal (not holding crouch): the landing y is interpolated along the
+//     ramp, so walking across auto-ascends/descends (spec section 6/35.5).
+//   - crouch/down held: the landing y is pinned to whichever elevation the
+//     actor entered the stair span at, so the actor does not ascend (spec
 //     section 6/35.6).
 export class World {
   constructor() {
@@ -76,16 +90,6 @@ export class World {
       }
     }
 
-    if (actor.onStair) {
-      const t = Math.max(0, Math.min(1, (actor.x + actor.w / 2 - actor.onStair.x) / actor.onStair.w));
-      const rampFeetY = actor.onStair.yAtX0 + (actor.onStair.yAtX1 - actor.onStair.yAtX0) * t;
-      const targetFeetY = crouchHeld ? actor.stairEntryY : rampFeetY;
-      actor.y = targetFeetY - actor.h;
-      actor.vy = 0;
-      actor.onGround = true;
-      return;
-    }
-
     // Vertical movement + floor/ceiling collision. Solids can legitimately
     // stack (a rooftop block sits above the street-level ground strip), so
     // resolution must pick the NEAREST surface crossed by this step's sweep
@@ -95,11 +99,29 @@ export class World {
     actor.onGround = false;
 
     if (actor.vy >= 0) {
+      const feetPrev = prevY + actor.h;
+      const feetNew = rawNewY + actor.h;
       let landOnY = null;
+
+      if (actor.onStair) {
+        const t = Math.max(0, Math.min(1, (actor.x + actor.w / 2 - actor.onStair.x) / actor.onStair.w));
+        const interpolated = actor.onStair.yAtX0 + (actor.onStair.yAtX1 - actor.onStair.yAtX0) * t;
+        const rampY = crouchHeld ? actor.stairEntryY : interpolated;
+        // A sloped ramp's own surface moves vertically as the actor walks
+        // across it — at realistic speeds that shift is well above the
+        // sub-pixel tolerance a flat solid's "crossed this frame" sweep
+        // uses, so normal ascending/descending walk needs a distance-based
+        // catch instead. This still can't grab a jump: vy < 0 (rising)
+        // skips this whole branch, so a jump leaves the ramp immediately;
+        // only once actually falling again can proximity or the sweep
+        // test below re-engage it.
+        const closeToRamp = Math.abs(feetPrev - rampY) < STAIR_SNAP_TOLERANCE;
+        const sweepCrossedRamp = feetPrev <= rampY + 0.5 && feetNew >= rampY;
+        if (closeToRamp || sweepCrossedRamp) landOnY = rampY;
+      }
+
       for (const s of this.allSolids()) {
         if (!(actor.x < s.x + s.w && actor.x + actor.w > s.x)) continue;
-        const feetPrev = prevY + actor.h;
-        const feetNew = rawNewY + actor.h;
         if (feetPrev <= s.y + 0.5 && feetNew >= s.y) {
           if (landOnY === null || s.y < landOnY) landOnY = s.y;
         }

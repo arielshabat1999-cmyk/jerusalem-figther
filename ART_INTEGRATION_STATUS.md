@@ -1,5 +1,44 @@
 # Art Integration Status
 
+## Mobile playtest fixes (post-integration)
+
+Three issues found in a mobile recording were fixed, targeted-tested, and
+verified end-to-end:
+
+1. **Player sliding instead of walking/running.** Root cause: only one art
+   frame exists per animation state (see "How this differs from the raw
+   ZIP" below), so the sprite never changed pose while translating. Fixed
+   by mirroring that single pose every other half-step for `walk`/`run`
+   only (`Player.gaitPhase`, distance-based so cadence scales with actual
+   speed; `ArtAdapter.drawPlayer`) — `idle`/`jump`/`fall`/etc. are
+   unaffected, and the mirror is about the same foot anchor already used
+   for facing direction, so it never shifts the feet. 4 new deterministic
+   tests assert the transform alternates correctly, never mirrors on
+   idle, combines correctly with facing-left, and leaves the feet anchor
+   pixel-identical between mirrored/unmirrored frames.
+2. **Controls too close to the Safari bottom bar.** `#controls`'s bottom
+   offset raised by 70px (within the requested 60-80px range), still
+   composed with `env(safe-area-inset-bottom)` via
+   `calc(max(18px, env(safe-area-inset-bottom)) + 70px)`. Joystick/
+   FIRE/INV positions relative to each other and the top HUD are
+   unchanged.
+3. **Couldn't jump from stairs.** Root cause: `World.step` unconditionally
+   re-pinned the actor onto the stair ramp every frame while on its span,
+   which clobbered a freshly-set jump velocity back to zero before it had
+   any effect. Fixed by folding the ramp into the same sweep-gated
+   landing check already used for solids, gated on `vy >= 0` — a jump
+   (`vy < 0`) is never fought, so gravity/normal air collision fully take
+   over immediately, and the ramp only recaptures the actor once actually
+   falling and either close to its surface or crossing it. 6 new
+   targeted tests cover jumping from the bottom/middle/top of stairs,
+   landing back on the ramp mid-climb, jumping while stationary on
+   stairs, and a normal-ground-jump regression check.
+
+No gameplay rule, physics constant, or collision dimension changed —
+only the stair-ramp *landing candidate* logic and the player's animation
+bookkeeping/render transform.
+
+
 Tracks progress against `art-pack/README.md`, `art-pack/asset-manifest.json`,
 and `art-pack/CLAUDE_ART_INTEGRATION_PROMPT.txt`, using the binary ZIP
 (`Jerusalem_Fighter_Art_Handoff_v1.zip`) as the visual source of truth.

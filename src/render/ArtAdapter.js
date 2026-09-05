@@ -169,7 +169,14 @@ export function createArtAdapter(assets, placeholder) {
       if (!sprite) return placeholder.drawPlayer(ctx, player, cam);
       const footX = player.x + player.w / 2;
       const footY = player.y + player.h;
-      drawAnchoredSprite(ctx, sprite, footX, footY, cam, player.facingDir);
+      // Only one walk/run pose exists per gender (see ART_INTEGRATION_
+      // STATUS.md) — mirror it every other half-step so the legs actually
+      // alternate instead of sliding a frozen mid-stride pose across the
+      // ground. The mirror is about the same foot anchor used below, so it
+      // never shifts the sprite's feet from the hitbox's feet position.
+      const gaitMirror = (state === 'walk' || state === 'run') && Math.floor(player.gaitPhase) % 2 === 1;
+      const renderDir = player.facingDir * (gaitMirror ? -1 : 1);
+      drawAnchoredSprite(ctx, sprite, footX, footY, cam, renderDir);
     },
 
     drawEnemy: (ctx, enemy, cam) => {
