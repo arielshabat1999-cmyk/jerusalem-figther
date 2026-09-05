@@ -56,14 +56,21 @@ export const CHARACTER_SCALE = {
 // up from the feet as a fraction of CHARACTER_SCALE.targetHeightPx;
 // forwardPx is how far past the body centerline the muzzle sits in the
 // current facing direction (mirrored automatically for facingDir -1).
+// shoot/crouch_shoot values below are MEASURED from the approved player_male
+// runtime frames (rifle-tip position within the chest-height band of the
+// actual extracted art, converted from canvas-pixel to world-pixel via the
+// same canvas-height/targetHeightPx ratio ArtAdapter uses to scale those
+// sprites) - not estimates. The other poses never fire a shot mid-pose in
+// this game (Player._muzzleSpawn only ever resolves to 'shoot' or
+// 'crouch_shoot') so they stay as reasonable placeholders.
 export const MUZZLE = {
   idle: { heightFraction: 0.62, forwardPx: 20 },
   walk: { heightFraction: 0.62, forwardPx: 21 },
   run: { heightFraction: 0.62, forwardPx: 23 },
   jump: { heightFraction: 0.60, forwardPx: 20 },
   fall: { heightFraction: 0.60, forwardPx: 20 },
-  crouch: { heightFraction: 0.50, forwardPx: 20 },
-  shoot: { heightFraction: 0.62, forwardPx: 24 },
+  crouch_shoot: { heightFraction: 0.404, forwardPx: 15.1 },
+  shoot: { heightFraction: 0.702, forwardPx: 20.4 },
 };
 
 // Weapon ids double as inventory keys and save-file keys.

@@ -115,11 +115,11 @@ export class Player {
   // box: same feet anchor ArtAdapter draws the sprite from, plus a
   // per-pose offset (spec: "add/use a muzzle anchor for every relevant
   // player animation state"). onGround+crouching is the one pose where the
-  // rendered sprite is 'crouch' rather than 'shoot' while firing (see
+  // rendered sprite is 'crouch_shoot' rather than 'shoot' while firing (see
   // AnimationState.getPlayerAnimState) — mirrored here so the anchor always
   // matches whatever pose is actually on screen this frame.
   _muzzleSpawn(weapon) {
-    const state = this.onGround && this.crouching ? 'crouch' : 'shoot';
+    const state = this.onGround && this.crouching ? 'crouch_shoot' : 'shoot';
     const anchor = MUZZLE[state];
     const feetX = this.x + this.w / 2;
     const feetY = this.y + this.h;

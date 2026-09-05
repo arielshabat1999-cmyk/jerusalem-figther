@@ -14,7 +14,10 @@ export function getPlayerAnimState(player) {
     if (player.lastFireTimer > 0) return 'shoot'; // shooting while airborne still reads as shoot
     return player.vy < 0 ? 'jump' : 'fall';
   }
-  if (player.crouching) return 'crouch';
+  if (player.crouching) {
+    if (player.lastFireTimer > 0) return 'crouch_shoot';
+    return Math.abs(player.vx) > 1 ? 'crouch_walk' : 'crouch_idle';
+  }
   if (Math.abs(player.vx) > RUN_SPEED_THRESHOLD) return 'run';
   if (Math.abs(player.vx) > 1) return 'walk';
   return 'idle';

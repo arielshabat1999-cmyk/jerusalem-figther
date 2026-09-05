@@ -38,6 +38,71 @@ No gameplay rule, physics constant, or collision dimension changed —
 only the stair-ramp *landing candidate* logic and the player's animation
 bookkeeping/render transform.
 
+## Player male: replaced with the approved master animation sheet
+
+The player_male master sheet (a single 1536x1024 image, one character in many
+labeled poses — idle/walk/run/aim-shoot/jump/fall/crouch variants/melee/
+death/turnaround/gear-reference/weapon-reference panels) came with a real,
+already-clean per-character alpha channel baked in (confirmed by inspecting
+the alpha channel directly: background fully transparent, every pose already
+an isolated opaque silhouette). No background-removal/thresholding of any
+kind was needed or performed — every runtime pixel is exactly as authored.
+
+Extraction used connected-component analysis on that existing alpha (not a
+uniform grid) to find each individual pose's real bounds, with an evidence-
+based (pixel-area-ratio) fallback only for the few frames that visually
+touch a neighbor. Cross-checked every section against the source image by
+eye. **Several sections' "(N frames)" labels overstate what's actually
+drawn** — confirmed by direct visual recount, not just an extraction
+artifact — so the shipped counts are lower for those:
+
+| animation | labeled | shipped | note |
+|---|---|---|---|
+| idle | 8 | 8 | matches |
+| walk | 8 | 6 | only 6 distinct poses drawn; 1 disconnected fragment discarded |
+| run | 8 | 6 | only 6 distinct poses drawn |
+| shoot | 8 | 7 | 8 poses drawn, but the 8th has the rifle/muzzle-flash on the wrong side (inconsistent with the other 7 and with idle/walk/run facing) - excluded rather than shipped inconsistent |
+| jump | 6 | 4 | only 4 distinct poses; the jump/fall boundary in the source is ambiguous, resolved by eye |
+| fall | 6 | 5 | only 5 distinct poses |
+| crouch_idle | 6 | 6 | matches |
+| crouch_walk | 8 | 8 | matches |
+| crouch_shoot | 6 | 6 | matches |
+| hit | 6 | 5 | only 5 distinct poses |
+| death | 6 | 4 | only 4 distinct poses (2 falling + 2 lying down) |
+| melee | 6 | 6 | matches; **extracted but not wired into gameplay** - the game has no player melee-attack state, per spec "only use melee/prone if the game state supports them" |
+
+Not extracted at all (reference-only panels, explicitly out of scope): head
+expressions, gear-details close-ups, weapons reference, turnaround (8
+angles), and the "EXTRA" panel's suggested FX icons. The "PRONE (6 FRAMES)"
+label in that EXTRA panel is also inaccurate - only **one** prone pose
+actually exists in the source, not six, so prone was skipped entirely
+rather than fabricating 5 more frames from a single image (the game has no
+prone state either).
+
+Every shipped frame was visually inspected (individually and via per-
+animation contact sheets) for: full transparency, no leaked neighboring
+body parts, an intact Israeli flag patch, an uncropped weapon/barrel, and a
+visible walk/run leg cycle. Muzzle position for `shoot`/`crouch_shoot` was
+measured (not estimated) from the actual art - rightmost opaque pixel in
+the chest-height band, cross-checked against the frames that show a muzzle
+flash - and is now in `MUZZLE.shoot`/`MUZZLE.crouch_shoot` (`GameConfig.js`).
+
+**Runtime asset location:** `assets/art/runtime/characters/player_male/<state>/*.png`
+(69 individual PNG files, one per frame, never packed into a sheet - loaded
+via `AssetRegistry`'s standalone-`file` sprite support added earlier this
+pass). **Manifest:** integrated directly into the game's existing single
+`assets/art/manifest.json` (as `player_male.<state>.<n>` sprite/animation
+entries) rather than a separate `player_male_manifest.json`, since that's
+the one file `AssetRegistry` actually loads — a second manifest the engine
+never reads would just be dead documentation. Say the word if a standalone
+copy is still wanted for reference alongside it.
+
+`player_female` is untouched (no female master sheet was part of this
+delivery) — she still renders on the same approved sprites as before. Her
+`crouch_idle`/`crouch_walk`/`crouch_shoot` states are aliased to her
+existing single `crouch` animation so the new 3-way crouch split
+(`AnimationState.getPlayerAnimState`) doesn't regress her rendering.
+
 ## Character-scale + muzzle-origin architecture (this pass)
 
 Two long-standing visual bugs are now fixed at the code/config level,
@@ -106,18 +171,12 @@ sprites keep working unchanged). All 31 prior tests still pass unmodified.
 every runtime PNG are untouched; this is registry/renderer plumbing only,
 prepared ahead of the next character-pack delivery per instruction.
 
-## Player art on hold — do not extract until new production frames arrive
-
-A newly attached combined male/female/enemy sheet was investigated as a
-replacement for the current player sprites, but it turned out to be a
-visual *reference* board, not a uniform production sprite atlas — an
-automated grid crop produced frames with partial/missing body pieces.
-Per explicit instruction, that extraction attempt was abandoned and
-**no player/enemy sprite files were changed**; the game continues to run
-on the same approved sprites as before this pass. The scale + muzzle
-architecture above already applies to whatever sprites are loaded, so
-once proper production-ready transparent character frames are supplied
-separately, dropping them in should need no further code changes here.
+Enemy art and `player_female` are unchanged — still whatever was already
+approved and integrated before this pass. The male extraction above is the
+first sprite set to actually land using the standalone-file registry path;
+the same approach (real alpha channel + connected-component extraction +
+this manifest format) is ready to reuse whenever equivalent female/enemy
+masters arrive.
 
 
 Tracks progress against `art-pack/README.md`, `art-pack/asset-manifest.json`,
