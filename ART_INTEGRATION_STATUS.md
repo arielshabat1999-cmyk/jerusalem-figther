@@ -38,6 +38,57 @@ No gameplay rule, physics constant, or collision dimension changed —
 only the stair-ramp *landing candidate* logic and the player's animation
 bookkeeping/render transform.
 
+## player_male run: replaced with a cleaner 4-frame set
+
+Same pattern as idle below, delivered as a single combined image (4 running
+poses, no labels this time). Unlike the idle delivery, this one had a real
+alpha channel already (background genuinely transparent, confirmed
+numerically) — no checkerboard-recovery step needed. Extracted via
+connected-component analysis; two crops initially picked up a sliver of the
+*neighboring* pose inside their padded bounding box (the neighbor is a
+separate component but still fell inside the rectangular crop margin) —
+fixed by masking out any pixel belonging to a different component before
+saving, not just cropping a rectangle, so no frame can ever contain another
+pose's pixels regardless of padding.
+
+Normalized using the *same* scale factor established for the new idle
+batch (target standing height ÷ that idle batch's own native pixel height)
+rather than recomputing a fresh factor from this image's own resolution -
+the engine applies one scale (read from `idle`) to every animation's
+canvas uniformly, so `run` has to share idle's real-world-pixels-per-
+canvas-pixel ratio to read at the correct size next to it. The result is
+naturally shorter than idle on the canvas (~177px vs idle's 208px), which
+is correct: a leaning running pose measures less top-to-bottom than
+standing upright, not a bug. `assets/art/runtime/characters/player_male/run/`
+now has 4 files (was 6); manifest regenerated to match. Verified live
+(mobile smoke test) at the correct scale next to an enemy and the
+environment.
+
+## player_male idle: replaced again with a cleaner 4-frame set
+
+The `idle` animation was replaced a second time with a higher-resolution,
+cleaner 4-frame set (`IDLE_01`-`IDLE_04`) delivered as one combined preview
+image. That image had no real alpha channel — it was a flat RGB render of
+the 4 (already tightly cropped) characters composited over a light gray/
+white checkerboard for preview purposes, plus a text label under each.
+Recovered transparency without any dark-pixel/threshold keying: flood-
+filled the background starting from the image border, expanding only
+through pixels matching the checkerboard's own two known tile colors
+(~`#DCDDE1`/`#FDFDFD`) — since that fill can only reach pixels *connected to
+the border through checkerboard-colored pixels*, it can never eat into a
+white/light element that's actually part of the character (e.g. the flag's
+white stripe), no matter how close that color is to a tile color, because
+no such connected path exists through the character's silhouette. Verified
+by eye: all 4 frames fully opaque, flag patches intact, nothing leaked.
+
+The 4 frames were normalized through the same pipeline as before (256x256
+canvas, bottom-center feet anchor at y=244, scaled from their own native
+height to the same 208px canvas-space standing height already baked into
+walk/run/shoot/etc.), so they read at the same on-screen scale as every
+other player_male animation with no other file needing to change.
+`assets/art/runtime/characters/player_male/idle/` now has 4 files (was 8);
+`manifest.json`'s `player_male.idle.*` entries were regenerated to match.
+
 ## Player male: replaced with the approved master animation sheet
 
 The player_male master sheet (a single 1536x1024 image, one character in many

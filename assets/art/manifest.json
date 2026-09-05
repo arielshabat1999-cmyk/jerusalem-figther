@@ -1606,54 +1606,6 @@
       "anchorX": 0.5,
       "anchorY": 1.0
     },
-    "player_male.idle.0": {
-      "file": "runtime/characters/player_male/idle/idle_01.png",
-      "anchorX": 0.5,
-      "anchorY": 0.953125,
-      "refH": 208.0
-    },
-    "player_male.idle.1": {
-      "file": "runtime/characters/player_male/idle/idle_02.png",
-      "anchorX": 0.5,
-      "anchorY": 0.953125,
-      "refH": 208.0
-    },
-    "player_male.idle.2": {
-      "file": "runtime/characters/player_male/idle/idle_03.png",
-      "anchorX": 0.5,
-      "anchorY": 0.953125,
-      "refH": 208.0
-    },
-    "player_male.idle.3": {
-      "file": "runtime/characters/player_male/idle/idle_04.png",
-      "anchorX": 0.5,
-      "anchorY": 0.953125,
-      "refH": 208.0
-    },
-    "player_male.idle.4": {
-      "file": "runtime/characters/player_male/idle/idle_05.png",
-      "anchorX": 0.5,
-      "anchorY": 0.953125,
-      "refH": 208.0
-    },
-    "player_male.idle.5": {
-      "file": "runtime/characters/player_male/idle/idle_06.png",
-      "anchorX": 0.5,
-      "anchorY": 0.953125,
-      "refH": 208.0
-    },
-    "player_male.idle.6": {
-      "file": "runtime/characters/player_male/idle/idle_07.png",
-      "anchorX": 0.5,
-      "anchorY": 0.953125,
-      "refH": 208.0
-    },
-    "player_male.idle.7": {
-      "file": "runtime/characters/player_male/idle/idle_08.png",
-      "anchorX": 0.5,
-      "anchorY": 0.953125,
-      "refH": 208.0
-    },
     "player_male.walk.0": {
       "file": "runtime/characters/player_male/walk/walk_01.png",
       "anchorX": 0.5,
@@ -1686,42 +1638,6 @@
     },
     "player_male.walk.5": {
       "file": "runtime/characters/player_male/walk/walk_06.png",
-      "anchorX": 0.5,
-      "anchorY": 0.953125,
-      "refH": 208.0
-    },
-    "player_male.run.0": {
-      "file": "runtime/characters/player_male/run/run_01.png",
-      "anchorX": 0.5,
-      "anchorY": 0.953125,
-      "refH": 208.0
-    },
-    "player_male.run.1": {
-      "file": "runtime/characters/player_male/run/run_02.png",
-      "anchorX": 0.5,
-      "anchorY": 0.953125,
-      "refH": 208.0
-    },
-    "player_male.run.2": {
-      "file": "runtime/characters/player_male/run/run_03.png",
-      "anchorX": 0.5,
-      "anchorY": 0.953125,
-      "refH": 208.0
-    },
-    "player_male.run.3": {
-      "file": "runtime/characters/player_male/run/run_04.png",
-      "anchorX": 0.5,
-      "anchorY": 0.953125,
-      "refH": 208.0
-    },
-    "player_male.run.4": {
-      "file": "runtime/characters/player_male/run/run_05.png",
-      "anchorX": 0.5,
-      "anchorY": 0.953125,
-      "refH": 208.0
-    },
-    "player_male.run.5": {
-      "file": "runtime/characters/player_male/run/run_06.png",
       "anchorX": 0.5,
       "anchorY": 0.953125,
       "refH": 208.0
@@ -2016,6 +1932,54 @@
     },
     "player_male.melee.5": {
       "file": "runtime/characters/player_male/melee/melee_06.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.idle.0": {
+      "file": "runtime/characters/player_male/idle/idle_01.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.idle.1": {
+      "file": "runtime/characters/player_male/idle/idle_02.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.idle.2": {
+      "file": "runtime/characters/player_male/idle/idle_03.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.idle.3": {
+      "file": "runtime/characters/player_male/idle/idle_04.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.run.0": {
+      "file": "runtime/characters/player_male/run/run_01.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.run.1": {
+      "file": "runtime/characters/player_male/run/run_02.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.run.2": {
+      "file": "runtime/characters/player_male/run/run_03.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.run.3": {
+      "file": "runtime/characters/player_male/run/run_04.png",
       "anchorX": 0.5,
       "anchorY": 0.953125,
       "refH": 208.0
@@ -3139,11 +3103,7 @@
         "player_male.idle.0",
         "player_male.idle.1",
         "player_male.idle.2",
-        "player_male.idle.3",
-        "player_male.idle.4",
-        "player_male.idle.5",
-        "player_male.idle.6",
-        "player_male.idle.7"
+        "player_male.idle.3"
       ],
       "fps": 8,
       "loop": true
@@ -3165,9 +3125,7 @@
         "player_male.run.0",
         "player_male.run.1",
         "player_male.run.2",
-        "player_male.run.3",
-        "player_male.run.4",
-        "player_male.run.5"
+        "player_male.run.3"
       ],
       "fps": 10,
       "loop": true
