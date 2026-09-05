@@ -1,0 +1,54 @@
+You are integrating the FINAL approved art direction for Jerusalem Fighter.
+
+First read:
+1. docs/GAME_RULES_SPEC_V1.md
+2. art-pack/README.md
+3. art-pack/asset-manifest.json
+
+Use the supplied art pack as the visual source of truth.
+
+GOAL
+Replace placeholder/procedural-looking graphics with the supplied Jerusalem Fighter art while preserving the gameplay foundation and all rules from GAME_RULES_SPEC_V1.md.
+
+ART RULES
+- Style: Stylized Realistic + Premium Arcade.
+- Portrait iPhone presentation.
+- Main environment: Jerusalem Old City classic stone alleys.
+- Distant cinematic parallax must keep the Jerusalem / Temple Mount skyline visible.
+- Lighting progression: day -> sunset -> night.
+- Male and female player characters are selectable and do NOT wear scarves.
+- Enemy visual families use varied fictional head coverings/scarves; enemies do NOT use tactical vests.
+- Keep character proportions, palette and overall look consistent with the supplied references.
+- Do not recreate these graphics as CSS shapes or low-quality placeholders.
+
+IMPLEMENTATION
+- Create a central asset registry.
+- Split the supplied runtime/reference sheets into the smallest practical game assets.
+- Remove sheet labels, borders and panel backgrounds when producing runtime sprites.
+- Export sprite frames as transparent PNG/WebP where appropriate.
+- Use bottom-center/feet anchors for character sprites.
+- Collision boxes/hurtboxes must remain separate from visible sprite bounds.
+- Never change physics, AI, spawn rules, progression or controls just to fit an image.
+- Implement animation state mappings for player and enemies: idle, walk, run, jump, fall, shoot, crouch, hit, death.
+- Keep movement + shooting combinations supported by gameplay logic.
+- Environment pieces must support modular walls, arches, stairs, doors, platforms, rooftops, spawn doors, exit doors and multi-floor traversal.
+- Props must distinguish decorative, solid-cover, breakable and traversal objects.
+- Implement day/sunset/night parallax without flattening the background into one layer.
+- Add Premium Arcade HUD, Quick Inventory and Pause styling from the supplied art direction.
+- Inventory must NOT pause gameplay. Pause MUST pause gameplay, as defined in the gameplay spec.
+- Keep effects lightweight enough for modern iPhone Safari at 60 FPS.
+- Preload/decode assets where practical and avoid per-frame DOM allocation.
+
+QUALITY BAR
+This is not a prototype pass. Integrate the art cleanly with consistent scale, anchors, depth ordering, camera behavior, occlusion and mobile-safe UI positioning.
+
+WORKFLOW
+1. Inspect the current implementation only as much as needed.
+2. Back up/commit the current stable state.
+3. Integrate one asset group at a time: characters -> enemies -> environment -> props -> parallax -> FX -> UI.
+4. After each group, run only targeted checks.
+5. Keep a short ART_INTEGRATION_STATUS.md with completed/incomplete items.
+6. Commit and push stable progress to main regularly.
+7. Continue until the art integration is playable end-to-end.
+
+Do not redesign the approved visual direction. If an asset cannot be cleanly extracted or is technically unsuitable, keep the closest existing runtime placeholder for that ONE asset, document it in ART_INTEGRATION_STATUS.md, and continue with the rest rather than blocking the build.
