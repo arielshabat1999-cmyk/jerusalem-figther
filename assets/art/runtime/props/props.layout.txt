@@ -1,0 +1,15 @@
+crate 0 16 58 66
+crate_broken 58 18 56 64
+barrel_a 114 25 31 57
+barrel_b 145 36 25 46
+sack 170 33 46 49
+market_stall 216 15 145 67
+chair 361 23 29 59
+plant_pot 390 23 23 59
+plants_cluster 413 0 94 82
+lantern 507 1 23 81
+awning_fabric 530 3 31 79
+rug 561 5 64 77
+cart 625 5 84 77
+barrel_c 709 14 29 68
+obstacle 738 5 70 77

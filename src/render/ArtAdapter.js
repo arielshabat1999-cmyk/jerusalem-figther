@@ -5,15 +5,15 @@ import { getPlayerAnimState, getEnemyAnimState, playerActorId, enemyActorId } fr
 // closest existing runtime placeholder for that ONE asset ... and continue
 // with the rest rather than blocking the build." Every draw* method here
 // checks the AssetRegistry first and falls back to the placeholder shape
-// individually — so partial art (e.g. characters done, environment not yet)
-// renders correctly with no missing/blank entities.
+// individually — so partial art (e.g. one enemy family with no clean
+// extraction) renders correctly with no missing/blank entities.
 //
-// Sprites are drawn at their own authored size, anchored at (anchorX,
-// anchorY) of that sprite — NEVER stretched to the entity's logical hitbox
-// (art-pack rule: collision bounds stay independent of visible sprite
-// bounds). The anchor point is aligned to the entity's feet-center in world
-// space, which is what "bottom-center/feet anchors" means for a
-// side-scrolling character.
+// Character/prop/FX sprites are drawn at their own authored size, anchored
+// at (anchorX, anchorY) of that sprite — NEVER stretched to the entity's
+// logical hitbox (art-pack rule: collision bounds stay independent of
+// visible sprite bounds). Environment tiles (walls/stairs/doors) are the
+// one exception: they're tiled/fit to the solid's own geometry, because a
+// wall's on-screen size IS its collision size by design in this engine.
 export function createArtAdapter(assets, placeholder) {
   const clockStart = performance.now();
   const clock = () => (performance.now() - clockStart) / 1000;
@@ -21,7 +21,6 @@ export function createArtAdapter(assets, placeholder) {
   function drawAnchoredSprite(ctx, sprite, footX, footY, cam, facingDir = 1) {
     const w = sprite.w;
     const h = sprite.h;
-    const drawX = footX - cam.x - sprite.anchorX * w;
     const drawY = footY - cam.y - sprite.anchorY * h;
     ctx.save();
     if (facingDir < 0) {
@@ -29,6 +28,7 @@ export function createArtAdapter(assets, placeholder) {
       ctx.scale(-1, 1);
       ctx.drawImage(sprite.image, sprite.x, sprite.y, w, h, -sprite.anchorX * w, drawY, w, h);
     } else {
+      const drawX = footX - cam.x - sprite.anchorX * w;
       ctx.drawImage(sprite.image, sprite.x, sprite.y, w, h, drawX, drawY, w, h);
     }
     ctx.restore();
@@ -39,26 +39,125 @@ export function createArtAdapter(assets, placeholder) {
     return assets.hasAnimation(animKey) ? assets.getAnimationFrame(animKey, clock()) : null;
   }
 
+  // Static (non-animated) art — props, env tiles, FX icons — is registered
+  // as a single-frame "animation" by build time, so the same lookup works.
+  function staticSprite(key) {
+    return assets.hasAnimation(key) ? assets.getAnimationFrame(key, 0) : null;
+  }
+
+  function tileTexture(ctx, sprite, x, y, w, h) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(x, y, w, h);
+    ctx.clip();
+    const tw = sprite.w;
+    const th = sprite.h;
+    for (let ty = y; ty < y + h; ty += th) {
+      for (let tx = x; tx < x + w; tx += tw) {
+        ctx.drawImage(sprite.image, sprite.x, sprite.y, tw, th, tx, ty, tw, th);
+      }
+    }
+    ctx.restore();
+  }
+
+  // Cinematic parallax (spec: 6-7 layer target, Temple Mount skyline kept
+  // visible, day->sunset->night). Only one full composited skyline photo
+  // was cleanly extractable per lighting state (see status doc), so this
+  // draws that as a slow-scrolling far layer plus a closer, faster haze
+  // gradient layer — two layers, not a single flattened background, with
+  // room to insert more layers later without touching call sites.
+  function drawBackground(ctx, camera, viewportWidth, viewportHeight, lightingState) {
+    const sprite = assets.getSprite(`bg.${lightingState}`);
+    if (!sprite) return placeholder.drawBackground(ctx, camera, viewportWidth, viewportHeight, lightingState);
+
+    const scale = viewportHeight / sprite.h;
+    const scaledW = sprite.w * scale;
+    const farParallax = 0.12;
+    const offset = ((camera.x * farParallax) % scaledW + scaledW) % scaledW;
+    for (let x = -offset - scaledW; x < viewportWidth + scaledW; x += scaledW) {
+      ctx.drawImage(sprite.image, sprite.x, sprite.y, sprite.w, sprite.h, x, 0, scaledW, viewportHeight);
+    }
+
+    const hazeColors = {
+      day: 'rgba(255,244,214,0.10)',
+      sunset: 'rgba(255,140,90,0.16)',
+      night: 'rgba(20,30,70,0.30)',
+    };
+    const haze = ctx.createLinearGradient(0, viewportHeight * 0.5, 0, viewportHeight);
+    haze.addColorStop(0, 'rgba(0,0,0,0)');
+    haze.addColorStop(1, hazeColors[lightingState] || hazeColors.day);
+    ctx.fillStyle = haze;
+    ctx.fillRect(0, 0, viewportWidth, viewportHeight);
+  }
+
   return {
-    drawSolid: (ctx, s, cam) => placeholder.drawSolid(ctx, s, cam),
-    drawStair: (ctx, stair, cam) => placeholder.drawStair(ctx, stair, cam),
-    drawDoor: (ctx, door, cam, label) => placeholder.drawDoor(ctx, door, cam, label),
-    drawMarkerDoor: (ctx, x, floorY, cam, label, color) => placeholder.drawMarkerDoor(ctx, x, floorY, cam, label, color),
+    drawBackground,
+    drawSolid: (ctx, s, cam) => {
+      const sprite = assets.getSprite(`env.${s.texture || 'wall'}`) || assets.getSprite('env.wall');
+      if (!sprite) return placeholder.drawSolid(ctx, s, cam);
+      tileTexture(ctx, sprite, s.x - cam.x, s.y - cam.y, s.w, Math.min(s.h, 900));
+    },
+
+    drawStair: (ctx, stair, cam) => {
+      const sprite = assets.getSprite('env.stairs');
+      if (!sprite) return placeholder.drawStair(ctx, stair, cam);
+      const x = stair.x - cam.x;
+      const yTop = Math.min(stair.yAtX0, stair.yAtX1) - cam.y;
+      const yBottom = Math.max(stair.yAtX0, stair.yAtX1) - cam.y + 16;
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(x, stair.yAtX0 - cam.y);
+      ctx.lineTo(x + stair.w, stair.yAtX1 - cam.y);
+      ctx.lineTo(x + stair.w, stair.yAtX1 - cam.y + 16);
+      ctx.lineTo(x, stair.yAtX0 - cam.y + 16);
+      ctx.closePath();
+      ctx.clip();
+      ctx.drawImage(sprite.image, sprite.x, sprite.y, sprite.w, sprite.h, x, yTop, stair.w, yBottom - yTop);
+      ctx.restore();
+    },
+
+    drawDoor: (ctx, door, cam, label) => {
+      const sprite = assets.getSprite('env.door');
+      if (!sprite) return placeholder.drawDoor(ctx, door, cam, label);
+      const w = 40;
+      const h = 90;
+      const x = door.x - w / 2 - cam.x;
+      const y = door.floorY - h - cam.y;
+      ctx.globalAlpha = door.open ? 0.55 : 1;
+      ctx.drawImage(sprite.image, sprite.x, sprite.y, sprite.w, sprite.h, x, y, w, h);
+      ctx.globalAlpha = 1;
+    },
+
+    drawMarkerDoor: (ctx, x, floorY, cam, label, color) => {
+      const sprite = assets.getSprite('env.door');
+      if (!sprite) return placeholder.drawMarkerDoor(ctx, x, floorY, cam, label, color);
+      const w = 40;
+      const h = 90;
+      const dx = x - w / 2 - cam.x;
+      const dy = floorY - h - cam.y;
+      ctx.globalAlpha = label === 'LOCKED' ? 0.6 : 1;
+      ctx.drawImage(sprite.image, sprite.x, sprite.y, sprite.w, sprite.h, dx, dy, w, h);
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = '#f2e6c8';
+      ctx.font = '10px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(label, x - cam.x, dy - 4);
+    },
 
     drawCrate: (ctx, crate, cam) => {
-      const sprite = assets.getSprite(`prop.${crate.type}.idle`);
+      const sprite = staticSprite(`prop.${crate.type}.idle`);
       if (!sprite) return placeholder.drawCrate(ctx, crate, cam);
-      drawAnchoredSprite(ctx, sprite, crate.x + crate.w / 2 - cam.x, crate.y + crate.h - cam.y, { x: 0, y: 0 });
+      drawAnchoredSprite(ctx, sprite, crate.x + crate.w / 2, crate.y + crate.h, cam);
     },
 
     drawCoin: (ctx, coin, cam) => {
-      const sprite = actorFrame('fx.coin', 'idle');
+      const sprite = staticSprite('fx.coin.idle');
       if (!sprite) return placeholder.drawCoin(ctx, coin, cam);
       drawAnchoredSprite(ctx, sprite, coin.x, coin.y, cam);
     },
 
     drawProjectile: (ctx, p, cam) => {
-      const sprite = assets.getSprite(`fx.bullet_${p.faction}`);
+      const sprite = staticSprite('fx.bullet.idle');
       if (!sprite) return placeholder.drawProjectile(ctx, p, cam);
       drawAnchoredSprite(ctx, sprite, p.x, p.y, cam, p.vx < 0 ? -1 : 1);
     },
@@ -83,8 +182,8 @@ export function createArtAdapter(assets, placeholder) {
       drawAnchoredSprite(ctx, sprite, footX, footY, cam, enemy.facingDir);
     },
 
-    drawExplosion: (ctx, x, y, radius, cam) => {
-      const sprite = actorFrame('fx.explosion', 'idle');
+    drawExplosion: (ctx, x, y, radius, cam, kind = 'explosion') => {
+      const sprite = staticSprite(`fx.${kind}.idle`) || staticSprite('fx.explosion.idle');
       if (!sprite) return placeholder.drawExplosion(ctx, x, y, radius, cam);
       drawAnchoredSprite(ctx, sprite, x, y, cam);
     },

@@ -2,7 +2,22 @@
 // are fine, final art is explicitly out of scope). Every draw function only
 // reads an entity's LOGICAL bounds (x/y/w/h) — swapping this module for a
 // real sprite-based adapter later should require no changes anywhere else.
+const SKY_GRADIENTS = {
+  day: ['#7ec6e8', '#dcd0ad'],
+  sunset: ['#e8926a', '#f2c98f'],
+  night: ['#1a2438', '#3a3f5c'],
+};
+
 export const PlaceholderAdapter = {
+  drawBackground(ctx, cam, viewportWidth, viewportHeight, lightingState) {
+    const [top, bottom] = SKY_GRADIENTS[lightingState] || SKY_GRADIENTS.day;
+    const sky = ctx.createLinearGradient(0, 0, 0, viewportHeight);
+    sky.addColorStop(0, top);
+    sky.addColorStop(1, bottom);
+    ctx.fillStyle = sky;
+    ctx.fillRect(0, 0, viewportWidth, viewportHeight);
+  },
+
   drawSolid(ctx, s, cam) {
     ctx.fillStyle = s.y < 0 ? '#5b4636' : '#8a7357';
     ctx.fillRect(s.x - cam.x, s.y - cam.y, s.w, Math.min(s.h, 900));

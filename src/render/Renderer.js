@@ -1,4 +1,5 @@
 import { PlaceholderAdapter } from './PlaceholderAdapter.js';
+import { lightingStateForStage } from '../config/GameConfig.js';
 
 // Render-only: reads entity state, draws it, mutates nothing. Swapping
 // `adapter` for a future sprite-based one is the only change needed to move
@@ -23,12 +24,7 @@ export class Renderer {
     const { ctx, adapter } = this;
     const { camera, stage, player, projectiles, coins, explosions, viewportWidth, viewportHeight } = state;
     ctx.clearRect(0, 0, viewportWidth, viewportHeight);
-
-    const sky = ctx.createLinearGradient(0, 0, 0, viewportHeight);
-    sky.addColorStop(0, '#7ec6e8');
-    sky.addColorStop(1, '#dcd0ad');
-    ctx.fillStyle = sky;
-    ctx.fillRect(0, 0, viewportWidth, viewportHeight);
+    adapter.drawBackground(ctx, camera, viewportWidth, viewportHeight, lightingStateForStage(stage.stageNumber));
 
     for (const s of stage.layout.solids) adapter.drawSolid(ctx, s, camera);
     for (const st of stage.layout.stairs) adapter.drawStair(ctx, st, camera);
@@ -45,7 +41,7 @@ export class Renderer {
     for (const coin of coins) if (!coin.collected) adapter.drawCoin(ctx, coin, camera);
     for (const enemy of stage.enemies) adapter.drawEnemy(ctx, enemy, camera);
     for (const p of projectiles) adapter.drawProjectile(ctx, p, camera);
-    for (const ex of explosions) adapter.drawExplosion(ctx, ex.x, ex.y, ex.radius * (ex.t / ex.maxT), camera);
+    for (const ex of explosions) adapter.drawExplosion(ctx, ex.x, ex.y, ex.radius * (ex.t / ex.maxT), camera, ex.kind);
 
     if (player.alive) adapter.drawPlayer(ctx, player, camera);
   }

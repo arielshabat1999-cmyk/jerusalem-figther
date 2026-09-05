@@ -32,7 +32,7 @@ export class StageSystem {
     this.world.setStaticGeometry(this.layout.solids, this.layout.stairs);
 
     this.crates = this.layout.crateSpecs.map(
-      (c) => new Crate(c.x - CRATE_SIZE / 2, LEVEL.groundY - CRATE_SIZE, CRATE_SIZE, CRATE_SIZE, c.type)
+      (c) => new Crate(c.x - CRATE_SIZE / 2, LEVEL.groundY - CRATE_SIZE, CRATE_SIZE, CRATE_SIZE, c.type, c.destructible)
     );
     this.doors = this.layout.doorSpecs.map((d) => new SpawnDoor(d.x, elevationY(d.elevation), d.enemySpecs));
     this.enemies = [];

@@ -37,6 +37,12 @@ export function playerActorId(player) {
   return `player_${player.gender === 'female' ? 'female' : 'male'}`;
 }
 
+// Enemy art ships as 4 headwear/look variants per family rather than a
+// per-instance animation set (see ART_INTEGRATION_STATUS.md) — picking the
+// variant from the entity's stable id gives visual variety across
+// simultaneously active enemies of the same family without any extra state.
 export function enemyActorId(enemy) {
-  return `enemy_${enemy.kind}${enemy.strong ? '_strong' : ''}`;
+  const family = `enemy_${enemy.kind}${enemy.strong ? '_strong' : ''}`;
+  const variant = enemy.id % 4;
+  return `${family}_v${variant}`;
 }

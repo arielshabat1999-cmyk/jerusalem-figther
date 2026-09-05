@@ -15,7 +15,7 @@ export function elevationY(elevation) {
 
 function buildingSolid(x, elevation, w) {
   const y = elevationY(elevation);
-  return { x, y, w, h: LEVEL.groundY - y + 400, blocksBullets: true };
+  return { x, y, w, h: LEVEL.groundY - y + 400, blocksBullets: true, texture: 'wall' };
 }
 
 // Flat segment at a fixed elevation. Optionally carries one spawn door
@@ -24,7 +24,11 @@ function buildingSolid(x, elevation, w) {
 export function streetChunk(width, elevation, { door = null, crateOffsets = [] } = {}) {
   const solids = elevation > 0 ? [buildingSolid(0, elevation, width)] : [];
   const doors = door ? [{ xOffset: width * 0.5, elevation, enemySpecs: door }] : [];
-  const crates = crateOffsets.map((xOffset) => ({ xOffset, type: 'crate' }));
+  const crates = crateOffsets.map((spec) =>
+    typeof spec === 'number'
+      ? { xOffset: spec, type: 'crate', destructible: true }
+      : { xOffset: spec.xOffset, type: spec.type || 'crate', destructible: spec.destructible !== false }
+  );
   return { width, entryElevation: elevation, exitElevation: elevation, solids, stairs: [], doors, crates };
 }
 

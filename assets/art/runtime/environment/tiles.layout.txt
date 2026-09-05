@@ -1,0 +1,10 @@
+wall 0 17 97 126
+arch 97 22 112 121
+stairs 209 18 133 125
+platform 342 55 100 88
+door 442 0 101 143
+window_a 543 0 41 143
+window_b 584 5 45 138
+balcony_a 629 13 45 130
+balcony_b 674 15 47 128
+rooftop 721 0 144 143

@@ -179,6 +179,14 @@ export const STAGES = {
   curatedCount: 10,
 };
 
+// Day -> sunset -> night progression (spec: lighting progression across
+// stages, art-pack: 3 lighting states). Cycles so procedural stage 11+
+// keeps rotating through all three rather than freezing on one.
+export function lightingStateForStage(stage) {
+  const cycle = ['day', 'sunset', 'night'];
+  return cycle[(stage - 1) % cycle.length];
+}
+
 export const LEVEL = {
   groundY: 640,
   floorHeight: 160,

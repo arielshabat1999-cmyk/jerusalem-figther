@@ -123,7 +123,10 @@ function update(dt) {
   const wasCleared = stage.cleared;
 
   player.update(dt, input, world, {
-    spawnProjectile: (spec) => projectileSystem.spawn(spec),
+    spawnProjectile: (spec) => {
+      projectileSystem.spawn(spec);
+      explosions.push({ x: spec.x, y: spec.y, radius: 10, t: 0, maxT: 0.08, kind: 'muzzle_flash' });
+    },
   });
 
   for (const enemy of stage.enemies) {
@@ -136,13 +139,17 @@ function update(dt) {
         spawnProjectile: (spec) => {
           projectileSystem.spawn(spec);
           enemy.lastFireTimer = 0.12;
+          explosions.push({ x: spec.x, y: spec.y, radius: 10, t: 0, maxT: 0.08, kind: 'muzzle_flash' });
         },
       });
     } else {
       updateMeleeAI(enemy, dt, {
         player,
         world,
-        onMeleeHit: (target, damage, fromX) => applyMeleeHit(target, damage, fromX),
+        onMeleeHit: (target, damage, fromX) => {
+          applyMeleeHit(target, damage, fromX);
+          explosions.push({ x: target.x + target.w / 2, y: target.y + target.h / 2, radius: 14, t: 0, maxT: 0.15, kind: 'hit_effect' });
+        },
       });
     }
     world.step(enemy, dt, { crouchHeld: enemy.crouching });
@@ -154,10 +161,11 @@ function update(dt) {
     crates: stage.crates,
     onExplosion: (x, y, radius, damage, faction) => {
       applyExplosion(x, y, radius, damage, faction, { player, enemies: stage.enemies, crates: stage.crates });
-      explosions.push({ x, y, radius, t: 0, maxT: 0.3 });
+      explosions.push({ x, y, radius, t: 0, maxT: 0.3, kind: 'explosion' });
       awardEnemyDeaths();
     },
     onActorHit: (actor, damage, faction, dirSign) => {
+      explosions.push({ x: actor.x + actor.w / 2, y: actor.y + actor.h / 2, radius: 14, t: 0, maxT: 0.15, kind: 'hit_effect' });
       if (actor === player) {
         player.applyDamage(damage);
         player.applyKnockback(dirSign > 0 ? player.x - 1 : player.x + 1);
@@ -167,8 +175,12 @@ function update(dt) {
       }
     },
     onCrateHit: (crate, damage) => {
+      const wasDestroyed = crate.destroyed;
       crate.applyDamage(damage);
-      if (crate.destroyed) coinSystem.spawnFromRange(crate.x + crate.w / 2, crate.y, [1, 4]);
+      if (crate.destroyed && !wasDestroyed) {
+        coinSystem.spawnFromRange(crate.x + crate.w / 2, crate.y, [1, 4]);
+        explosions.push({ x: crate.x + crate.w / 2, y: crate.y + crate.h / 2, radius: 20, t: 0, maxT: 0.25, kind: 'crate_break' });
+      }
     },
   });
 

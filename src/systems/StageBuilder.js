@@ -36,10 +36,23 @@ function groundCombatUnit(rng, stage) {
   return streetChunk(520, ELEVATION_GROUND, { door: pickEnemySpecs(rng, stage, enemiesHere) });
 }
 
+// Breakable cover (crate/barrel/sack — shootable, drops coins) vs.
+// permanent solid-cover (obstacle/cart — blocks but never breaks), per the
+// art-pack's decorative/solid-cover/breakable/traversal prop categories.
+const BREAKABLE_TYPES = ['crate', 'barrel_a', 'barrel_b', 'barrel_c', 'sack'];
+const SOLID_COVER_TYPES = ['obstacle', 'cart'];
+
 function obstacleUnit(rng) {
   const offsets = [];
   const n = 1 + Math.floor(rng() * 2);
-  for (let i = 0; i < n; i++) offsets.push(140 + i * 160 + rng() * 60);
+  for (let i = 0; i < n; i++) {
+    const xOffset = 140 + i * 160 + rng() * 60;
+    const solidCover = rng() < 0.25;
+    const type = solidCover
+      ? SOLID_COVER_TYPES[Math.floor(rng() * SOLID_COVER_TYPES.length)]
+      : BREAKABLE_TYPES[Math.floor(rng() * BREAKABLE_TYPES.length)];
+    offsets.push({ xOffset, type, destructible: !solidCover });
+  }
   return obstacleChunk(460, ELEVATION_GROUND, offsets);
 }
 
@@ -88,7 +101,7 @@ function assemble(chunks) {
     for (const s of chunk.solids) solids.push({ ...s, x: s.x + cursorX });
     for (const st of chunk.stairs) stairs.push({ ...st, x: st.x + cursorX });
     for (const d of chunk.doors) doorSpecs.push({ x: cursorX + d.xOffset, elevation: d.elevation, enemySpecs: d.enemySpecs });
-    for (const c of chunk.crates) crateSpecs.push({ x: cursorX + c.xOffset, type: c.type });
+    for (const c of chunk.crates) crateSpecs.push({ x: cursorX + c.xOffset, type: c.type, destructible: c.destructible });
     cursorX += chunk.width;
     elevation = chunk.exitElevation;
   }
@@ -108,7 +121,7 @@ export function buildStageLayout(stage) {
   const exit = streetChunk(LEVEL.exitApproachWidth, ELEVATION_GROUND);
   const layout = assemble([entry, ...body, exit]);
 
-  const baseGround = { x: -200, y: LEVEL.groundY, w: layout.length + 400, h: 2000, blocksBullets: true };
+  const baseGround = { x: -200, y: LEVEL.groundY, w: layout.length + 400, h: 2000, blocksBullets: true, texture: 'platform' };
   return {
     stage,
     length: layout.length,

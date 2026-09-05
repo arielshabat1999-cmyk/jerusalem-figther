@@ -9,6 +9,7 @@ export class InventoryUI {
     this.player = player;
     this.overlay = document.getElementById('inventoryOverlay');
     this.coinsEl = document.getElementById('inventoryCoins');
+    this.characterRowEl = document.getElementById('characterRow');
     this.weaponListEl = document.getElementById('weaponList');
     this.shieldRowEl = document.getElementById('shieldRow');
     this.healRowEl = document.getElementById('healRow');
@@ -31,6 +32,24 @@ export class InventoryUI {
 
   render() {
     this.coinsEl.textContent = `Coins: ${this.save.data.totalCoins}`;
+
+    this.characterRowEl.innerHTML = '';
+    const charRow = document.createElement('div');
+    charRow.className = 'invRow';
+    charRow.innerHTML = '<span>Character</span>';
+    for (const gender of ['male', 'female']) {
+      const btn = document.createElement('button');
+      btn.textContent = gender === 'male' ? 'Male' : 'Female';
+      if (this.player.gender === gender) btn.classList.add('active');
+      btn.addEventListener('click', () => {
+        this.save.setCharacterGender(gender);
+        this.player.gender = gender;
+        this.render();
+      });
+      charRow.appendChild(btn);
+    }
+    this.characterRowEl.appendChild(charRow);
+
     this.weaponListEl.innerHTML = '';
 
     for (const id of Object.keys(WEAPONS)) {
