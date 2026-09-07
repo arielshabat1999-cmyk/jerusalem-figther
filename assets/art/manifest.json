@@ -1606,6 +1606,48 @@
       "anchorX": 0.5,
       "anchorY": 1.0
     },
+    "player_male.idle.0": {
+      "file": "runtime/characters/player_male/idle/idle_01.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.idle.1": {
+      "file": "runtime/characters/player_male/idle/idle_02.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.idle.2": {
+      "file": "runtime/characters/player_male/idle/idle_03.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.idle.3": {
+      "file": "runtime/characters/player_male/idle/idle_04.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.idle.4": {
+      "file": "runtime/characters/player_male/idle/idle_05.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.idle.5": {
+      "file": "runtime/characters/player_male/idle/idle_06.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.idle.6": {
+      "file": "runtime/characters/player_male/idle/idle_07.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
     "player_male.walk.0": {
       "file": "runtime/characters/player_male/walk/walk_01.png",
       "anchorX": 0.5,
@@ -1638,6 +1680,54 @@
     },
     "player_male.walk.5": {
       "file": "runtime/characters/player_male/walk/walk_06.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.walk.6": {
+      "file": "runtime/characters/player_male/walk/walk_07.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.run.0": {
+      "file": "runtime/characters/player_male/run/run_01.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.run.1": {
+      "file": "runtime/characters/player_male/run/run_02.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.run.2": {
+      "file": "runtime/characters/player_male/run/run_03.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.run.3": {
+      "file": "runtime/characters/player_male/run/run_04.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.run.4": {
+      "file": "runtime/characters/player_male/run/run_05.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.run.5": {
+      "file": "runtime/characters/player_male/run/run_06.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.run.6": {
+      "file": "runtime/characters/player_male/run/run_07.png",
       "anchorX": 0.5,
       "anchorY": 0.953125,
       "refH": 208.0
@@ -1708,6 +1798,24 @@
       "anchorY": 0.953125,
       "refH": 208.0
     },
+    "player_male.jump.4": {
+      "file": "runtime/characters/player_male/jump/jump_05.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.jump.5": {
+      "file": "runtime/characters/player_male/jump/jump_06.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.jump.6": {
+      "file": "runtime/characters/player_male/jump/jump_07.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
     "player_male.fall.0": {
       "file": "runtime/characters/player_male/fall/fall_01.png",
       "anchorX": 0.5,
@@ -1734,6 +1842,12 @@
     },
     "player_male.fall.4": {
       "file": "runtime/characters/player_male/fall/fall_05.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.fall.5": {
+      "file": "runtime/characters/player_male/fall/fall_06.png",
       "anchorX": 0.5,
       "anchorY": 0.953125,
       "refH": 208.0
@@ -1774,6 +1888,12 @@
       "anchorY": 0.953125,
       "refH": 208.0
     },
+    "player_male.crouch_idle.6": {
+      "file": "runtime/characters/player_male/crouch_idle/crouch_idle_07.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
     "player_male.crouch_walk.0": {
       "file": "runtime/characters/player_male/crouch_walk/crouch_walk_01.png",
       "anchorX": 0.5,
@@ -1806,6 +1926,12 @@
     },
     "player_male.crouch_walk.5": {
       "file": "runtime/characters/player_male/crouch_walk/crouch_walk_06.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.crouch_walk.6": {
+      "file": "runtime/characters/player_male/crouch_walk/crouch_walk_07.png",
       "anchorX": 0.5,
       "anchorY": 0.953125,
       "refH": 208.0
@@ -1846,56 +1972,8 @@
       "anchorY": 0.953125,
       "refH": 208.0
     },
-    "player_male.hit.0": {
-      "file": "runtime/characters/player_male/hit/hit_01.png",
-      "anchorX": 0.5,
-      "anchorY": 0.953125,
-      "refH": 208.0
-    },
-    "player_male.hit.1": {
-      "file": "runtime/characters/player_male/hit/hit_02.png",
-      "anchorX": 0.5,
-      "anchorY": 0.953125,
-      "refH": 208.0
-    },
-    "player_male.hit.2": {
-      "file": "runtime/characters/player_male/hit/hit_03.png",
-      "anchorX": 0.5,
-      "anchorY": 0.953125,
-      "refH": 208.0
-    },
-    "player_male.hit.3": {
-      "file": "runtime/characters/player_male/hit/hit_04.png",
-      "anchorX": 0.5,
-      "anchorY": 0.953125,
-      "refH": 208.0
-    },
-    "player_male.hit.4": {
-      "file": "runtime/characters/player_male/hit/hit_05.png",
-      "anchorX": 0.5,
-      "anchorY": 0.953125,
-      "refH": 208.0
-    },
-    "player_male.death.0": {
-      "file": "runtime/characters/player_male/death/death_01.png",
-      "anchorX": 0.5,
-      "anchorY": 0.953125,
-      "refH": 208.0
-    },
-    "player_male.death.1": {
-      "file": "runtime/characters/player_male/death/death_02.png",
-      "anchorX": 0.5,
-      "anchorY": 0.953125,
-      "refH": 208.0
-    },
-    "player_male.death.2": {
-      "file": "runtime/characters/player_male/death/death_03.png",
-      "anchorX": 0.5,
-      "anchorY": 0.953125,
-      "refH": 208.0
-    },
-    "player_male.death.3": {
-      "file": "runtime/characters/player_male/death/death_04.png",
+    "player_male.crouch_shoot.6": {
+      "file": "runtime/characters/player_male/crouch_shoot/crouch_shoot_07.png",
       "anchorX": 0.5,
       "anchorY": 0.953125,
       "refH": 208.0
@@ -1936,50 +2014,116 @@
       "anchorY": 0.953125,
       "refH": 208.0
     },
-    "player_male.idle.0": {
-      "file": "runtime/characters/player_male/idle/idle_01.png",
+    "player_male.melee.6": {
+      "file": "runtime/characters/player_male/melee/melee_07.png",
       "anchorX": 0.5,
       "anchorY": 0.953125,
       "refH": 208.0
     },
-    "player_male.idle.1": {
-      "file": "runtime/characters/player_male/idle/idle_02.png",
+    "player_male.hit.0": {
+      "file": "runtime/characters/player_male/hit/hit_01.png",
       "anchorX": 0.5,
       "anchorY": 0.953125,
       "refH": 208.0
     },
-    "player_male.idle.2": {
-      "file": "runtime/characters/player_male/idle/idle_03.png",
+    "player_male.hit.1": {
+      "file": "runtime/characters/player_male/hit/hit_02.png",
       "anchorX": 0.5,
       "anchorY": 0.953125,
       "refH": 208.0
     },
-    "player_male.idle.3": {
-      "file": "runtime/characters/player_male/idle/idle_04.png",
+    "player_male.hit.2": {
+      "file": "runtime/characters/player_male/hit/hit_03.png",
       "anchorX": 0.5,
       "anchorY": 0.953125,
       "refH": 208.0
     },
-    "player_male.run.0": {
-      "file": "runtime/characters/player_male/run/run_01.png",
+    "player_male.hit.3": {
+      "file": "runtime/characters/player_male/hit/hit_04.png",
       "anchorX": 0.5,
       "anchorY": 0.953125,
       "refH": 208.0
     },
-    "player_male.run.1": {
-      "file": "runtime/characters/player_male/run/run_02.png",
+    "player_male.hit.4": {
+      "file": "runtime/characters/player_male/hit/hit_05.png",
       "anchorX": 0.5,
       "anchorY": 0.953125,
       "refH": 208.0
     },
-    "player_male.run.2": {
-      "file": "runtime/characters/player_male/run/run_03.png",
+    "player_male.hit.5": {
+      "file": "runtime/characters/player_male/hit/hit_06.png",
       "anchorX": 0.5,
       "anchorY": 0.953125,
       "refH": 208.0
     },
-    "player_male.run.3": {
-      "file": "runtime/characters/player_male/run/run_04.png",
+    "player_male.hit.6": {
+      "file": "runtime/characters/player_male/hit/hit_07.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.death.0": {
+      "file": "runtime/characters/player_male/death/death_01.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.death.1": {
+      "file": "runtime/characters/player_male/death/death_02.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.death.2": {
+      "file": "runtime/characters/player_male/death/death_03.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.death.3": {
+      "file": "runtime/characters/player_male/death/death_04.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.death.4": {
+      "file": "runtime/characters/player_male/death/death_05.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.death.5": {
+      "file": "runtime/characters/player_male/death/death_06.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.prone.0": {
+      "file": "runtime/characters/player_male/prone/prone_01.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.prone.1": {
+      "file": "runtime/characters/player_male/prone/prone_02.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.prone.2": {
+      "file": "runtime/characters/player_male/prone/prone_03.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.prone.3": {
+      "file": "runtime/characters/player_male/prone/prone_04.png",
+      "anchorX": 0.5,
+      "anchorY": 0.953125,
+      "refH": 208.0
+    },
+    "player_male.prone.4": {
+      "file": "runtime/characters/player_male/prone/prone_05.png",
       "anchorX": 0.5,
       "anchorY": 0.953125,
       "refH": 208.0
@@ -3098,141 +3242,6 @@
       "fps": 10,
       "loop": false
     },
-    "player_male.idle": {
-      "frames": [
-        "player_male.idle.0",
-        "player_male.idle.1",
-        "player_male.idle.2",
-        "player_male.idle.3"
-      ],
-      "fps": 8,
-      "loop": true
-    },
-    "player_male.walk": {
-      "frames": [
-        "player_male.walk.0",
-        "player_male.walk.1",
-        "player_male.walk.2",
-        "player_male.walk.3",
-        "player_male.walk.4",
-        "player_male.walk.5"
-      ],
-      "fps": 10,
-      "loop": true
-    },
-    "player_male.run": {
-      "frames": [
-        "player_male.run.0",
-        "player_male.run.1",
-        "player_male.run.2",
-        "player_male.run.3"
-      ],
-      "fps": 10,
-      "loop": true
-    },
-    "player_male.shoot": {
-      "frames": [
-        "player_male.shoot.0",
-        "player_male.shoot.1",
-        "player_male.shoot.2",
-        "player_male.shoot.3",
-        "player_male.shoot.4",
-        "player_male.shoot.5",
-        "player_male.shoot.6"
-      ],
-      "fps": 8,
-      "loop": true
-    },
-    "player_male.jump": {
-      "frames": [
-        "player_male.jump.0",
-        "player_male.jump.1",
-        "player_male.jump.2",
-        "player_male.jump.3"
-      ],
-      "fps": 8,
-      "loop": true
-    },
-    "player_male.fall": {
-      "frames": [
-        "player_male.fall.0",
-        "player_male.fall.1",
-        "player_male.fall.2",
-        "player_male.fall.3",
-        "player_male.fall.4"
-      ],
-      "fps": 8,
-      "loop": true
-    },
-    "player_male.crouch_idle": {
-      "frames": [
-        "player_male.crouch_idle.0",
-        "player_male.crouch_idle.1",
-        "player_male.crouch_idle.2",
-        "player_male.crouch_idle.3",
-        "player_male.crouch_idle.4",
-        "player_male.crouch_idle.5"
-      ],
-      "fps": 8,
-      "loop": true
-    },
-    "player_male.crouch_walk": {
-      "frames": [
-        "player_male.crouch_walk.0",
-        "player_male.crouch_walk.1",
-        "player_male.crouch_walk.2",
-        "player_male.crouch_walk.3",
-        "player_male.crouch_walk.4",
-        "player_male.crouch_walk.5"
-      ],
-      "fps": 8,
-      "loop": true
-    },
-    "player_male.crouch_shoot": {
-      "frames": [
-        "player_male.crouch_shoot.0",
-        "player_male.crouch_shoot.1",
-        "player_male.crouch_shoot.2",
-        "player_male.crouch_shoot.3",
-        "player_male.crouch_shoot.4",
-        "player_male.crouch_shoot.5"
-      ],
-      "fps": 8,
-      "loop": true
-    },
-    "player_male.hit": {
-      "frames": [
-        "player_male.hit.0",
-        "player_male.hit.1",
-        "player_male.hit.2",
-        "player_male.hit.3",
-        "player_male.hit.4"
-      ],
-      "fps": 8,
-      "loop": false
-    },
-    "player_male.death": {
-      "frames": [
-        "player_male.death.0",
-        "player_male.death.1",
-        "player_male.death.2",
-        "player_male.death.3"
-      ],
-      "fps": 8,
-      "loop": false
-    },
-    "player_male.melee": {
-      "frames": [
-        "player_male.melee.0",
-        "player_male.melee.1",
-        "player_male.melee.2",
-        "player_male.melee.3",
-        "player_male.melee.4",
-        "player_male.melee.5"
-      ],
-      "fps": 8,
-      "loop": false
-    },
     "player_female.crouch_idle": {
       "frames": [
         "player_female.crouch.0",
@@ -3292,6 +3301,171 @@
         "player_female.crouch.12",
         "player_female.crouch.13",
         "player_female.crouch.14"
+      ],
+      "fps": 6,
+      "loop": true
+    },
+    "player_male.idle": {
+      "frames": [
+        "player_male.idle.0",
+        "player_male.idle.1",
+        "player_male.idle.2",
+        "player_male.idle.3",
+        "player_male.idle.4",
+        "player_male.idle.5",
+        "player_male.idle.6"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "player_male.walk": {
+      "frames": [
+        "player_male.walk.0",
+        "player_male.walk.1",
+        "player_male.walk.2",
+        "player_male.walk.3",
+        "player_male.walk.4",
+        "player_male.walk.5",
+        "player_male.walk.6"
+      ],
+      "fps": 10,
+      "loop": true
+    },
+    "player_male.run": {
+      "frames": [
+        "player_male.run.0",
+        "player_male.run.1",
+        "player_male.run.2",
+        "player_male.run.3",
+        "player_male.run.4",
+        "player_male.run.5",
+        "player_male.run.6"
+      ],
+      "fps": 10,
+      "loop": true
+    },
+    "player_male.shoot": {
+      "frames": [
+        "player_male.shoot.0",
+        "player_male.shoot.1",
+        "player_male.shoot.2",
+        "player_male.shoot.3",
+        "player_male.shoot.4",
+        "player_male.shoot.5",
+        "player_male.shoot.6"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "player_male.jump": {
+      "frames": [
+        "player_male.jump.0",
+        "player_male.jump.1",
+        "player_male.jump.2",
+        "player_male.jump.3",
+        "player_male.jump.4",
+        "player_male.jump.5",
+        "player_male.jump.6"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "player_male.fall": {
+      "frames": [
+        "player_male.fall.0",
+        "player_male.fall.1",
+        "player_male.fall.2",
+        "player_male.fall.3",
+        "player_male.fall.4",
+        "player_male.fall.5"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "player_male.crouch_idle": {
+      "frames": [
+        "player_male.crouch_idle.0",
+        "player_male.crouch_idle.1",
+        "player_male.crouch_idle.2",
+        "player_male.crouch_idle.3",
+        "player_male.crouch_idle.4",
+        "player_male.crouch_idle.5",
+        "player_male.crouch_idle.6"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "player_male.crouch_walk": {
+      "frames": [
+        "player_male.crouch_walk.0",
+        "player_male.crouch_walk.1",
+        "player_male.crouch_walk.2",
+        "player_male.crouch_walk.3",
+        "player_male.crouch_walk.4",
+        "player_male.crouch_walk.5",
+        "player_male.crouch_walk.6"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "player_male.crouch_shoot": {
+      "frames": [
+        "player_male.crouch_shoot.0",
+        "player_male.crouch_shoot.1",
+        "player_male.crouch_shoot.2",
+        "player_male.crouch_shoot.3",
+        "player_male.crouch_shoot.4",
+        "player_male.crouch_shoot.5",
+        "player_male.crouch_shoot.6"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "player_male.melee": {
+      "frames": [
+        "player_male.melee.0",
+        "player_male.melee.1",
+        "player_male.melee.2",
+        "player_male.melee.3",
+        "player_male.melee.4",
+        "player_male.melee.5",
+        "player_male.melee.6"
+      ],
+      "fps": 8,
+      "loop": false
+    },
+    "player_male.hit": {
+      "frames": [
+        "player_male.hit.0",
+        "player_male.hit.1",
+        "player_male.hit.2",
+        "player_male.hit.3",
+        "player_male.hit.4",
+        "player_male.hit.5",
+        "player_male.hit.6"
+      ],
+      "fps": 8,
+      "loop": false
+    },
+    "player_male.death": {
+      "frames": [
+        "player_male.death.0",
+        "player_male.death.1",
+        "player_male.death.2",
+        "player_male.death.3",
+        "player_male.death.4",
+        "player_male.death.5"
+      ],
+      "fps": 8,
+      "loop": false
+    },
+    "player_male.prone": {
+      "frames": [
+        "player_male.prone.0",
+        "player_male.prone.1",
+        "player_male.prone.2",
+        "player_male.prone.3",
+        "player_male.prone.4"
       ],
       "fps": 6,
       "loop": true

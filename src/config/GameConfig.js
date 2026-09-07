@@ -69,8 +69,8 @@ export const MUZZLE = {
   run: { heightFraction: 0.62, forwardPx: 23 },
   jump: { heightFraction: 0.60, forwardPx: 20 },
   fall: { heightFraction: 0.60, forwardPx: 20 },
-  crouch_shoot: { heightFraction: 0.404, forwardPx: 15.1 },
-  shoot: { heightFraction: 0.702, forwardPx: 20.4 },
+  crouch_shoot: { heightFraction: 0.447, forwardPx: 29.8 },
+  shoot: { heightFraction: 0.731, forwardPx: 31.5 },
 };
 
 // Weapon ids double as inventory keys and save-file keys.
