@@ -10,8 +10,17 @@ button { font: inherit; }
 #app {
   position: relative;
   width: 100vw;
-  height: 100dvh;
-  min-height: 100vh;
+  /* Static viewport height (fixed to the smallest possible viewport, i.e.
+     with mobile browser chrome such as the address bar accounted for as
+     always-visible) rather than 100dvh (dynamic viewport height, which
+     shrinks/grows every time that chrome hides or shows). dvh was
+     re-triggering a full canvas/camera resize on every chrome toggle,
+     which reads as the game suddenly "zooming" as the visible world area
+     snapped bigger/smaller. svh never changes for that reason, so the
+     game area now stays a constant physical size across a session; 100vh
+     is a legacy fallback for browsers without svh support. */
+  height: 100vh;
+  height: 100svh;
   overflow: hidden;
   background: #9bcbe1;
   touch-action: none;

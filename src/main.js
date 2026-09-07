@@ -43,14 +43,42 @@ const inventoryUI = new InventoryUI(inventory, save, player);
 const input = new InputManager();
 let explosions = [];
 
-function resize() {
-  const w = window.innerWidth;
-  const h = window.innerHeight;
+const appEl = document.getElementById('app');
+let _lastResizeW = -1;
+let _lastResizeH = -1;
+
+// The actual gameplay resize - reads the #app container's own rendered
+// box (not window.innerWidth/innerHeight directly) so JS sizing always
+// matches whatever CSS actually settled on, and skips the whole
+// renderer/camera recompute when the size hasn't materially changed (a
+// sub-pixel/no-op resize should never re-trigger anything downstream).
+function applyResize() {
+  const rect = appEl.getBoundingClientRect();
+  const w = Math.round(rect.width);
+  const h = Math.round(rect.height);
+  if (w === _lastResizeW && h === _lastResizeH) return;
+  _lastResizeW = w;
+  _lastResizeH = h;
   renderer.resize(w, h);
   camera.resize(w, h);
 }
+
+// Mobile browser chrome (address bar, nav bar) hiding/showing fires a
+// burst of `resize` events in quick succession while it animates, each
+// carrying a transient in-between size - reacting to every one of them
+// snapped the canvas/camera to a different visible world area on every
+// frame of that animation, which read as the game suddenly "zooming".
+// Debouncing collapses a burst into a single recompute using the final,
+// settled size once things stop changing for a short quiet period; a
+// genuine one-off resize/orientation change is unaffected since 250ms is
+// imperceptible for that.
+let _resizeDebounce = null;
+function resize() {
+  if (_resizeDebounce) clearTimeout(_resizeDebounce);
+  _resizeDebounce = setTimeout(applyResize, 250);
+}
 window.addEventListener('resize', resize);
-resize();
+applyResize();
 
 const gameOverOverlay = document.getElementById('gameOverOverlay');
 const gameOverStageEl = document.getElementById('gameOverStage');
