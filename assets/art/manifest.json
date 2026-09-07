@@ -3,8 +3,6 @@
   "sheets": {
     "player_female": "runtime/characters/player_female.png",
     "enemy_melee": "runtime/enemies/enemy_melee.png",
-    "enemy_ranged": "runtime/enemies/enemy_ranged.png",
-    "enemy_ranged_strong": "runtime/enemies/enemy_ranged_strong.png",
     "props": "runtime/props/props.png",
     "fx": "runtime/fx/fx.png",
     "env": "runtime/environment/tiles.png",
@@ -46,78 +44,6 @@
       "y": 0,
       "w": 69,
       "h": 74,
-      "anchorX": 0.5,
-      "anchorY": 1.0
-    },
-    "enemy_ranged_v0.pose.0": {
-      "sheet": "enemy_ranged",
-      "x": 0,
-      "y": 10,
-      "w": 61,
-      "h": 59,
-      "anchorX": 0.5,
-      "anchorY": 1.0
-    },
-    "enemy_ranged_v1.pose.0": {
-      "sheet": "enemy_ranged",
-      "x": 61,
-      "y": 11,
-      "w": 58,
-      "h": 58,
-      "anchorX": 0.5,
-      "anchorY": 1.0
-    },
-    "enemy_ranged_v2.pose.0": {
-      "sheet": "enemy_ranged",
-      "x": 119,
-      "y": 0,
-      "w": 54,
-      "h": 69,
-      "anchorX": 0.5,
-      "anchorY": 1.0
-    },
-    "enemy_ranged_v3.pose.0": {
-      "sheet": "enemy_ranged",
-      "x": 173,
-      "y": 1,
-      "w": 60,
-      "h": 68,
-      "anchorX": 0.5,
-      "anchorY": 1.0
-    },
-    "enemy_ranged_strong_v0.pose.0": {
-      "sheet": "enemy_ranged_strong",
-      "x": 0,
-      "y": 10,
-      "w": 60,
-      "h": 63,
-      "anchorX": 0.5,
-      "anchorY": 1.0
-    },
-    "enemy_ranged_strong_v1.pose.0": {
-      "sheet": "enemy_ranged_strong",
-      "x": 60,
-      "y": 10,
-      "w": 58,
-      "h": 63,
-      "anchorX": 0.5,
-      "anchorY": 1.0
-    },
-    "enemy_ranged_strong_v2.pose.0": {
-      "sheet": "enemy_ranged_strong",
-      "x": 118,
-      "y": 0,
-      "w": 55,
-      "h": 73,
-      "anchorX": 0.5,
-      "anchorY": 1.0
-    },
-    "enemy_ranged_strong_v3.pose.0": {
-      "sheet": "enemy_ranged_strong",
-      "x": 173,
-      "y": 2,
-      "w": 56,
-      "h": 71,
       "anchorX": 0.5,
       "anchorY": 1.0
     },
@@ -2127,6 +2053,4206 @@
       "anchorX": 0.5,
       "anchorY": 0.953125,
       "refH": 208.0
+    },
+    "enemy_ranged_v0.idle.0": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.idle.1": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.idle.2": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.idle.3": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.idle.4": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.idle.5": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.idle.6": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.idle.7": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.walk.0": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.walk.1": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.walk.2": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.walk.3": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.walk.4": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.walk.5": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.walk.6": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.walk.7": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.walk.8": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.run.0": {
+      "file": "runtime/characters/enemy_ranged/run/run_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.run.1": {
+      "file": "runtime/characters/enemy_ranged/run/run_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.run.2": {
+      "file": "runtime/characters/enemy_ranged/run/run_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.run.3": {
+      "file": "runtime/characters/enemy_ranged/run/run_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.run.4": {
+      "file": "runtime/characters/enemy_ranged/run/run_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.run.5": {
+      "file": "runtime/characters/enemy_ranged/run/run_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.run.6": {
+      "file": "runtime/characters/enemy_ranged/run/run_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.run.7": {
+      "file": "runtime/characters/enemy_ranged/run/run_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.run.8": {
+      "file": "runtime/characters/enemy_ranged/run/run_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.shoot.0": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.shoot.1": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.shoot.2": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.shoot.3": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.shoot.4": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.shoot.5": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.shoot.6": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.shoot.7": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.shoot.8": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.shoot.9": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_10.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.shoot.10": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_11.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.run_shoot.0": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.run_shoot.1": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.run_shoot.2": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.run_shoot.3": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.run_shoot.4": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.run_shoot.5": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.run_shoot.6": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.run_shoot.7": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.run_shoot.8": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.run_shoot.9": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_10.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.jump.0": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.jump.1": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.jump.2": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.jump.3": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.jump.4": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.jump.5": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.jump.6": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.jump.7": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.fall.0": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.fall.1": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.fall.2": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.fall.3": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.fall.4": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.fall.5": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.fall.6": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.crouch_idle.0": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.crouch_idle.1": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.crouch_idle.2": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.crouch_idle.3": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.crouch_idle.4": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.crouch_idle.5": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.crouch_idle.6": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.crouch_idle.7": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.crouch_idle.8": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.crouch_walk.0": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.crouch_walk.1": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.crouch_walk.2": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.crouch_walk.3": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.crouch_walk.4": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.crouch_walk.5": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.crouch_walk.6": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.crouch_walk.7": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.crouch_walk.8": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.crouch_shoot.0": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.crouch_shoot.1": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.crouch_shoot.2": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.crouch_shoot.3": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.crouch_shoot.4": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.crouch_shoot.5": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.crouch_shoot.6": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.crouch_shoot.7": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.crouch_shoot.8": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.hit.0": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.hit.1": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.hit.2": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.hit.3": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.hit.4": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.hit.5": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.hit.6": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.death.0": {
+      "file": "runtime/characters/enemy_ranged/death/death_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.death.1": {
+      "file": "runtime/characters/enemy_ranged/death/death_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.death.2": {
+      "file": "runtime/characters/enemy_ranged/death/death_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.death.3": {
+      "file": "runtime/characters/enemy_ranged/death/death_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.death.4": {
+      "file": "runtime/characters/enemy_ranged/death/death_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.death.5": {
+      "file": "runtime/characters/enemy_ranged/death/death_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.death.6": {
+      "file": "runtime/characters/enemy_ranged/death/death_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.death.7": {
+      "file": "runtime/characters/enemy_ranged/death/death_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v0.death.8": {
+      "file": "runtime/characters/enemy_ranged/death/death_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.idle.0": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.idle.1": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.idle.2": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.idle.3": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.idle.4": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.idle.5": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.idle.6": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.idle.7": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.walk.0": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.walk.1": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.walk.2": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.walk.3": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.walk.4": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.walk.5": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.walk.6": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.walk.7": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.walk.8": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.run.0": {
+      "file": "runtime/characters/enemy_ranged/run/run_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.run.1": {
+      "file": "runtime/characters/enemy_ranged/run/run_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.run.2": {
+      "file": "runtime/characters/enemy_ranged/run/run_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.run.3": {
+      "file": "runtime/characters/enemy_ranged/run/run_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.run.4": {
+      "file": "runtime/characters/enemy_ranged/run/run_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.run.5": {
+      "file": "runtime/characters/enemy_ranged/run/run_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.run.6": {
+      "file": "runtime/characters/enemy_ranged/run/run_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.run.7": {
+      "file": "runtime/characters/enemy_ranged/run/run_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.run.8": {
+      "file": "runtime/characters/enemy_ranged/run/run_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.shoot.0": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.shoot.1": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.shoot.2": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.shoot.3": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.shoot.4": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.shoot.5": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.shoot.6": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.shoot.7": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.shoot.8": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.shoot.9": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_10.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.shoot.10": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_11.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.run_shoot.0": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.run_shoot.1": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.run_shoot.2": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.run_shoot.3": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.run_shoot.4": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.run_shoot.5": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.run_shoot.6": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.run_shoot.7": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.run_shoot.8": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.run_shoot.9": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_10.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.jump.0": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.jump.1": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.jump.2": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.jump.3": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.jump.4": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.jump.5": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.jump.6": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.jump.7": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.fall.0": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.fall.1": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.fall.2": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.fall.3": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.fall.4": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.fall.5": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.fall.6": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.crouch_idle.0": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.crouch_idle.1": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.crouch_idle.2": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.crouch_idle.3": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.crouch_idle.4": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.crouch_idle.5": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.crouch_idle.6": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.crouch_idle.7": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.crouch_idle.8": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.crouch_walk.0": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.crouch_walk.1": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.crouch_walk.2": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.crouch_walk.3": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.crouch_walk.4": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.crouch_walk.5": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.crouch_walk.6": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.crouch_walk.7": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.crouch_walk.8": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.crouch_shoot.0": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.crouch_shoot.1": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.crouch_shoot.2": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.crouch_shoot.3": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.crouch_shoot.4": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.crouch_shoot.5": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.crouch_shoot.6": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.crouch_shoot.7": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.crouch_shoot.8": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.hit.0": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.hit.1": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.hit.2": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.hit.3": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.hit.4": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.hit.5": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.hit.6": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.death.0": {
+      "file": "runtime/characters/enemy_ranged/death/death_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.death.1": {
+      "file": "runtime/characters/enemy_ranged/death/death_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.death.2": {
+      "file": "runtime/characters/enemy_ranged/death/death_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.death.3": {
+      "file": "runtime/characters/enemy_ranged/death/death_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.death.4": {
+      "file": "runtime/characters/enemy_ranged/death/death_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.death.5": {
+      "file": "runtime/characters/enemy_ranged/death/death_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.death.6": {
+      "file": "runtime/characters/enemy_ranged/death/death_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.death.7": {
+      "file": "runtime/characters/enemy_ranged/death/death_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v1.death.8": {
+      "file": "runtime/characters/enemy_ranged/death/death_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.idle.0": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.idle.1": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.idle.2": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.idle.3": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.idle.4": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.idle.5": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.idle.6": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.idle.7": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.walk.0": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.walk.1": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.walk.2": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.walk.3": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.walk.4": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.walk.5": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.walk.6": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.walk.7": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.walk.8": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.run.0": {
+      "file": "runtime/characters/enemy_ranged/run/run_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.run.1": {
+      "file": "runtime/characters/enemy_ranged/run/run_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.run.2": {
+      "file": "runtime/characters/enemy_ranged/run/run_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.run.3": {
+      "file": "runtime/characters/enemy_ranged/run/run_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.run.4": {
+      "file": "runtime/characters/enemy_ranged/run/run_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.run.5": {
+      "file": "runtime/characters/enemy_ranged/run/run_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.run.6": {
+      "file": "runtime/characters/enemy_ranged/run/run_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.run.7": {
+      "file": "runtime/characters/enemy_ranged/run/run_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.run.8": {
+      "file": "runtime/characters/enemy_ranged/run/run_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.shoot.0": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.shoot.1": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.shoot.2": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.shoot.3": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.shoot.4": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.shoot.5": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.shoot.6": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.shoot.7": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.shoot.8": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.shoot.9": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_10.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.shoot.10": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_11.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.run_shoot.0": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.run_shoot.1": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.run_shoot.2": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.run_shoot.3": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.run_shoot.4": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.run_shoot.5": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.run_shoot.6": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.run_shoot.7": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.run_shoot.8": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.run_shoot.9": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_10.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.jump.0": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.jump.1": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.jump.2": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.jump.3": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.jump.4": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.jump.5": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.jump.6": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.jump.7": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.fall.0": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.fall.1": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.fall.2": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.fall.3": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.fall.4": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.fall.5": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.fall.6": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.crouch_idle.0": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.crouch_idle.1": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.crouch_idle.2": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.crouch_idle.3": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.crouch_idle.4": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.crouch_idle.5": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.crouch_idle.6": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.crouch_idle.7": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.crouch_idle.8": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.crouch_walk.0": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.crouch_walk.1": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.crouch_walk.2": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.crouch_walk.3": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.crouch_walk.4": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.crouch_walk.5": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.crouch_walk.6": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.crouch_walk.7": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.crouch_walk.8": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.crouch_shoot.0": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.crouch_shoot.1": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.crouch_shoot.2": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.crouch_shoot.3": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.crouch_shoot.4": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.crouch_shoot.5": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.crouch_shoot.6": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.crouch_shoot.7": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.crouch_shoot.8": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.hit.0": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.hit.1": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.hit.2": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.hit.3": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.hit.4": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.hit.5": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.hit.6": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.death.0": {
+      "file": "runtime/characters/enemy_ranged/death/death_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.death.1": {
+      "file": "runtime/characters/enemy_ranged/death/death_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.death.2": {
+      "file": "runtime/characters/enemy_ranged/death/death_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.death.3": {
+      "file": "runtime/characters/enemy_ranged/death/death_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.death.4": {
+      "file": "runtime/characters/enemy_ranged/death/death_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.death.5": {
+      "file": "runtime/characters/enemy_ranged/death/death_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.death.6": {
+      "file": "runtime/characters/enemy_ranged/death/death_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.death.7": {
+      "file": "runtime/characters/enemy_ranged/death/death_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v2.death.8": {
+      "file": "runtime/characters/enemy_ranged/death/death_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.idle.0": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.idle.1": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.idle.2": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.idle.3": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.idle.4": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.idle.5": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.idle.6": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.idle.7": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.walk.0": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.walk.1": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.walk.2": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.walk.3": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.walk.4": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.walk.5": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.walk.6": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.walk.7": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.walk.8": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.run.0": {
+      "file": "runtime/characters/enemy_ranged/run/run_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.run.1": {
+      "file": "runtime/characters/enemy_ranged/run/run_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.run.2": {
+      "file": "runtime/characters/enemy_ranged/run/run_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.run.3": {
+      "file": "runtime/characters/enemy_ranged/run/run_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.run.4": {
+      "file": "runtime/characters/enemy_ranged/run/run_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.run.5": {
+      "file": "runtime/characters/enemy_ranged/run/run_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.run.6": {
+      "file": "runtime/characters/enemy_ranged/run/run_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.run.7": {
+      "file": "runtime/characters/enemy_ranged/run/run_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.run.8": {
+      "file": "runtime/characters/enemy_ranged/run/run_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.shoot.0": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.shoot.1": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.shoot.2": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.shoot.3": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.shoot.4": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.shoot.5": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.shoot.6": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.shoot.7": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.shoot.8": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.shoot.9": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_10.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.shoot.10": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_11.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.run_shoot.0": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.run_shoot.1": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.run_shoot.2": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.run_shoot.3": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.run_shoot.4": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.run_shoot.5": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.run_shoot.6": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.run_shoot.7": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.run_shoot.8": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.run_shoot.9": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_10.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.jump.0": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.jump.1": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.jump.2": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.jump.3": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.jump.4": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.jump.5": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.jump.6": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.jump.7": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.fall.0": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.fall.1": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.fall.2": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.fall.3": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.fall.4": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.fall.5": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.fall.6": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.crouch_idle.0": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.crouch_idle.1": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.crouch_idle.2": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.crouch_idle.3": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.crouch_idle.4": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.crouch_idle.5": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.crouch_idle.6": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.crouch_idle.7": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.crouch_idle.8": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.crouch_walk.0": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.crouch_walk.1": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.crouch_walk.2": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.crouch_walk.3": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.crouch_walk.4": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.crouch_walk.5": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.crouch_walk.6": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.crouch_walk.7": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.crouch_walk.8": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.crouch_shoot.0": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.crouch_shoot.1": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.crouch_shoot.2": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.crouch_shoot.3": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.crouch_shoot.4": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.crouch_shoot.5": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.crouch_shoot.6": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.crouch_shoot.7": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.crouch_shoot.8": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.hit.0": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.hit.1": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.hit.2": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.hit.3": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.hit.4": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.hit.5": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.hit.6": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.death.0": {
+      "file": "runtime/characters/enemy_ranged/death/death_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.death.1": {
+      "file": "runtime/characters/enemy_ranged/death/death_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.death.2": {
+      "file": "runtime/characters/enemy_ranged/death/death_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.death.3": {
+      "file": "runtime/characters/enemy_ranged/death/death_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.death.4": {
+      "file": "runtime/characters/enemy_ranged/death/death_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.death.5": {
+      "file": "runtime/characters/enemy_ranged/death/death_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.death.6": {
+      "file": "runtime/characters/enemy_ranged/death/death_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.death.7": {
+      "file": "runtime/characters/enemy_ranged/death/death_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_v3.death.8": {
+      "file": "runtime/characters/enemy_ranged/death/death_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.idle.0": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.idle.1": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.idle.2": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.idle.3": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.idle.4": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.idle.5": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.idle.6": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.idle.7": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.walk.0": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.walk.1": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.walk.2": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.walk.3": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.walk.4": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.walk.5": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.walk.6": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.walk.7": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.walk.8": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.run.0": {
+      "file": "runtime/characters/enemy_ranged/run/run_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.run.1": {
+      "file": "runtime/characters/enemy_ranged/run/run_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.run.2": {
+      "file": "runtime/characters/enemy_ranged/run/run_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.run.3": {
+      "file": "runtime/characters/enemy_ranged/run/run_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.run.4": {
+      "file": "runtime/characters/enemy_ranged/run/run_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.run.5": {
+      "file": "runtime/characters/enemy_ranged/run/run_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.run.6": {
+      "file": "runtime/characters/enemy_ranged/run/run_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.run.7": {
+      "file": "runtime/characters/enemy_ranged/run/run_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.run.8": {
+      "file": "runtime/characters/enemy_ranged/run/run_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.shoot.0": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.shoot.1": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.shoot.2": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.shoot.3": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.shoot.4": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.shoot.5": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.shoot.6": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.shoot.7": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.shoot.8": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.shoot.9": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_10.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.shoot.10": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_11.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.run_shoot.0": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.run_shoot.1": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.run_shoot.2": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.run_shoot.3": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.run_shoot.4": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.run_shoot.5": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.run_shoot.6": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.run_shoot.7": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.run_shoot.8": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.run_shoot.9": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_10.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.jump.0": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.jump.1": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.jump.2": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.jump.3": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.jump.4": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.jump.5": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.jump.6": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.jump.7": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.fall.0": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.fall.1": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.fall.2": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.fall.3": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.fall.4": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.fall.5": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.fall.6": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.crouch_idle.0": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.crouch_idle.1": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.crouch_idle.2": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.crouch_idle.3": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.crouch_idle.4": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.crouch_idle.5": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.crouch_idle.6": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.crouch_idle.7": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.crouch_idle.8": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.crouch_walk.0": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.crouch_walk.1": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.crouch_walk.2": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.crouch_walk.3": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.crouch_walk.4": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.crouch_walk.5": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.crouch_walk.6": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.crouch_walk.7": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.crouch_walk.8": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.crouch_shoot.0": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.crouch_shoot.1": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.crouch_shoot.2": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.crouch_shoot.3": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.crouch_shoot.4": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.crouch_shoot.5": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.crouch_shoot.6": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.crouch_shoot.7": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.crouch_shoot.8": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.hit.0": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.hit.1": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.hit.2": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.hit.3": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.hit.4": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.hit.5": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.hit.6": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.death.0": {
+      "file": "runtime/characters/enemy_ranged/death/death_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.death.1": {
+      "file": "runtime/characters/enemy_ranged/death/death_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.death.2": {
+      "file": "runtime/characters/enemy_ranged/death/death_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.death.3": {
+      "file": "runtime/characters/enemy_ranged/death/death_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.death.4": {
+      "file": "runtime/characters/enemy_ranged/death/death_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.death.5": {
+      "file": "runtime/characters/enemy_ranged/death/death_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.death.6": {
+      "file": "runtime/characters/enemy_ranged/death/death_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.death.7": {
+      "file": "runtime/characters/enemy_ranged/death/death_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v0.death.8": {
+      "file": "runtime/characters/enemy_ranged/death/death_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.idle.0": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.idle.1": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.idle.2": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.idle.3": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.idle.4": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.idle.5": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.idle.6": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.idle.7": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.walk.0": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.walk.1": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.walk.2": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.walk.3": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.walk.4": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.walk.5": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.walk.6": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.walk.7": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.walk.8": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.run.0": {
+      "file": "runtime/characters/enemy_ranged/run/run_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.run.1": {
+      "file": "runtime/characters/enemy_ranged/run/run_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.run.2": {
+      "file": "runtime/characters/enemy_ranged/run/run_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.run.3": {
+      "file": "runtime/characters/enemy_ranged/run/run_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.run.4": {
+      "file": "runtime/characters/enemy_ranged/run/run_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.run.5": {
+      "file": "runtime/characters/enemy_ranged/run/run_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.run.6": {
+      "file": "runtime/characters/enemy_ranged/run/run_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.run.7": {
+      "file": "runtime/characters/enemy_ranged/run/run_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.run.8": {
+      "file": "runtime/characters/enemy_ranged/run/run_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.shoot.0": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.shoot.1": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.shoot.2": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.shoot.3": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.shoot.4": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.shoot.5": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.shoot.6": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.shoot.7": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.shoot.8": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.shoot.9": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_10.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.shoot.10": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_11.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.run_shoot.0": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.run_shoot.1": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.run_shoot.2": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.run_shoot.3": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.run_shoot.4": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.run_shoot.5": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.run_shoot.6": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.run_shoot.7": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.run_shoot.8": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.run_shoot.9": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_10.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.jump.0": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.jump.1": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.jump.2": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.jump.3": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.jump.4": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.jump.5": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.jump.6": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.jump.7": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.fall.0": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.fall.1": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.fall.2": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.fall.3": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.fall.4": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.fall.5": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.fall.6": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.crouch_idle.0": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.crouch_idle.1": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.crouch_idle.2": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.crouch_idle.3": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.crouch_idle.4": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.crouch_idle.5": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.crouch_idle.6": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.crouch_idle.7": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.crouch_idle.8": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.crouch_walk.0": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.crouch_walk.1": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.crouch_walk.2": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.crouch_walk.3": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.crouch_walk.4": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.crouch_walk.5": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.crouch_walk.6": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.crouch_walk.7": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.crouch_walk.8": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.crouch_shoot.0": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.crouch_shoot.1": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.crouch_shoot.2": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.crouch_shoot.3": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.crouch_shoot.4": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.crouch_shoot.5": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.crouch_shoot.6": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.crouch_shoot.7": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.crouch_shoot.8": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.hit.0": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.hit.1": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.hit.2": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.hit.3": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.hit.4": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.hit.5": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.hit.6": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.death.0": {
+      "file": "runtime/characters/enemy_ranged/death/death_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.death.1": {
+      "file": "runtime/characters/enemy_ranged/death/death_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.death.2": {
+      "file": "runtime/characters/enemy_ranged/death/death_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.death.3": {
+      "file": "runtime/characters/enemy_ranged/death/death_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.death.4": {
+      "file": "runtime/characters/enemy_ranged/death/death_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.death.5": {
+      "file": "runtime/characters/enemy_ranged/death/death_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.death.6": {
+      "file": "runtime/characters/enemy_ranged/death/death_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.death.7": {
+      "file": "runtime/characters/enemy_ranged/death/death_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v1.death.8": {
+      "file": "runtime/characters/enemy_ranged/death/death_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.idle.0": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.idle.1": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.idle.2": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.idle.3": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.idle.4": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.idle.5": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.idle.6": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.idle.7": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.walk.0": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.walk.1": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.walk.2": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.walk.3": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.walk.4": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.walk.5": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.walk.6": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.walk.7": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.walk.8": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.run.0": {
+      "file": "runtime/characters/enemy_ranged/run/run_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.run.1": {
+      "file": "runtime/characters/enemy_ranged/run/run_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.run.2": {
+      "file": "runtime/characters/enemy_ranged/run/run_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.run.3": {
+      "file": "runtime/characters/enemy_ranged/run/run_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.run.4": {
+      "file": "runtime/characters/enemy_ranged/run/run_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.run.5": {
+      "file": "runtime/characters/enemy_ranged/run/run_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.run.6": {
+      "file": "runtime/characters/enemy_ranged/run/run_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.run.7": {
+      "file": "runtime/characters/enemy_ranged/run/run_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.run.8": {
+      "file": "runtime/characters/enemy_ranged/run/run_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.shoot.0": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.shoot.1": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.shoot.2": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.shoot.3": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.shoot.4": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.shoot.5": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.shoot.6": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.shoot.7": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.shoot.8": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.shoot.9": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_10.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.shoot.10": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_11.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.run_shoot.0": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.run_shoot.1": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.run_shoot.2": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.run_shoot.3": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.run_shoot.4": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.run_shoot.5": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.run_shoot.6": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.run_shoot.7": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.run_shoot.8": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.run_shoot.9": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_10.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.jump.0": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.jump.1": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.jump.2": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.jump.3": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.jump.4": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.jump.5": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.jump.6": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.jump.7": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.fall.0": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.fall.1": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.fall.2": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.fall.3": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.fall.4": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.fall.5": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.fall.6": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.crouch_idle.0": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.crouch_idle.1": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.crouch_idle.2": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.crouch_idle.3": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.crouch_idle.4": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.crouch_idle.5": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.crouch_idle.6": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.crouch_idle.7": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.crouch_idle.8": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.crouch_walk.0": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.crouch_walk.1": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.crouch_walk.2": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.crouch_walk.3": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.crouch_walk.4": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.crouch_walk.5": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.crouch_walk.6": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.crouch_walk.7": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.crouch_walk.8": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.crouch_shoot.0": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.crouch_shoot.1": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.crouch_shoot.2": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.crouch_shoot.3": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.crouch_shoot.4": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.crouch_shoot.5": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.crouch_shoot.6": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.crouch_shoot.7": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.crouch_shoot.8": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.hit.0": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.hit.1": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.hit.2": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.hit.3": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.hit.4": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.hit.5": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.hit.6": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.death.0": {
+      "file": "runtime/characters/enemy_ranged/death/death_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.death.1": {
+      "file": "runtime/characters/enemy_ranged/death/death_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.death.2": {
+      "file": "runtime/characters/enemy_ranged/death/death_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.death.3": {
+      "file": "runtime/characters/enemy_ranged/death/death_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.death.4": {
+      "file": "runtime/characters/enemy_ranged/death/death_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.death.5": {
+      "file": "runtime/characters/enemy_ranged/death/death_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.death.6": {
+      "file": "runtime/characters/enemy_ranged/death/death_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.death.7": {
+      "file": "runtime/characters/enemy_ranged/death/death_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v2.death.8": {
+      "file": "runtime/characters/enemy_ranged/death/death_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.idle.0": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.idle.1": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.idle.2": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.idle.3": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.idle.4": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.idle.5": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.idle.6": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.idle.7": {
+      "file": "runtime/characters/enemy_ranged/idle/idle_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.walk.0": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.walk.1": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.walk.2": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.walk.3": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.walk.4": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.walk.5": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.walk.6": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.walk.7": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.walk.8": {
+      "file": "runtime/characters/enemy_ranged/walk/walk_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.run.0": {
+      "file": "runtime/characters/enemy_ranged/run/run_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.run.1": {
+      "file": "runtime/characters/enemy_ranged/run/run_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.run.2": {
+      "file": "runtime/characters/enemy_ranged/run/run_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.run.3": {
+      "file": "runtime/characters/enemy_ranged/run/run_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.run.4": {
+      "file": "runtime/characters/enemy_ranged/run/run_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.run.5": {
+      "file": "runtime/characters/enemy_ranged/run/run_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.run.6": {
+      "file": "runtime/characters/enemy_ranged/run/run_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.run.7": {
+      "file": "runtime/characters/enemy_ranged/run/run_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.run.8": {
+      "file": "runtime/characters/enemy_ranged/run/run_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.shoot.0": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.shoot.1": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.shoot.2": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.shoot.3": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.shoot.4": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.shoot.5": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.shoot.6": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.shoot.7": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.shoot.8": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.shoot.9": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_10.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.shoot.10": {
+      "file": "runtime/characters/enemy_ranged/aim_shoot/aim_shoot_11.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.run_shoot.0": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.run_shoot.1": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.run_shoot.2": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.run_shoot.3": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.run_shoot.4": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.run_shoot.5": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.run_shoot.6": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.run_shoot.7": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.run_shoot.8": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.run_shoot.9": {
+      "file": "runtime/characters/enemy_ranged/run_shoot/run_shoot_10.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.jump.0": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.jump.1": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.jump.2": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.jump.3": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.jump.4": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.jump.5": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.jump.6": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.jump.7": {
+      "file": "runtime/characters/enemy_ranged/jump/jump_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.fall.0": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.fall.1": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.fall.2": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.fall.3": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.fall.4": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.fall.5": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.fall.6": {
+      "file": "runtime/characters/enemy_ranged/fall/fall_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.crouch_idle.0": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.crouch_idle.1": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.crouch_idle.2": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.crouch_idle.3": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.crouch_idle.4": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.crouch_idle.5": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.crouch_idle.6": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.crouch_idle.7": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.crouch_idle.8": {
+      "file": "runtime/characters/enemy_ranged/crouch_idle/crouch_idle_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.crouch_walk.0": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.crouch_walk.1": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.crouch_walk.2": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.crouch_walk.3": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.crouch_walk.4": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.crouch_walk.5": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.crouch_walk.6": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.crouch_walk.7": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.crouch_walk.8": {
+      "file": "runtime/characters/enemy_ranged/crouch_walk/crouch_walk_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.crouch_shoot.0": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.crouch_shoot.1": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.crouch_shoot.2": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.crouch_shoot.3": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.crouch_shoot.4": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.crouch_shoot.5": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.crouch_shoot.6": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.crouch_shoot.7": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.crouch_shoot.8": {
+      "file": "runtime/characters/enemy_ranged/crouch_shoot/crouch_shoot_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.hit.0": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.hit.1": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.hit.2": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.hit.3": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.hit.4": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.hit.5": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.hit.6": {
+      "file": "runtime/characters/enemy_ranged/take_damage/take_damage_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.death.0": {
+      "file": "runtime/characters/enemy_ranged/death/death_01.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.death.1": {
+      "file": "runtime/characters/enemy_ranged/death/death_02.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.death.2": {
+      "file": "runtime/characters/enemy_ranged/death/death_03.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.death.3": {
+      "file": "runtime/characters/enemy_ranged/death/death_04.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.death.4": {
+      "file": "runtime/characters/enemy_ranged/death/death_05.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.death.5": {
+      "file": "runtime/characters/enemy_ranged/death/death_06.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.death.6": {
+      "file": "runtime/characters/enemy_ranged/death/death_07.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.death.7": {
+      "file": "runtime/characters/enemy_ranged/death/death_08.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
+    },
+    "enemy_ranged_strong_v3.death.8": {
+      "file": "runtime/characters/enemy_ranged/death/death_09.png",
+      "anchorX": 0.5,
+      "anchorY": 1.0
     }
   },
   "animations": {
@@ -2378,510 +6504,6 @@
     "enemy_melee_v3.death": {
       "frames": [
         "enemy_melee_v3.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v0.idle": {
-      "frames": [
-        "enemy_ranged_v0.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v0.walk": {
-      "frames": [
-        "enemy_ranged_v0.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v0.run": {
-      "frames": [
-        "enemy_ranged_v0.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v0.jump": {
-      "frames": [
-        "enemy_ranged_v0.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v0.fall": {
-      "frames": [
-        "enemy_ranged_v0.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v0.shoot": {
-      "frames": [
-        "enemy_ranged_v0.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v0.crouch": {
-      "frames": [
-        "enemy_ranged_v0.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v0.hit": {
-      "frames": [
-        "enemy_ranged_v0.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v0.death": {
-      "frames": [
-        "enemy_ranged_v0.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v1.idle": {
-      "frames": [
-        "enemy_ranged_v1.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v1.walk": {
-      "frames": [
-        "enemy_ranged_v1.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v1.run": {
-      "frames": [
-        "enemy_ranged_v1.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v1.jump": {
-      "frames": [
-        "enemy_ranged_v1.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v1.fall": {
-      "frames": [
-        "enemy_ranged_v1.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v1.shoot": {
-      "frames": [
-        "enemy_ranged_v1.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v1.crouch": {
-      "frames": [
-        "enemy_ranged_v1.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v1.hit": {
-      "frames": [
-        "enemy_ranged_v1.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v1.death": {
-      "frames": [
-        "enemy_ranged_v1.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v2.idle": {
-      "frames": [
-        "enemy_ranged_v2.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v2.walk": {
-      "frames": [
-        "enemy_ranged_v2.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v2.run": {
-      "frames": [
-        "enemy_ranged_v2.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v2.jump": {
-      "frames": [
-        "enemy_ranged_v2.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v2.fall": {
-      "frames": [
-        "enemy_ranged_v2.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v2.shoot": {
-      "frames": [
-        "enemy_ranged_v2.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v2.crouch": {
-      "frames": [
-        "enemy_ranged_v2.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v2.hit": {
-      "frames": [
-        "enemy_ranged_v2.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v2.death": {
-      "frames": [
-        "enemy_ranged_v2.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v3.idle": {
-      "frames": [
-        "enemy_ranged_v3.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v3.walk": {
-      "frames": [
-        "enemy_ranged_v3.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v3.run": {
-      "frames": [
-        "enemy_ranged_v3.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v3.jump": {
-      "frames": [
-        "enemy_ranged_v3.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v3.fall": {
-      "frames": [
-        "enemy_ranged_v3.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v3.shoot": {
-      "frames": [
-        "enemy_ranged_v3.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v3.crouch": {
-      "frames": [
-        "enemy_ranged_v3.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v3.hit": {
-      "frames": [
-        "enemy_ranged_v3.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_v3.death": {
-      "frames": [
-        "enemy_ranged_v3.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v0.idle": {
-      "frames": [
-        "enemy_ranged_strong_v0.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v0.walk": {
-      "frames": [
-        "enemy_ranged_strong_v0.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v0.run": {
-      "frames": [
-        "enemy_ranged_strong_v0.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v0.jump": {
-      "frames": [
-        "enemy_ranged_strong_v0.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v0.fall": {
-      "frames": [
-        "enemy_ranged_strong_v0.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v0.shoot": {
-      "frames": [
-        "enemy_ranged_strong_v0.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v0.crouch": {
-      "frames": [
-        "enemy_ranged_strong_v0.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v0.hit": {
-      "frames": [
-        "enemy_ranged_strong_v0.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v0.death": {
-      "frames": [
-        "enemy_ranged_strong_v0.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v1.idle": {
-      "frames": [
-        "enemy_ranged_strong_v1.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v1.walk": {
-      "frames": [
-        "enemy_ranged_strong_v1.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v1.run": {
-      "frames": [
-        "enemy_ranged_strong_v1.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v1.jump": {
-      "frames": [
-        "enemy_ranged_strong_v1.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v1.fall": {
-      "frames": [
-        "enemy_ranged_strong_v1.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v1.shoot": {
-      "frames": [
-        "enemy_ranged_strong_v1.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v1.crouch": {
-      "frames": [
-        "enemy_ranged_strong_v1.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v1.hit": {
-      "frames": [
-        "enemy_ranged_strong_v1.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v1.death": {
-      "frames": [
-        "enemy_ranged_strong_v1.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v2.idle": {
-      "frames": [
-        "enemy_ranged_strong_v2.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v2.walk": {
-      "frames": [
-        "enemy_ranged_strong_v2.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v2.run": {
-      "frames": [
-        "enemy_ranged_strong_v2.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v2.jump": {
-      "frames": [
-        "enemy_ranged_strong_v2.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v2.fall": {
-      "frames": [
-        "enemy_ranged_strong_v2.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v2.shoot": {
-      "frames": [
-        "enemy_ranged_strong_v2.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v2.crouch": {
-      "frames": [
-        "enemy_ranged_strong_v2.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v2.hit": {
-      "frames": [
-        "enemy_ranged_strong_v2.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v2.death": {
-      "frames": [
-        "enemy_ranged_strong_v2.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v3.idle": {
-      "frames": [
-        "enemy_ranged_strong_v3.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v3.walk": {
-      "frames": [
-        "enemy_ranged_strong_v3.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v3.run": {
-      "frames": [
-        "enemy_ranged_strong_v3.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v3.jump": {
-      "frames": [
-        "enemy_ranged_strong_v3.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v3.fall": {
-      "frames": [
-        "enemy_ranged_strong_v3.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v3.shoot": {
-      "frames": [
-        "enemy_ranged_strong_v3.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v3.crouch": {
-      "frames": [
-        "enemy_ranged_strong_v3.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v3.hit": {
-      "frames": [
-        "enemy_ranged_strong_v3.pose.0"
-      ],
-      "fps": 1,
-      "loop": true
-    },
-    "enemy_ranged_strong_v3.death": {
-      "frames": [
-        "enemy_ranged_strong_v3.pose.0"
       ],
       "fps": 1,
       "loop": true
@@ -3469,6 +7091,1422 @@
       ],
       "fps": 6,
       "loop": true
+    },
+    "enemy_ranged_v0.idle": {
+      "frames": [
+        "enemy_ranged_v0.idle.0",
+        "enemy_ranged_v0.idle.1",
+        "enemy_ranged_v0.idle.2",
+        "enemy_ranged_v0.idle.3",
+        "enemy_ranged_v0.idle.4",
+        "enemy_ranged_v0.idle.5",
+        "enemy_ranged_v0.idle.6",
+        "enemy_ranged_v0.idle.7"
+      ],
+      "fps": 6,
+      "loop": true
+    },
+    "enemy_ranged_v0.walk": {
+      "frames": [
+        "enemy_ranged_v0.walk.0",
+        "enemy_ranged_v0.walk.1",
+        "enemy_ranged_v0.walk.2",
+        "enemy_ranged_v0.walk.3",
+        "enemy_ranged_v0.walk.4",
+        "enemy_ranged_v0.walk.5",
+        "enemy_ranged_v0.walk.6",
+        "enemy_ranged_v0.walk.7",
+        "enemy_ranged_v0.walk.8"
+      ],
+      "fps": 9,
+      "loop": true
+    },
+    "enemy_ranged_v0.run": {
+      "frames": [
+        "enemy_ranged_v0.run.0",
+        "enemy_ranged_v0.run.1",
+        "enemy_ranged_v0.run.2",
+        "enemy_ranged_v0.run.3",
+        "enemy_ranged_v0.run.4",
+        "enemy_ranged_v0.run.5",
+        "enemy_ranged_v0.run.6",
+        "enemy_ranged_v0.run.7",
+        "enemy_ranged_v0.run.8"
+      ],
+      "fps": 12,
+      "loop": true
+    },
+    "enemy_ranged_v0.shoot": {
+      "frames": [
+        "enemy_ranged_v0.shoot.0",
+        "enemy_ranged_v0.shoot.1",
+        "enemy_ranged_v0.shoot.2",
+        "enemy_ranged_v0.shoot.3",
+        "enemy_ranged_v0.shoot.4",
+        "enemy_ranged_v0.shoot.5",
+        "enemy_ranged_v0.shoot.6",
+        "enemy_ranged_v0.shoot.7",
+        "enemy_ranged_v0.shoot.8",
+        "enemy_ranged_v0.shoot.9",
+        "enemy_ranged_v0.shoot.10"
+      ],
+      "fps": 14,
+      "loop": true
+    },
+    "enemy_ranged_v0.run_shoot": {
+      "frames": [
+        "enemy_ranged_v0.run_shoot.0",
+        "enemy_ranged_v0.run_shoot.1",
+        "enemy_ranged_v0.run_shoot.2",
+        "enemy_ranged_v0.run_shoot.3",
+        "enemy_ranged_v0.run_shoot.4",
+        "enemy_ranged_v0.run_shoot.5",
+        "enemy_ranged_v0.run_shoot.6",
+        "enemy_ranged_v0.run_shoot.7",
+        "enemy_ranged_v0.run_shoot.8",
+        "enemy_ranged_v0.run_shoot.9"
+      ],
+      "fps": 12,
+      "loop": true
+    },
+    "enemy_ranged_v0.jump": {
+      "frames": [
+        "enemy_ranged_v0.jump.0",
+        "enemy_ranged_v0.jump.1",
+        "enemy_ranged_v0.jump.2",
+        "enemy_ranged_v0.jump.3",
+        "enemy_ranged_v0.jump.4",
+        "enemy_ranged_v0.jump.5",
+        "enemy_ranged_v0.jump.6",
+        "enemy_ranged_v0.jump.7"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "enemy_ranged_v0.fall": {
+      "frames": [
+        "enemy_ranged_v0.fall.0",
+        "enemy_ranged_v0.fall.1",
+        "enemy_ranged_v0.fall.2",
+        "enemy_ranged_v0.fall.3",
+        "enemy_ranged_v0.fall.4",
+        "enemy_ranged_v0.fall.5",
+        "enemy_ranged_v0.fall.6"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "enemy_ranged_v0.crouch_idle": {
+      "frames": [
+        "enemy_ranged_v0.crouch_idle.0",
+        "enemy_ranged_v0.crouch_idle.1",
+        "enemy_ranged_v0.crouch_idle.2",
+        "enemy_ranged_v0.crouch_idle.3",
+        "enemy_ranged_v0.crouch_idle.4",
+        "enemy_ranged_v0.crouch_idle.5",
+        "enemy_ranged_v0.crouch_idle.6",
+        "enemy_ranged_v0.crouch_idle.7",
+        "enemy_ranged_v0.crouch_idle.8"
+      ],
+      "fps": 6,
+      "loop": true
+    },
+    "enemy_ranged_v0.crouch_walk": {
+      "frames": [
+        "enemy_ranged_v0.crouch_walk.0",
+        "enemy_ranged_v0.crouch_walk.1",
+        "enemy_ranged_v0.crouch_walk.2",
+        "enemy_ranged_v0.crouch_walk.3",
+        "enemy_ranged_v0.crouch_walk.4",
+        "enemy_ranged_v0.crouch_walk.5",
+        "enemy_ranged_v0.crouch_walk.6",
+        "enemy_ranged_v0.crouch_walk.7",
+        "enemy_ranged_v0.crouch_walk.8"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "enemy_ranged_v0.crouch_shoot": {
+      "frames": [
+        "enemy_ranged_v0.crouch_shoot.0",
+        "enemy_ranged_v0.crouch_shoot.1",
+        "enemy_ranged_v0.crouch_shoot.2",
+        "enemy_ranged_v0.crouch_shoot.3",
+        "enemy_ranged_v0.crouch_shoot.4",
+        "enemy_ranged_v0.crouch_shoot.5",
+        "enemy_ranged_v0.crouch_shoot.6",
+        "enemy_ranged_v0.crouch_shoot.7",
+        "enemy_ranged_v0.crouch_shoot.8"
+      ],
+      "fps": 14,
+      "loop": true
+    },
+    "enemy_ranged_v0.hit": {
+      "frames": [
+        "enemy_ranged_v0.hit.0",
+        "enemy_ranged_v0.hit.1",
+        "enemy_ranged_v0.hit.2",
+        "enemy_ranged_v0.hit.3",
+        "enemy_ranged_v0.hit.4",
+        "enemy_ranged_v0.hit.5",
+        "enemy_ranged_v0.hit.6"
+      ],
+      "fps": 12,
+      "loop": false
+    },
+    "enemy_ranged_v0.death": {
+      "frames": [
+        "enemy_ranged_v0.death.0",
+        "enemy_ranged_v0.death.1",
+        "enemy_ranged_v0.death.2",
+        "enemy_ranged_v0.death.3",
+        "enemy_ranged_v0.death.4",
+        "enemy_ranged_v0.death.5",
+        "enemy_ranged_v0.death.6",
+        "enemy_ranged_v0.death.7",
+        "enemy_ranged_v0.death.8"
+      ],
+      "fps": 9,
+      "loop": false
+    },
+    "enemy_ranged_v1.idle": {
+      "frames": [
+        "enemy_ranged_v1.idle.0",
+        "enemy_ranged_v1.idle.1",
+        "enemy_ranged_v1.idle.2",
+        "enemy_ranged_v1.idle.3",
+        "enemy_ranged_v1.idle.4",
+        "enemy_ranged_v1.idle.5",
+        "enemy_ranged_v1.idle.6",
+        "enemy_ranged_v1.idle.7"
+      ],
+      "fps": 6,
+      "loop": true
+    },
+    "enemy_ranged_v1.walk": {
+      "frames": [
+        "enemy_ranged_v1.walk.0",
+        "enemy_ranged_v1.walk.1",
+        "enemy_ranged_v1.walk.2",
+        "enemy_ranged_v1.walk.3",
+        "enemy_ranged_v1.walk.4",
+        "enemy_ranged_v1.walk.5",
+        "enemy_ranged_v1.walk.6",
+        "enemy_ranged_v1.walk.7",
+        "enemy_ranged_v1.walk.8"
+      ],
+      "fps": 9,
+      "loop": true
+    },
+    "enemy_ranged_v1.run": {
+      "frames": [
+        "enemy_ranged_v1.run.0",
+        "enemy_ranged_v1.run.1",
+        "enemy_ranged_v1.run.2",
+        "enemy_ranged_v1.run.3",
+        "enemy_ranged_v1.run.4",
+        "enemy_ranged_v1.run.5",
+        "enemy_ranged_v1.run.6",
+        "enemy_ranged_v1.run.7",
+        "enemy_ranged_v1.run.8"
+      ],
+      "fps": 12,
+      "loop": true
+    },
+    "enemy_ranged_v1.shoot": {
+      "frames": [
+        "enemy_ranged_v1.shoot.0",
+        "enemy_ranged_v1.shoot.1",
+        "enemy_ranged_v1.shoot.2",
+        "enemy_ranged_v1.shoot.3",
+        "enemy_ranged_v1.shoot.4",
+        "enemy_ranged_v1.shoot.5",
+        "enemy_ranged_v1.shoot.6",
+        "enemy_ranged_v1.shoot.7",
+        "enemy_ranged_v1.shoot.8",
+        "enemy_ranged_v1.shoot.9",
+        "enemy_ranged_v1.shoot.10"
+      ],
+      "fps": 14,
+      "loop": true
+    },
+    "enemy_ranged_v1.run_shoot": {
+      "frames": [
+        "enemy_ranged_v1.run_shoot.0",
+        "enemy_ranged_v1.run_shoot.1",
+        "enemy_ranged_v1.run_shoot.2",
+        "enemy_ranged_v1.run_shoot.3",
+        "enemy_ranged_v1.run_shoot.4",
+        "enemy_ranged_v1.run_shoot.5",
+        "enemy_ranged_v1.run_shoot.6",
+        "enemy_ranged_v1.run_shoot.7",
+        "enemy_ranged_v1.run_shoot.8",
+        "enemy_ranged_v1.run_shoot.9"
+      ],
+      "fps": 12,
+      "loop": true
+    },
+    "enemy_ranged_v1.jump": {
+      "frames": [
+        "enemy_ranged_v1.jump.0",
+        "enemy_ranged_v1.jump.1",
+        "enemy_ranged_v1.jump.2",
+        "enemy_ranged_v1.jump.3",
+        "enemy_ranged_v1.jump.4",
+        "enemy_ranged_v1.jump.5",
+        "enemy_ranged_v1.jump.6",
+        "enemy_ranged_v1.jump.7"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "enemy_ranged_v1.fall": {
+      "frames": [
+        "enemy_ranged_v1.fall.0",
+        "enemy_ranged_v1.fall.1",
+        "enemy_ranged_v1.fall.2",
+        "enemy_ranged_v1.fall.3",
+        "enemy_ranged_v1.fall.4",
+        "enemy_ranged_v1.fall.5",
+        "enemy_ranged_v1.fall.6"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "enemy_ranged_v1.crouch_idle": {
+      "frames": [
+        "enemy_ranged_v1.crouch_idle.0",
+        "enemy_ranged_v1.crouch_idle.1",
+        "enemy_ranged_v1.crouch_idle.2",
+        "enemy_ranged_v1.crouch_idle.3",
+        "enemy_ranged_v1.crouch_idle.4",
+        "enemy_ranged_v1.crouch_idle.5",
+        "enemy_ranged_v1.crouch_idle.6",
+        "enemy_ranged_v1.crouch_idle.7",
+        "enemy_ranged_v1.crouch_idle.8"
+      ],
+      "fps": 6,
+      "loop": true
+    },
+    "enemy_ranged_v1.crouch_walk": {
+      "frames": [
+        "enemy_ranged_v1.crouch_walk.0",
+        "enemy_ranged_v1.crouch_walk.1",
+        "enemy_ranged_v1.crouch_walk.2",
+        "enemy_ranged_v1.crouch_walk.3",
+        "enemy_ranged_v1.crouch_walk.4",
+        "enemy_ranged_v1.crouch_walk.5",
+        "enemy_ranged_v1.crouch_walk.6",
+        "enemy_ranged_v1.crouch_walk.7",
+        "enemy_ranged_v1.crouch_walk.8"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "enemy_ranged_v1.crouch_shoot": {
+      "frames": [
+        "enemy_ranged_v1.crouch_shoot.0",
+        "enemy_ranged_v1.crouch_shoot.1",
+        "enemy_ranged_v1.crouch_shoot.2",
+        "enemy_ranged_v1.crouch_shoot.3",
+        "enemy_ranged_v1.crouch_shoot.4",
+        "enemy_ranged_v1.crouch_shoot.5",
+        "enemy_ranged_v1.crouch_shoot.6",
+        "enemy_ranged_v1.crouch_shoot.7",
+        "enemy_ranged_v1.crouch_shoot.8"
+      ],
+      "fps": 14,
+      "loop": true
+    },
+    "enemy_ranged_v1.hit": {
+      "frames": [
+        "enemy_ranged_v1.hit.0",
+        "enemy_ranged_v1.hit.1",
+        "enemy_ranged_v1.hit.2",
+        "enemy_ranged_v1.hit.3",
+        "enemy_ranged_v1.hit.4",
+        "enemy_ranged_v1.hit.5",
+        "enemy_ranged_v1.hit.6"
+      ],
+      "fps": 12,
+      "loop": false
+    },
+    "enemy_ranged_v1.death": {
+      "frames": [
+        "enemy_ranged_v1.death.0",
+        "enemy_ranged_v1.death.1",
+        "enemy_ranged_v1.death.2",
+        "enemy_ranged_v1.death.3",
+        "enemy_ranged_v1.death.4",
+        "enemy_ranged_v1.death.5",
+        "enemy_ranged_v1.death.6",
+        "enemy_ranged_v1.death.7",
+        "enemy_ranged_v1.death.8"
+      ],
+      "fps": 9,
+      "loop": false
+    },
+    "enemy_ranged_v2.idle": {
+      "frames": [
+        "enemy_ranged_v2.idle.0",
+        "enemy_ranged_v2.idle.1",
+        "enemy_ranged_v2.idle.2",
+        "enemy_ranged_v2.idle.3",
+        "enemy_ranged_v2.idle.4",
+        "enemy_ranged_v2.idle.5",
+        "enemy_ranged_v2.idle.6",
+        "enemy_ranged_v2.idle.7"
+      ],
+      "fps": 6,
+      "loop": true
+    },
+    "enemy_ranged_v2.walk": {
+      "frames": [
+        "enemy_ranged_v2.walk.0",
+        "enemy_ranged_v2.walk.1",
+        "enemy_ranged_v2.walk.2",
+        "enemy_ranged_v2.walk.3",
+        "enemy_ranged_v2.walk.4",
+        "enemy_ranged_v2.walk.5",
+        "enemy_ranged_v2.walk.6",
+        "enemy_ranged_v2.walk.7",
+        "enemy_ranged_v2.walk.8"
+      ],
+      "fps": 9,
+      "loop": true
+    },
+    "enemy_ranged_v2.run": {
+      "frames": [
+        "enemy_ranged_v2.run.0",
+        "enemy_ranged_v2.run.1",
+        "enemy_ranged_v2.run.2",
+        "enemy_ranged_v2.run.3",
+        "enemy_ranged_v2.run.4",
+        "enemy_ranged_v2.run.5",
+        "enemy_ranged_v2.run.6",
+        "enemy_ranged_v2.run.7",
+        "enemy_ranged_v2.run.8"
+      ],
+      "fps": 12,
+      "loop": true
+    },
+    "enemy_ranged_v2.shoot": {
+      "frames": [
+        "enemy_ranged_v2.shoot.0",
+        "enemy_ranged_v2.shoot.1",
+        "enemy_ranged_v2.shoot.2",
+        "enemy_ranged_v2.shoot.3",
+        "enemy_ranged_v2.shoot.4",
+        "enemy_ranged_v2.shoot.5",
+        "enemy_ranged_v2.shoot.6",
+        "enemy_ranged_v2.shoot.7",
+        "enemy_ranged_v2.shoot.8",
+        "enemy_ranged_v2.shoot.9",
+        "enemy_ranged_v2.shoot.10"
+      ],
+      "fps": 14,
+      "loop": true
+    },
+    "enemy_ranged_v2.run_shoot": {
+      "frames": [
+        "enemy_ranged_v2.run_shoot.0",
+        "enemy_ranged_v2.run_shoot.1",
+        "enemy_ranged_v2.run_shoot.2",
+        "enemy_ranged_v2.run_shoot.3",
+        "enemy_ranged_v2.run_shoot.4",
+        "enemy_ranged_v2.run_shoot.5",
+        "enemy_ranged_v2.run_shoot.6",
+        "enemy_ranged_v2.run_shoot.7",
+        "enemy_ranged_v2.run_shoot.8",
+        "enemy_ranged_v2.run_shoot.9"
+      ],
+      "fps": 12,
+      "loop": true
+    },
+    "enemy_ranged_v2.jump": {
+      "frames": [
+        "enemy_ranged_v2.jump.0",
+        "enemy_ranged_v2.jump.1",
+        "enemy_ranged_v2.jump.2",
+        "enemy_ranged_v2.jump.3",
+        "enemy_ranged_v2.jump.4",
+        "enemy_ranged_v2.jump.5",
+        "enemy_ranged_v2.jump.6",
+        "enemy_ranged_v2.jump.7"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "enemy_ranged_v2.fall": {
+      "frames": [
+        "enemy_ranged_v2.fall.0",
+        "enemy_ranged_v2.fall.1",
+        "enemy_ranged_v2.fall.2",
+        "enemy_ranged_v2.fall.3",
+        "enemy_ranged_v2.fall.4",
+        "enemy_ranged_v2.fall.5",
+        "enemy_ranged_v2.fall.6"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "enemy_ranged_v2.crouch_idle": {
+      "frames": [
+        "enemy_ranged_v2.crouch_idle.0",
+        "enemy_ranged_v2.crouch_idle.1",
+        "enemy_ranged_v2.crouch_idle.2",
+        "enemy_ranged_v2.crouch_idle.3",
+        "enemy_ranged_v2.crouch_idle.4",
+        "enemy_ranged_v2.crouch_idle.5",
+        "enemy_ranged_v2.crouch_idle.6",
+        "enemy_ranged_v2.crouch_idle.7",
+        "enemy_ranged_v2.crouch_idle.8"
+      ],
+      "fps": 6,
+      "loop": true
+    },
+    "enemy_ranged_v2.crouch_walk": {
+      "frames": [
+        "enemy_ranged_v2.crouch_walk.0",
+        "enemy_ranged_v2.crouch_walk.1",
+        "enemy_ranged_v2.crouch_walk.2",
+        "enemy_ranged_v2.crouch_walk.3",
+        "enemy_ranged_v2.crouch_walk.4",
+        "enemy_ranged_v2.crouch_walk.5",
+        "enemy_ranged_v2.crouch_walk.6",
+        "enemy_ranged_v2.crouch_walk.7",
+        "enemy_ranged_v2.crouch_walk.8"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "enemy_ranged_v2.crouch_shoot": {
+      "frames": [
+        "enemy_ranged_v2.crouch_shoot.0",
+        "enemy_ranged_v2.crouch_shoot.1",
+        "enemy_ranged_v2.crouch_shoot.2",
+        "enemy_ranged_v2.crouch_shoot.3",
+        "enemy_ranged_v2.crouch_shoot.4",
+        "enemy_ranged_v2.crouch_shoot.5",
+        "enemy_ranged_v2.crouch_shoot.6",
+        "enemy_ranged_v2.crouch_shoot.7",
+        "enemy_ranged_v2.crouch_shoot.8"
+      ],
+      "fps": 14,
+      "loop": true
+    },
+    "enemy_ranged_v2.hit": {
+      "frames": [
+        "enemy_ranged_v2.hit.0",
+        "enemy_ranged_v2.hit.1",
+        "enemy_ranged_v2.hit.2",
+        "enemy_ranged_v2.hit.3",
+        "enemy_ranged_v2.hit.4",
+        "enemy_ranged_v2.hit.5",
+        "enemy_ranged_v2.hit.6"
+      ],
+      "fps": 12,
+      "loop": false
+    },
+    "enemy_ranged_v2.death": {
+      "frames": [
+        "enemy_ranged_v2.death.0",
+        "enemy_ranged_v2.death.1",
+        "enemy_ranged_v2.death.2",
+        "enemy_ranged_v2.death.3",
+        "enemy_ranged_v2.death.4",
+        "enemy_ranged_v2.death.5",
+        "enemy_ranged_v2.death.6",
+        "enemy_ranged_v2.death.7",
+        "enemy_ranged_v2.death.8"
+      ],
+      "fps": 9,
+      "loop": false
+    },
+    "enemy_ranged_v3.idle": {
+      "frames": [
+        "enemy_ranged_v3.idle.0",
+        "enemy_ranged_v3.idle.1",
+        "enemy_ranged_v3.idle.2",
+        "enemy_ranged_v3.idle.3",
+        "enemy_ranged_v3.idle.4",
+        "enemy_ranged_v3.idle.5",
+        "enemy_ranged_v3.idle.6",
+        "enemy_ranged_v3.idle.7"
+      ],
+      "fps": 6,
+      "loop": true
+    },
+    "enemy_ranged_v3.walk": {
+      "frames": [
+        "enemy_ranged_v3.walk.0",
+        "enemy_ranged_v3.walk.1",
+        "enemy_ranged_v3.walk.2",
+        "enemy_ranged_v3.walk.3",
+        "enemy_ranged_v3.walk.4",
+        "enemy_ranged_v3.walk.5",
+        "enemy_ranged_v3.walk.6",
+        "enemy_ranged_v3.walk.7",
+        "enemy_ranged_v3.walk.8"
+      ],
+      "fps": 9,
+      "loop": true
+    },
+    "enemy_ranged_v3.run": {
+      "frames": [
+        "enemy_ranged_v3.run.0",
+        "enemy_ranged_v3.run.1",
+        "enemy_ranged_v3.run.2",
+        "enemy_ranged_v3.run.3",
+        "enemy_ranged_v3.run.4",
+        "enemy_ranged_v3.run.5",
+        "enemy_ranged_v3.run.6",
+        "enemy_ranged_v3.run.7",
+        "enemy_ranged_v3.run.8"
+      ],
+      "fps": 12,
+      "loop": true
+    },
+    "enemy_ranged_v3.shoot": {
+      "frames": [
+        "enemy_ranged_v3.shoot.0",
+        "enemy_ranged_v3.shoot.1",
+        "enemy_ranged_v3.shoot.2",
+        "enemy_ranged_v3.shoot.3",
+        "enemy_ranged_v3.shoot.4",
+        "enemy_ranged_v3.shoot.5",
+        "enemy_ranged_v3.shoot.6",
+        "enemy_ranged_v3.shoot.7",
+        "enemy_ranged_v3.shoot.8",
+        "enemy_ranged_v3.shoot.9",
+        "enemy_ranged_v3.shoot.10"
+      ],
+      "fps": 14,
+      "loop": true
+    },
+    "enemy_ranged_v3.run_shoot": {
+      "frames": [
+        "enemy_ranged_v3.run_shoot.0",
+        "enemy_ranged_v3.run_shoot.1",
+        "enemy_ranged_v3.run_shoot.2",
+        "enemy_ranged_v3.run_shoot.3",
+        "enemy_ranged_v3.run_shoot.4",
+        "enemy_ranged_v3.run_shoot.5",
+        "enemy_ranged_v3.run_shoot.6",
+        "enemy_ranged_v3.run_shoot.7",
+        "enemy_ranged_v3.run_shoot.8",
+        "enemy_ranged_v3.run_shoot.9"
+      ],
+      "fps": 12,
+      "loop": true
+    },
+    "enemy_ranged_v3.jump": {
+      "frames": [
+        "enemy_ranged_v3.jump.0",
+        "enemy_ranged_v3.jump.1",
+        "enemy_ranged_v3.jump.2",
+        "enemy_ranged_v3.jump.3",
+        "enemy_ranged_v3.jump.4",
+        "enemy_ranged_v3.jump.5",
+        "enemy_ranged_v3.jump.6",
+        "enemy_ranged_v3.jump.7"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "enemy_ranged_v3.fall": {
+      "frames": [
+        "enemy_ranged_v3.fall.0",
+        "enemy_ranged_v3.fall.1",
+        "enemy_ranged_v3.fall.2",
+        "enemy_ranged_v3.fall.3",
+        "enemy_ranged_v3.fall.4",
+        "enemy_ranged_v3.fall.5",
+        "enemy_ranged_v3.fall.6"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "enemy_ranged_v3.crouch_idle": {
+      "frames": [
+        "enemy_ranged_v3.crouch_idle.0",
+        "enemy_ranged_v3.crouch_idle.1",
+        "enemy_ranged_v3.crouch_idle.2",
+        "enemy_ranged_v3.crouch_idle.3",
+        "enemy_ranged_v3.crouch_idle.4",
+        "enemy_ranged_v3.crouch_idle.5",
+        "enemy_ranged_v3.crouch_idle.6",
+        "enemy_ranged_v3.crouch_idle.7",
+        "enemy_ranged_v3.crouch_idle.8"
+      ],
+      "fps": 6,
+      "loop": true
+    },
+    "enemy_ranged_v3.crouch_walk": {
+      "frames": [
+        "enemy_ranged_v3.crouch_walk.0",
+        "enemy_ranged_v3.crouch_walk.1",
+        "enemy_ranged_v3.crouch_walk.2",
+        "enemy_ranged_v3.crouch_walk.3",
+        "enemy_ranged_v3.crouch_walk.4",
+        "enemy_ranged_v3.crouch_walk.5",
+        "enemy_ranged_v3.crouch_walk.6",
+        "enemy_ranged_v3.crouch_walk.7",
+        "enemy_ranged_v3.crouch_walk.8"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "enemy_ranged_v3.crouch_shoot": {
+      "frames": [
+        "enemy_ranged_v3.crouch_shoot.0",
+        "enemy_ranged_v3.crouch_shoot.1",
+        "enemy_ranged_v3.crouch_shoot.2",
+        "enemy_ranged_v3.crouch_shoot.3",
+        "enemy_ranged_v3.crouch_shoot.4",
+        "enemy_ranged_v3.crouch_shoot.5",
+        "enemy_ranged_v3.crouch_shoot.6",
+        "enemy_ranged_v3.crouch_shoot.7",
+        "enemy_ranged_v3.crouch_shoot.8"
+      ],
+      "fps": 14,
+      "loop": true
+    },
+    "enemy_ranged_v3.hit": {
+      "frames": [
+        "enemy_ranged_v3.hit.0",
+        "enemy_ranged_v3.hit.1",
+        "enemy_ranged_v3.hit.2",
+        "enemy_ranged_v3.hit.3",
+        "enemy_ranged_v3.hit.4",
+        "enemy_ranged_v3.hit.5",
+        "enemy_ranged_v3.hit.6"
+      ],
+      "fps": 12,
+      "loop": false
+    },
+    "enemy_ranged_v3.death": {
+      "frames": [
+        "enemy_ranged_v3.death.0",
+        "enemy_ranged_v3.death.1",
+        "enemy_ranged_v3.death.2",
+        "enemy_ranged_v3.death.3",
+        "enemy_ranged_v3.death.4",
+        "enemy_ranged_v3.death.5",
+        "enemy_ranged_v3.death.6",
+        "enemy_ranged_v3.death.7",
+        "enemy_ranged_v3.death.8"
+      ],
+      "fps": 9,
+      "loop": false
+    },
+    "enemy_ranged_strong_v0.idle": {
+      "frames": [
+        "enemy_ranged_strong_v0.idle.0",
+        "enemy_ranged_strong_v0.idle.1",
+        "enemy_ranged_strong_v0.idle.2",
+        "enemy_ranged_strong_v0.idle.3",
+        "enemy_ranged_strong_v0.idle.4",
+        "enemy_ranged_strong_v0.idle.5",
+        "enemy_ranged_strong_v0.idle.6",
+        "enemy_ranged_strong_v0.idle.7"
+      ],
+      "fps": 6,
+      "loop": true
+    },
+    "enemy_ranged_strong_v0.walk": {
+      "frames": [
+        "enemy_ranged_strong_v0.walk.0",
+        "enemy_ranged_strong_v0.walk.1",
+        "enemy_ranged_strong_v0.walk.2",
+        "enemy_ranged_strong_v0.walk.3",
+        "enemy_ranged_strong_v0.walk.4",
+        "enemy_ranged_strong_v0.walk.5",
+        "enemy_ranged_strong_v0.walk.6",
+        "enemy_ranged_strong_v0.walk.7",
+        "enemy_ranged_strong_v0.walk.8"
+      ],
+      "fps": 9,
+      "loop": true
+    },
+    "enemy_ranged_strong_v0.run": {
+      "frames": [
+        "enemy_ranged_strong_v0.run.0",
+        "enemy_ranged_strong_v0.run.1",
+        "enemy_ranged_strong_v0.run.2",
+        "enemy_ranged_strong_v0.run.3",
+        "enemy_ranged_strong_v0.run.4",
+        "enemy_ranged_strong_v0.run.5",
+        "enemy_ranged_strong_v0.run.6",
+        "enemy_ranged_strong_v0.run.7",
+        "enemy_ranged_strong_v0.run.8"
+      ],
+      "fps": 12,
+      "loop": true
+    },
+    "enemy_ranged_strong_v0.shoot": {
+      "frames": [
+        "enemy_ranged_strong_v0.shoot.0",
+        "enemy_ranged_strong_v0.shoot.1",
+        "enemy_ranged_strong_v0.shoot.2",
+        "enemy_ranged_strong_v0.shoot.3",
+        "enemy_ranged_strong_v0.shoot.4",
+        "enemy_ranged_strong_v0.shoot.5",
+        "enemy_ranged_strong_v0.shoot.6",
+        "enemy_ranged_strong_v0.shoot.7",
+        "enemy_ranged_strong_v0.shoot.8",
+        "enemy_ranged_strong_v0.shoot.9",
+        "enemy_ranged_strong_v0.shoot.10"
+      ],
+      "fps": 14,
+      "loop": true
+    },
+    "enemy_ranged_strong_v0.run_shoot": {
+      "frames": [
+        "enemy_ranged_strong_v0.run_shoot.0",
+        "enemy_ranged_strong_v0.run_shoot.1",
+        "enemy_ranged_strong_v0.run_shoot.2",
+        "enemy_ranged_strong_v0.run_shoot.3",
+        "enemy_ranged_strong_v0.run_shoot.4",
+        "enemy_ranged_strong_v0.run_shoot.5",
+        "enemy_ranged_strong_v0.run_shoot.6",
+        "enemy_ranged_strong_v0.run_shoot.7",
+        "enemy_ranged_strong_v0.run_shoot.8",
+        "enemy_ranged_strong_v0.run_shoot.9"
+      ],
+      "fps": 12,
+      "loop": true
+    },
+    "enemy_ranged_strong_v0.jump": {
+      "frames": [
+        "enemy_ranged_strong_v0.jump.0",
+        "enemy_ranged_strong_v0.jump.1",
+        "enemy_ranged_strong_v0.jump.2",
+        "enemy_ranged_strong_v0.jump.3",
+        "enemy_ranged_strong_v0.jump.4",
+        "enemy_ranged_strong_v0.jump.5",
+        "enemy_ranged_strong_v0.jump.6",
+        "enemy_ranged_strong_v0.jump.7"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "enemy_ranged_strong_v0.fall": {
+      "frames": [
+        "enemy_ranged_strong_v0.fall.0",
+        "enemy_ranged_strong_v0.fall.1",
+        "enemy_ranged_strong_v0.fall.2",
+        "enemy_ranged_strong_v0.fall.3",
+        "enemy_ranged_strong_v0.fall.4",
+        "enemy_ranged_strong_v0.fall.5",
+        "enemy_ranged_strong_v0.fall.6"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "enemy_ranged_strong_v0.crouch_idle": {
+      "frames": [
+        "enemy_ranged_strong_v0.crouch_idle.0",
+        "enemy_ranged_strong_v0.crouch_idle.1",
+        "enemy_ranged_strong_v0.crouch_idle.2",
+        "enemy_ranged_strong_v0.crouch_idle.3",
+        "enemy_ranged_strong_v0.crouch_idle.4",
+        "enemy_ranged_strong_v0.crouch_idle.5",
+        "enemy_ranged_strong_v0.crouch_idle.6",
+        "enemy_ranged_strong_v0.crouch_idle.7",
+        "enemy_ranged_strong_v0.crouch_idle.8"
+      ],
+      "fps": 6,
+      "loop": true
+    },
+    "enemy_ranged_strong_v0.crouch_walk": {
+      "frames": [
+        "enemy_ranged_strong_v0.crouch_walk.0",
+        "enemy_ranged_strong_v0.crouch_walk.1",
+        "enemy_ranged_strong_v0.crouch_walk.2",
+        "enemy_ranged_strong_v0.crouch_walk.3",
+        "enemy_ranged_strong_v0.crouch_walk.4",
+        "enemy_ranged_strong_v0.crouch_walk.5",
+        "enemy_ranged_strong_v0.crouch_walk.6",
+        "enemy_ranged_strong_v0.crouch_walk.7",
+        "enemy_ranged_strong_v0.crouch_walk.8"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "enemy_ranged_strong_v0.crouch_shoot": {
+      "frames": [
+        "enemy_ranged_strong_v0.crouch_shoot.0",
+        "enemy_ranged_strong_v0.crouch_shoot.1",
+        "enemy_ranged_strong_v0.crouch_shoot.2",
+        "enemy_ranged_strong_v0.crouch_shoot.3",
+        "enemy_ranged_strong_v0.crouch_shoot.4",
+        "enemy_ranged_strong_v0.crouch_shoot.5",
+        "enemy_ranged_strong_v0.crouch_shoot.6",
+        "enemy_ranged_strong_v0.crouch_shoot.7",
+        "enemy_ranged_strong_v0.crouch_shoot.8"
+      ],
+      "fps": 14,
+      "loop": true
+    },
+    "enemy_ranged_strong_v0.hit": {
+      "frames": [
+        "enemy_ranged_strong_v0.hit.0",
+        "enemy_ranged_strong_v0.hit.1",
+        "enemy_ranged_strong_v0.hit.2",
+        "enemy_ranged_strong_v0.hit.3",
+        "enemy_ranged_strong_v0.hit.4",
+        "enemy_ranged_strong_v0.hit.5",
+        "enemy_ranged_strong_v0.hit.6"
+      ],
+      "fps": 12,
+      "loop": false
+    },
+    "enemy_ranged_strong_v0.death": {
+      "frames": [
+        "enemy_ranged_strong_v0.death.0",
+        "enemy_ranged_strong_v0.death.1",
+        "enemy_ranged_strong_v0.death.2",
+        "enemy_ranged_strong_v0.death.3",
+        "enemy_ranged_strong_v0.death.4",
+        "enemy_ranged_strong_v0.death.5",
+        "enemy_ranged_strong_v0.death.6",
+        "enemy_ranged_strong_v0.death.7",
+        "enemy_ranged_strong_v0.death.8"
+      ],
+      "fps": 9,
+      "loop": false
+    },
+    "enemy_ranged_strong_v1.idle": {
+      "frames": [
+        "enemy_ranged_strong_v1.idle.0",
+        "enemy_ranged_strong_v1.idle.1",
+        "enemy_ranged_strong_v1.idle.2",
+        "enemy_ranged_strong_v1.idle.3",
+        "enemy_ranged_strong_v1.idle.4",
+        "enemy_ranged_strong_v1.idle.5",
+        "enemy_ranged_strong_v1.idle.6",
+        "enemy_ranged_strong_v1.idle.7"
+      ],
+      "fps": 6,
+      "loop": true
+    },
+    "enemy_ranged_strong_v1.walk": {
+      "frames": [
+        "enemy_ranged_strong_v1.walk.0",
+        "enemy_ranged_strong_v1.walk.1",
+        "enemy_ranged_strong_v1.walk.2",
+        "enemy_ranged_strong_v1.walk.3",
+        "enemy_ranged_strong_v1.walk.4",
+        "enemy_ranged_strong_v1.walk.5",
+        "enemy_ranged_strong_v1.walk.6",
+        "enemy_ranged_strong_v1.walk.7",
+        "enemy_ranged_strong_v1.walk.8"
+      ],
+      "fps": 9,
+      "loop": true
+    },
+    "enemy_ranged_strong_v1.run": {
+      "frames": [
+        "enemy_ranged_strong_v1.run.0",
+        "enemy_ranged_strong_v1.run.1",
+        "enemy_ranged_strong_v1.run.2",
+        "enemy_ranged_strong_v1.run.3",
+        "enemy_ranged_strong_v1.run.4",
+        "enemy_ranged_strong_v1.run.5",
+        "enemy_ranged_strong_v1.run.6",
+        "enemy_ranged_strong_v1.run.7",
+        "enemy_ranged_strong_v1.run.8"
+      ],
+      "fps": 12,
+      "loop": true
+    },
+    "enemy_ranged_strong_v1.shoot": {
+      "frames": [
+        "enemy_ranged_strong_v1.shoot.0",
+        "enemy_ranged_strong_v1.shoot.1",
+        "enemy_ranged_strong_v1.shoot.2",
+        "enemy_ranged_strong_v1.shoot.3",
+        "enemy_ranged_strong_v1.shoot.4",
+        "enemy_ranged_strong_v1.shoot.5",
+        "enemy_ranged_strong_v1.shoot.6",
+        "enemy_ranged_strong_v1.shoot.7",
+        "enemy_ranged_strong_v1.shoot.8",
+        "enemy_ranged_strong_v1.shoot.9",
+        "enemy_ranged_strong_v1.shoot.10"
+      ],
+      "fps": 14,
+      "loop": true
+    },
+    "enemy_ranged_strong_v1.run_shoot": {
+      "frames": [
+        "enemy_ranged_strong_v1.run_shoot.0",
+        "enemy_ranged_strong_v1.run_shoot.1",
+        "enemy_ranged_strong_v1.run_shoot.2",
+        "enemy_ranged_strong_v1.run_shoot.3",
+        "enemy_ranged_strong_v1.run_shoot.4",
+        "enemy_ranged_strong_v1.run_shoot.5",
+        "enemy_ranged_strong_v1.run_shoot.6",
+        "enemy_ranged_strong_v1.run_shoot.7",
+        "enemy_ranged_strong_v1.run_shoot.8",
+        "enemy_ranged_strong_v1.run_shoot.9"
+      ],
+      "fps": 12,
+      "loop": true
+    },
+    "enemy_ranged_strong_v1.jump": {
+      "frames": [
+        "enemy_ranged_strong_v1.jump.0",
+        "enemy_ranged_strong_v1.jump.1",
+        "enemy_ranged_strong_v1.jump.2",
+        "enemy_ranged_strong_v1.jump.3",
+        "enemy_ranged_strong_v1.jump.4",
+        "enemy_ranged_strong_v1.jump.5",
+        "enemy_ranged_strong_v1.jump.6",
+        "enemy_ranged_strong_v1.jump.7"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "enemy_ranged_strong_v1.fall": {
+      "frames": [
+        "enemy_ranged_strong_v1.fall.0",
+        "enemy_ranged_strong_v1.fall.1",
+        "enemy_ranged_strong_v1.fall.2",
+        "enemy_ranged_strong_v1.fall.3",
+        "enemy_ranged_strong_v1.fall.4",
+        "enemy_ranged_strong_v1.fall.5",
+        "enemy_ranged_strong_v1.fall.6"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "enemy_ranged_strong_v1.crouch_idle": {
+      "frames": [
+        "enemy_ranged_strong_v1.crouch_idle.0",
+        "enemy_ranged_strong_v1.crouch_idle.1",
+        "enemy_ranged_strong_v1.crouch_idle.2",
+        "enemy_ranged_strong_v1.crouch_idle.3",
+        "enemy_ranged_strong_v1.crouch_idle.4",
+        "enemy_ranged_strong_v1.crouch_idle.5",
+        "enemy_ranged_strong_v1.crouch_idle.6",
+        "enemy_ranged_strong_v1.crouch_idle.7",
+        "enemy_ranged_strong_v1.crouch_idle.8"
+      ],
+      "fps": 6,
+      "loop": true
+    },
+    "enemy_ranged_strong_v1.crouch_walk": {
+      "frames": [
+        "enemy_ranged_strong_v1.crouch_walk.0",
+        "enemy_ranged_strong_v1.crouch_walk.1",
+        "enemy_ranged_strong_v1.crouch_walk.2",
+        "enemy_ranged_strong_v1.crouch_walk.3",
+        "enemy_ranged_strong_v1.crouch_walk.4",
+        "enemy_ranged_strong_v1.crouch_walk.5",
+        "enemy_ranged_strong_v1.crouch_walk.6",
+        "enemy_ranged_strong_v1.crouch_walk.7",
+        "enemy_ranged_strong_v1.crouch_walk.8"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "enemy_ranged_strong_v1.crouch_shoot": {
+      "frames": [
+        "enemy_ranged_strong_v1.crouch_shoot.0",
+        "enemy_ranged_strong_v1.crouch_shoot.1",
+        "enemy_ranged_strong_v1.crouch_shoot.2",
+        "enemy_ranged_strong_v1.crouch_shoot.3",
+        "enemy_ranged_strong_v1.crouch_shoot.4",
+        "enemy_ranged_strong_v1.crouch_shoot.5",
+        "enemy_ranged_strong_v1.crouch_shoot.6",
+        "enemy_ranged_strong_v1.crouch_shoot.7",
+        "enemy_ranged_strong_v1.crouch_shoot.8"
+      ],
+      "fps": 14,
+      "loop": true
+    },
+    "enemy_ranged_strong_v1.hit": {
+      "frames": [
+        "enemy_ranged_strong_v1.hit.0",
+        "enemy_ranged_strong_v1.hit.1",
+        "enemy_ranged_strong_v1.hit.2",
+        "enemy_ranged_strong_v1.hit.3",
+        "enemy_ranged_strong_v1.hit.4",
+        "enemy_ranged_strong_v1.hit.5",
+        "enemy_ranged_strong_v1.hit.6"
+      ],
+      "fps": 12,
+      "loop": false
+    },
+    "enemy_ranged_strong_v1.death": {
+      "frames": [
+        "enemy_ranged_strong_v1.death.0",
+        "enemy_ranged_strong_v1.death.1",
+        "enemy_ranged_strong_v1.death.2",
+        "enemy_ranged_strong_v1.death.3",
+        "enemy_ranged_strong_v1.death.4",
+        "enemy_ranged_strong_v1.death.5",
+        "enemy_ranged_strong_v1.death.6",
+        "enemy_ranged_strong_v1.death.7",
+        "enemy_ranged_strong_v1.death.8"
+      ],
+      "fps": 9,
+      "loop": false
+    },
+    "enemy_ranged_strong_v2.idle": {
+      "frames": [
+        "enemy_ranged_strong_v2.idle.0",
+        "enemy_ranged_strong_v2.idle.1",
+        "enemy_ranged_strong_v2.idle.2",
+        "enemy_ranged_strong_v2.idle.3",
+        "enemy_ranged_strong_v2.idle.4",
+        "enemy_ranged_strong_v2.idle.5",
+        "enemy_ranged_strong_v2.idle.6",
+        "enemy_ranged_strong_v2.idle.7"
+      ],
+      "fps": 6,
+      "loop": true
+    },
+    "enemy_ranged_strong_v2.walk": {
+      "frames": [
+        "enemy_ranged_strong_v2.walk.0",
+        "enemy_ranged_strong_v2.walk.1",
+        "enemy_ranged_strong_v2.walk.2",
+        "enemy_ranged_strong_v2.walk.3",
+        "enemy_ranged_strong_v2.walk.4",
+        "enemy_ranged_strong_v2.walk.5",
+        "enemy_ranged_strong_v2.walk.6",
+        "enemy_ranged_strong_v2.walk.7",
+        "enemy_ranged_strong_v2.walk.8"
+      ],
+      "fps": 9,
+      "loop": true
+    },
+    "enemy_ranged_strong_v2.run": {
+      "frames": [
+        "enemy_ranged_strong_v2.run.0",
+        "enemy_ranged_strong_v2.run.1",
+        "enemy_ranged_strong_v2.run.2",
+        "enemy_ranged_strong_v2.run.3",
+        "enemy_ranged_strong_v2.run.4",
+        "enemy_ranged_strong_v2.run.5",
+        "enemy_ranged_strong_v2.run.6",
+        "enemy_ranged_strong_v2.run.7",
+        "enemy_ranged_strong_v2.run.8"
+      ],
+      "fps": 12,
+      "loop": true
+    },
+    "enemy_ranged_strong_v2.shoot": {
+      "frames": [
+        "enemy_ranged_strong_v2.shoot.0",
+        "enemy_ranged_strong_v2.shoot.1",
+        "enemy_ranged_strong_v2.shoot.2",
+        "enemy_ranged_strong_v2.shoot.3",
+        "enemy_ranged_strong_v2.shoot.4",
+        "enemy_ranged_strong_v2.shoot.5",
+        "enemy_ranged_strong_v2.shoot.6",
+        "enemy_ranged_strong_v2.shoot.7",
+        "enemy_ranged_strong_v2.shoot.8",
+        "enemy_ranged_strong_v2.shoot.9",
+        "enemy_ranged_strong_v2.shoot.10"
+      ],
+      "fps": 14,
+      "loop": true
+    },
+    "enemy_ranged_strong_v2.run_shoot": {
+      "frames": [
+        "enemy_ranged_strong_v2.run_shoot.0",
+        "enemy_ranged_strong_v2.run_shoot.1",
+        "enemy_ranged_strong_v2.run_shoot.2",
+        "enemy_ranged_strong_v2.run_shoot.3",
+        "enemy_ranged_strong_v2.run_shoot.4",
+        "enemy_ranged_strong_v2.run_shoot.5",
+        "enemy_ranged_strong_v2.run_shoot.6",
+        "enemy_ranged_strong_v2.run_shoot.7",
+        "enemy_ranged_strong_v2.run_shoot.8",
+        "enemy_ranged_strong_v2.run_shoot.9"
+      ],
+      "fps": 12,
+      "loop": true
+    },
+    "enemy_ranged_strong_v2.jump": {
+      "frames": [
+        "enemy_ranged_strong_v2.jump.0",
+        "enemy_ranged_strong_v2.jump.1",
+        "enemy_ranged_strong_v2.jump.2",
+        "enemy_ranged_strong_v2.jump.3",
+        "enemy_ranged_strong_v2.jump.4",
+        "enemy_ranged_strong_v2.jump.5",
+        "enemy_ranged_strong_v2.jump.6",
+        "enemy_ranged_strong_v2.jump.7"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "enemy_ranged_strong_v2.fall": {
+      "frames": [
+        "enemy_ranged_strong_v2.fall.0",
+        "enemy_ranged_strong_v2.fall.1",
+        "enemy_ranged_strong_v2.fall.2",
+        "enemy_ranged_strong_v2.fall.3",
+        "enemy_ranged_strong_v2.fall.4",
+        "enemy_ranged_strong_v2.fall.5",
+        "enemy_ranged_strong_v2.fall.6"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "enemy_ranged_strong_v2.crouch_idle": {
+      "frames": [
+        "enemy_ranged_strong_v2.crouch_idle.0",
+        "enemy_ranged_strong_v2.crouch_idle.1",
+        "enemy_ranged_strong_v2.crouch_idle.2",
+        "enemy_ranged_strong_v2.crouch_idle.3",
+        "enemy_ranged_strong_v2.crouch_idle.4",
+        "enemy_ranged_strong_v2.crouch_idle.5",
+        "enemy_ranged_strong_v2.crouch_idle.6",
+        "enemy_ranged_strong_v2.crouch_idle.7",
+        "enemy_ranged_strong_v2.crouch_idle.8"
+      ],
+      "fps": 6,
+      "loop": true
+    },
+    "enemy_ranged_strong_v2.crouch_walk": {
+      "frames": [
+        "enemy_ranged_strong_v2.crouch_walk.0",
+        "enemy_ranged_strong_v2.crouch_walk.1",
+        "enemy_ranged_strong_v2.crouch_walk.2",
+        "enemy_ranged_strong_v2.crouch_walk.3",
+        "enemy_ranged_strong_v2.crouch_walk.4",
+        "enemy_ranged_strong_v2.crouch_walk.5",
+        "enemy_ranged_strong_v2.crouch_walk.6",
+        "enemy_ranged_strong_v2.crouch_walk.7",
+        "enemy_ranged_strong_v2.crouch_walk.8"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "enemy_ranged_strong_v2.crouch_shoot": {
+      "frames": [
+        "enemy_ranged_strong_v2.crouch_shoot.0",
+        "enemy_ranged_strong_v2.crouch_shoot.1",
+        "enemy_ranged_strong_v2.crouch_shoot.2",
+        "enemy_ranged_strong_v2.crouch_shoot.3",
+        "enemy_ranged_strong_v2.crouch_shoot.4",
+        "enemy_ranged_strong_v2.crouch_shoot.5",
+        "enemy_ranged_strong_v2.crouch_shoot.6",
+        "enemy_ranged_strong_v2.crouch_shoot.7",
+        "enemy_ranged_strong_v2.crouch_shoot.8"
+      ],
+      "fps": 14,
+      "loop": true
+    },
+    "enemy_ranged_strong_v2.hit": {
+      "frames": [
+        "enemy_ranged_strong_v2.hit.0",
+        "enemy_ranged_strong_v2.hit.1",
+        "enemy_ranged_strong_v2.hit.2",
+        "enemy_ranged_strong_v2.hit.3",
+        "enemy_ranged_strong_v2.hit.4",
+        "enemy_ranged_strong_v2.hit.5",
+        "enemy_ranged_strong_v2.hit.6"
+      ],
+      "fps": 12,
+      "loop": false
+    },
+    "enemy_ranged_strong_v2.death": {
+      "frames": [
+        "enemy_ranged_strong_v2.death.0",
+        "enemy_ranged_strong_v2.death.1",
+        "enemy_ranged_strong_v2.death.2",
+        "enemy_ranged_strong_v2.death.3",
+        "enemy_ranged_strong_v2.death.4",
+        "enemy_ranged_strong_v2.death.5",
+        "enemy_ranged_strong_v2.death.6",
+        "enemy_ranged_strong_v2.death.7",
+        "enemy_ranged_strong_v2.death.8"
+      ],
+      "fps": 9,
+      "loop": false
+    },
+    "enemy_ranged_strong_v3.idle": {
+      "frames": [
+        "enemy_ranged_strong_v3.idle.0",
+        "enemy_ranged_strong_v3.idle.1",
+        "enemy_ranged_strong_v3.idle.2",
+        "enemy_ranged_strong_v3.idle.3",
+        "enemy_ranged_strong_v3.idle.4",
+        "enemy_ranged_strong_v3.idle.5",
+        "enemy_ranged_strong_v3.idle.6",
+        "enemy_ranged_strong_v3.idle.7"
+      ],
+      "fps": 6,
+      "loop": true
+    },
+    "enemy_ranged_strong_v3.walk": {
+      "frames": [
+        "enemy_ranged_strong_v3.walk.0",
+        "enemy_ranged_strong_v3.walk.1",
+        "enemy_ranged_strong_v3.walk.2",
+        "enemy_ranged_strong_v3.walk.3",
+        "enemy_ranged_strong_v3.walk.4",
+        "enemy_ranged_strong_v3.walk.5",
+        "enemy_ranged_strong_v3.walk.6",
+        "enemy_ranged_strong_v3.walk.7",
+        "enemy_ranged_strong_v3.walk.8"
+      ],
+      "fps": 9,
+      "loop": true
+    },
+    "enemy_ranged_strong_v3.run": {
+      "frames": [
+        "enemy_ranged_strong_v3.run.0",
+        "enemy_ranged_strong_v3.run.1",
+        "enemy_ranged_strong_v3.run.2",
+        "enemy_ranged_strong_v3.run.3",
+        "enemy_ranged_strong_v3.run.4",
+        "enemy_ranged_strong_v3.run.5",
+        "enemy_ranged_strong_v3.run.6",
+        "enemy_ranged_strong_v3.run.7",
+        "enemy_ranged_strong_v3.run.8"
+      ],
+      "fps": 12,
+      "loop": true
+    },
+    "enemy_ranged_strong_v3.shoot": {
+      "frames": [
+        "enemy_ranged_strong_v3.shoot.0",
+        "enemy_ranged_strong_v3.shoot.1",
+        "enemy_ranged_strong_v3.shoot.2",
+        "enemy_ranged_strong_v3.shoot.3",
+        "enemy_ranged_strong_v3.shoot.4",
+        "enemy_ranged_strong_v3.shoot.5",
+        "enemy_ranged_strong_v3.shoot.6",
+        "enemy_ranged_strong_v3.shoot.7",
+        "enemy_ranged_strong_v3.shoot.8",
+        "enemy_ranged_strong_v3.shoot.9",
+        "enemy_ranged_strong_v3.shoot.10"
+      ],
+      "fps": 14,
+      "loop": true
+    },
+    "enemy_ranged_strong_v3.run_shoot": {
+      "frames": [
+        "enemy_ranged_strong_v3.run_shoot.0",
+        "enemy_ranged_strong_v3.run_shoot.1",
+        "enemy_ranged_strong_v3.run_shoot.2",
+        "enemy_ranged_strong_v3.run_shoot.3",
+        "enemy_ranged_strong_v3.run_shoot.4",
+        "enemy_ranged_strong_v3.run_shoot.5",
+        "enemy_ranged_strong_v3.run_shoot.6",
+        "enemy_ranged_strong_v3.run_shoot.7",
+        "enemy_ranged_strong_v3.run_shoot.8",
+        "enemy_ranged_strong_v3.run_shoot.9"
+      ],
+      "fps": 12,
+      "loop": true
+    },
+    "enemy_ranged_strong_v3.jump": {
+      "frames": [
+        "enemy_ranged_strong_v3.jump.0",
+        "enemy_ranged_strong_v3.jump.1",
+        "enemy_ranged_strong_v3.jump.2",
+        "enemy_ranged_strong_v3.jump.3",
+        "enemy_ranged_strong_v3.jump.4",
+        "enemy_ranged_strong_v3.jump.5",
+        "enemy_ranged_strong_v3.jump.6",
+        "enemy_ranged_strong_v3.jump.7"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "enemy_ranged_strong_v3.fall": {
+      "frames": [
+        "enemy_ranged_strong_v3.fall.0",
+        "enemy_ranged_strong_v3.fall.1",
+        "enemy_ranged_strong_v3.fall.2",
+        "enemy_ranged_strong_v3.fall.3",
+        "enemy_ranged_strong_v3.fall.4",
+        "enemy_ranged_strong_v3.fall.5",
+        "enemy_ranged_strong_v3.fall.6"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "enemy_ranged_strong_v3.crouch_idle": {
+      "frames": [
+        "enemy_ranged_strong_v3.crouch_idle.0",
+        "enemy_ranged_strong_v3.crouch_idle.1",
+        "enemy_ranged_strong_v3.crouch_idle.2",
+        "enemy_ranged_strong_v3.crouch_idle.3",
+        "enemy_ranged_strong_v3.crouch_idle.4",
+        "enemy_ranged_strong_v3.crouch_idle.5",
+        "enemy_ranged_strong_v3.crouch_idle.6",
+        "enemy_ranged_strong_v3.crouch_idle.7",
+        "enemy_ranged_strong_v3.crouch_idle.8"
+      ],
+      "fps": 6,
+      "loop": true
+    },
+    "enemy_ranged_strong_v3.crouch_walk": {
+      "frames": [
+        "enemy_ranged_strong_v3.crouch_walk.0",
+        "enemy_ranged_strong_v3.crouch_walk.1",
+        "enemy_ranged_strong_v3.crouch_walk.2",
+        "enemy_ranged_strong_v3.crouch_walk.3",
+        "enemy_ranged_strong_v3.crouch_walk.4",
+        "enemy_ranged_strong_v3.crouch_walk.5",
+        "enemy_ranged_strong_v3.crouch_walk.6",
+        "enemy_ranged_strong_v3.crouch_walk.7",
+        "enemy_ranged_strong_v3.crouch_walk.8"
+      ],
+      "fps": 8,
+      "loop": true
+    },
+    "enemy_ranged_strong_v3.crouch_shoot": {
+      "frames": [
+        "enemy_ranged_strong_v3.crouch_shoot.0",
+        "enemy_ranged_strong_v3.crouch_shoot.1",
+        "enemy_ranged_strong_v3.crouch_shoot.2",
+        "enemy_ranged_strong_v3.crouch_shoot.3",
+        "enemy_ranged_strong_v3.crouch_shoot.4",
+        "enemy_ranged_strong_v3.crouch_shoot.5",
+        "enemy_ranged_strong_v3.crouch_shoot.6",
+        "enemy_ranged_strong_v3.crouch_shoot.7",
+        "enemy_ranged_strong_v3.crouch_shoot.8"
+      ],
+      "fps": 14,
+      "loop": true
+    },
+    "enemy_ranged_strong_v3.hit": {
+      "frames": [
+        "enemy_ranged_strong_v3.hit.0",
+        "enemy_ranged_strong_v3.hit.1",
+        "enemy_ranged_strong_v3.hit.2",
+        "enemy_ranged_strong_v3.hit.3",
+        "enemy_ranged_strong_v3.hit.4",
+        "enemy_ranged_strong_v3.hit.5",
+        "enemy_ranged_strong_v3.hit.6"
+      ],
+      "fps": 12,
+      "loop": false
+    },
+    "enemy_ranged_strong_v3.death": {
+      "frames": [
+        "enemy_ranged_strong_v3.death.0",
+        "enemy_ranged_strong_v3.death.1",
+        "enemy_ranged_strong_v3.death.2",
+        "enemy_ranged_strong_v3.death.3",
+        "enemy_ranged_strong_v3.death.4",
+        "enemy_ranged_strong_v3.death.5",
+        "enemy_ranged_strong_v3.death.6",
+        "enemy_ranged_strong_v3.death.7",
+        "enemy_ranged_strong_v3.death.8"
+      ],
+      "fps": 9,
+      "loop": false
     }
   }
 }

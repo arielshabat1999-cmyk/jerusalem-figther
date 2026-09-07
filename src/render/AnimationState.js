@@ -27,6 +27,23 @@ export function getEnemyAnimState(enemy) {
   if (enemy.dead) return 'death';
   if (enemy.lastHitTimer > 0) return 'hit';
   if (!enemy.onGround) return enemy.vy < 0 ? 'jump' : 'fall';
+  // Ranged enemies (Desert Raider art) ship separate crouch_idle/crouch_walk/
+  // crouch_shoot and run_shoot sequences, so they get the finer-grained split
+  // the player already uses — same underlying signals (crouching/vx/
+  // lastFireTimer), just a more specific state string for rendering. Melee
+  // enemies are untouched below: identical branch order and states as before.
+  if (enemy.kind === 'ranged') {
+    if (enemy.crouching) {
+      if (enemy.lastFireTimer > 0) return 'crouch_shoot';
+      return Math.abs(enemy.vx) > 1 ? 'crouch_walk' : 'crouch_idle';
+    }
+    if (enemy.lastFireTimer > 0) {
+      return Math.abs(enemy.vx) > RUN_SPEED_THRESHOLD ? 'run_shoot' : 'shoot';
+    }
+    if (Math.abs(enemy.vx) > RUN_SPEED_THRESHOLD) return 'run';
+    if (Math.abs(enemy.vx) > 1) return 'walk';
+    return 'idle';
+  }
   if (enemy.lastFireTimer > 0) return 'shoot';
   if (enemy.crouching) return 'crouch';
   if (Math.abs(enemy.vx) > RUN_SPEED_THRESHOLD) return 'run';
