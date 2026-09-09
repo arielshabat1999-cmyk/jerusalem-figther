@@ -5,10 +5,11 @@ let nextId = 1;
 // Enemy instances one at a time as the door releases them (spec section 23).
 // An empty `enemySpecs` array is a deliberate empty door.
 export class SpawnDoor {
-  constructor(x, floorY, enemySpecs) {
+  constructor(x, floorY, enemySpecs, floorIndex) {
     this.id = nextId++;
     this.x = x;
     this.floorY = floorY; // world y of the floor the door sits on (feet level)
+    this.floorIndex = floorIndex; // 0/1/2 elevation index — gates activation to the player's current active floor
     this.enemySpecs = enemySpecs;
     this.state = 'idle'; // idle -> opening -> releasing -> closing -> resolved
     this.timer = 0;

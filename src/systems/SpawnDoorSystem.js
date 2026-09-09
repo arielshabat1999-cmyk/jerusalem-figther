@@ -6,7 +6,15 @@ import { SPAWN_DOOR } from '../config/GameConfig.js';
 export class SpawnDoorSystem {
   // `getActiveEnemyCount` and `spawnEnemy(kind, strong, x, floorY)` are
   // injected so this system stays ignorant of Enemy's constructor shape.
-  update(dt, doors, { progressionFrontier, backtrackLimit, getActiveEnemyCount, activeEnemyLimit, spawnEnemy }) {
+  // `currentFloor` gates activation to the player's current active floor
+  // (stage-generation spec section 5/6/18: "enemies spawn only on the
+  // player's CURRENT ACTIVE FLOOR" / "only activate doors belonging to
+  // currentFloor") — a door on another floor simply never leaves 'idle'
+  // while the player is elsewhere, and still resolves safely via the
+  // forward-only backtrack check below once it falls behind.
+  update(dt, doors, { progressionFrontier, backtrackLimit, currentFloor, getActiveEnemyCount, activeEnemyLimit, spawnEnemy }) {
+    let openDoorCount = doors.filter((d) => d.state === 'opening' || d.state === 'releasing').length;
+
     for (const door of doors) {
       if (door.state === 'resolved') continue;
 
@@ -19,10 +27,14 @@ export class SpawnDoorSystem {
           door.state = 'resolved';
           continue;
         }
-        if (door.x <= progressionFrontier + SPAWN_DOOR.activationAheadDistance) {
+        const onActiveFloor = door.floorIndex === undefined || door.floorIndex === currentFloor;
+        const inRange = door.x <= progressionFrontier + SPAWN_DOOR.activationAheadDistance;
+        const roomToOpen = openDoorCount < SPAWN_DOOR.maxConcurrentOpenDoors;
+        if (onActiveFloor && inRange && roomToOpen) {
           door.state = 'opening';
           door.timer = SPAWN_DOOR.doorOpenCloseSec;
           door.open = true;
+          openDoorCount += 1;
         }
         continue;
       }

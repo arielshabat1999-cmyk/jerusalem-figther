@@ -5,9 +5,18 @@ function randInt(min, max) {
   return min + Math.floor(Math.random() * (max - min + 1));
 }
 
-// Coins pop, settle under gravity, then magnet toward the player and
-// auto-collect within a radius (spec section 18) — deliberately forgiving
-// so pickup feels good on a touchscreen without pixel-perfect contact.
+function randRange([min, max]) {
+  return min + Math.random() * (max - min);
+}
+
+// Every dropped coin does a brief pop/bounce, then homes straight toward
+// the player's current position unconditionally — no magnet radius, no
+// distance cutoff. Homing ignores gravity and all level geometry (a coin
+// dropped on another floor, above/below the player, or across the block
+// still gets there — it is never trapped by a wall or a floor solid), and
+// continuously re-targets the player every frame so it keeps following if
+// the player moves mid-flight. Collection happens exactly once, right
+// here, the instant a coin gets within COINS.collectRadius.
 export class CoinSystem {
   constructor() {
     this.coins = [];
@@ -15,18 +24,32 @@ export class CoinSystem {
 
   spawnFromRange(x, y, [min, max]) {
     const value = randInt(min, max);
-    this.coins.push(new Coin(x, y, value, COINS.popVelocity));
+    const popDuration = randRange(COINS.popDurationRange);
+    this.coins.push(new Coin(x, y, value, COINS.popVelocity, popDuration));
   }
 
-  update(dt, player, world, onCollect) {
+  update(dt, player, onCollect) {
     for (const coin of this.coins) {
       if (coin.collected) continue;
       coin.age += dt;
 
-      const cx = player.x + player.w / 2;
-      const cy = player.y + player.h / 2;
-      const dx = cx - coin.x;
-      const dy = cy - coin.y;
+      if (!coin.homing) {
+        if (coin.age >= coin.popDuration) {
+          coin.homing = true;
+        } else {
+          // Brief cosmetic pop/bounce only — no world collision, so it can
+          // never get stuck on geometry even during this short window.
+          coin.vy += WORLD.gravity * dt;
+          coin.x += coin.vx * dt;
+          coin.y += coin.vy * dt;
+          continue;
+        }
+      }
+
+      const targetX = player.x + player.w / 2;
+      const targetY = player.y + player.h / 2;
+      const dx = targetX - coin.x;
+      const dy = targetY - coin.y;
       const dist = Math.hypot(dx, dy);
 
       if (dist <= COINS.collectRadius) {
@@ -35,15 +58,9 @@ export class CoinSystem {
         continue;
       }
 
-      if (dist <= COINS.magnetRadius) {
-        coin.x += (dx / dist) * COINS.magnetSpeed * dt;
-        coin.y += (dy / dist) * COINS.magnetSpeed * dt;
-      } else {
-        coin.vy = Math.min(400, coin.vy + WORLD.gravity * dt);
-        coin.x += coin.vx * dt;
-        coin.y += coin.vy * dt;
-        if (world.isGroundedAt(coin.x, coin.y, 4, 4)) coin.vy = 0;
-      }
+      coin.homingSpeed = Math.min(COINS.homingMaxSpeed, coin.homingSpeed + COINS.homingAccelPerSec * dt);
+      coin.x += (dx / dist) * coin.homingSpeed * dt;
+      coin.y += (dy / dist) * coin.homingSpeed * dt;
     }
     this.coins = this.coins.filter((c) => !c.collected);
   }

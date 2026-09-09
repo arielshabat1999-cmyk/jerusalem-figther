@@ -212,7 +212,7 @@ function update(dt) {
     },
   });
 
-  coinSystem.update(dt, player, world, (value) => save.addCoins(value));
+  coinSystem.update(dt, player, (value) => save.addCoins(value));
 
   for (const ex of explosions) ex.t += dt;
   explosions = explosions.filter((ex) => ex.t < ex.maxT);

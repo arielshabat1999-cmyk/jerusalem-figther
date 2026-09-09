@@ -194,13 +194,22 @@ export const SPAWN_DOOR = {
   enemyExitDelaySec: 0.55,
   emptyDoorChance: 0.18,
   doorOpenCloseSec: 0.5,
+  // "Usually 1 active spawn door at a time, occasionally 2, never every
+  // visible door" (stage-generation spec section 7) — this is the runtime
+  // backstop; the block generator itself also only rarely places 2 doors
+  // in the same combat block (see BlockLibrary hardEncounterChance).
+  maxConcurrentOpenDoors: 2,
 };
 
+// Coins have no attraction range: every dropped coin does a brief pop/
+// bounce, then homes toward the player unconditionally regardless of
+// distance, floor, or obstacles in between (see CoinSystem.js).
 export const COINS = {
-  magnetRadius: 100,
-  collectRadius: 20,
-  magnetSpeed: 520,
+  collectRadius: 26, // world px — collected once the coin gets this close
+  popDurationRange: [0.15, 0.3], // sec — brief visual pop/bounce before homing begins
   popVelocity: -180,
+  homingMaxSpeed: 640,
+  homingAccelPerSec: 2400, // how fast homing speed ramps up from a standstill
 };
 
 export const CRATE = {
@@ -236,7 +245,11 @@ export const LEVEL = {
   floorHeight: 160,
   stairSpan: 130,
   clearZoneWidth: 230,
-  entryApproachWidth: 260,
-  exitApproachWidth: 260,
+  // Stage-generation pacing (stage-generation spec sections 1/3/17), derived
+  // from PLAYER.moveSpeed so "~N seconds of traversal" translates to actual
+  // world-pixel widths: at 210px/s, 3-4s -> 630-840px, 4-7s -> 840-1470px.
+  entranceWidthRange: [630, 840],
+  exitWidthRange: [630, 840],
+  stairGapRange: [840, 1470],
 };
 

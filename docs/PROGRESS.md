@@ -66,7 +66,7 @@ history on this repo before the `main` reset for the old code if needed.
 | 32 | No checkpoints | DONE | Save schema has no mid-stage position field. |
 | 33 | Coins/score survive death | DONE | `SaveSystem` state untouched by stage restart. |
 | 34 | Weapons/upgrades survive death + browser restart | DONE | Persisted to `localStorage`, versioned schema (`SAVE.schemaVersion`). |
-| 35 | Coin magnet | DONE | `CoinSystem` magnet radius + auto-collect radius; logic-verified, not unit-tested. |
+| 35 | Coin magnet | DONE (superseded) | No longer a radius-based magnet — every coin unconditionally homes to the player after a brief pop (see "Coin pickup rework" below); still auto-collects with no pixel-perfect contact required. |
 | 36 | Crates drop coins | DONE | `onCrateHit` spawns a coin on destroy. |
 | 37 | Inventory available mid-gameplay, doesn't pause | DONE | `InventoryUI` never calls `loop.setPaused`; only the Pause button does. |
 | 38 | Player vulnerable while Inventory open | DONE | No invulnerability tied to inventory state. |
@@ -95,6 +95,48 @@ history on this repo before the `main` reset for the old code if needed.
   the authored ground geometry, causing an unrecoverable fall. Fixed by
   clamping forward movement at the (locked) exit, mirroring the existing
   backtrack clamp.
+
+## Stage-generation rebuild (ENTRANCE/MIDDLE/EXIT block system)
+
+Replaced the chunk-based generator with an explicit three-category block
+system (`src/systems/BlockLibrary.js` + rewritten `StageBuilder.js`):
+
+- ENTRANCE and EXIT are always flat, stairless, ~3-4s (630-840px) safety
+  zones with no enemy doors.
+- MIDDLE blocks are randomly chosen flat-combat, flat-obstacle, or
+  single-floor-change stairs blocks, each carrying explicit metadata
+  (`id/type/entryFloor/exitFloor/floorsVisible/stairs/enemyDoors`).
+- A stair transition never appears within 630-840px of ENTRANCE, is never
+  followed by another stair inside 840-1470px (4-7s), is never the block
+  directly before EXIT, and every stage is walked back down to FLOOR_MIN
+  before EXIT (stairs only ever change the floor by exactly 1 level).
+- Enemies now spawn only on the player's tracked `currentFloor`
+  (`StageSystem._updateCurrentFloor`, updated only on a genuine stable
+  landing, never mid-air/mid-ramp); `SpawnDoorSystem` gates door activation
+  by `door.floorIndex === currentFloor` and caps concurrently-open doors at
+  `SPAWN_DOOR.maxConcurrentOpenDoors` (2).
+- `validateStage()` re-checks the full connectivity/pacing/floor-skip
+  checklist and throws with a descriptive error if a future change to the
+  generator breaks an invariant.
+- Verified: all of stages 1-60 generate deterministically and pass
+  validation (scratch test); live mobile smoke test confirmed floor-0
+  doors activate/resolve correctly while floor-1/2 doors on the same stage
+  stay `idle` until the player's `currentFloor` actually reaches them, and
+  a stage-4 run showed a full floor0->floor1->floor0 round trip via stairs
+  with `currentFloor` tracking landing exactly on each floor's Y.
+
+## Coin pickup rework (always-homes, no magnet radius)
+
+`CoinSystem`/`Coin` no longer have a magnet radius or distance cutoff.
+Every dropped coin does a brief (0.15-0.3s) gravity pop/bounce, then homes
+unconditionally toward the player's current position — no gravity, no
+level-geometry collision (so it can never get stuck behind a wall or on
+another floor), continuously re-targeting so it still catches a moving
+player, accelerating smoothly to `COINS.homingMaxSpeed`. Collected exactly
+once at `COINS.collectRadius` (~26px). Verified with a standalone scratch
+test: coin spawned far away / above / below / while the player is moving
+away, and several coins at once — every case collects exactly once with no
+leftover coins.
 
 ## Suggested next steps (not blocking, but worth tracking)
 

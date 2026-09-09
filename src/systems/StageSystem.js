@@ -3,7 +3,10 @@ import { buildStageLayout } from './StageBuilder.js';
 import { SpawnDoor } from '../entities/SpawnDoor.js';
 import { Crate } from '../entities/Crate.js';
 import { Enemy } from '../entities/Enemy.js';
-import { elevationY } from './ChunkLibrary.js';
+import { elevationY, ELEVATION_GROUND, ELEVATION_FLOOR2, ELEVATION_ROOF } from './ChunkLibrary.js';
+
+const FLOOR_LEVELS = [ELEVATION_GROUND, ELEVATION_FLOOR2, ELEVATION_ROOF];
+const FLOOR_LAND_TOLERANCE = 2; // px — must be an exact/near-exact landing, never a mid-air/mid-ramp overlap
 
 const CRATE_SIZE = 40;
 const ENEMY_SIZE = { ranged: { w: 30, h: 60 }, melee: { w: 30, h: 58 } };
@@ -24,6 +27,7 @@ export class StageSystem {
     this.exitOpen = false;
     this.exitTriggered = false;
     this.backtrackLimit = PLAYER.backtrackDistanceMeters * WORLD.pixelsPerMeter;
+    this.currentFloor = ELEVATION_GROUND;
   }
 
   loadStage(stageNumber) {
@@ -34,11 +38,12 @@ export class StageSystem {
     this.crates = this.layout.crateSpecs.map(
       (c) => new Crate(c.x - CRATE_SIZE / 2, LEVEL.groundY - CRATE_SIZE, CRATE_SIZE, CRATE_SIZE, c.type, c.destructible)
     );
-    this.doors = this.layout.doorSpecs.map((d) => new SpawnDoor(d.x, elevationY(d.elevation), d.enemySpecs));
+    this.doors = this.layout.doorSpecs.map((d) => new SpawnDoor(d.x, elevationY(d.elevation), d.enemySpecs, d.elevation));
     this.enemies = [];
     this.cleared = false;
     this.exitOpen = false;
     this.exitTriggered = false;
+    this.currentFloor = ELEVATION_GROUND;
 
     this._syncDynamicSolids();
   }
@@ -66,9 +71,12 @@ export class StageSystem {
     }
     this.enemies = this.enemies.filter((e) => !e.dead || e.deathTimer > 0);
 
+    this._updateCurrentFloor(player);
+
     spawnDoorSystem.update(dt, this.doors, {
       progressionFrontier: player.progressionX,
       backtrackLimit: this.backtrackLimit,
+      currentFloor: this.currentFloor,
       getActiveEnemyCount: () => this.getActiveEnemyCount(),
       activeEnemyLimit: this.layout.activeEnemyLimit,
       spawnEnemy: (kind, strong, x, floorY) => this.spawnEnemy(kind, strong, x, floorY),
@@ -111,6 +119,25 @@ export class StageSystem {
       return 'exit';
     }
     return null;
+  }
+
+  // Tracks the player's active floor (stage-generation spec section 14):
+  // only updates on a genuine stable landing — `player.onGround` this frame
+  // AND the feet sitting within a couple px of one of the three known floor
+  // Ys — never merely because a jump's arc briefly overlapped another
+  // elevation, and never mid-ramp (a stair ramp's intermediate Y values
+  // don't match any floor's exact Y, so walking across one leaves
+  // `currentFloor` untouched until the player actually lands on the floor
+  // at the far end).
+  _updateCurrentFloor(player) {
+    if (!player.onGround) return;
+    const feetY = player.y + player.h;
+    for (const floor of FLOOR_LEVELS) {
+      if (Math.abs(feetY - elevationY(floor)) <= FLOOR_LAND_TOLERANCE) {
+        this.currentFloor = floor;
+        return;
+      }
+    }
   }
 
   _syncDynamicSolids() {
