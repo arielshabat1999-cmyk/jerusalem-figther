@@ -152,10 +152,16 @@ function buildBodyBlocks(stage, rng) {
   }
 
   // A stair (forced descent or otherwise) must never be the block
-  // immediately before EXIT, and the final wave block must never be
-  // either.
+  // immediately before EXIT, the final wave block must never be either,
+  // and — same as the main loop's own isLastSlot guard already
+  // enforces for every combat block IT places — an enemy door must never
+  // end up directly beside EXIT either. The "guarantee at least one
+  // combat block" fallback above is the one place that can violate this:
+  // it always sets withCombat:true regardless of position, since at the
+  // time it runs there's no later block yet for it to land next to.
+  const hasEnemyDoor = (b) => !!b && Object.values(b.meta.enemyDoors).some((list) => list.length > 0);
   const last = blocks[blocks.length - 1];
-  if (last && (last.meta.type === 'middle_stairs' || last.meta.type === 'middle_final_wave')) {
+  if (last && (last.meta.type === 'middle_stairs' || last.meta.type === 'middle_final_wave' || hasEnemyDoor(last))) {
     blocks.push(buildFlatMiddleBlock(rng, currentFloor, { withCombat: false, hardEncounter: false, enemyBudget: 0 }));
   }
 

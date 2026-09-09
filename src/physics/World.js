@@ -75,6 +75,17 @@ export class World {
     }
 
     // Horizontal movement + wall collision (includes destructible crates).
+    // While actively on a stair, a solid's landing platform sits flush
+    // against the ramp's far end — an actor's LEADING edge (x + w) reaches
+    // that platform before its ramp-interpolated feet (tracked from its
+    // CENTER x) have climbed all the way up to the platform's height, so
+    // the normal 4px "am I standing on it" tolerance would wrongly read
+    // that as walking into a wall and permanently freeze the actor mid-
+    // climb. Use the same generous tolerance the ramp-snap logic already
+    // uses (STAIR_SNAP_TOLERANCE) whenever onStair is set, so the last
+    // stretch of the climb/descent isn't blocked; the vertical resolution
+    // below still only ever lands the actor on an actual surface.
+    const wallTolerance = actor.onStair ? STAIR_SNAP_TOLERANCE : 4;
     const prevX = actor.x;
     actor.x += actor.vx * dt;
     for (const s of this.allSolids()) {
@@ -82,7 +93,7 @@ export class World {
         // Only treat as a wall block if the actor isn't mostly above it
         // (i.e. not simply standing/landing on top of the solid).
         const feet = actor.y + actor.h;
-        if (feet > s.y + 4) {
+        if (feet > s.y + wallTolerance) {
           actor.x = prevX;
           actor.vx = 0;
           break;

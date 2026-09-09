@@ -40,14 +40,16 @@ function makeMeta({ type, entryFloor, exitFloor, stairsMeta = [], doorFloors = {
   };
 }
 
-// ENTRANCE: flat, no stairs, no combat, ~3-4s of clear traversal. Light
-// decoration only — represented here as a couple of non-blocking crate
-// props, never a door and never solid cover that could read as "the player
-// is already fighting."
+// ENTRANCE: flat, no stairs, no combat, ~3-4s of clear traversal. Never a
+// door, and — despite crateOffsets existing as a chunk option — never a
+// prop here either: every crate StageSystem creates is added to
+// world.dynamicSolids and physically blocks movement regardless of its
+// destructible flag, so placing one in the one block explicitly meant to
+// guarantee unobstructed traversal would silently wall the player in right
+// at stage start. Kept empty on purpose.
 export function buildEntranceBlock(rng) {
   const width = randRange(rng, LEVEL.entranceWidthRange);
-  const crateOffsets = rng() < 0.5 ? [width * (0.55 + rng() * 0.2)] : [];
-  const chunk = streetChunk(width, ELEVATION_GROUND, { crateOffsets });
+  const chunk = streetChunk(width, ELEVATION_GROUND, {});
   return { chunk, meta: makeMeta({ type: 'entrance', entryFloor: ELEVATION_GROUND, exitFloor: ELEVATION_GROUND }) };
 }
 
