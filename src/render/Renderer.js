@@ -1,5 +1,4 @@
 import { PlaceholderAdapter } from './PlaceholderAdapter.js';
-import { lightingStateForStage } from '../config/GameConfig.js';
 
 // Render-only: reads entity state, draws it, mutates nothing. Swapping
 // `adapter` for a future sprite-based one is the only change needed to move
@@ -23,8 +22,14 @@ export class Renderer {
   render(state) {
     const { ctx, adapter } = this;
     const { camera, stage, player, projectiles, coins, explosions, viewportWidth, viewportHeight } = state;
+    // The canvas is cleared to fully transparent and left that way — the
+    // fixed image in #bgLayer (index.html/style.css) is now the current
+    // global backdrop, rendered behind the canvas via DOM stacking, so it
+    // shows through wherever nothing else is drawn. The old parallax
+    // sky/haze background (adapter.drawBackground) is temporarily not
+    // called; it's untouched in ArtAdapter/PlaceholderAdapter so it can be
+    // re-enabled later without rewriting it.
     ctx.clearRect(0, 0, viewportWidth, viewportHeight);
-    adapter.drawBackground(ctx, camera, viewportWidth, viewportHeight, lightingStateForStage(stage.stageNumber));
 
     for (const s of stage.layout.solids) adapter.drawSolid(ctx, s, camera);
     for (const st of stage.layout.stairs) adapter.drawStair(ctx, st, camera);

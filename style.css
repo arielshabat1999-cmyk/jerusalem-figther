@@ -25,7 +25,19 @@ button { font: inherit; }
   background: #9bcbe1;
   touch-action: none;
 }
-#gameCanvas { display: block; width: 100%; height: 100%; touch-action: none; }
+/* Temporary fixed global backdrop (visual only — no parallax, no scroll
+   with the camera). `cover` fills the viewport while preserving the
+   image's aspect ratio, cropping rather than stretching/squashing;
+   `center center` keeps the crop centered on both axes; `no-repeat` rules
+   out tiling. Sits behind the canvas via DOM order + z-index. */
+#bgLayer {
+  position: absolute; inset: 0; z-index: 0;
+  background-image: url('assets/art/runtime/backgrounds/global_backdrop.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+#gameCanvas { position: relative; z-index: 1; display: block; width: 100%; height: 100%; touch-action: none; }
 
 /* HUD */
 #hud {
