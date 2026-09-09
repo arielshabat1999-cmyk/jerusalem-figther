@@ -1,6 +1,7 @@
 import { PLAYER, CHARACTER_SCALE, MUZZLE } from '../config/GameConfig.js';
 import { WEAPONS, defaultUpgradeLevels } from '../config/EconomyConfig.js';
 import { WeaponRuntime, shouldFire } from '../systems/WeaponSystem.js';
+import { DEV_RUNTIME } from '../dev/GameBalance.js';
 
 const SHOOT_POSE_SEC = 0.12; // how long the "shoot" animation state reads as active after a shot
 
@@ -161,7 +162,8 @@ export class Player {
 
   applyDamage(amount) {
     if (this.invulnTimer > 0 || !this.alive) return;
-    let remaining = amount;
+    if (DEV_RUNTIME.player.godMode) return; // dev-only, off by default
+    let remaining = amount * DEV_RUNTIME.player.damageTakenMult;
     if (this.shield > 0) {
       const absorbed = Math.min(this.shield, remaining);
       this.shield -= absorbed;

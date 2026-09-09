@@ -1,3 +1,5 @@
+import { DEV_RUNTIME } from '../dev/GameBalance.js';
+
 const MAX_TRAVEL = 1800;
 const BULLET_H = 5;
 
@@ -21,7 +23,7 @@ export class ProjectileSystem {
       x: spec.x,
       startX: spec.x,
       y: spec.y,
-      vx: spec.vx,
+      vx: spec.vx * DEV_RUNTIME.gameFeel.projectileSpeedMult,
       damage: spec.damage,
       isExplosive: !!spec.isExplosive,
       blastRadius: spec.blastRadius || 0,

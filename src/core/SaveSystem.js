@@ -1,5 +1,6 @@
 import { SAVE } from '../config/GameConfig.js';
 import { WEAPONS, defaultUpgradeLevels } from '../config/EconomyConfig.js';
+import { DEV_RUNTIME } from '../dev/GameBalance.js';
 
 // Versioned localStorage schema (spec section 15/16/34). Add a migration
 // branch in `migrate()` whenever schemaVersion increments — never mutate
@@ -93,7 +94,7 @@ export class SaveSystem {
   }
 
   addCoins(n) {
-    this.data.totalCoins += n;
+    this.data.totalCoins += Math.round(n * DEV_RUNTIME.economy.coinMultiplier);
     this.persist();
   }
 
@@ -105,7 +106,7 @@ export class SaveSystem {
   }
 
   addScore(n) {
-    this.data.score += n;
+    this.data.score += Math.round(n * DEV_RUNTIME.economy.scoreMultiplier);
     this.persist();
   }
 

@@ -1,4 +1,5 @@
 import { WEAPONS, UPGRADE_EFFECTS, defaultUpgradeLevels } from '../config/EconomyConfig.js';
+import { DEV_RUNTIME } from '../dev/GameBalance.js';
 
 // Applies the 3 independent upgrade categories on top of a base weapon
 // definition. Each category's level value is the FINAL multiplier for that
@@ -40,7 +41,19 @@ export class WeaponRuntime {
   }
 
   update(dt) {
+    // Recomputed every frame (cheap — a few multiplications) rather than
+    // only on construction/upgrade, so a dev-dashboard edit to a weapon's
+    // base damage/fire-rate/magazine or an upgrade's effect takes effect on
+    // the very next shot, exactly as the live-update spec requires.
+    this.stats = getEffectiveWeaponStats(this.weaponId, this.upgradeLevels);
+    this.ammoInMag = Math.min(this.ammoInMag, this.stats.magSize);
+
     if (this.cooldownTimer > 0) this.cooldownTimer -= dt;
+    if (DEV_RUNTIME.player.noReload) {
+      this.reloading = false;
+      this.ammoInMag = this.stats.magSize;
+      return;
+    }
     if (this.reloading) {
       this.reloadTimer -= dt;
       if (this.reloadTimer <= 0) {
@@ -65,6 +78,10 @@ export class WeaponRuntime {
   }
 
   consumeShot() {
+    if (DEV_RUNTIME.player.infiniteAmmo) {
+      this.cooldownTimer = this.stats.fireCooldownSec;
+      return;
+    }
     this.ammoInMag -= 1;
     this.cooldownTimer = this.stats.fireCooldownSec;
     if (this.ammoInMag <= 0) this.startReload();

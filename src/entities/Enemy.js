@@ -1,5 +1,6 @@
 import { ENEMIES } from '../config/GameConfig.js';
 import { ENEMY_TIERS } from '../config/EconomyConfig.js';
+import { DEV_RUNTIME } from '../dev/GameBalance.js';
 
 const HIT_POSE_SEC = 0.18;
 let nextId = 1;
@@ -32,7 +33,7 @@ export class Enemy {
     const base = ENEMIES[kind];
     this.maxHp = tierCfg.hp;
     this.hp = this.maxHp;
-    this.moveSpeed = base.moveSpeed * tierCfg.speedMult;
+    this.moveSpeed = base.moveSpeed * tierCfg.speedMult * DEV_RUNTIME.gameFeel.enemySpeedMult;
     this.damage = base.damage * tierCfg.damageMult;
     this.scoreValue = tierCfg.scoreValue;
     this.coinDrop = [tierCfg.coinMin, tierCfg.coinMax];

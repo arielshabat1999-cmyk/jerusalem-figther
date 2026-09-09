@@ -27,6 +27,12 @@
     <button id="pauseBtn" class="iconBtn" aria-label="Pause">II</button>
   </div>
 
+  <!-- DEV / balance dashboard entry point. Hidden by default — main.js only
+       un-hides this and wires it up when ?dev=1 (or the remembered dev-mode
+       flag) is present; a normal player never sees it. Positioned on its
+       own, away from the HUD row and the bottom joystick/fire controls. -->
+  <button id="devBtn" class="devBtn" hidden aria-label="Developer panel">DEV</button>
+
   <div id="ammoBox">
     <span id="weaponName">Pistol</span>
     <span id="ammoCount">8/8</span>
@@ -67,6 +73,19 @@
       <h1>YOU DIED</h1>
       <p id="gameOverStage"></p>
       <button id="restartBtn" class="bigBtn">RESTART STAGE</button>
+    </div>
+  </div>
+
+  <!-- DEV dashboard overlay — content built entirely by src/dev/DevPanel.js.
+       Development only; never shown unless dev mode is on (see #devBtn). -->
+  <div id="devOverlay" class="overlay devOverlay" hidden>
+    <div class="panel devPanel">
+      <div class="panelHead">
+        <h1>DEV PANEL</h1>
+        <button id="closeDevBtn" class="iconBtn">X</button>
+      </div>
+      <div id="devTabs" class="devTabs"></div>
+      <div id="devTabContent" class="devTabContent"></div>
     </div>
   </div>
 </div>

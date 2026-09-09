@@ -137,3 +137,75 @@ button { font: inherit; }
 .weaponBtns { display: flex; gap: 6px; margin-bottom: 4px; }
 .upgradeRow { padding: 5px 0; font-size: 11px; }
 .upgradeRow button { padding: 5px 8px; font-size: 11px; }
+
+/* DEV dashboard — development only, never shown to normal players (see
+   src/dev/DevMode.js). Small fixed corner button; the panel itself is a
+   near-full-screen overlay with its own internal scroll so it works on
+   iPhone portrait without ever growing the page (no horizontal overflow,
+   safe-area aware, inputs sized to avoid iOS Safari's auto-zoom-on-focus). */
+.devBtn {
+  position: fixed;
+  top: max(6px, env(safe-area-inset-top));
+  right: 6px;
+  z-index: 15;
+  pointer-events: auto;
+  background: #2563eb; color: #fff; border: 1px solid rgba(255,255,255,.35);
+  border-radius: 8px; padding: 6px 10px; font-weight: 800; font-size: 11px; letter-spacing: .5px;
+}
+.devOverlay { z-index: 30; align-items: stretch; padding: max(8px, env(safe-area-inset-top)) 8px max(8px, env(safe-area-inset-bottom)); }
+.panel.devPanel {
+  width: 100%; max-width: 100%; height: 100%; max-height: 100%;
+  display: flex; flex-direction: column; padding: 14px 12px;
+}
+.devTabs {
+  display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 10px; flex: 0 0 auto;
+}
+.devTabs button {
+  padding: 8px 12px; border: none; border-radius: 8px; background: #262e33; color: #cfd6da;
+  font-weight: 700; font-size: 12px;
+}
+.devTabs button.active { background: #2563eb; color: #fff; }
+.devTabContent { flex: 1 1 auto; overflow-y: auto; -webkit-overflow-scrolling: touch; padding-bottom: 20px; }
+.devSection { margin-bottom: 18px; }
+.devSection h2 {
+  font-size: 13px; letter-spacing: .5px; margin: 0 0 8px; display: flex; align-items: center; justify-content: space-between;
+  color: #9fb3c8;
+}
+.devSection h2 button { font-size: 10px; padding: 4px 8px; background: #3a4046; color: #cfd6da; border: none; border-radius: 6px; font-weight: 700; }
+.devRow {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,.06); font-size: 12px;
+}
+.devRow.dirty { background: rgba(60,140,220,.10); }
+.devRow .devLabel { flex: 1 1 auto; min-width: 0; }
+.devRow .devLabel .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #3c8cdc; margin-right: 6px; }
+.devNumField { display: flex; align-items: center; gap: 4px; flex: 0 0 auto; }
+.devNumField button {
+  width: 28px; height: 28px; border: none; border-radius: 6px; background: #2f6f4f; color: #fff; font-weight: 800; font-size: 14px;
+}
+/* font-size >=16px on inputs stops iOS Safari auto-zooming the page on focus */
+.devNumField input {
+  width: 64px; text-align: center; font-size: 16px; padding: 5px 2px; border-radius: 6px;
+  border: 1px solid rgba(255,255,255,.2); background: #10151a; color: #fff;
+}
+.devToggleRow button {
+  padding: 8px 14px; border: none; border-radius: 8px; background: #3a4046; color: #cfd6da; font-weight: 700; font-size: 12px;
+}
+.devToggleRow button.on { background: #2f6f4f; color: #fff; }
+.devActionGrid { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+.devActionGrid button {
+  flex: 1 1 auto; min-width: 120px; padding: 12px 10px; border: none; border-radius: 10px;
+  background: #2563eb; color: #fff; font-weight: 800; font-size: 12px;
+}
+.devActionGrid button.danger { background: #b23b3b; }
+.devActionGrid button.warn { background: #b8862f; }
+.devPresetRow { display: flex; gap: 8px; flex-wrap: wrap; margin: 6px 0; }
+.devPresetRow input {
+  flex: 1 1 140px; font-size: 16px; padding: 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,.2);
+  background: #10151a; color: #fff;
+}
+.devJsonBox {
+  width: 100%; min-height: 160px; font-family: monospace; font-size: 11px; background: #10151a; color: #9fe89f;
+  border: 1px solid rgba(255,255,255,.2); border-radius: 8px; padding: 8px;
+}
+.devLiveStats { font-size: 12px; line-height: 1.6; background: #10151a; border-radius: 8px; padding: 10px; margin-bottom: 10px; }

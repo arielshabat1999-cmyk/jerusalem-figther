@@ -4,6 +4,7 @@ import { SpawnDoor } from '../entities/SpawnDoor.js';
 import { Crate } from '../entities/Crate.js';
 import { Enemy } from '../entities/Enemy.js';
 import { elevationY } from './ChunkLibrary.js';
+import { DEV_RUNTIME } from '../dev/GameBalance.js';
 
 const CRATE_SIZE = 40;
 const ENEMY_SIZE = { ranged: { w: 30, h: 60 }, melee: { w: 30, h: 58 } };
@@ -66,13 +67,15 @@ export class StageSystem {
     }
     this.enemies = this.enemies.filter((e) => !e.dead || e.deathTimer > 0);
 
-    spawnDoorSystem.update(dt, this.doors, {
-      progressionFrontier: player.progressionX,
-      backtrackLimit: this.backtrackLimit,
-      getActiveEnemyCount: () => this.getActiveEnemyCount(),
-      activeEnemyLimit: this.layout.activeEnemyLimit,
-      spawnEnemy: (kind, tier, x, floorY) => this.spawnEnemy(kind, tier, x, floorY),
-    });
+    if (!DEV_RUNTIME.spawns.paused) {
+      spawnDoorSystem.update(dt, this.doors, {
+        progressionFrontier: player.progressionX,
+        backtrackLimit: this.backtrackLimit,
+        getActiveEnemyCount: () => this.getActiveEnemyCount(),
+        activeEnemyLimit: DEV_RUNTIME.spawns.maxAliveOverride ?? this.layout.activeEnemyLimit,
+        spawnEnemy: (kind, tier, x, floorY) => this.spawnEnemy(kind, tier, x, floorY),
+      });
+    }
 
     if (!this.cleared) {
       const noActiveEnemies = this.enemies.every((e) => e.dead);

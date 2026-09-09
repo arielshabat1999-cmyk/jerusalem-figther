@@ -5,9 +5,16 @@ const STEP = 1 / 60;
 const MAX_FRAME = 0.25; // clamp to avoid spiral-of-death after tab throttling
 
 export class GameLoop {
-  constructor({ update, render }) {
+  // `getTimeScale` (optional, defaults to always-1) lets a dev tool speed
+  // up/slow down simulated time without changing the fixed physics step
+  // (STEP stays exactly 1/60 always, so physics stays numerically
+  // identical) and without touching requestAnimationFrame's own cadence,
+  // real-time-based save timers, or rendering — only how much *simulated*
+  // time each real frame accumulates.
+  constructor({ update, render, getTimeScale = () => 1 }) {
     this.update = update;
     this.render = render;
+    this.getTimeScale = getTimeScale;
     this.paused = false;
     this.accumulator = 0;
     this.lastTime = 0;
@@ -24,7 +31,7 @@ export class GameLoop {
       const frameSec = Math.min(MAX_FRAME, (now - this.lastTime) / 1000);
       this.lastTime = now;
       if (!this.paused) {
-        this.accumulator += frameSec;
+        this.accumulator += frameSec * this.getTimeScale();
         while (this.accumulator >= STEP) {
           this.update(STEP);
           this.accumulator -= STEP;

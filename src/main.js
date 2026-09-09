@@ -17,6 +17,10 @@ import { createArtAdapter } from './render/ArtAdapter.js';
 import { PlaceholderAdapter } from './render/PlaceholderAdapter.js';
 import { HUD } from './ui/HUD.js';
 import { InventoryUI } from './ui/InventoryUI.js';
+import { ENEMY_TIERS } from './config/EconomyConfig.js';
+import { isDevMode } from './dev/DevMode.js';
+import { DEV_RUNTIME } from './dev/GameBalance.js';
+import { DevPanel } from './dev/DevPanel.js';
 
 const save = new SaveSystem();
 const world = new World();
@@ -135,6 +139,7 @@ function advanceStage() {
   projectileSystem.projectiles = [];
   coinSystem.coins = [];
   hud.showToast(`STAGE ${next}`);
+  if (DEV_RUNTIME.economy.stageBonus) save.addCoins(DEV_RUNTIME.economy.stageBonus);
 }
 
 function awardEnemyDeaths() {
@@ -142,7 +147,12 @@ function awardEnemyDeaths() {
     if (e.dead && !e._awarded) {
       e._awarded = true;
       save.addScore(e.scoreValue);
-      coinSystem.spawnFromRange(e.x + e.w / 2, e.y + e.h / 2, e.coinDrop);
+      // Reads the LIVE tier reward range at the moment of death (not a
+      // value baked in at spawn time) so a dev-dashboard edit to an enemy
+      // tier's coin reward affects the very next enemy of that tier to die,
+      // exactly as the live-update spec requires.
+      const tierCfg = ENEMY_TIERS[e.tier];
+      coinSystem.spawnFromRange(e.x + e.w / 2, e.y + e.h / 2, [tierCfg.coinMin, tierCfg.coinMax]);
     }
   }
 }
@@ -160,6 +170,7 @@ function update(dt) {
   for (const enemy of stage.enemies) {
     enemy.tickTimers(dt);
     if (enemy.dead) continue;
+    if (DEV_RUNTIME.enemyAI.frozen) continue; // dev-only: skip AI + physics tick entirely, off by default
     if (enemy.kind === 'ranged') {
       updateRangedAI(enemy, dt, {
         player,
@@ -198,7 +209,7 @@ function update(dt) {
         player.applyDamage(damage);
         player.applyKnockback(dirSign > 0 ? player.x - 1 : player.x + 1);
       } else {
-        actor.applyDamage(damage, dirSign);
+        actor.applyDamage(DEV_RUNTIME.enemyAI.oneHitKill ? actor.hp + 1 : damage, dirSign);
         awardEnemyDeaths();
       }
     },
@@ -241,6 +252,7 @@ function render() {
     camera,
     stage,
     player,
+    world,
     projectiles: projectileSystem.projectiles,
     coins: coinSystem.coins,
     explosions,
@@ -251,5 +263,20 @@ function render() {
   if (inventoryUI.isOpen) inventoryUI.render();
 }
 
-const loop = new GameLoop({ update, render });
+const loop = new GameLoop({ update, render, getTimeScale: () => DEV_RUNTIME.gameFeel.timeScale });
 loop.start();
+
+// DEV / GOD MODE / BALANCE DASHBOARD — only ever constructed (and its DEV
+// button only ever shown) when isDevMode() is true (?dev=1, remembered in
+// its own localStorage key). Normal players never see any of this; nothing
+// here is reachable without that flag.
+if (isDevMode()) {
+  const devPanel = new DevPanel({
+    stage, player, world, save, coinSystem, projectileSystem, loop, camera, inventory,
+    respawnPlayerAt: (x, y) => player.respawnAt(x, y),
+    restartStage,
+    advanceStage,
+  });
+  document.getElementById('devBtn').hidden = false;
+  document.getElementById('devBtn').addEventListener('click', () => devPanel.toggle());
+}

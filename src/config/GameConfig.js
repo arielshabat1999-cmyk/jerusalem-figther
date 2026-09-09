@@ -157,6 +157,19 @@ export const STAGES = {
   curatedCount: 10,
 };
 
+// Stage-body generation knobs (spec: StageBuilder.buildBodyChunks), lifted
+// out of inline magic numbers into data so the dev dashboard's Stage tab
+// can tune them live without touching the generator's logic itself.
+export const STAGE_GEN = {
+  unitCountBase: 3,
+  unitCountPerStage: 0.5, // unitCount = min(unitCountCap, unitCountBase + floor(stage * unitCountPerStage))
+  unitCountCap: 10,
+  rooftopChanceBase: 0.15,
+  rooftopChancePerStage: 0.03,
+  rooftopChanceCap: 0.6,
+  obstacleChance: 0.25, // rolled against the remainder after rooftopChance
+};
+
 // Day -> sunset -> night progression (spec: lighting progression across
 // stages, art-pack: 3 lighting states). Cycles so procedural stage 11+
 // keeps rotating through all three rather than freezing on one.

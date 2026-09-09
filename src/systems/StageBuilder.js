@@ -1,4 +1,4 @@
-import { LEVEL, SPAWN_DOOR, STAGES } from '../config/GameConfig.js';
+import { LEVEL, SPAWN_DOOR, STAGES, STAGE_GEN } from '../config/GameConfig.js';
 import { ENEMY_TIER_ORDER, ENEMY_FIRST_STAGE, getStageComposition } from '../config/EconomyConfig.js';
 import { streetChunk, stairsChunk, elevatedCombatChunk, obstacleChunk, ELEVATION_GROUND, ELEVATION_FLOOR2 } from './ChunkLibrary.js';
 
@@ -94,13 +94,13 @@ function rooftopExcursionUnits(rng, stage, remaining) {
 }
 
 function buildBodyChunks(stage, rng, remaining) {
-  const unitCount = Math.min(10, 3 + Math.floor(stage / 2));
-  const rooftopChance = Math.min(0.6, 0.15 + stage * 0.03);
+  const unitCount = Math.min(STAGE_GEN.unitCountCap, STAGE_GEN.unitCountBase + Math.floor(stage * STAGE_GEN.unitCountPerStage));
+  const rooftopChance = Math.min(STAGE_GEN.rooftopChanceCap, STAGE_GEN.rooftopChanceBase + stage * STAGE_GEN.rooftopChancePerStage);
   const chunks = [];
   for (let i = 0; i < unitCount; i++) {
     const roll = rng();
     if (roll < rooftopChance) chunks.push(...rooftopExcursionUnits(rng, stage, remaining));
-    else if (roll < rooftopChance + 0.25) chunks.push(obstacleUnit(rng));
+    else if (roll < rooftopChance + STAGE_GEN.obstacleChance) chunks.push(obstacleUnit(rng));
     else chunks.push(groundCombatUnit(rng, stage, remaining));
   }
   return chunks;
