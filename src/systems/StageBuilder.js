@@ -1,4 +1,4 @@
-import { LEVEL, DIFFICULTY, STAGES } from '../config/GameConfig.js';
+import { LEVEL, STAGES, ENEMY_TIERS, SPAWN_DIRECTOR, getSpawnStageConfig } from '../config/GameConfig.js';
 import {
   FLOOR_MIN,
   FLOOR_MAX,
@@ -8,6 +8,8 @@ import {
   buildFlatMiddleBlock,
   buildObstacleMiddleBlock,
   buildStairsBlock,
+  buildFinalWaveBlock,
+  FINAL_WAVE_COMPOSITION,
 } from './BlockLibrary.js';
 
 // Deterministic PRNG so a given stage number always builds the same layout
@@ -24,6 +26,25 @@ function mulberry32(seed) {
   };
 }
 
+// Total threat-point budget (spawn-director spec section 11) the stage's
+// whole authored count table represents. StageBuilder doesn't decide WHAT
+// spawns (that's SpawnDirector.js at runtime) — it only needs this total so
+// each combat block's `enemyBudget` share, taken together, gets the
+// Director's per-stage counts roughly fully spent by stage end regardless
+// of exactly how many combat blocks this particular seed happens to place.
+function totalThreatBudget(stage) {
+  const { counts } = getSpawnStageConfig(stage);
+  let total = 0;
+  for (const tier of Object.keys(counts)) total += counts[tier] * ENEMY_TIERS[tier].threatCost;
+  // Stage 10's final wave (spec section 19) is guaranteed on top of the
+  // normal random spend — deduct its cost here so the stage's total spend
+  // still lands on the authored economy target instead of overshooting it.
+  if (stage === 10) {
+    for (const tier of FINAL_WAVE_COMPOSITION) total -= ENEMY_TIERS[tier].threatCost;
+  }
+  return Math.max(0, total);
+}
+
 // Builds the randomized MIDDLE-block sequence between ENTRANCE and EXIT
 // (stage-generation spec sections 8/9/13). This is the one place that
 // decides pacing:
@@ -38,6 +59,13 @@ function mulberry32(seed) {
 //   - the player is always walked back down to FLOOR_MIN before EXIT,
 //     because EXIT (and the base-ground solid StageBuilder wraps every
 //     stage in) only exists at street level.
+//
+// Each combat block's `enemyBudget` (spawn-director spec section 10/11) is
+// a share of `stageBudgetRemaining`, taken geometrically (a "hard
+// encounter" claims a bigger share than a normal one) so the total spent
+// across a stage's combat blocks converges close to the full authored
+// per-stage count table within just a handful of blocks, however many a
+// given stage/seed ends up placing — see SPAWN_DIRECTOR.zoneBudgetShare.
 function buildBodyBlocks(stage, rng) {
   const unitCount = Math.min(10, 3 + Math.floor(stage / 2));
   const stairChance = Math.min(0.5, 0.12 + stage * 0.025);
@@ -46,6 +74,8 @@ function buildBodyBlocks(stage, rng) {
   let currentFloor = FLOOR_MIN;
   let pxSinceLastStair = 0;
   let nextStairGap = randRange(rng, LEVEL.stairGapRange);
+  let stageBudgetRemaining = totalThreatBudget(stage);
+  let lastCombatBlock = null;
   const blocks = [];
 
   for (let i = 0; i < unitCount; i++) {
@@ -72,9 +102,47 @@ function buildBodyBlocks(stage, rng) {
     // Never seed a fight directly at the stage exit (spec section 1/9).
     const withCombat = !isLastSlot && rng() < 0.75;
     const hardEncounter = withCombat && rng() < 0.18;
-    const block = buildFlatMiddleBlock(rng, currentFloor, { stage, withCombat, hardEncounter });
+    let enemyBudget = 0;
+    if (withCombat && stageBudgetRemaining > 0) {
+      const share = hardEncounter ? SPAWN_DIRECTOR.zoneBudgetShare.hard : SPAWN_DIRECTOR.zoneBudgetShare.normal;
+      enemyBudget = Math.min(stageBudgetRemaining, Math.max(1, Math.ceil(stageBudgetRemaining * share)));
+      stageBudgetRemaining -= enemyBudget;
+    }
+    const block = buildFlatMiddleBlock(rng, currentFloor, { withCombat, hardEncounter, enemyBudget });
     blocks.push(block);
     pxSinceLastStair += block.chunk.width;
+    if (withCombat) lastCombatBlock = block;
+  }
+
+  // A seed can plausibly roll zero combat blocks in the randomized body
+  // (stairs/obstacle/no-combat-flat all beat the dice) — guarantee at least
+  // one combat zone exists so the stage's authored budget always has
+  // somewhere to go (spec section 25: "stage can always complete" implies
+  // there's always something to complete, not that a stage could roll no
+  // enemies at all).
+  if (!lastCombatBlock) {
+    const block = buildFlatMiddleBlock(rng, currentFloor, { withCombat: true, hardEncounter: false, enemyBudget: 0 });
+    blocks.push(block);
+    lastCombatBlock = block;
+  }
+
+  // Whatever's left of the stage's total threat budget after every combat
+  // block took its geometric share (see above) goes entirely to the last
+  // combat block, so the full authored per-stage count table (spec section
+  // 2) always ends up assigned to some zone rather than quietly discarded
+  // when a stage/seed happens to place few combat blocks.
+  if (stageBudgetRemaining > 0) {
+    lastCombatBlock.meta.encounterZone.enemyBudget += stageBudgetRemaining;
+    stageBudgetRemaining = 0;
+  }
+
+  // Stage 10's deliberate final major wave (spawn-director spec section 19)
+  // — a separate, hand-authored encounter on top of the randomized body,
+  // placed while still on whatever floor the body left the player on and
+  // followed by the usual forced descent + no-combat buffer before EXIT so
+  // it never sits directly beside the exit or on a staircase.
+  if (stage === 10) {
+    blocks.push(buildFinalWaveBlock(rng, currentFloor));
   }
 
   // Every stage's EXIT sits at street level - walk back down if the
@@ -88,9 +156,10 @@ function buildBodyBlocks(stage, rng) {
 
   // A stair (forced descent or otherwise) must never be the block
   // immediately before EXIT (spec section 9: "never... stairs directly
-  // beside the stage exit").
-  if (blocks.length && blocks[blocks.length - 1].meta.type === 'middle_stairs') {
-    blocks.push(buildFlatMiddleBlock(rng, currentFloor, { stage, withCombat: false, hardEncounter: false }));
+  // beside the stage exit"), and the final wave block must never be either.
+  const last = blocks[blocks.length - 1];
+  if (last && (last.meta.type === 'middle_stairs' || last.meta.type === 'middle_final_wave')) {
+    blocks.push(buildFlatMiddleBlock(rng, currentFloor, { withCombat: false, hardEncounter: false, enemyBudget: 0 }));
   }
 
   return blocks;
@@ -116,7 +185,9 @@ function validateStage(allBlocks, layout) {
   if (exit && exit.meta.stairs.length > 0) errors.push('EXIT must not contain stairs');
 
   const lastBody = body[body.length - 1];
-  if (lastBody && lastBody.meta.type === 'middle_stairs') errors.push('a stair block sits directly beside EXIT');
+  if (lastBody && (lastBody.meta.type === 'middle_stairs' || lastBody.meta.type === 'middle_final_wave')) {
+    errors.push('a stair or final-wave block sits directly beside EXIT');
+  }
   if (lastBody) {
     const doorsAtExit = Object.values(lastBody.meta.enemyDoors).some((list) => list.length > 0);
     if (doorsAtExit) errors.push('an enemy door sits directly beside EXIT');
@@ -153,29 +224,36 @@ function validateStage(allBlocks, layout) {
 // that each block's entryElevation matches the running elevation left by
 // the previous block. A mismatch is a bug in a block factory above, not a
 // runtime condition to recover from — it must never silently produce an
-// unreachable layout.
-function assemble(chunks) {
+// unreachable layout. Also collects each combat block's `encounterZone`
+// (spec section 10) into absolute world coordinates now that the cumulative
+// x-offset of every block is known.
+function assemble(blocks) {
   let cursorX = 0;
   let elevation = FLOOR_MIN;
   const solids = [];
   const stairs = [];
   const doorSpecs = [];
   const crateSpecs = [];
-  for (const chunk of chunks) {
+  const encounterZones = [];
+  for (const block of blocks) {
+    const chunk = block.chunk;
     if (chunk.entryElevation !== elevation) {
       throw new Error(`Stage chunk connection mismatch at x=${cursorX}: expected elevation ${elevation}, chunk starts at ${chunk.entryElevation}`);
     }
     for (const s of chunk.solids) solids.push({ ...s, x: s.x + cursorX });
     for (const st of chunk.stairs) stairs.push({ ...st, x: st.x + cursorX });
-    for (const d of chunk.doors) doorSpecs.push({ x: cursorX + d.xOffset, elevation: d.elevation, enemySpecs: d.enemySpecs });
+    for (const d of chunk.doors) doorSpecs.push({ id: d.id, x: cursorX + d.xOffset, elevation: d.elevation });
     for (const c of chunk.crates) crateSpecs.push({ x: cursorX + c.xOffset, type: c.type, destructible: c.destructible });
+    if (block.meta.encounterZone) {
+      encounterZones.push({ id: block.meta.id, startX: cursorX, endX: cursorX + chunk.width, ...block.meta.encounterZone });
+    }
     cursorX += chunk.width;
     elevation = chunk.exitElevation;
   }
   if (elevation !== FLOOR_MIN) {
     throw new Error('Stage sequence must return to street level before the exit approach');
   }
-  return { length: cursorX, solids, stairs, doorSpecs, crateSpecs };
+  return { length: cursorX, solids, stairs, doorSpecs, crateSpecs, encounterZones };
 }
 
 // Public entry point. Works identically for curated stages 1-10 and
@@ -188,7 +266,7 @@ export function buildStageLayout(stage) {
   const exit = buildExitBlock(rng);
   const allBlocks = [entrance, ...body, exit];
 
-  const layout = assemble(allBlocks.map((b) => b.chunk));
+  const layout = assemble(allBlocks);
   validateStage(allBlocks, layout);
 
   const baseGround = { x: -200, y: LEVEL.groundY, w: layout.length + 400, h: 2000, blocksBullets: true, texture: 'platform' };
@@ -199,10 +277,9 @@ export function buildStageLayout(stage) {
     stairs: layout.stairs,
     doorSpecs: layout.doorSpecs,
     crateSpecs: layout.crateSpecs,
+    encounterZones: layout.encounterZones,
     entryX: entrance.chunk.width * 0.35,
     exitX: layout.length - exit.chunk.width * 0.35,
-    activeEnemyLimit: DIFFICULTY.activeEnemyLimitByStage(stage),
-    statScale: DIFFICULTY.statScaleForStage(stage),
     isProcedural: stage > STAGES.curatedCount,
     blocks: allBlocks.map((b) => b.meta), // explicit per-block metadata (spec section 12), for debugging/tests
   };

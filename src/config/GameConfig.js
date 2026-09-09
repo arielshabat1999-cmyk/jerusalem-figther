@@ -74,6 +74,11 @@ export const MUZZLE = {
 };
 
 // Weapon ids double as inventory keys and save-file keys.
+// Prices/damage tuned to the Spawn Director's coin economy (spawn-director
+// spec section 17/18): pistol carries stages 1-2, the rifle becomes
+// affordable around stage 3, machine gun around stage 5-6, RPG around
+// stage 8-10. Weapons are never auto-granted by stage — still purchase-only
+// via Inventory (InventorySystem is untouched).
 export const WEAPONS = {
   pistol: {
     id: 'pistol',
@@ -81,7 +86,7 @@ export const WEAPONS = {
     price: 0,
     ownedByDefault: true,
     fireMode: 'single',
-    damage: 14,
+    damage: 18,
     magSize: 8,
     reloadSec: 0.9,
     fireCooldownSec: 0.28,
@@ -90,9 +95,9 @@ export const WEAPONS = {
   rifle: {
     id: 'rifle',
     name: 'Assault Rifle',
-    price: 300,
+    price: 1800,
     fireMode: 'auto',
-    damage: 11,
+    damage: 28,
     magSize: 24,
     reloadSec: 1.4,
     fireCooldownSec: 0.12,
@@ -101,9 +106,9 @@ export const WEAPONS = {
   machinegun: {
     id: 'machinegun',
     name: 'Machine Gun',
-    price: 550,
+    price: 4500,
     fireMode: 'auto',
-    damage: 7,
+    damage: 23,
     magSize: 45,
     reloadSec: 1.9,
     fireCooldownSec: 0.07,
@@ -112,9 +117,9 @@ export const WEAPONS = {
   rpg: {
     id: 'rpg',
     name: 'RPG',
-    price: 800,
+    price: 9000,
     fireMode: 'single',
-    damage: 60,
+    damage: 140,
     magSize: 1,
     reloadSec: 2.8,
     fireCooldownSec: 0.5,
@@ -147,12 +152,14 @@ export const HEALING = {
   restorePercent: 0.35,
 };
 
+// Base AI-behavioral stats only — these are read directly by EnemyAI.js and
+// never touched by the Spawn Director. Every enemy is either 'ranged' or
+// 'melee' behaviorally; the Spawn Director's enemy TIERS (below) layer HP/
+// damage/speed/reward on top of whichever of these two base kinds a spawned
+// enemy is assigned, but never introduce a third AI behavior.
 export const ENEMIES = {
   ranged: {
-    hp: 30,
     moveSpeed: 80,
-    scoreValue: 100,
-    coinDrop: [1, 3],
     damage: 8,
     preferredMinDist: 160,
     preferredMaxDist: 420,
@@ -161,44 +168,95 @@ export const ENEMIES = {
     evadeIntervalSec: 2.2,
   },
   melee: {
-    hp: 24,
     moveSpeed: 150,
-    scoreValue: 120,
-    coinDrop: [1, 3],
     damage: 14,
     meleeRange: 34,
     meleeCooldownSec: 0.9,
     knockbackOnHitSpeed: 320,
     reactionDelaySec: 0.2,
   },
-  strong: {
-    // Applied as a multiplier layer on top of ranged/melee base stats.
-    hpMult: 1.4,
-    damageMult: 1.6,
-    speedMult: 1.2,
-    fireCooldownMult: 0.7,
-    reactionDelayMult: 0.5,
-  },
   deathLingerSec: 4,
 };
 
-export const DIFFICULTY = {
-  activeEnemyLimitByStage: (stage) => (stage <= 3 ? 4 : Math.min(8, 4 + Math.floor((stage - 3) / 2))),
-  enemyCountForStage: (stage) => Math.min(18, 4 + stage * 2),
-  strongEnemyChance: (stage) => Math.min(0.45, Math.max(0, (stage - 2) * 0.05)),
-  statScaleForStage: (stage) => 1 + Math.max(0, stage - 1) * 0.06,
+// Spawn Director enemy classes (spawn-director spec section 1). HP and coin
+// reward are fixed per tier and intentionally NOT scaled by stage — the
+// spec is explicit that difficulty should climb mainly through composition/
+// count/pacing, not HP inflation. `damageMult`/`speedMult` layer onto the
+// ranged/melee base stats above; `visualStrong` reuses the existing
+// enemy_*_strong sprite family/scale (ArtAdapter/AnimationState) so heavier
+// tiers read as visually bigger without adding a third art variant.
+export const ENEMY_TIERS = {
+  enemy1: { hp: 70, coinDrop: [35, 50], scoreValue: 100, damageMult: 1, speedMult: 1, threatCost: 1, visualStrong: false },
+  enemy2: { hp: 110, coinDrop: [60, 80], scoreValue: 160, damageMult: 1.3, speedMult: 1.05, threatCost: 2, visualStrong: false },
+  enemy3: { hp: 170, coinDrop: [100, 140], scoreValue: 240, damageMult: 1.6, speedMult: 1.1, threatCost: 3, visualStrong: true },
+  heavy: { hp: 300, coinDrop: [220, 300], scoreValue: 420, damageMult: 2.1, speedMult: 0.85, threatCost: 5, visualStrong: true },
+  elite: { hp: 450, coinDrop: [400, 550], scoreValue: 650, damageMult: 2.6, speedMult: 1.1, threatCost: 8, visualStrong: true },
+};
+
+export const ENEMY_TIER_ORDER = ['enemy1', 'enemy2', 'enemy3', 'heavy', 'elite'];
+
+// "Never spawn an enemy type before its intended stage" (spawn-director
+// spec section 3) — enforced by the Spawn Director regardless of what a
+// stage's table/weights say.
+export const ENEMY_FIRST_STAGE = { enemy1: 1, enemy2: 3, enemy3: 5, heavy: 7, elite: 9 };
+
+// Authored per-stage progression (spawn-director spec section 2/8/12):
+// `counts` is the total budget of each tier the Director may spend across
+// the whole stage; `weights` drive weighted-random selection among
+// currently-available/remaining tiers; `spawnDelayRange` is the randomized
+// interval (section 8) between spawn decisions.
+export const SPAWN_STAGE_TABLE = {
+  1: { maxAlive: 3, counts: { enemy1: 12 }, weights: { enemy1: 100 }, spawnDelayRange: [2.5, 3.5] },
+  2: { maxAlive: 4, counts: { enemy1: 15 }, weights: { enemy1: 100 }, spawnDelayRange: [2.5, 3.5] },
+  3: { maxAlive: 4, counts: { enemy1: 12, enemy2: 5 }, weights: { enemy1: 70, enemy2: 30 }, spawnDelayRange: [2.2, 3.0] },
+  4: { maxAlive: 5, counts: { enemy1: 10, enemy2: 8 }, weights: { enemy1: 55, enemy2: 45 }, spawnDelayRange: [2.2, 3.0] },
+  5: { maxAlive: 5, counts: { enemy1: 6, enemy2: 10, enemy3: 5 }, weights: { enemy1: 15, enemy2: 50, enemy3: 35 }, spawnDelayRange: [1.8, 2.6] },
+  6: { maxAlive: 6, counts: { enemy1: 4, enemy2: 10, enemy3: 8 }, weights: { enemy1: 8, enemy2: 42, enemy3: 50 }, spawnDelayRange: [1.8, 2.6] },
+  7: { maxAlive: 6, counts: { enemy1: 2, enemy2: 8, enemy3: 10, heavy: 2 }, weights: { enemy1: 5, enemy2: 25, enemy3: 50, heavy: 20 }, spawnDelayRange: [1.5, 2.3] },
+  8: { maxAlive: 7, counts: { enemy2: 6, enemy3: 12, heavy: 4 }, weights: { enemy2: 20, enemy3: 55, heavy: 25 }, spawnDelayRange: [1.5, 2.3] },
+  9: { maxAlive: 7, counts: { enemy2: 4, enemy3: 10, heavy: 6, elite: 2 }, weights: { enemy2: 15, enemy3: 40, heavy: 35, elite: 10 }, spawnDelayRange: [1.3, 2.0] },
+  10: { maxAlive: 8, counts: { enemy2: 2, enemy3: 10, heavy: 8, elite: 3 }, weights: { enemy2: 8, enemy3: 35, heavy: 42, elite: 15 }, spawnDelayRange: [1.3, 2.0] },
+};
+
+// Stage 11+ (procedural, spec section 30 of the base gameplay spec) reuses
+// stage 10's composition/weights/pacing — HP/reward per tier still never
+// scales — but grows the per-tier budget and the alive cap a little further
+// so indefinite progression keeps getting harder through count/pacing only.
+export function getSpawnStageConfig(stage) {
+  const table = SPAWN_STAGE_TABLE[Math.min(stage, 10)];
+  if (stage <= 10) return table;
+  const growth = 1 + (stage - 10) * 0.12;
+  const counts = {};
+  for (const tier of Object.keys(table.counts)) counts[tier] = Math.round(table.counts[tier] * growth);
+  return {
+    maxAlive: Math.min(12, table.maxAlive + Math.floor((stage - 10) / 2)),
+    counts,
+    weights: table.weights,
+    spawnDelayRange: table.spawnDelayRange,
+  };
+}
+
+export const SPAWN_DIRECTOR = {
+  // "Usually 1 active spawn door at a time, occasionally 2, never every
+  // visible door" (section 6/7) — the normal cap; peak encounters (late
+  // stages only, rare) may briefly go to 3.
+  maxConcurrentOpenDoors: 2,
+  peakMaxConcurrentOpenDoors: 3,
+  peakEncounterChance: 0.12,
+  peakEncounterMinStage: 7,
+  // Never activate a door the player is standing this close to (section 22).
+  doorSafeDistance: 90,
+  // How much of a zone's remaining budget one encounter block "claims" when
+  // generated — hard encounters claim a bigger share so the stage's whole
+  // authored count table gets spent by stage end regardless of exactly how
+  // many combat blocks a given stage happens to contain (see StageBuilder).
+  zoneBudgetShare: { normal: 0.3, hard: 0.55 },
+  emptyDoorChance: 0.18, // section 23 base-spec: some doors open and close with nobody inside
 };
 
 export const SPAWN_DOOR = {
-  activationAheadDistance: 460, // world units ahead of progression frontier
   enemyExitDelaySec: 0.55,
-  emptyDoorChance: 0.18,
   doorOpenCloseSec: 0.5,
-  // "Usually 1 active spawn door at a time, occasionally 2, never every
-  // visible door" (stage-generation spec section 7) — this is the runtime
-  // backstop; the block generator itself also only rarely places 2 doors
-  // in the same combat block (see BlockLibrary hardEncounterChance).
-  maxConcurrentOpenDoors: 2,
 };
 
 // Coins have no attraction range: every dropped coin does a brief pop/

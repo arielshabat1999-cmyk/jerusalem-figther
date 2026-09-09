@@ -1,44 +1,21 @@
 import { SPAWN_DOOR } from '../config/GameConfig.js';
 
-// First-class spawn door system (spec section 23/24). Enemies only ever
-// enter the world here — nothing else in the codebase is allowed to push a
-// new Enemy into the stage's enemy list.
+// Pure door-animation executor (spec section 5: "door becomes active ->
+// optional door animation -> enemy appears inside/behind doorway -> enemy
+// enters playable area"). It owns none of the WHAT/WHERE/WHEN decisions —
+// SpawnDirector.js decides those and calls `door.activate(specs)` before a
+// door ever appears in the `activeDoors` list this is handed. Enemies only
+// ever enter the world here — nothing else in the codebase is allowed to
+// push a new Enemy into the stage's enemy list.
+//
+// Performance (spec section 23): this only ever iterates the small list of
+// currently-active doors the Director maintains (usually 1-2, rarely 3),
+// never the stage's full door list.
 export class SpawnDoorSystem {
-  // `getActiveEnemyCount` and `spawnEnemy(kind, strong, x, floorY)` are
+  // `getActiveEnemyCount` and `spawnEnemy(kind, tier, x, floorY)` are
   // injected so this system stays ignorant of Enemy's constructor shape.
-  // `currentFloor` gates activation to the player's current active floor
-  // (stage-generation spec section 5/6/18: "enemies spawn only on the
-  // player's CURRENT ACTIVE FLOOR" / "only activate doors belonging to
-  // currentFloor") — a door on another floor simply never leaves 'idle'
-  // while the player is elsewhere, and still resolves safely via the
-  // forward-only backtrack check below once it falls behind.
-  update(dt, doors, { progressionFrontier, backtrackLimit, currentFloor, getActiveEnemyCount, activeEnemyLimit, spawnEnemy }) {
-    let openDoorCount = doors.filter((d) => d.state === 'opening' || d.state === 'releasing').length;
-
-    for (const door of doors) {
-      if (door.state === 'resolved') continue;
-
-      if (door.state === 'idle') {
-        const behindBoundary = door.x < progressionFrontier - backtrackLimit;
-        if (behindBoundary) {
-          // Forward-only spawning: a door permanently passed behind the
-          // player is cancelled safely instead of ever spawning (spec
-          // section 23 "Forward-Only Spawning").
-          door.state = 'resolved';
-          continue;
-        }
-        const onActiveFloor = door.floorIndex === undefined || door.floorIndex === currentFloor;
-        const inRange = door.x <= progressionFrontier + SPAWN_DOOR.activationAheadDistance;
-        const roomToOpen = openDoorCount < SPAWN_DOOR.maxConcurrentOpenDoors;
-        if (onActiveFloor && inRange && roomToOpen) {
-          door.state = 'opening';
-          door.timer = SPAWN_DOOR.doorOpenCloseSec;
-          door.open = true;
-          openDoorCount += 1;
-        }
-        continue;
-      }
-
+  update(dt, activeDoors, { getActiveEnemyCount, maxAlive, spawnEnemy }) {
+    for (const door of activeDoors) {
       if (door.state === 'opening') {
         door.timer -= dt;
         if (door.timer <= 0) {
@@ -49,15 +26,15 @@ export class SpawnDoorSystem {
       }
 
       if (door.state === 'releasing') {
-        if (getActiveEnemyCount() >= activeEnemyLimit) {
+        if (getActiveEnemyCount() >= maxAlive) {
           // Respect the active-enemy cap: hold the release rather than
-          // creating an unfair swarm (spec section 24).
+          // creating an unfair swarm (spec section 7).
           continue;
         }
         door.timer -= dt;
         if (door.timer <= 0) {
           const spec = door.enemySpecs[door.releaseIndex];
-          spawnEnemy(spec.kind, !!spec.strong, door.x, door.floorY);
+          spawnEnemy(spec.kind, spec.tier, door.x, door.floorY);
           door.releaseIndex += 1;
           if (door.releaseIndex >= door.enemySpecs.length) {
             door.state = 'closing';
@@ -73,7 +50,7 @@ export class SpawnDoorSystem {
         door.timer -= dt;
         if (door.timer <= 0) {
           door.open = false;
-          door.state = 'resolved';
+          door.state = 'idle'; // available for the Director to reuse for a later wave
         }
       }
     }

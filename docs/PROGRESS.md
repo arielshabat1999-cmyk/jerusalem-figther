@@ -96,6 +96,46 @@ history on this repo before the `main` reset for the old code if needed.
   clamping forward movement at the (locked) exit, mirroring the existing
   backtrack clamp.
 
+## Spawn Director (WHAT/WHERE/WHEN enemy spawning)
+
+Added `src/systems/SpawnDirector.js`, one instance per loaded stage, as the
+single authority deciding which enemies spawn, how many, when, and through
+which door — everything else (enemy AI, physics, collision, player
+controls) is unchanged.
+
+- Five fixed enemy tiers (`ENEMY_TIERS` in GameConfig.js) layer HP/damage/
+  speed/coin-reward on top of the existing ranged/melee AI behaviors — HP
+  and coin reward are fixed per tier, not scaled by stage. `enemy.strong`
+  (existing sprite-family/scale selector) is now derived from the tier
+  instead of taken as a constructor flag, so rendering/animation is
+  unaffected.
+- `SPAWN_STAGE_TABLE` (stages 1-10) authors `maxAlive`, per-tier total
+  counts, weights, and spawn-delay range per stage; stage 11+ reuses stage
+  10's shape with counts/maxAlive growing slightly (`getSpawnStageConfig`).
+- Stage generation (`BlockLibrary`/`StageBuilder`) now only lays out
+  position/floor door anchors and per-block "encounter zones" (a threat-
+  point budget, spec section 10/11) — it no longer decides what comes out
+  of a door. `SpawnDoor` is reusable (cycles back to `idle` after closing)
+  so one zone's 1-2 doors can release several waves over its lifetime.
+- The Director spends each zone's budget via weighted tier selection,
+  gated by: `currentFloor` match, `maxAlive`, a same-floor-door safe
+  distance from the player, and a concurrent-open-door cap (usually 1-2,
+  rarely 3 late-game). Guards avoid two Elites/Heavies together and
+  leading a zone's first pick with one. Stage 10 adds one hand-authored,
+  staggered final-wave zone (2x enemy3, 2x heavy, 1x elite) on top.
+- Verified with a scratch Node simulation (real StageBuilder/SpawnDirector/
+  SpawnDoorSystem/Enemy classes, simulated combat) across stages 1-10,
+  repeated 5x: `maxAlive` never exceeded, no tier ever appears before its
+  authored stage, every stage's spend lands inside its target coin-economy
+  range from the spec, and every stage always reaches `isExhausted()`
+  (no stall). Also verified live in a mobile Playwright session: floor-
+  gating holds with real physics, and the coin/score award pipeline works
+  end-to-end with the new tier-based rewards.
+- Weapon prices/damage (`WEAPONS` in GameConfig.js) were rebalanced to
+  match this new coin economy (pistol free, rifle ~stage 3, machine gun
+  ~stage 5-6, RPG ~stage 8-10) — weapons are still purchase-only, never
+  auto-granted.
+
 ## Stage-generation rebuild (ENTRANCE/MIDDLE/EXIT block system)
 
 Replaced the chunk-based generator with an explicit three-category block

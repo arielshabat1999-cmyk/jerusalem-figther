@@ -1,4 +1,4 @@
-import { ENEMIES } from '../config/GameConfig.js';
+import { ENEMIES, ENEMY_TIERS } from '../config/GameConfig.js';
 
 const HIT_POSE_SEC = 0.18;
 let nextId = 1;
@@ -6,11 +6,17 @@ let nextId = 1;
 // One shared entity shape for both enemy classes (spec section 20/21) — the
 // only thing that differs between a ranged and a melee enemy is which AI
 // function drives its vx/vy/attacks each frame (see systems/EnemyAI.js).
+// `tier` (Spawn Director spec section 1) is a second, independent axis: it
+// only ever changes HP/damage/speed/coin-reward, layered on top of whichever
+// base kind ('ranged'|'melee') this enemy is — it never introduces new AI
+// behavior. HP and coin reward are fixed per tier, not scaled by stage.
 export class Enemy {
-  constructor(kind, x, y, w, h, { strong = false, statScale = 1 } = {}) {
+  constructor(kind, x, y, w, h, { tier = 'enemy1' } = {}) {
     this.id = nextId++;
     this.kind = kind; // 'ranged' | 'melee'
-    this.strong = strong;
+    this.tier = tier; // 'enemy1' | 'enemy2' | 'enemy3' | 'heavy' | 'elite'
+    const tierCfg = ENEMY_TIERS[tier];
+    this.strong = tierCfg.visualStrong; // reuses the existing enemy_*_strong sprite family/scale, unchanged consumers
     this.x = x;
     this.y = y;
     this.vx = 0;
@@ -23,13 +29,12 @@ export class Enemy {
     this.stairEntryY = 0;
 
     const base = ENEMIES[kind];
-    const strongMult = strong ? ENEMIES.strong : null;
-    this.maxHp = base.hp * statScale * (strong ? ENEMIES.strong.hpMult : 1);
+    this.maxHp = tierCfg.hp;
     this.hp = this.maxHp;
-    this.moveSpeed = base.moveSpeed * (strong ? ENEMIES.strong.speedMult : 1);
-    this.damage = base.damage * statScale * (strong ? ENEMIES.strong.damageMult : 1);
-    this.scoreValue = base.scoreValue;
-    this.coinDrop = base.coinDrop;
+    this.moveSpeed = base.moveSpeed * tierCfg.speedMult;
+    this.damage = base.damage * tierCfg.damageMult;
+    this.scoreValue = tierCfg.scoreValue;
+    this.coinDrop = tierCfg.coinDrop;
 
     this.dead = false;
     this.deathTimer = 0;
@@ -38,12 +43,13 @@ export class Enemy {
     this.lastHitTimer = 0; // drives the 'hit' animation state, independent of melee knockback physics
     this.lastFireTimer = 0; // drives the 'shoot' animation state (ranged only)
 
-    // AI scratch state, populated/used by systems/EnemyAI.js.
+    // AI scratch state, populated/used by systems/EnemyAI.js. Timing values
+    // come only from the base kind — tiers never change AI reaction speed.
     this.ai = {
       fireCooldown: Math.random() * (base.fireCooldownSec || 1),
       meleeCooldown: 0,
       evadeTimer: (base.evadeIntervalSec || 2) * Math.random(),
-      reactionTimer: base.reactionDelaySec * (strong ? ENEMIES.strong.reactionDelayMult : 1),
+      reactionTimer: base.reactionDelaySec,
       jumpCooldown: 0,
       activated: false,
     };

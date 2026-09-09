@@ -1,5 +1,6 @@
 import { WORLD, PLAYER, LEVEL } from '../config/GameConfig.js';
 import { buildStageLayout } from './StageBuilder.js';
+import { SpawnDirector } from './SpawnDirector.js';
 import { SpawnDoor } from '../entities/SpawnDoor.js';
 import { Crate } from '../entities/Crate.js';
 import { Enemy } from '../entities/Enemy.js';
@@ -38,7 +39,8 @@ export class StageSystem {
     this.crates = this.layout.crateSpecs.map(
       (c) => new Crate(c.x - CRATE_SIZE / 2, LEVEL.groundY - CRATE_SIZE, CRATE_SIZE, CRATE_SIZE, c.type, c.destructible)
     );
-    this.doors = this.layout.doorSpecs.map((d) => new SpawnDoor(d.x, elevationY(d.elevation), d.enemySpecs, d.elevation));
+    this.doors = this.layout.doorSpecs.map((d) => new SpawnDoor(d.id, d.x, elevationY(d.elevation), d.elevation));
+    this.spawnDirector = new SpawnDirector(stageNumber, this.doors, this.layout.encounterZones);
     this.enemies = [];
     this.cleared = false;
     this.exitOpen = false;
@@ -56,9 +58,9 @@ export class StageSystem {
     return this.enemies.filter((e) => !e.dead).length;
   }
 
-  spawnEnemy(kind, strong, x, floorY) {
+  spawnEnemy(kind, tier, x, floorY) {
     const size = ENEMY_SIZE[kind];
-    const enemy = new Enemy(kind, x - size.w / 2, floorY - size.h, size.w, size.h, { strong, statScale: this.layout.statScale });
+    const enemy = new Enemy(kind, x - size.w / 2, floorY - size.h, size.w, size.h, { tier });
     this.enemies.push(enemy);
     return enemy;
   }
@@ -73,19 +75,17 @@ export class StageSystem {
 
     this._updateCurrentFloor(player);
 
-    spawnDoorSystem.update(dt, this.doors, {
-      progressionFrontier: player.progressionX,
-      backtrackLimit: this.backtrackLimit,
+    this.spawnDirector.tick(dt, spawnDoorSystem, {
+      player,
       currentFloor: this.currentFloor,
-      getActiveEnemyCount: () => this.getActiveEnemyCount(),
-      activeEnemyLimit: this.layout.activeEnemyLimit,
-      spawnEnemy: (kind, strong, x, floorY) => this.spawnEnemy(kind, strong, x, floorY),
+      getAliveCount: () => this.getActiveEnemyCount(),
+      spawnEnemy: (kind, tier, x, floorY) => this.spawnEnemy(kind, tier, x, floorY),
     });
 
     if (!this.cleared) {
       const noActiveEnemies = this.enemies.every((e) => e.dead);
-      const noPendingDoors = this.doors.every((d) => !d.hasPendingEnemies());
-      if (noActiveEnemies && noPendingDoors) {
+      const noPendingSpawns = this.spawnDirector.isExhausted();
+      if (noActiveEnemies && noPendingSpawns) {
         this.cleared = true;
         this.exitOpen = true;
       }

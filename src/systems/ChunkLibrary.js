@@ -21,12 +21,13 @@ function buildingSolid(x, elevation, w) {
 // Flat segment at a fixed elevation. Optionally carries spawn door(s)
 // and/or crates. Safe to use for entry/exit approaches by passing no doors
 // and no crates (spec section 4 clear-approach requirement).
-// `doorSpecs` is an array of {xOffsetFrac (0-1 across the block), enemySpecs}
-// — usually one door, occasionally two for a harder encounter (stage-
-// generation spec section 7).
+// `doorSpecs` is an array of {id, xOffsetFrac (0-1 across the block)} — pure
+// position anchors, usually one door, occasionally two for a harder
+// encounter (stage-generation spec section 7). What comes out of a door is
+// decided at runtime by SpawnDirector.js, never baked in here.
 export function streetChunk(width, elevation, { doorSpecs = [], crateOffsets = [] } = {}) {
   const solids = elevation > 0 ? [buildingSolid(0, elevation, width)] : [];
-  const doors = doorSpecs.map((d) => ({ xOffset: width * d.xOffsetFrac, elevation, enemySpecs: d.enemySpecs }));
+  const doors = doorSpecs.map((d) => ({ id: d.id, xOffset: width * d.xOffsetFrac, elevation }));
   const crates = crateOffsets.map((spec) =>
     typeof spec === 'number'
       ? { xOffset: spec, type: 'crate', destructible: true }
