@@ -4,7 +4,7 @@ import { SPAWN_DOOR } from '../config/GameConfig.js';
 // enter the world here — nothing else in the codebase is allowed to push a
 // new Enemy into the stage's enemy list.
 export class SpawnDoorSystem {
-  // `getActiveEnemyCount` and `spawnEnemy(kind, strong, x, floorY)` are
+  // `getActiveEnemyCount` and `spawnEnemy(kind, tier, x, floorY)` are
   // injected so this system stays ignorant of Enemy's constructor shape.
   update(dt, doors, { progressionFrontier, backtrackLimit, getActiveEnemyCount, activeEnemyLimit, spawnEnemy }) {
     for (const door of doors) {
@@ -45,7 +45,7 @@ export class SpawnDoorSystem {
         door.timer -= dt;
         if (door.timer <= 0) {
           const spec = door.enemySpecs[door.releaseIndex];
-          spawnEnemy(spec.kind, !!spec.strong, door.x, door.floorY);
+          spawnEnemy(spec.kind, spec.tier, door.x, door.floorY);
           door.releaseIndex += 1;
           if (door.releaseIndex >= door.enemySpecs.length) {
             door.state = 'closing';

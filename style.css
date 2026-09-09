@@ -131,3 +131,9 @@ button { font: inherit; }
 }
 .invRow button:disabled { background: #3a4046; color: #888; }
 .invRow button.active { background: #3c8cdc; }
+.weaponCard { padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,.15); }
+.weaponHead { display: flex; justify-content: space-between; align-items: baseline; font-weight: 800; font-size: 14px; }
+.weaponStats { font-size: 11px; opacity: .75; margin: 4px 0 6px; }
+.weaponBtns { display: flex; gap: 6px; margin-bottom: 4px; }
+.upgradeRow { padding: 5px 0; font-size: 11px; }
+.upgradeRow button { padding: 5px 8px; font-size: 11px; }

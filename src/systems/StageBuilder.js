@@ -1,4 +1,5 @@
-import { LEVEL, DIFFICULTY, SPAWN_DOOR, STAGES } from '../config/GameConfig.js';
+import { LEVEL, SPAWN_DOOR, STAGES } from '../config/GameConfig.js';
+import { ENEMY_TIER_ORDER, ENEMY_FIRST_STAGE, getStageComposition } from '../config/EconomyConfig.js';
 import { streetChunk, stairsChunk, elevatedCombatChunk, obstacleChunk, ELEVATION_GROUND, ELEVATION_FLOOR2 } from './ChunkLibrary.js';
 
 // Deterministic PRNG so a given stage number always builds the same layout
@@ -15,14 +16,37 @@ function mulberry32(seed) {
   };
 }
 
-function pickEnemySpecs(rng, stage, count) {
+// Picks an enemy tier for one spawn slot from the stage's remaining
+// composition budget (economy spec section 7/8/11) — weighted toward
+// whichever unlocked tier still has the most left, so the mix trends
+// toward the authored per-stage counts by stage end without requiring
+// hand-authored weights. Never selects a tier before its intended stage
+// (ENEMY_FIRST_STAGE). Falls back to 'enemy1' (always unlocked) in the
+// rare case every remaining count has already been drawn down to 0.
+function pickTier(rng, stage, remaining) {
+  const candidates = ENEMY_TIER_ORDER.filter((t) => stage >= ENEMY_FIRST_STAGE[t] && remaining[t] > 0);
+  if (!candidates.length) return 'enemy1';
+  const total = candidates.reduce((sum, t) => sum + remaining[t], 0);
+  let r = rng() * total;
+  for (const t of candidates) {
+    r -= remaining[t];
+    if (r <= 0) {
+      remaining[t] -= 1;
+      return t;
+    }
+  }
+  const last = candidates[candidates.length - 1];
+  remaining[last] -= 1;
+  return last;
+}
+
+function pickEnemySpecs(rng, stage, count, remaining) {
   if (rng() < SPAWN_DOOR.emptyDoorChance) return []; // deliberate empty door (spec 23)
   const specs = [];
-  const strongChance = DIFFICULTY.strongEnemyChance(stage);
   for (let i = 0; i < count; i++) {
     specs.push({
       kind: rng() < 0.55 ? 'ranged' : 'melee',
-      strong: rng() < strongChance,
+      tier: pickTier(rng, stage, remaining),
     });
   }
   return specs;
@@ -31,9 +55,9 @@ function pickEnemySpecs(rng, stage, count) {
 // Chunks that both require and produce ELEVATION_GROUND, so any number of
 // them can be placed back to back without ever breaking connection
 // metadata continuity (spec section 30's "impossible layouts" concern).
-function groundCombatUnit(rng, stage) {
+function groundCombatUnit(rng, stage, remaining) {
   const enemiesHere = 1 + Math.floor(rng() * 2);
-  return streetChunk(520, ELEVATION_GROUND, { door: pickEnemySpecs(rng, stage, enemiesHere) });
+  return streetChunk(520, ELEVATION_GROUND, { door: pickEnemySpecs(rng, stage, enemiesHere, remaining) });
 }
 
 // Breakable cover (crate/barrel/sack — shootable, drops coins) vs.
@@ -60,24 +84,24 @@ function obstacleUnit(rng) {
 // that floor, then stairs back down — always self-contained at ground
 // level on both ends (spec section 5: every elevated area has a route
 // back down).
-function rooftopExcursionUnits(rng, stage) {
+function rooftopExcursionUnits(rng, stage, remaining) {
   const enemiesHere = 1 + Math.floor(rng() * 3);
   return [
     stairsChunk(LEVEL.stairSpan + 90, ELEVATION_GROUND, ELEVATION_FLOOR2),
-    elevatedCombatChunk(480 + rng() * 200, ELEVATION_FLOOR2, { door: pickEnemySpecs(rng, stage, enemiesHere) }),
+    elevatedCombatChunk(480 + rng() * 200, ELEVATION_FLOOR2, { door: pickEnemySpecs(rng, stage, enemiesHere, remaining) }),
     stairsChunk(LEVEL.stairSpan + 90, ELEVATION_FLOOR2, ELEVATION_GROUND),
   ];
 }
 
-function buildBodyChunks(stage, rng) {
+function buildBodyChunks(stage, rng, remaining) {
   const unitCount = Math.min(10, 3 + Math.floor(stage / 2));
   const rooftopChance = Math.min(0.6, 0.15 + stage * 0.03);
   const chunks = [];
   for (let i = 0; i < unitCount; i++) {
     const roll = rng();
-    if (roll < rooftopChance) chunks.push(...rooftopExcursionUnits(rng, stage));
+    if (roll < rooftopChance) chunks.push(...rooftopExcursionUnits(rng, stage, remaining));
     else if (roll < rooftopChance + 0.25) chunks.push(obstacleUnit(rng));
-    else chunks.push(groundCombatUnit(rng, stage));
+    else chunks.push(groundCombatUnit(rng, stage, remaining));
   }
   return chunks;
 }
@@ -116,8 +140,10 @@ function assemble(chunks) {
 // one stage-building system, difficulty is what scales with `stage`.
 export function buildStageLayout(stage) {
   const rng = mulberry32(stage * 7919 + 13);
+  const composition = getStageComposition(stage);
+  const remaining = { ...composition.counts };
   const entry = streetChunk(LEVEL.entryApproachWidth, ELEVATION_GROUND);
-  const body = buildBodyChunks(stage, rng);
+  const body = buildBodyChunks(stage, rng, remaining);
   const exit = streetChunk(LEVEL.exitApproachWidth, ELEVATION_GROUND);
   const layout = assemble([entry, ...body, exit]);
 
@@ -131,8 +157,7 @@ export function buildStageLayout(stage) {
     crateSpecs: layout.crateSpecs,
     entryX: LEVEL.entryApproachWidth * 0.35,
     exitX: layout.length - LEVEL.exitApproachWidth * 0.35,
-    activeEnemyLimit: DIFFICULTY.activeEnemyLimitByStage(stage),
-    statScale: DIFFICULTY.statScaleForStage(stage),
+    activeEnemyLimit: composition.maxAlive,
     isProcedural: stage > STAGES.curatedCount,
   };
 }

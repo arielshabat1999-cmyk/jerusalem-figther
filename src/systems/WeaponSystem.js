@@ -1,35 +1,41 @@
-import { WEAPONS, WEAPON_UPGRADES } from '../config/GameConfig.js';
+import { WEAPONS, UPGRADE_EFFECTS, defaultUpgradeLevels } from '../config/EconomyConfig.js';
 
-// Applies an upgrade level on top of a base weapon definition. Kept as a
-// pure function so balance changes stay data-driven (spec section 9/34).
-export function getEffectiveWeaponStats(weaponId, upgradeLevel = 0) {
+// Applies the 3 independent upgrade categories on top of a base weapon
+// definition. Each category's level value is the FINAL multiplier for that
+// level (never stacked/compounded across levels — see EconomyConfig.js).
+// Fire rate is a multiplier on the underlying RATE (shots/sec), so it
+// divides the cooldown rather than multiplying it. Kept as a pure function
+// so balance changes stay entirely data-driven in EconomyConfig.js.
+export function getEffectiveWeaponStats(weaponId, upgradeLevels = defaultUpgradeLevels()) {
   const base = WEAPONS[weaponId];
-  const level = Math.min(WEAPON_UPGRADES.maxLevel, upgradeLevel);
-  const { damageMult, fireRateMult, reloadMult } = WEAPON_UPGRADES.perLevel;
+  const damageMult = UPGRADE_EFFECTS.damage[upgradeLevels.damage] ?? 1;
+  const fireRateMult = UPGRADE_EFFECTS.fireRate[upgradeLevels.fireRate] ?? 1;
+  const magazineMult = UPGRADE_EFFECTS.magazine[upgradeLevels.magazine] ?? 1;
   return {
     ...base,
-    damage: base.damage * (1 + damageMult * level),
-    fireCooldownSec: base.fireCooldownSec * (1 - fireRateMult * level),
-    reloadSec: base.reloadSec * (1 - reloadMult * level),
+    damage: base.damage * damageMult,
+    fireCooldownSec: base.fireCooldownSec / fireRateMult,
+    magSize: Math.round(base.magSize * magazineMult),
   };
 }
 
 // Per-actor runtime state for one weapon. Enemies and the player share this
 // so "reload matters" and "automatic reload" behave identically everywhere.
 export class WeaponRuntime {
-  constructor(weaponId, upgradeLevel = 0) {
+  constructor(weaponId, upgradeLevels = defaultUpgradeLevels()) {
     this.weaponId = weaponId;
-    this.upgradeLevel = upgradeLevel;
-    this.stats = getEffectiveWeaponStats(weaponId, upgradeLevel);
+    this.upgradeLevels = { ...upgradeLevels };
+    this.stats = getEffectiveWeaponStats(weaponId, this.upgradeLevels);
     this.ammoInMag = this.stats.magSize;
     this.cooldownTimer = 0;
     this.reloadTimer = 0;
     this.reloading = false;
   }
 
-  setUpgradeLevel(level) {
-    this.upgradeLevel = level;
-    this.stats = getEffectiveWeaponStats(this.weaponId, level);
+  // `category` is one of 'damage' | 'fireRate' | 'magazine'.
+  setUpgradeLevel(category, level) {
+    this.upgradeLevels[category] = level;
+    this.stats = getEffectiveWeaponStats(this.weaponId, this.upgradeLevels);
     this.ammoInMag = Math.min(this.ammoInMag, this.stats.magSize);
   }
 

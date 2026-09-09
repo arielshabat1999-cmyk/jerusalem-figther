@@ -73,67 +73,9 @@ export const MUZZLE = {
   shoot: { heightFraction: 0.731, forwardPx: 31.5 },
 };
 
-// Weapon ids double as inventory keys and save-file keys.
-export const WEAPONS = {
-  pistol: {
-    id: 'pistol',
-    name: 'Pistol',
-    price: 0,
-    ownedByDefault: true,
-    fireMode: 'single',
-    damage: 14,
-    magSize: 8,
-    reloadSec: 0.9,
-    fireCooldownSec: 0.28,
-    projectileSpeed: 900,
-  },
-  rifle: {
-    id: 'rifle',
-    name: 'Assault Rifle',
-    price: 300,
-    fireMode: 'auto',
-    damage: 11,
-    magSize: 24,
-    reloadSec: 1.4,
-    fireCooldownSec: 0.12,
-    projectileSpeed: 1000,
-  },
-  machinegun: {
-    id: 'machinegun',
-    name: 'Machine Gun',
-    price: 550,
-    fireMode: 'auto',
-    damage: 7,
-    magSize: 45,
-    reloadSec: 1.9,
-    fireCooldownSec: 0.07,
-    projectileSpeed: 1000,
-  },
-  rpg: {
-    id: 'rpg',
-    name: 'RPG',
-    price: 800,
-    fireMode: 'single',
-    damage: 60,
-    magSize: 1,
-    reloadSec: 2.8,
-    fireCooldownSec: 0.5,
-    projectileSpeed: 620,
-    blastRadius: 120,
-    isExplosive: true,
-  },
-};
-
-// Upgrade caps keep balance from spiraling (spec section 9).
-export const WEAPON_UPGRADES = {
-  maxLevel: 5,
-  perLevel: {
-    damageMult: 0.12,
-    fireRateMult: 0.08,
-    reloadMult: 0.08,
-  },
-  priceForLevel: (weaponId, level) => Math.round(150 * level * level * (WEAPONS[weaponId].price / 100 + 1)),
-};
+// Weapon prices/damage/magazine and their upgrades now live in
+// EconomyConfig.js (the single source of truth for the whole economy) —
+// see WEAPONS/UPGRADE_EFFECTS/UPGRADE_PRICES there.
 
 export const SHIELD_UPGRADES = {
   maxLevel: 4,
@@ -147,12 +89,15 @@ export const HEALING = {
   restorePercent: 0.35,
 };
 
+// Base AI-behavioral stats only (read directly by EnemyAI.js) — HP, coin
+// reward, and stage composition/unlock/maxAlive are economy data and live
+// in EconomyConfig.js (ENEMY_TIERS/STAGE_COMPOSITION/ENEMY_FIRST_STAGE).
+// `damage`/`moveSpeed` here are the base an enemy tier's damageMult/
+// speedMult multiplies onto — never a duplicate of the economy's own
+// numbers.
 export const ENEMIES = {
   ranged: {
-    hp: 30,
     moveSpeed: 80,
-    scoreValue: 100,
-    coinDrop: [1, 3],
     damage: 8,
     preferredMinDist: 160,
     preferredMaxDist: 420,
@@ -161,32 +106,14 @@ export const ENEMIES = {
     evadeIntervalSec: 2.2,
   },
   melee: {
-    hp: 24,
     moveSpeed: 150,
-    scoreValue: 120,
-    coinDrop: [1, 3],
     damage: 14,
     meleeRange: 34,
     meleeCooldownSec: 0.9,
     knockbackOnHitSpeed: 320,
     reactionDelaySec: 0.2,
   },
-  strong: {
-    // Applied as a multiplier layer on top of ranged/melee base stats.
-    hpMult: 1.4,
-    damageMult: 1.6,
-    speedMult: 1.2,
-    fireCooldownMult: 0.7,
-    reactionDelayMult: 0.5,
-  },
   deathLingerSec: 4,
-};
-
-export const DIFFICULTY = {
-  activeEnemyLimitByStage: (stage) => (stage <= 3 ? 4 : Math.min(8, 4 + Math.floor((stage - 3) / 2))),
-  enemyCountForStage: (stage) => Math.min(18, 4 + stage * 2),
-  strongEnemyChance: (stage) => Math.min(0.45, Math.max(0, (stage - 2) * 0.05)),
-  statScaleForStage: (stage) => 1 + Math.max(0, stage - 1) * 0.06,
 };
 
 export const SPAWN_DOOR = {
@@ -218,8 +145,11 @@ export const CAMERA = {
   lookAheadX: 90,
 };
 
+// Bumped to 2 for the economy reset: weaponUpgradeLevels changed shape from
+// a single 0-5 number per weapon to 3 independent 0-3 category levels
+// ({damage,fireRate,magazine}) — see SaveSystem.js's migration.
 export const SAVE = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   storageKey: 'jerusalemFighter.save.v1',
 };
 

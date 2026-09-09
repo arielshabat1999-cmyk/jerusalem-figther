@@ -51,9 +51,9 @@ export class StageSystem {
     return this.enemies.filter((e) => !e.dead).length;
   }
 
-  spawnEnemy(kind, strong, x, floorY) {
+  spawnEnemy(kind, tier, x, floorY) {
     const size = ENEMY_SIZE[kind];
-    const enemy = new Enemy(kind, x - size.w / 2, floorY - size.h, size.w, size.h, { strong, statScale: this.layout.statScale });
+    const enemy = new Enemy(kind, x - size.w / 2, floorY - size.h, size.w, size.h, { tier });
     this.enemies.push(enemy);
     return enemy;
   }
@@ -71,7 +71,7 @@ export class StageSystem {
       backtrackLimit: this.backtrackLimit,
       getActiveEnemyCount: () => this.getActiveEnemyCount(),
       activeEnemyLimit: this.layout.activeEnemyLimit,
-      spawnEnemy: (kind, strong, x, floorY) => this.spawnEnemy(kind, strong, x, floorY),
+      spawnEnemy: (kind, tier, x, floorY) => this.spawnEnemy(kind, tier, x, floorY),
     });
 
     if (!this.cleared) {

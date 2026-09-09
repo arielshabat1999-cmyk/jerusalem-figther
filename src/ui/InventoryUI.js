@@ -1,4 +1,13 @@
-import { WEAPONS } from '../config/GameConfig.js';
+import { WEAPONS, UPGRADE_CATEGORIES, MAX_UPGRADE_LEVEL, UPGRADE_EFFECTS } from '../config/EconomyConfig.js';
+import { getEffectiveWeaponStats } from '../systems/WeaponSystem.js';
+
+const CATEGORY_LABEL = { damage: 'DAMAGE', fireRate: 'FIRE RATE', magazine: 'MAGAZINE' };
+
+function effectLabel(category, level) {
+  if (!level) return 'None';
+  const mult = UPGRADE_EFFECTS[category][level];
+  return `+${Math.round((mult - 1) * 100)}%`;
+}
 
 // Renders the Inventory overlay (spec section 27). This overlay is shown
 // while the simulation keeps running underneath — it never calls setPaused.
@@ -51,38 +60,7 @@ export class InventoryUI {
     this.characterRowEl.appendChild(charRow);
 
     this.weaponListEl.innerHTML = '';
-
-    for (const id of Object.keys(WEAPONS)) {
-      const def = WEAPONS[id];
-      const owned = this.save.data.ownedWeapons[id];
-      const row = document.createElement('div');
-      row.className = 'invRow';
-
-      if (!owned) {
-        row.innerHTML = `<span>${def.name} (locked)</span>`;
-        const buy = document.createElement('button');
-        buy.textContent = `Buy $${def.price}`;
-        buy.disabled = !this.inventory.canAffordWeapon(id);
-        buy.addEventListener('click', () => { this.inventory.purchaseWeapon(id); this.render(); });
-        row.appendChild(buy);
-      } else {
-        const level = this.save.data.weaponUpgradeLevels[id] || 0;
-        row.innerHTML = `<span>${def.name} Lv.${level}</span>`;
-        const equipBtn = document.createElement('button');
-        equipBtn.textContent = this.player.activeWeaponId === id ? 'Equipped' : 'Equip';
-        if (this.player.activeWeaponId === id) equipBtn.classList.add('active');
-        equipBtn.addEventListener('click', () => { this.inventory.switchWeapon(id); this.render(); });
-        row.appendChild(equipBtn);
-
-        const price = this.inventory.weaponUpgradePrice(id);
-        const upgradeBtn = document.createElement('button');
-        upgradeBtn.textContent = price === null ? 'MAX' : `Upgrade $${price}`;
-        upgradeBtn.disabled = price === null || this.save.data.totalCoins < price;
-        upgradeBtn.addEventListener('click', () => { this.inventory.purchaseWeaponUpgrade(id); this.render(); });
-        row.appendChild(upgradeBtn);
-      }
-      this.weaponListEl.appendChild(row);
-    }
+    for (const id of Object.keys(WEAPONS)) this.weaponListEl.appendChild(this._buildWeaponCard(id));
 
     this.shieldRowEl.innerHTML = '';
     const shieldPrice = this.inventory.shieldUpgradePrice();
@@ -107,5 +85,82 @@ export class InventoryUI {
     healBtn.addEventListener('click', () => { this.inventory.purchaseHealing(); this.render(); });
     healRow.appendChild(healBtn);
     this.healRowEl.appendChild(healRow);
+  }
+
+  // One weapon card: name/price/owned/equipped/base+effective damage/
+  // magazine/levels, BUY/EQUIP buttons, and (once owned) 3 upgrade rows
+  // (economy spec sections 11/12).
+  _buildWeaponCard(id) {
+    const def = WEAPONS[id];
+    const owned = !!this.save.data.ownedWeapons[id];
+    const equipped = this.player.activeWeaponId === id;
+    const coins = this.save.data.totalCoins;
+
+    const card = document.createElement('div');
+    card.className = 'weaponCard';
+
+    const head = document.createElement('div');
+    head.className = 'weaponHead';
+    head.innerHTML = `<span>${def.name}</span><span>${owned ? (equipped ? 'EQUIPPED' : 'OWNED') : `$${def.price}`}</span>`;
+    card.appendChild(head);
+
+    const upgradeLevels = owned ? (this.save.data.weaponUpgradeLevels[id] || { damage: 0, fireRate: 0, magazine: 0 }) : { damage: 0, fireRate: 0, magazine: 0 };
+    const effective = getEffectiveWeaponStats(id, upgradeLevels);
+    const stats = document.createElement('div');
+    stats.className = 'weaponStats';
+    stats.textContent = owned
+      ? `Damage ${def.damage} -> ${Math.round(effective.damage)} | Magazine ${def.magSize} -> ${effective.magSize} | Lv ${upgradeLevels.damage}/${upgradeLevels.fireRate}/${upgradeLevels.magazine}`
+      : `Base damage ${def.damage} | Magazine ${def.magSize}`;
+    card.appendChild(stats);
+
+    const btnRow = document.createElement('div');
+    btnRow.className = 'weaponBtns';
+    if (!owned) {
+      const buy = document.createElement('button');
+      const canAfford = this.inventory.canAffordWeapon(id);
+      buy.textContent = canAfford ? `BUY $${def.price}` : `Need $${def.price}`;
+      buy.disabled = !canAfford;
+      buy.addEventListener('click', () => { this.inventory.purchaseWeapon(id); this.render(); });
+      btnRow.appendChild(buy);
+    } else {
+      const equipBtn = document.createElement('button');
+      equipBtn.textContent = equipped ? 'EQUIPPED' : 'EQUIP';
+      if (equipped) equipBtn.classList.add('active');
+      equipBtn.disabled = equipped;
+      equipBtn.addEventListener('click', () => { this.inventory.switchWeapon(id); this.render(); });
+      btnRow.appendChild(equipBtn);
+    }
+    card.appendChild(btnRow);
+
+    if (owned) {
+      for (const category of UPGRADE_CATEGORIES) card.appendChild(this._buildUpgradeRow(id, category, upgradeLevels, coins));
+    }
+
+    return card;
+  }
+
+  _buildUpgradeRow(id, category, upgradeLevels, coins) {
+    const level = upgradeLevels[category] || 0;
+    const nextPrice = this.inventory.weaponUpgradeNextPrice(id, category);
+    const maxed = nextPrice === null;
+
+    const row = document.createElement('div');
+    row.className = 'invRow upgradeRow';
+    const currentEffect = effectLabel(category, level);
+    const nextEffect = maxed ? '-' : effectLabel(category, level + 1);
+    row.innerHTML = `<span>${CATEGORY_LABEL[category]} Lv${level}/${MAX_UPGRADE_LEVEL} · Current: ${currentEffect} · Next: ${nextEffect}</span>`;
+
+    const btn = document.createElement('button');
+    if (maxed) {
+      btn.textContent = 'MAX';
+      btn.disabled = true;
+    } else {
+      const canAfford = coins >= nextPrice;
+      btn.textContent = canAfford ? `UPGRADE $${nextPrice}` : `Need $${nextPrice}`;
+      btn.disabled = !canAfford;
+      btn.addEventListener('click', () => { this.inventory.purchaseWeaponUpgrade(id, category); this.render(); });
+    }
+    row.appendChild(btn);
+    return row;
   }
 }

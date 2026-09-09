@@ -1,4 +1,5 @@
-import { PLAYER, WEAPONS, CHARACTER_SCALE, MUZZLE } from '../config/GameConfig.js';
+import { PLAYER, CHARACTER_SCALE, MUZZLE } from '../config/GameConfig.js';
+import { WEAPONS, defaultUpgradeLevels } from '../config/EconomyConfig.js';
 import { WeaponRuntime, shouldFire } from '../systems/WeaponSystem.js';
 
 const SHOOT_POSE_SEC = 0.12; // how long the "shoot" animation state reads as active after a shot
@@ -39,7 +40,7 @@ export class Player {
     this.weapons = {};
     for (const id of Object.keys(WEAPONS)) {
       if (save.data.ownedWeapons[id]) {
-        this.weapons[id] = new WeaponRuntime(id, save.data.weaponUpgradeLevels[id] || 0);
+        this.weapons[id] = new WeaponRuntime(id, save.data.weaponUpgradeLevels[id] || defaultUpgradeLevels());
       }
     }
     this.activeWeaponId = save.data.activeWeaponId in this.weapons ? save.data.activeWeaponId : 'pistol';
@@ -50,8 +51,8 @@ export class Player {
     return this.weapons[this.activeWeaponId];
   }
 
-  ownWeapon(id, upgradeLevel = 0) {
-    this.weapons[id] = new WeaponRuntime(id, upgradeLevel);
+  ownWeapon(id, upgradeLevels = defaultUpgradeLevels()) {
+    this.weapons[id] = new WeaponRuntime(id, upgradeLevels);
   }
 
   setShieldCapacity(cap) {

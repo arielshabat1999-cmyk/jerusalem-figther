@@ -1,33 +1,65 @@
-import { SAVE, WEAPONS } from '../config/GameConfig.js';
+import { SAVE } from '../config/GameConfig.js';
+import { WEAPONS, defaultUpgradeLevels } from '../config/EconomyConfig.js';
 
-// Versioned localStorage schema (spec section 16/34). Add a migration branch
-// in `load()` whenever schemaVersion increments — never mutate old saves in
-// place without a migration path.
+// Versioned localStorage schema (spec section 15/16/34). Add a migration
+// branch in `migrate()` whenever schemaVersion increments — never mutate
+// old saves in place without a migration path.
+function defaultOwnedWeapons() {
+  const owned = {};
+  for (const id of Object.keys(WEAPONS)) owned[id] = !!WEAPONS[id].ownedByDefault;
+  return owned;
+}
+
+function defaultWeaponUpgradeLevels() {
+  const levels = {};
+  for (const id of Object.keys(WEAPONS)) levels[id] = defaultUpgradeLevels();
+  return levels;
+}
+
 function defaultSave() {
-  const ownedWeapons = {};
-  const weaponUpgradeLevels = {};
-  for (const id of Object.keys(WEAPONS)) {
-    ownedWeapons[id] = !!WEAPONS[id].ownedByDefault;
-    weaponUpgradeLevels[id] = 0;
-  }
   return {
     schemaVersion: SAVE.schemaVersion,
     currentStage: 1,
     highestStage: 1,
     totalCoins: 0,
     score: 0,
-    ownedWeapons,
-    weaponUpgradeLevels,
+    ownedWeapons: defaultOwnedWeapons(),
+    weaponUpgradeLevels: defaultWeaponUpgradeLevels(),
     activeWeaponId: 'pistol',
     shieldUpgradeLevel: 0,
     characterGender: 'male', // art-pack: male/female are both selectable, no gameplay difference
   };
 }
 
+// v1 -> v2 (economy reset): weaponUpgradeLevels[id] used to be a single
+// 0-5 number under the OLD economy. That shape cannot be mapped onto the
+// new 3 independent 0-3 categories (damage/fireRate/magazine), so upgrades
+// reset to 0 under the new economy going forward — but ownership, equipped
+// weapon, coins, score, and stage progression are all preserved exactly
+// (economy spec section 15: "preserve ownership and progression where
+// possible, but use NEW economy values going forward").
+function migrateV1ToV2(data) {
+  return {
+    schemaVersion: SAVE.schemaVersion,
+    currentStage: data.currentStage ?? 1,
+    highestStage: data.highestStage ?? 1,
+    totalCoins: data.totalCoins ?? 0,
+    score: data.score ?? 0,
+    ownedWeapons: { ...defaultOwnedWeapons(), ...data.ownedWeapons },
+    weaponUpgradeLevels: defaultWeaponUpgradeLevels(),
+    activeWeaponId: data.activeWeaponId in defaultOwnedWeapons() ? data.activeWeaponId : 'pistol',
+    shieldUpgradeLevel: data.shieldUpgradeLevel ?? 0,
+    characterGender: data.characterGender === 'female' ? 'female' : 'male',
+  };
+}
+
 function migrate(data) {
-  // No prior versions exist yet; fall through to defaults on any mismatch.
-  if (!data || data.schemaVersion !== SAVE.schemaVersion) return defaultSave();
-  return data;
+  if (!data || typeof data.schemaVersion !== 'number') return defaultSave();
+  if (data.schemaVersion === SAVE.schemaVersion) return data;
+  if (data.schemaVersion === 1) return migrateV1ToV2(data);
+  // Unknown/future version this build doesn't understand — safest to reset
+  // rather than risk loading a shape that silently breaks the new economy.
+  return defaultSave();
 }
 
 export class SaveSystem {
@@ -82,8 +114,9 @@ export class SaveSystem {
     this.persist();
   }
 
-  setWeaponUpgradeLevel(id, level) {
-    this.data.weaponUpgradeLevels[id] = level;
+  setWeaponUpgradeLevel(id, category, level) {
+    if (!this.data.weaponUpgradeLevels[id]) this.data.weaponUpgradeLevels[id] = defaultUpgradeLevels();
+    this.data.weaponUpgradeLevels[id][category] = level;
     this.persist();
   }
 

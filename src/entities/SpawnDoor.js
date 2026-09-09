@@ -1,8 +1,8 @@
 let nextId = 1;
 
 // A spawn door never itself contains live enemies — it holds a queue of
-// specs ('ranged' | 'melee', optionally strong) that are turned into real
-// Enemy instances one at a time as the door releases them (spec section 23).
+// specs ({kind: 'ranged'|'melee', tier}) that are turned into real Enemy
+// instances one at a time as the door releases them (spec section 23).
 // An empty `enemySpecs` array is a deliberate empty door.
 export class SpawnDoor {
   constructor(x, floorY, enemySpecs) {

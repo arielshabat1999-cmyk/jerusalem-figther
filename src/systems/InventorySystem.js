@@ -1,8 +1,17 @@
-import { WEAPONS, WEAPON_UPGRADES, SHIELD_UPGRADES, HEALING } from '../config/GameConfig.js';
+import { WEAPONS, MAX_UPGRADE_LEVEL, upgradePrice, defaultUpgradeLevels } from '../config/EconomyConfig.js';
+import { SHIELD_UPGRADES, HEALING } from '../config/GameConfig.js';
 
 // "Inventory" per spec section 27 — deliberately not named Shop anywhere.
 // It never pauses the simulation; it only mutates save data and the live
 // Player instance while everything else keeps ticking around it.
+//
+// Every purchase/upgrade here follows the same transaction shape (economy
+// spec section 16): verify eligibility -> deduct coins exactly once (via
+// SaveSystem.spendCoins, which itself re-checks balance and refuses to go
+// negative) -> unlock/apply -> persist. Because these are plain synchronous
+// calls, a double-tap can never double-charge: each call fully completes
+// (including bumping the stored level) before the next click's handler can
+// run, so a second call always sees the already-updated state.
 export class InventorySystem {
   constructor(save, player) {
     this.save = save;
@@ -19,30 +28,45 @@ export class InventorySystem {
   }
 
   canAffordWeapon(id) {
-    return this.save.data.totalCoins >= WEAPONS[id].price && !this.save.data.ownedWeapons[id];
+    return !this.save.data.ownedWeapons[id] && this.save.data.totalCoins >= WEAPONS[id].price;
   }
 
   purchaseWeapon(id) {
-    if (!this.canAffordWeapon(id)) return false;
-    if (!this.save.spendCoins(WEAPONS[id].price)) return false;
+    if (this.save.data.ownedWeapons[id]) return false; // never charge for an already-owned weapon
+    if (!this.save.spendCoins(WEAPONS[id].price)) return false; // insufficient balance -> no-op
     this.save.buyWeapon(id);
-    this.player.ownWeapon(id, 0);
+    this.player.ownWeapon(id, defaultUpgradeLevels());
     return true;
   }
 
-  weaponUpgradePrice(id) {
-    const level = this.save.data.weaponUpgradeLevels[id] || 0;
-    if (level >= WEAPON_UPGRADES.maxLevel) return null;
-    return WEAPON_UPGRADES.priceForLevel(id, level + 1);
+  // `category` is one of 'damage' | 'fireRate' | 'magazine'.
+  weaponUpgradeLevel(id, category) {
+    return this.save.data.weaponUpgradeLevels[id]?.[category] || 0;
   }
 
-  purchaseWeaponUpgrade(id) {
+  // Level N+1 requires level N already purchased in the SAME category —
+  // upgrades cannot skip levels (spec section 3/16).
+  weaponUpgradeNextPrice(id, category) {
+    const level = this.weaponUpgradeLevel(id, category);
+    if (level >= MAX_UPGRADE_LEVEL) return null; // MAX
+    return upgradePrice(id, category, level + 1);
+  }
+
+  canPurchaseWeaponUpgrade(id, category) {
     if (!this.save.data.ownedWeapons[id]) return false;
-    const price = this.weaponUpgradePrice(id);
-    if (price === null || !this.save.spendCoins(price)) return false;
-    const newLevel = (this.save.data.weaponUpgradeLevels[id] || 0) + 1;
-    this.save.setWeaponUpgradeLevel(id, newLevel);
-    this.player.weapons[id]?.setUpgradeLevel(newLevel);
+    const price = this.weaponUpgradeNextPrice(id, category);
+    return price !== null && this.save.data.totalCoins >= price;
+  }
+
+  purchaseWeaponUpgrade(id, category) {
+    if (!this.save.data.ownedWeapons[id]) return false;
+    const level = this.weaponUpgradeLevel(id, category);
+    if (level >= MAX_UPGRADE_LEVEL) return false;
+    const price = upgradePrice(id, category, level + 1);
+    if (!this.save.spendCoins(price)) return false;
+    const newLevel = level + 1;
+    this.save.setWeaponUpgradeLevel(id, category, newLevel);
+    this.player.weapons[id]?.setUpgradeLevel(category, newLevel);
     return true;
   }
 
