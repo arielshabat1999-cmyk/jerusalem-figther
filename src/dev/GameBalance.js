@@ -17,7 +17,7 @@
 // comment below, just newly introduced rather than pre-existing.
 // ============================================================================
 
-import { WORLD, PLAYER, CAMERA, ENEMIES, SPAWN_DOOR } from '../config/GameConfig.js';
+import { WORLD, PLAYER, CAMERA, ENEMIES, SPAWN_DOOR, SPAWN_DIRECTOR } from '../config/GameConfig.js';
 import {
   WEAPONS,
   UPGRADE_EFFECTS,
@@ -82,8 +82,12 @@ function stagesSnapshot() {
   for (const stage of Object.keys(STAGE_COMPOSITION)) composition[stage] = JSON.parse(JSON.stringify(STAGE_COMPOSITION[stage]));
   return {
     composition,
-    entryApproachWidth: LEVEL.entryApproachWidth,
-    exitApproachWidth: LEVEL.exitApproachWidth,
+    entranceWidthMin: LEVEL.entranceWidthRange[0],
+    entranceWidthMax: LEVEL.entranceWidthRange[1],
+    exitWidthMin: LEVEL.exitWidthRange[0],
+    exitWidthMax: LEVEL.exitWidthRange[1],
+    stairGapMin: LEVEL.stairGapRange[0],
+    stairGapMax: LEVEL.stairGapRange[1],
     ...STAGE_GEN,
   };
 }
@@ -109,10 +113,12 @@ export function getBalanceSnapshot() {
     gameFeel: { ...DEV_RUNTIME.gameFeel, cameraFollowLerp: CAMERA.followLerp, cameraVerticalLerp: CAMERA.verticalLerp },
     enemies: enemiesSnapshot(),
     spawns: {
-      activationAheadDistance: SPAWN_DOOR.activationAheadDistance,
       enemyExitDelaySec: SPAWN_DOOR.enemyExitDelaySec,
       doorOpenCloseSec: SPAWN_DOOR.doorOpenCloseSec,
-      emptyDoorChance: SPAWN_DOOR.emptyDoorChance,
+      doorSafeDistance: SPAWN_DIRECTOR.doorSafeDistance,
+      emptyDoorChance: SPAWN_DIRECTOR.emptyDoorChance,
+      maxConcurrentOpenDoors: SPAWN_DIRECTOR.maxConcurrentOpenDoors,
+      peakMaxConcurrentOpenDoors: SPAWN_DIRECTOR.peakMaxConcurrentOpenDoors,
       paused: DEV_RUNTIME.spawns.paused,
       maxAliveOverride: DEV_RUNTIME.spawns.maxAliveOverride,
     },
@@ -179,7 +185,8 @@ export function setEnemyBehaviorField(key, value) {
 export function setSpawnField(key, value) {
   if (key === 'paused') { DEV_RUNTIME.spawns.paused = value; return; }
   if (key === 'maxAliveOverride') { DEV_RUNTIME.spawns.maxAliveOverride = value; return; }
-  if (key in SPAWN_DOOR) SPAWN_DOOR[key] = value;
+  if (key in SPAWN_DOOR) { SPAWN_DOOR[key] = value; return; }
+  if (key in SPAWN_DIRECTOR) SPAWN_DIRECTOR[key] = value;
 }
 
 export function setEconomyField(key, value) {
@@ -213,8 +220,12 @@ export function setStageCompositionCount(stage, tier, value) {
 }
 
 export function setStageGenField(key, value) {
-  if (key === 'entryApproachWidth') { LEVEL.entryApproachWidth = value; return; }
-  if (key === 'exitApproachWidth') { LEVEL.exitApproachWidth = value; return; }
+  if (key === 'entranceWidthMin') { LEVEL.entranceWidthRange[0] = value; return; }
+  if (key === 'entranceWidthMax') { LEVEL.entranceWidthRange[1] = value; return; }
+  if (key === 'exitWidthMin') { LEVEL.exitWidthRange[0] = value; return; }
+  if (key === 'exitWidthMax') { LEVEL.exitWidthRange[1] = value; return; }
+  if (key === 'stairGapMin') { LEVEL.stairGapRange[0] = value; return; }
+  if (key === 'stairGapMax') { LEVEL.stairGapRange[1] = value; return; }
   if (key in STAGE_GEN) STAGE_GEN[key] = value;
 }
 
@@ -274,7 +285,11 @@ export function applyBalancePatch(patch) {
         for (const [tier, v] of Object.entries(cfg.counts || {})) setStageCompositionCount(stage, tier, v);
       }
     }
-    for (const key of ['entryApproachWidth', 'exitApproachWidth', 'rooftopChanceBase', 'rooftopChancePerStage', 'rooftopChanceCap', 'obstacleChance', 'unitCountBase', 'unitCountPerStage', 'unitCountCap']) {
+    for (const key of [
+      'entranceWidthMin', 'entranceWidthMax', 'exitWidthMin', 'exitWidthMax', 'stairGapMin', 'stairGapMax',
+      'stairChanceBase', 'stairChancePerStage', 'stairChanceCap', 'obstacleChance',
+      'unitCountBase', 'unitCountPerStage', 'unitCountCap',
+    ]) {
       if (patch.stages[key] !== undefined) setStageGenField(key, patch.stages[key]);
     }
   }

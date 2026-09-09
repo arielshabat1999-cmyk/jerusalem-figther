@@ -1,5 +1,5 @@
 import { ENEMY_TIER_ORDER } from '../config/EconomyConfig.js';
-import { elevationY, ELEVATION_GROUND, ELEVATION_FLOOR2 } from '../systems/ChunkLibrary.js';
+import { elevationY, ELEVATION_GROUND, ELEVATION_FLOOR2, ELEVATION_ROOF } from '../systems/ChunkLibrary.js';
 import * as GB from './GameBalance.js';
 
 const TABS = ['Player', 'Game Feel', 'Enemies', 'Spawns', 'Economy', 'Weapons', 'Upgrades', 'Stage', 'Debug'];
@@ -231,21 +231,25 @@ export class DevPanel {
   }
 
   _renderSpawns() {
-    const { stage, player } = this.bridge;
+    const { stage } = this.bridge;
     const b = GB.getBalanceSnapshot();
+    const director = stage.spawnDirector;
 
     const stats = el('div', 'devLiveStats');
-    stats.innerHTML = `Current Stage: ${stage.stageNumber}<br>Alive Enemies: ${stage.getActiveEnemyCount()}<br>` +
-      `Active Spawn Doors: ${stage.doors.filter((d) => d.state !== 'idle' && d.state !== 'resolved').length} / ${stage.doors.length} total<br>` +
-      `Max Alive (this stage): ${b.spawns.maxAliveOverride ?? stage.layout.activeEnemyLimit}`;
+    stats.innerHTML = `Current Stage: ${stage.stageNumber}<br>Current Floor: ${stage.currentFloor}<br>Alive Enemies: ${stage.getActiveEnemyCount()}<br>` +
+      `Active Spawn Doors: ${director.activeDoors.length} / ${stage.doors.length} total<br>` +
+      `Max Alive (this stage): ${director.effectiveMaxAlive}<br>` +
+      `Encounter Zone: ${director.zones[director._zoneCursor]?.id ?? 'none remaining'}`;
     this.contentEl.appendChild(stats);
 
     const s = this._section('Spawn Pacing', () => GB.resetSection('spawns'));
     this._numRow(s, 'Max Enemies Alive (override, 0=stage default)', b.spawns.maxAliveOverride ?? 0, (v) => GB.setSpawnField('maxAliveOverride', v > 0 ? v : null));
-    this._numRow(s, 'Activation Ahead Distance', b.spawns.activationAheadDistance, (v) => GB.setSpawnField('activationAheadDistance', v), { step: 10, dirty: GB.isDirty('spawns', 'activationAheadDistance') });
+    this._numRow(s, 'Door Safe Distance (px from player)', b.spawns.doorSafeDistance, (v) => GB.setSpawnField('doorSafeDistance', v), { step: 10, dirty: GB.isDirty('spawns', 'doorSafeDistance') });
     this._numRow(s, 'Enemy Exit Delay (s)', b.spawns.enemyExitDelaySec, (v) => GB.setSpawnField('enemyExitDelaySec', v), { step: 0.05, decimals: 2, dirty: GB.isDirty('spawns', 'enemyExitDelaySec') });
     this._numRow(s, 'Door Open/Close (s)', b.spawns.doorOpenCloseSec, (v) => GB.setSpawnField('doorOpenCloseSec', v), { step: 0.05, decimals: 2, dirty: GB.isDirty('spawns', 'doorOpenCloseSec') });
     this._numRow(s, 'Empty Door Chance', b.spawns.emptyDoorChance, (v) => GB.setSpawnField('emptyDoorChance', v), { step: 0.02, decimals: 2, dirty: GB.isDirty('spawns', 'emptyDoorChance') });
+    this._numRow(s, 'Max Concurrent Open Doors', b.spawns.maxConcurrentOpenDoors, (v) => GB.setSpawnField('maxConcurrentOpenDoors', v), { dirty: GB.isDirty('spawns', 'maxConcurrentOpenDoors') });
+    this._numRow(s, 'Peak Max Concurrent Open Doors', b.spawns.peakMaxConcurrentOpenDoors, (v) => GB.setSpawnField('peakMaxConcurrentOpenDoors', v), { dirty: GB.isDirty('spawns', 'peakMaxConcurrentOpenDoors') });
 
     this._actions([
       [b.spawns.paused ? 'RESUME SPAWNS' : 'PAUSE SPAWNS', () => GB.setSpawnField('paused', !b.spawns.paused)],
@@ -253,7 +257,7 @@ export class DevPanel {
     ]);
 
     const note = el('div', 'devLiveStats');
-    note.textContent = "Note: 'Enemies per encounter' / 'Stage Total Enemies' / per-tier weights from the reference mockup are decided once when a stage is generated (StageBuilder), not read live by an already-loaded stage — edit them in the Stage tab's composition table, then use RESTART STAGE to regenerate with the new values. 'Spawn Next Wave' / 'Clear Encounter' have no real equivalent in this build's spawn-door system (no encounter-zone concept here) — omitted rather than faked.";
+    note.textContent = "The Spawn Director decides WHAT/WHERE/WHEN live each tick (this tab's pacing knobs above apply immediately). 'Enemies per encounter' / per-tier weights are decided once when a stage is generated (StageBuilder) — edit them in the Stage tab's composition table, then use RESTART STAGE to regenerate with the new values.";
     this.contentEl.appendChild(note);
   }
 
@@ -369,23 +373,28 @@ export class DevPanel {
   }
 
   _renderStage() {
-    const { stage, player, save } = this.bridge;
+    const { stage, player } = this.bridge;
     const b = GB.getBalanceSnapshot();
 
-    const feetY = player.y + player.h;
-    const floorGuess = Math.abs(feetY - elevationY(ELEVATION_FLOOR2)) < 20 ? 2 : 1; // main has 2 floors — see report
     const stats = el('div', 'devLiveStats');
-    stats.innerHTML = `Current Stage: ${stage.stageNumber}<br>Current Floor (est.): ${floorGuess} of 2<br>Stage Length: ${Math.round(stage.layout.length)}px`;
+    stats.innerHTML = `Current Stage: ${stage.stageNumber}<br>Current Floor: ${stage.currentFloor} of 2 (0=ground, 1=floor2, 2=roof)<br>` +
+      `Stage Length: ${Math.round(stage.layout.length)}px<br>Blocks: ${stage.layout.blocks.map((m) => m.type).join(' -> ')}`;
     this.contentEl.appendChild(stats);
 
     const s = this._section('Stage Generation', () => GB.resetSection('stages'));
     this._numRow(s, 'Middle Blocks Base', b.stages.unitCountBase, (v) => GB.setStageGenField('unitCountBase', v));
     this._numRow(s, 'Middle Blocks Per Stage', b.stages.unitCountPerStage, (v) => GB.setStageGenField('unitCountPerStage', v), { step: 0.1, decimals: 1 });
     this._numRow(s, 'Middle Blocks Cap', b.stages.unitCountCap, (v) => GB.setStageGenField('unitCountCap', v));
-    this._numRow(s, 'Rooftop Chance Base', b.stages.rooftopChanceBase, (v) => GB.setStageGenField('rooftopChanceBase', v), { step: 0.02, decimals: 2 });
-    this._numRow(s, 'Rooftop Chance / Stage', b.stages.rooftopChancePerStage, (v) => GB.setStageGenField('rooftopChancePerStage', v), { step: 0.01, decimals: 2 });
-    this._numRow(s, 'Entrance Approach Width', b.stages.entryApproachWidth, (v) => GB.setStageGenField('entryApproachWidth', v), { step: 10 });
-    this._numRow(s, 'Exit Approach Width', b.stages.exitApproachWidth, (v) => GB.setStageGenField('exitApproachWidth', v), { step: 10 });
+    this._numRow(s, 'Stair Chance Base', b.stages.stairChanceBase, (v) => GB.setStageGenField('stairChanceBase', v), { step: 0.02, decimals: 2 });
+    this._numRow(s, 'Stair Chance / Stage', b.stages.stairChancePerStage, (v) => GB.setStageGenField('stairChancePerStage', v), { step: 0.01, decimals: 2 });
+    this._numRow(s, 'Stair Chance Cap', b.stages.stairChanceCap, (v) => GB.setStageGenField('stairChanceCap', v), { step: 0.02, decimals: 2 });
+    this._numRow(s, 'Obstacle Chance', b.stages.obstacleChance, (v) => GB.setStageGenField('obstacleChance', v), { step: 0.02, decimals: 2 });
+    this._numRow(s, 'Entrance Width Min', b.stages.entranceWidthMin, (v) => GB.setStageGenField('entranceWidthMin', v), { step: 10 });
+    this._numRow(s, 'Entrance Width Max', b.stages.entranceWidthMax, (v) => GB.setStageGenField('entranceWidthMax', v), { step: 10 });
+    this._numRow(s, 'Exit Width Min', b.stages.exitWidthMin, (v) => GB.setStageGenField('exitWidthMin', v), { step: 10 });
+    this._numRow(s, 'Exit Width Max', b.stages.exitWidthMax, (v) => GB.setStageGenField('exitWidthMax', v), { step: 10 });
+    this._numRow(s, 'Stair Gap Min (px between stairs)', b.stages.stairGapMin, (v) => GB.setStageGenField('stairGapMin', v), { step: 10 });
+    this._numRow(s, 'Stair Gap Max', b.stages.stairGapMax, (v) => GB.setStageGenField('stairGapMax', v), { step: 10 });
 
     const comp = this._section(`Stage ${stage.stageNumber} Composition`);
     const compData = b.stages.composition[String(stage.stageNumber)] || b.stages.composition[stage.stageNumber];
@@ -403,9 +412,10 @@ export class DevPanel {
       ['RESTART STAGE', () => this.bridge.restartStage()],
       ['GO TO FLOOR 1', () => { player.y = elevationY(ELEVATION_GROUND) - player.h; player.vy = 0; }],
       ['GO TO FLOOR 2', () => { player.y = elevationY(ELEVATION_FLOOR2) - player.h; player.vy = 0; }],
+      ['GO TO FLOOR 3', () => { player.y = elevationY(ELEVATION_ROOF) - player.h; player.vy = 0; }],
     ]);
     const note = el('div', 'devLiveStats');
-    note.textContent = "Note: this build's stage system has 2 playable floors (ground + floor 2), not 3 — 'GO TO FLOOR 3' and per-block 'Current Block' tracking / 'Force Next Block' / 'Skip Encounter' have no real system here to wire to, so they're omitted rather than faked. Composition-table edits above take effect on the NEXT stage load (RESTART STAGE or NEXT/PREVIOUS), matching how StageBuilder actually generates a stage.";
+    note.textContent = "Stage-generation knobs above apply on the NEXT stage load (RESTART STAGE or NEXT/PREVIOUS), matching how StageBuilder actually generates a stage. 'GO TO FLOOR' teleports the player directly — it does not spawn a stair block at that spot, so use it to preview a floor's art/combat rather than to test the stair transition itself.";
     this.contentEl.appendChild(note);
   }
 

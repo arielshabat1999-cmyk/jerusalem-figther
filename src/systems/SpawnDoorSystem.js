@@ -1,32 +1,21 @@
 import { SPAWN_DOOR } from '../config/GameConfig.js';
 
-// First-class spawn door system (spec section 23/24). Enemies only ever
-// enter the world here — nothing else in the codebase is allowed to push a
-// new Enemy into the stage's enemy list.
+// Pure door-animation executor ("door becomes active -> optional door
+// animation -> enemy appears inside/behind doorway -> enemy enters playable
+// area"). It owns none of the WHAT/WHERE/WHEN decisions — SpawnDirector.js
+// decides those and calls `door.activate(specs)` before a door ever appears
+// in the `activeDoors` list this is handed. Enemies only ever enter the
+// world here — nothing else in the codebase is allowed to push a new Enemy
+// into the stage's enemy list.
+//
+// Performance: this only ever iterates the small list of currently-active
+// doors the Director maintains (usually 1-2, rarely 3), never the stage's
+// full door list.
 export class SpawnDoorSystem {
   // `getActiveEnemyCount` and `spawnEnemy(kind, tier, x, floorY)` are
   // injected so this system stays ignorant of Enemy's constructor shape.
-  update(dt, doors, { progressionFrontier, backtrackLimit, getActiveEnemyCount, activeEnemyLimit, spawnEnemy }) {
-    for (const door of doors) {
-      if (door.state === 'resolved') continue;
-
-      if (door.state === 'idle') {
-        const behindBoundary = door.x < progressionFrontier - backtrackLimit;
-        if (behindBoundary) {
-          // Forward-only spawning: a door permanently passed behind the
-          // player is cancelled safely instead of ever spawning (spec
-          // section 23 "Forward-Only Spawning").
-          door.state = 'resolved';
-          continue;
-        }
-        if (door.x <= progressionFrontier + SPAWN_DOOR.activationAheadDistance) {
-          door.state = 'opening';
-          door.timer = SPAWN_DOOR.doorOpenCloseSec;
-          door.open = true;
-        }
-        continue;
-      }
-
+  update(dt, activeDoors, { getActiveEnemyCount, maxAlive, spawnEnemy }) {
+    for (const door of activeDoors) {
       if (door.state === 'opening') {
         door.timer -= dt;
         if (door.timer <= 0) {
@@ -37,9 +26,9 @@ export class SpawnDoorSystem {
       }
 
       if (door.state === 'releasing') {
-        if (getActiveEnemyCount() >= activeEnemyLimit) {
+        if (getActiveEnemyCount() >= maxAlive) {
           // Respect the active-enemy cap: hold the release rather than
-          // creating an unfair swarm (spec section 24).
+          // creating an unfair swarm.
           continue;
         }
         door.timer -= dt;
@@ -61,7 +50,7 @@ export class SpawnDoorSystem {
         door.timer -= dt;
         if (door.timer <= 0) {
           door.open = false;
-          door.state = 'resolved';
+          door.state = 'idle'; // available for the Director to reuse for a later wave
         }
       }
     }

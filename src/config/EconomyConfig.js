@@ -104,41 +104,55 @@ export function defaultUpgradeLevels() {
 // heavier tiers read as visually bigger without a third art variant.
 export const ENEMY_TIER_ORDER = ['enemy1', 'enemy2', 'enemy3', 'heavy', 'elite'];
 
+// `threatCost` is the Spawn Director's budget unit (systems/SpawnDirector.js,
+// systems/StageBuilder.js) — how much of an encounter zone's enemyBudget one
+// spawn of this tier spends. Economy numbers (hp/coin/score/mult) above are
+// unaffected by it.
 export const ENEMY_TIERS = {
-  enemy1: { hp: 70, coinMin: 35, coinMax: 50, scoreValue: 100, damageMult: 1, speedMult: 1, visualStrong: false },
-  enemy2: { hp: 110, coinMin: 60, coinMax: 80, scoreValue: 160, damageMult: 1.3, speedMult: 1.05, visualStrong: false },
-  enemy3: { hp: 170, coinMin: 100, coinMax: 140, scoreValue: 240, damageMult: 1.6, speedMult: 1.1, visualStrong: true },
-  heavy: { hp: 300, coinMin: 220, coinMax: 300, scoreValue: 420, damageMult: 2.1, speedMult: 0.85, visualStrong: true },
-  elite: { hp: 450, coinMin: 400, coinMax: 550, scoreValue: 650, damageMult: 2.6, speedMult: 1.1, visualStrong: true },
+  enemy1: { hp: 70, coinMin: 35, coinMax: 50, scoreValue: 100, damageMult: 1, speedMult: 1, visualStrong: false, threatCost: 1 },
+  enemy2: { hp: 110, coinMin: 60, coinMax: 80, scoreValue: 160, damageMult: 1.3, speedMult: 1.05, visualStrong: false, threatCost: 2 },
+  enemy3: { hp: 170, coinMin: 100, coinMax: 140, scoreValue: 240, damageMult: 1.6, speedMult: 1.1, visualStrong: true, threatCost: 3 },
+  heavy: { hp: 300, coinMin: 220, coinMax: 300, scoreValue: 420, damageMult: 2.1, speedMult: 0.85, visualStrong: true, threatCost: 5 },
+  elite: { hp: 450, coinMin: 400, coinMax: 550, scoreValue: 650, damageMult: 2.6, speedMult: 1.1, visualStrong: true, threatCost: 8 },
 };
 
 // "Never spawn an enemy type before its intended stage."
 export const ENEMY_FIRST_STAGE = { enemy1: 1, enemy2: 3, enemy3: 5, heavy: 7, elite: 9 };
 
-// Authored per-stage composition: `maxAlive` and the total budget of each
-// tier available to be drawn from while generating that stage's doors.
+// Authored per-stage composition: `maxAlive`, the total budget of each tier
+// available to be spent by the Spawn Director, `weights` for weighted-random
+// tier selection among currently-affordable tiers, and `spawnDelayRange`
+// (sec) between the Director's spawn decisions. Read exclusively by
+// SpawnDirector.js/StageBuilder.js — the ONE authored stage table (same
+// counts/maxAlive the economy reset specified), extended with the pacing
+// fields the block/spawn-director architecture needs.
 export const STAGE_COMPOSITION = {
-  1: { maxAlive: 3, counts: { enemy1: 12 } },
-  2: { maxAlive: 4, counts: { enemy1: 15 } },
-  3: { maxAlive: 4, counts: { enemy1: 12, enemy2: 5 } },
-  4: { maxAlive: 5, counts: { enemy1: 10, enemy2: 8 } },
-  5: { maxAlive: 5, counts: { enemy1: 6, enemy2: 10, enemy3: 5 } },
-  6: { maxAlive: 6, counts: { enemy1: 4, enemy2: 10, enemy3: 8 } },
-  7: { maxAlive: 6, counts: { enemy1: 2, enemy2: 8, enemy3: 10, heavy: 2 } },
-  8: { maxAlive: 7, counts: { enemy2: 6, enemy3: 12, heavy: 4 } },
-  9: { maxAlive: 7, counts: { enemy2: 4, enemy3: 10, heavy: 6, elite: 2 } },
-  10: { maxAlive: 8, counts: { enemy2: 2, enemy3: 10, heavy: 8, elite: 3 } },
+  1: { maxAlive: 3, counts: { enemy1: 12 }, weights: { enemy1: 100 }, spawnDelayRange: [2.5, 3.5] },
+  2: { maxAlive: 4, counts: { enemy1: 15 }, weights: { enemy1: 100 }, spawnDelayRange: [2.5, 3.5] },
+  3: { maxAlive: 4, counts: { enemy1: 12, enemy2: 5 }, weights: { enemy1: 70, enemy2: 30 }, spawnDelayRange: [2.2, 3.0] },
+  4: { maxAlive: 5, counts: { enemy1: 10, enemy2: 8 }, weights: { enemy1: 55, enemy2: 45 }, spawnDelayRange: [2.2, 3.0] },
+  5: { maxAlive: 5, counts: { enemy1: 6, enemy2: 10, enemy3: 5 }, weights: { enemy1: 15, enemy2: 50, enemy3: 35 }, spawnDelayRange: [1.8, 2.6] },
+  6: { maxAlive: 6, counts: { enemy1: 4, enemy2: 10, enemy3: 8 }, weights: { enemy1: 8, enemy2: 42, enemy3: 50 }, spawnDelayRange: [1.8, 2.6] },
+  7: { maxAlive: 6, counts: { enemy1: 2, enemy2: 8, enemy3: 10, heavy: 2 }, weights: { enemy1: 5, enemy2: 25, enemy3: 50, heavy: 20 }, spawnDelayRange: [1.5, 2.3] },
+  8: { maxAlive: 7, counts: { enemy2: 6, enemy3: 12, heavy: 4 }, weights: { enemy2: 20, enemy3: 55, heavy: 25 }, spawnDelayRange: [1.5, 2.3] },
+  9: { maxAlive: 7, counts: { enemy2: 4, enemy3: 10, heavy: 6, elite: 2 }, weights: { enemy2: 15, enemy3: 40, heavy: 35, elite: 10 }, spawnDelayRange: [1.3, 2.0] },
+  10: { maxAlive: 8, counts: { enemy2: 2, enemy3: 10, heavy: 8, elite: 3 }, weights: { enemy2: 8, enemy3: 35, heavy: 42, elite: 15 }, spawnDelayRange: [1.3, 2.0] },
 };
 
-// Stage 11+ (procedural) reuses stage 10's shape — HP/reward per tier still
-// never scales — but grows the per-tier budget and alive cap a little
-// further so indefinite progression keeps getting harder through
-// count/pressure only.
-export function getStageComposition(stage) {
+// Stage 11+ (procedural) reuses stage 10's weights/pacing — HP/reward per
+// tier still never scales — but grows the per-tier budget and alive cap a
+// little further so indefinite progression keeps getting harder through
+// count/pressure only. Sole source for SpawnDirector.js/StageBuilder.js.
+export function getSpawnStageConfig(stage) {
   const table = STAGE_COMPOSITION[Math.min(stage, 10)];
   if (stage <= 10) return table;
   const growth = 1 + (stage - 10) * 0.12;
   const counts = {};
   for (const tier of Object.keys(table.counts)) counts[tier] = Math.round(table.counts[tier] * growth);
-  return { maxAlive: Math.min(12, table.maxAlive + Math.floor((stage - 10) / 2)), counts };
+  return {
+    maxAlive: Math.min(12, table.maxAlive + Math.floor((stage - 10) / 2)),
+    counts,
+    weights: table.weights,
+    spawnDelayRange: table.spawnDelayRange,
+  };
 }

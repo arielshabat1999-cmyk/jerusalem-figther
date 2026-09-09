@@ -18,12 +18,15 @@ function buildingSolid(x, elevation, w) {
   return { x, y, w, h: LEVEL.groundY - y + 400, blocksBullets: true, texture: 'wall' };
 }
 
-// Flat segment at a fixed elevation. Optionally carries one spawn door
-// and/or crates. Safe to use for entry/exit approaches by passing no door
-// and no crates (spec section 4 clear-approach requirement).
-export function streetChunk(width, elevation, { door = null, crateOffsets = [] } = {}) {
+// Flat segment at a fixed elevation. Optionally carries spawn door(s)
+// and/or crates. Safe to use for entry/exit approaches by passing no doors
+// and no crates (clear-approach requirement). `doorSpecs` is an array of
+// {id, xOffsetFrac (0-1 across the block)} — pure position anchors, usually
+// one door, occasionally two for a harder encounter. What comes out of a
+// door is decided at runtime by SpawnDirector.js, never baked in here.
+export function streetChunk(width, elevation, { doorSpecs = [], crateOffsets = [] } = {}) {
   const solids = elevation > 0 ? [buildingSolid(0, elevation, width)] : [];
-  const doors = door ? [{ xOffset: width * 0.5, elevation, enemySpecs: door }] : [];
+  const doors = doorSpecs.map((d) => ({ id: d.id, xOffset: width * d.xOffsetFrac, elevation }));
   const crates = crateOffsets.map((spec) =>
     typeof spec === 'number'
       ? { xOffset: spec, type: 'crate', destructible: true }
@@ -54,10 +57,10 @@ export function stairsChunk(width, fromElevation, toElevation) {
   return { width, entryElevation: fromElevation, exitElevation: toElevation, solids, stairs, doors: [], crates: [] };
 }
 
-// A rooftop/upper-floor combat segment (spec: "rooftops may be short or
-// long and can support substantial combat sequences").
-export function elevatedCombatChunk(width, elevation, { door = null, crateOffsets = [] } = {}) {
-  return streetChunk(width, elevation, { door, crateOffsets });
+// An upper-floor/rooftop combat segment ("upper floors may be short or long
+// and can support substantial combat sequences").
+export function elevatedCombatChunk(width, elevation, { doorSpecs = [], crateOffsets = [] } = {}) {
+  return streetChunk(width, elevation, { doorSpecs, crateOffsets });
 }
 
 export function obstacleChunk(width, elevation, crateOffsets) {

@@ -41,7 +41,7 @@ export class Renderer {
     adapter.drawMarkerDoor(ctx, stage.layout.exitX, stage.layout.solids[0].y, camera, stage.exitOpen ? 'EXIT' : 'LOCKED', stage.exitOpen ? '#2f6f4f' : '#6a2a2a');
 
     for (const door of stage.doors) {
-      if (door.state === 'idle' || door.state === 'resolved') continue;
+      if (door.state === 'idle') continue;
       adapter.drawDoor(ctx, door, camera, door.state);
     }
 

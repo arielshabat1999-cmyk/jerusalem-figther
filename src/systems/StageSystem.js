@@ -1,18 +1,25 @@
 import { WORLD, PLAYER, LEVEL } from '../config/GameConfig.js';
 import { buildStageLayout } from './StageBuilder.js';
+import { SpawnDirector } from './SpawnDirector.js';
 import { SpawnDoor } from '../entities/SpawnDoor.js';
 import { Crate } from '../entities/Crate.js';
 import { Enemy } from '../entities/Enemy.js';
-import { elevationY } from './ChunkLibrary.js';
+import { elevationY, ELEVATION_GROUND, ELEVATION_FLOOR2, ELEVATION_ROOF } from './ChunkLibrary.js';
 import { DEV_RUNTIME } from '../dev/GameBalance.js';
+
+const FLOOR_LEVELS = [ELEVATION_GROUND, ELEVATION_FLOOR2, ELEVATION_ROOF];
+const FLOOR_LAND_TOLERANCE = 2; // px — must be an exact/near-exact landing, never a mid-air/mid-ramp overlap
 
 const CRATE_SIZE = 40;
 const ENEMY_SIZE = { ranged: { w: 30, h: 60 }, melee: { w: 30, h: 58 } };
 const EXIT_TRIGGER_WIDTH = 70;
 
 // Owns everything about "the current stage as a place": its geometry, its
-// entry/exit doors, its crates, its enemy roster, and the clear/complete
-// state machine (spec sections 3, 4, 23, 24, 26).
+// entry/exit doors, its crates, its enemy roster, its active floor, and
+// the clear/complete state machine. Spawning itself is entirely delegated
+// to the SpawnDirector (systems/SpawnDirector.js) — this class only builds
+// the stage, tracks which floor the player is on, and drives the
+// clear/exit-lock state machine.
 export class StageSystem {
   constructor(world) {
     this.world = world;
@@ -25,6 +32,7 @@ export class StageSystem {
     this.exitOpen = false;
     this.exitTriggered = false;
     this.backtrackLimit = PLAYER.backtrackDistanceMeters * WORLD.pixelsPerMeter;
+    this.currentFloor = ELEVATION_GROUND;
   }
 
   loadStage(stageNumber) {
@@ -35,11 +43,13 @@ export class StageSystem {
     this.crates = this.layout.crateSpecs.map(
       (c) => new Crate(c.x - CRATE_SIZE / 2, LEVEL.groundY - CRATE_SIZE, CRATE_SIZE, CRATE_SIZE, c.type, c.destructible)
     );
-    this.doors = this.layout.doorSpecs.map((d) => new SpawnDoor(d.x, elevationY(d.elevation), d.enemySpecs));
+    this.doors = this.layout.doorSpecs.map((d) => new SpawnDoor(d.id, d.x, elevationY(d.elevation), d.elevation));
+    this.spawnDirector = new SpawnDirector(stageNumber, this.doors, this.layout.encounterZones);
     this.enemies = [];
     this.cleared = false;
     this.exitOpen = false;
     this.exitTriggered = false;
+    this.currentFloor = ELEVATION_GROUND;
 
     this._syncDynamicSolids();
   }
@@ -59,46 +69,47 @@ export class StageSystem {
     return enemy;
   }
 
-  // Removes long-dead bodies for performance (spec section 22) and prunes
-  // fully-consumed coins/crates the renderer no longer needs to iterate.
+  // Removes long-dead bodies for performance and prunes fully-consumed
+  // coins/crates the renderer no longer needs to iterate.
   update(dt, spawnDoorSystem, player) {
     for (const e of this.enemies) {
       if (e.dead) e.deathTimer -= dt;
     }
     this.enemies = this.enemies.filter((e) => !e.dead || e.deathTimer > 0);
 
+    this._updateCurrentFloor(player);
+
     if (!DEV_RUNTIME.spawns.paused) {
-      spawnDoorSystem.update(dt, this.doors, {
-        progressionFrontier: player.progressionX,
-        backtrackLimit: this.backtrackLimit,
-        getActiveEnemyCount: () => this.getActiveEnemyCount(),
-        activeEnemyLimit: DEV_RUNTIME.spawns.maxAliveOverride ?? this.layout.activeEnemyLimit,
+      this.spawnDirector.tick(dt, spawnDoorSystem, {
+        player,
+        currentFloor: this.currentFloor,
+        getAliveCount: () => this.getActiveEnemyCount(),
         spawnEnemy: (kind, tier, x, floorY) => this.spawnEnemy(kind, tier, x, floorY),
       });
     }
 
     if (!this.cleared) {
       const noActiveEnemies = this.enemies.every((e) => e.dead);
-      const noPendingDoors = this.doors.every((d) => !d.hasPendingEnemies());
-      if (noActiveEnemies && noPendingDoors) {
+      const noPendingSpawns = this.spawnDirector.isExhausted();
+      if (noActiveEnemies && noPendingSpawns) {
         this.cleared = true;
         this.exitOpen = true;
       }
     }
 
     // Backtracking is limited to a fixed distance behind the progression
-    // frontier (spec section 26) — clamp here so it holds regardless of
-    // input source or physics edge cases.
+    // frontier — clamp here so it holds regardless of input source or
+    // physics edge cases.
     const minX = player.progressionX - this.backtrackLimit;
     if (player.x < minX) {
       player.x = minX;
       if (player.vx < 0) player.vx = 0;
     }
 
-    // The exit stays locked until the stage is cleared (spec section 4) —
-    // enforce that as a physical barrier too, otherwise nothing stops the
-    // player from running straight past a locked door and off the end of
-    // the authored level geometry.
+    // The exit stays locked until the stage is cleared — enforce that as a
+    // physical barrier too, otherwise nothing stops the player from
+    // running straight past a locked door and off the end of the authored
+    // level geometry.
     if (!this.exitOpen) {
       const maxX = this.layout.exitX - player.w;
       if (player.x > maxX) {
@@ -114,6 +125,25 @@ export class StageSystem {
       return 'exit';
     }
     return null;
+  }
+
+  // Tracks the player's active floor: only updates on a genuine stable
+  // landing — `player.onGround` this frame AND the feet sitting within a
+  // couple px of one of the three known floor Ys — never merely because a
+  // jump's arc briefly overlapped another elevation, and never mid-ramp (a
+  // stair ramp's intermediate Y values don't match any floor's exact Y, so
+  // walking across one leaves `currentFloor` untouched until the player
+  // actually lands on the floor at the far end). This is what the Spawn
+  // Director's active-floor door gating reads.
+  _updateCurrentFloor(player) {
+    if (!player.onGround) return;
+    const feetY = player.y + player.h;
+    for (const floor of FLOOR_LEVELS) {
+      if (Math.abs(feetY - elevationY(floor)) <= FLOOR_LAND_TOLERANCE) {
+        this.currentFloor = floor;
+        return;
+      }
+    }
   }
 
   _syncDynamicSolids() {

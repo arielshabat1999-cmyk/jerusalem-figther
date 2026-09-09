@@ -117,10 +117,29 @@ export const ENEMIES = {
 };
 
 export const SPAWN_DOOR = {
-  activationAheadDistance: 460, // world units ahead of progression frontier
   enemyExitDelaySec: 0.55,
-  emptyDoorChance: 0.18,
   doorOpenCloseSec: 0.5,
+};
+
+// The Spawn Director (systems/SpawnDirector.js): decides WHAT spawns,
+// WHERE (door/floor), and WHEN. Pure pacing/behavior knobs — never
+// duplicates ENEMY_TIERS/STAGE_COMPOSITION economy data (EconomyConfig.js).
+export const SPAWN_DIRECTOR = {
+  // Usually 1 active spawn door at a time, occasionally 2, never every
+  // visible door; peak encounters (late stages only, rare) may briefly go
+  // to 3.
+  maxConcurrentOpenDoors: 2,
+  peakMaxConcurrentOpenDoors: 3,
+  peakEncounterChance: 0.12,
+  peakEncounterMinStage: 7,
+  // Never activate a door the player is standing this close to.
+  doorSafeDistance: 90,
+  // How much of a zone's remaining budget one encounter block "claims" when
+  // generated — hard encounters claim a bigger share so the stage's whole
+  // authored count table gets spent by stage end regardless of exactly how
+  // many combat blocks a given stage happens to contain (see StageBuilder).
+  zoneBudgetShare: { normal: 0.3, hard: 0.55 },
+  emptyDoorChance: 0.18, // some doors open and close with nobody inside
 };
 
 // Coins have no attraction range: every dropped coin does a brief pop/
@@ -157,17 +176,17 @@ export const STAGES = {
   curatedCount: 10,
 };
 
-// Stage-body generation knobs (spec: StageBuilder.buildBodyChunks), lifted
-// out of inline magic numbers into data so the dev dashboard's Stage tab
-// can tune them live without touching the generator's logic itself.
+// Stage-body generation knobs (StageBuilder.buildBodyBlocks), lifted out of
+// inline magic numbers into data so the dev dashboard's Stage tab can tune
+// them live without touching the generator's logic itself.
 export const STAGE_GEN = {
   unitCountBase: 3,
   unitCountPerStage: 0.5, // unitCount = min(unitCountCap, unitCountBase + floor(stage * unitCountPerStage))
   unitCountCap: 10,
-  rooftopChanceBase: 0.15,
-  rooftopChancePerStage: 0.03,
-  rooftopChanceCap: 0.6,
-  obstacleChance: 0.25, // rolled against the remainder after rooftopChance
+  stairChanceBase: 0.12,
+  stairChancePerStage: 0.025,
+  stairChanceCap: 0.5,
+  obstacleChance: 0.2, // rolled independently per non-stair body slot
 };
 
 // Day -> sunset -> night progression (spec: lighting progression across
@@ -183,7 +202,12 @@ export const LEVEL = {
   floorHeight: 160,
   stairSpan: 130,
   clearZoneWidth: 230,
-  entryApproachWidth: 260,
-  exitApproachWidth: 260,
+  // Stage-generation pacing, derived from PLAYER.moveSpeed so "~N seconds of
+  // traversal" translates to actual world-pixel widths (at 210px/s, 3-4s ->
+  // 630-840px). Read by BlockLibrary.js's ENTRANCE/EXIT blocks and
+  // StageBuilder's stair-gap pacing.
+  entranceWidthRange: [630, 840],
+  exitWidthRange: [630, 840],
+  stairGapRange: [840, 1470],
 };
 
