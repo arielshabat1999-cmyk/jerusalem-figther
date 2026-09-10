@@ -18,20 +18,28 @@ export const PlaceholderAdapter = {
     ctx.fillRect(0, 0, viewportWidth, viewportHeight);
   },
 
+  // TEMPORARY BLOCKOUT VIEW (see ArtAdapter.drawSolid/drawStair for the
+  // matching real-art-path version) — same bold black floor/stair strips,
+  // used only if real art fails to load. Geometry read here is identical
+  // to before; only the fill style changed.
   drawSolid(ctx, s, cam) {
-    ctx.fillStyle = s.y < 0 ? '#5b4636' : '#8a7357';
-    ctx.fillRect(s.x - cam.x, s.y - cam.y, s.w, Math.min(s.h, 900));
-    ctx.strokeStyle = 'rgba(0,0,0,0.25)';
-    ctx.strokeRect(s.x - cam.x, s.y - cam.y, s.w, Math.min(s.h, 900));
+    const x = s.x - cam.x;
+    const y = s.y - cam.y;
+    const h = Math.min(s.h, 900);
+    ctx.fillStyle = 'rgba(18, 20, 24, 0.35)';
+    ctx.fillRect(x, y, s.w, h);
+    ctx.fillStyle = '#0a0a0a';
+    ctx.fillRect(x, y, s.w, 14);
   },
 
   drawStair(ctx, stair, cam) {
-    ctx.fillStyle = '#b8a06a';
+    const x = stair.x - cam.x;
+    ctx.fillStyle = '#0a0a0a';
     ctx.beginPath();
-    ctx.moveTo(stair.x - cam.x, stair.yAtX0 - cam.y);
-    ctx.lineTo(stair.x + stair.w - cam.x, stair.yAtX1 - cam.y);
-    ctx.lineTo(stair.x + stair.w - cam.x, stair.yAtX1 - cam.y + 16);
-    ctx.lineTo(stair.x - cam.x, stair.yAtX0 - cam.y + 16);
+    ctx.moveTo(x, stair.yAtX0 - cam.y);
+    ctx.lineTo(x + stair.w, stair.yAtX1 - cam.y);
+    ctx.lineTo(x + stair.w, stair.yAtX1 - cam.y + 16);
+    ctx.lineTo(x, stair.yAtX0 - cam.y + 16);
     ctx.closePath();
     ctx.fill();
   },

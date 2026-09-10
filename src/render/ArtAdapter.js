@@ -72,6 +72,9 @@ export function createArtAdapter(assets, placeholder) {
     return assets.hasAnimation(key) ? assets.getAnimationFrame(key, 0) : null;
   }
 
+  // Currently unused while the temporary black-strip blockout view
+  // (drawSolid, below) is active — kept as-is so restoring the tiled env
+  // texture later is a one-line swap back, not a rewrite.
   function tileTexture(ctx, sprite, x, y, w, h) {
     ctx.save();
     ctx.beginPath();
@@ -119,28 +122,37 @@ export function createArtAdapter(assets, placeholder) {
 
   return {
     drawBackground,
+    // TEMPORARY BLOCKOUT VIEW (debug/readability pass): the walkable
+    // floor/platform/stair surfaces are drawn as bold black strips instead
+    // of the detailed env tile art, so multi-floor continuity and stair
+    // placement are instantly readable. This touches ONLY how these
+    // surfaces are drawn — the geometry (s.x/y/w/h, stair.yAtX0/yAtX1) is
+    // the exact same collision data World.js already uses; nothing about
+    // collision, floor heights, or stage generation changed. The building
+    // mass below/behind the floor line is kept as a faint silhouette
+    // fill (not the tiled texture) so walls still read behind the path.
     drawSolid: (ctx, s, cam) => {
-      const sprite = assets.getSprite(`env.${s.texture || 'wall'}`) || assets.getSprite('env.wall');
-      if (!sprite) return placeholder.drawSolid(ctx, s, cam);
-      tileTexture(ctx, sprite, s.x - cam.x, s.y - cam.y, s.w, Math.min(s.h, 900));
+      const x = s.x - cam.x;
+      const y = s.y - cam.y;
+      const h = Math.min(s.h, 900);
+      ctx.fillStyle = 'rgba(18, 20, 24, 0.35)';
+      ctx.fillRect(x, y, s.w, h);
+      const FLOOR_STRIP_PX = 14; // thick enough to read clearly on mobile
+      ctx.fillStyle = '#0a0a0a';
+      ctx.fillRect(x, y, s.w, FLOOR_STRIP_PX);
     },
 
     drawStair: (ctx, stair, cam) => {
-      const sprite = assets.getSprite('env.stairs');
-      if (!sprite) return placeholder.drawStair(ctx, stair, cam);
       const x = stair.x - cam.x;
-      const yTop = Math.min(stair.yAtX0, stair.yAtX1) - cam.y;
-      const yBottom = Math.max(stair.yAtX0, stair.yAtX1) - cam.y + 16;
-      ctx.save();
+      const STAIR_STRIP_PX = 16; // matches the ramp's own ~16px collision depth
+      ctx.fillStyle = '#0a0a0a';
       ctx.beginPath();
       ctx.moveTo(x, stair.yAtX0 - cam.y);
       ctx.lineTo(x + stair.w, stair.yAtX1 - cam.y);
-      ctx.lineTo(x + stair.w, stair.yAtX1 - cam.y + 16);
-      ctx.lineTo(x, stair.yAtX0 - cam.y + 16);
+      ctx.lineTo(x + stair.w, stair.yAtX1 - cam.y + STAIR_STRIP_PX);
+      ctx.lineTo(x, stair.yAtX0 - cam.y + STAIR_STRIP_PX);
       ctx.closePath();
-      ctx.clip();
-      ctx.drawImage(sprite.image, sprite.x, sprite.y, sprite.w, sprite.h, x, yTop, stair.w, yBottom - yTop);
-      ctx.restore();
+      ctx.fill();
     },
 
     drawDoor: (ctx, door, cam, label) => {
