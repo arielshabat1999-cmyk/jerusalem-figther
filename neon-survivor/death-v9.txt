@@ -1,0 +1,60 @@
+
+/* v9 clear death / lives / game-over flow */
+(()=>{
+const st9=document.createElement('style');st9.textContent=`
+.death9{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 45%,#0d3158aa,#01040df2 64%);backdrop-filter:blur(4px);pointer-events:auto}.death9.show{display:flex}.death9Card{text-align:center;padding:28px 22px;width:min(430px,86vw);border:1px solid #4deaff55;border-radius:18px;background:linear-gradient(180deg,#07182cf2,#030814f8);box-shadow:0 0 55px #21dfff26,inset 0 0 45px #00cfff0b}.death9Eyebrow{font-size:9px;font-weight:900;letter-spacing:.34em;color:#5ceaff}.death9Title{margin:9px 0 4px;font-size:clamp(46px,14vw,76px);line-height:.9;font-weight:1000;letter-spacing:-.055em;color:#fff;text-shadow:0 0 24px #23deff,0 0 52px #744cff}.death9Hearts{margin-top:15px;font-size:29px;letter-spacing:.16em;color:#ff5576;text-shadow:0 0 18px #ff355d}.death9Sub{margin-top:9px;color:#89a9c5;font-size:10px;letter-spacing:.18em}.death9Pulse{animation:deathPulse9 .42s ease both}@keyframes deathPulse9{from{transform:scale(.78);opacity:0}to{transform:scale(1);opacity:1}}
+#over.show{z-index:130!important}#over .panel{border-color:#ff537044!important;box-shadow:0 30px 90px #000d,0 0 48px #ff385526!important}#over h2{font-size:clamp(48px,13vw,78px)!important;line-height:.9!important;margin:9px 0 18px!important;color:#fff!important;letter-spacing:-.045em!important;text-shadow:0 0 24px #ff4664,0 0 56px #ff315755!important}#over .eyebrow{color:#ff7890!important}#again{margin-top:12px!important;background:linear-gradient(100deg,#ff315f,#7a5dff 56%,#00d7ff)!important}
+`;document.head.appendChild(st9);
+
+let death9=document.createElement('div');death9.id='death9';death9.className='death9';death9.innerHTML='<div class="death9Card"><div class="death9Eyebrow">SHIP DESTROYED</div><div id="deathTitle9" class="death9Title">2 LIVES LEFT</div><div id="deathHearts9" class="death9Hearts">♥ ♥</div><div class="death9Sub">RESPAWNING...</div></div>';document.body.appendChild(death9);
+let deathTimer9=0;
+function showLifeLoss9(n,returnState){
+  clearTimeout(deathTimer9);
+  const title=$('deathTitle9'),hearts=$('deathHearts9'),card=death9.firstElementChild;
+  title.textContent=n===1?'1 LIFE LEFT':n+' LIVES LEFT';
+  hearts.textContent=Array(Math.max(0,n)).fill('♥').join(' ');
+  card.classList.remove('death9Pulse');void card.offsetWidth;card.classList.add('death9Pulse');
+  death9.classList.add('show');
+  state='deathpause';
+  deathTimer9=setTimeout(()=>{
+    death9.classList.remove('show');
+    if(state==='deathpause'){
+      state=returnState==='boss'?'boss':'play';
+      last=performance.now();
+      ui();
+    }
+  },1350);
+}
+function forceGameOver9(){
+  clearTimeout(deathTimer9);death9.classList.remove('show');
+  state='over';
+  $('hud').style.display='none';
+  $('upgrade').classList.remove('show');
+  $('menu').classList.remove('show');
+  const ov=$('over');ov.classList.add('show');
+  const h=ov.querySelector('h2');if(h)h.textContent='GAME OVER';
+  const eye=ov.querySelector('.eyebrow');if(eye)eye.textContent='ALL LIVES LOST';
+  const again=$('again');if(again)again.textContent='RESTART';
+  if($('fcredits'))$('fcredits').textContent='0 ⬡';
+}
+const gameover9base=gameover;gameover=function(){
+  if(state==='deathpause'||state==='over')return;
+  const returnState=state==='boss'?'boss':'play';
+  gameover9base();
+  const lifeEl=$('lives5');
+  const left=lifeEl?Math.max(0,parseInt(lifeEl.textContent,10)||0):(state==='over'?0:2);
+  if(state==='over'||left<=0){forceGameOver9();return}
+  showLifeLoss9(left,returnState);
+};
+
+const start9base=start;start=function(){
+  clearTimeout(deathTimer9);death9.classList.remove('show');
+  $('over').classList.remove('show');
+  start9base();
+  const lifeEl=$('lives5');if(lifeEl)lifeEl.textContent='3';
+  const h=$('over')&&$('over').querySelector('h2');if(h)h.textContent='GAME OVER';
+  const again=$('again');if(again)again.textContent='RESTART';
+};
+
+const over9=$('over');if(over9){const h=over9.querySelector('h2');if(h)h.textContent='GAME OVER';const eye=over9.querySelector('.eyebrow');if(eye)eye.textContent='ALL LIVES LOST'}if($('again'))$('again').textContent='RESTART';
+})();
