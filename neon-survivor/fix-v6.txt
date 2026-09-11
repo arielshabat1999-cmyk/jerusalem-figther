@@ -1,0 +1,60 @@
+
+/* v6 full run reset + hangar preview positioning fix */
+(()=>{
+const st6=document.createElement('style');st6.textContent=`
+/* The base game makes every canvas fixed/fullscreen. Hangar canvases must stay inside their cards. */
+.previewCanvas3{position:relative!important;inset:auto!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;display:block!important;width:100%!important;max-width:260px!important;height:132px!important;margin:0 auto!important;transform:none!important;z-index:1!important}
+.weaponPreview3{position:relative!important;inset:auto!important;width:100%!important;max-width:260px!important;height:102px!important;margin:8px auto 2px!important}
+.carouselViewport3{height:250px!important;overflow:hidden!important;align-items:center!important}
+.carouselCard3{width:calc(100% - 74px)!important;height:232px!important;display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:center!important;padding:9px 12px 11px!important;text-align:center!important}
+.carouselCard3.weapon{height:220px!important}
+.carouselInfo3{width:100%!important;padding:0 6px!important;text-align:center!important;display:block!important}
+.carouselInfo3 h3{margin:2px 0 4px!important;font-size:18px!important}.carouselInfo3 p{max-width:310px;margin:0 auto!important}.carouselStat3{margin-top:5px!important}.priceLine3{margin-top:5px!important}
+.navBtn3{top:50%!important;z-index:5!important}
+.lives5{min-width:82px;text-align:center}.lives5:before{content:'♥  ';color:#ff526d;text-shadow:0 0 10px #ff3157}
+@media(max-width:600px){.carouselPanel3{padding:12px 12px 16px!important}.carouselSection3{padding:9px!important}.carouselViewport3{height:238px!important}.carouselCard3{width:calc(100% - 64px)!important;height:222px!important}.carouselCard3.weapon{height:210px!important}.previewCanvas3{height:124px!important}.weaponPreview3{height:94px!important}.carouselInfo3 h3{font-size:17px!important}}
+`;document.head.appendChild(st6);
+
+/* Show the player clearly has three total lives. */
+const livesBox6=document.querySelector('.lives5');if(livesBox6){livesBox6.childNodes[0]&&livesBox6.childNodes[0].nodeType===3&&(livesBox6.childNodes[0].textContent='LIVES ×');}
+
+/* A final Game Over starts the next run completely fresh. Best-distance remains only as a record. */
+function wipeRunProgress6(){
+  credits=0;boostTimer=0;shopOffers=[];
+  ownedShips=['nova'];equippedShip='nova';
+  try{ownedWeapons3=['pulse'];equippedWeapon3='pulse';shipIndex3=0;weaponIndex3=0}catch(_){}
+  try{
+    localStorage.removeItem('NScredits');
+    localStorage.NSownedShips='["nova"]';
+    localStorage.NSequippedShip='nova';
+    localStorage.NSownedWeapons='["pulse"]';
+    localStorage.NSequippedWeapon='pulse';
+  }catch(_){}
+  try{saveProfile()}catch(_){}
+  if($('bank'))$('bank').textContent='0 ⬡';
+  if($('fcredits'))$('fcredits').textContent='0 ⬡';
+  if($('credits'))$('credits').textContent='0';
+  if($('shopcredits'))$('shopcredits').textContent='0';
+}
+const gameover6base=gameover;gameover=function(){
+  gameover6base();
+  if(state==='over'){
+    wipeRunProgress6();
+    if($('fcredits'))$('fcredits').textContent='0 ⬡';
+  }
+};
+
+/* Force a clean preview redraw after the pause shop becomes visible. */
+const drawPreview6base=drawPreview3;drawPreview3=function(){
+  drawPreview6base();
+  const a=$('shipPreview3'),b=$('weaponPreview3');
+  if(a){a.style.position='relative';a.style.inset='auto';}
+  if(b){b.style.position='relative';b.style.inset='auto';}
+};
+
+/* Relaunch always starts with the fresh run state after a real Game Over. */
+const start6base=start;start=function(){
+  if(state==='over')wipeRunProgress6();
+  start6base();
+};
+})();
