@@ -1,0 +1,89 @@
+
+/* v11 sequential weapon evolution from gift crates */
+(()=>{
+let weaponLevel11=0,nonWeapon11=0;
+const WEAPON_GIFT_CHANCE11=.50;
+const WC11=[
+  {name:'PULSE',base:'#29eaff',hot:'#d8fbff',form:'pulse',speed:1.00,classDmg:1.00},
+  {name:'PLASMA',base:'#35e8ff',hot:'#ff58df',form:'plasma',speed:1.05,classDmg:1.06},
+  {name:'ION',base:'#42eaff',hot:'#a875ff',form:'ion',speed:1.14,classDmg:1.12},
+  {name:'NOVA',base:'#36eaff',hot:'#ff9a45',form:'nova',speed:.96,classDmg:1.20},
+  {name:'STORM',base:'#42edff',hot:'#58ffb8',form:'storm',speed:1.08,classDmg:1.22},
+  {name:'OMEGA',base:'#5defff',hot:'#ffd95b',form:'omega',speed:1.12,classDmg:1.32}
+];
+function weaponProfile11(){
+  let lv=Math.max(0,weaponLevel11|0),shots=Math.min(7,1+Math.ceil(lv/2)),power=Math.floor(lv/2),ci=Math.min(WC11.length-1,Math.floor(lv/4)),c=WC11[ci],hot=lv>0&&lv%2===0;
+  return {lv,shots,power,ci,name:c.name,form:c.form,col:hot?c.hot:c.base,hot,speed:c.speed,dmg:(1+power*.28)*c.classDmg};
+}
+function specialLevel11(){let el=document.querySelector('.up7.special .up7Level');if(!el)return 0;let m=(el.textContent||'').match(/(\d+)/);return m?+m[1]:0}
+function weaponLabel11(w){return w.hot?`${w.name} POWER · +${Math.round((w.dmg-1)*100)}% DMG`:`${w.shots} SHOT${w.shots===1?'':'S'} · ${w.name}`}
+function grantWeapon11(g){
+  weaponLevel11++;nonWeapon11=0;
+  let w=weaponProfile11();p.weaponType='pulse';p.n=1;
+  let label='WEAPON LV.'+w.lv+' · '+weaponLabel11(w);
+  popText(g.x,g.y-14,label,w.col,18);puff(g.x,g.y,26,w.col,1.05);puff(p.x,p.y,12,w.col,.45);shake=Math.max(shake,5);ui();
+}
+function normalGift11(g){
+  nonWeapon11++;
+  let r=Math.random(),label='',col='#72f5ff',special=1+specialLevel11()*.12;
+  if(p.hp<p.max*.72&&r<.23){let n=Math.round(Math.min(36,p.max-p.hp));p.hp=Math.min(p.max,p.hp+36);label='HP +'+n;col='#74ff9b'}
+  else if(r<.40){let n=Math.min(46,Math.max(0,p.maxShield-(p.shield||0)));p.shield=Math.min(p.maxShield,(p.shield||0)+46);label='SHIELD +'+n;col='#63eaff'}
+  else if(r<.58){p.guardian=Math.max(p.guardian||0,8*special);p.guardianCd=0;label='ACTIVE GUARDIAN';col='#72ff9b'}
+  else if(r<.73){p.dodge=Math.max(p.dodge||0,10*special);label='QUICK DODGE';col='#5feaff'}
+  else if(r<.88){p.advanced=Math.max(p.advanced||0,7*special);label='ADVANCED FIRE';col='#ff6bdc'}
+  else {p.clone=Math.max(p.clone||0,9*special);label='SHIP CLONES';col='#9a9cff'}
+  popText(g.x,g.y-10,label,col,18);puff(g.x,g.y,20,col,.82);shake=Math.max(shake,3);ui();
+}
+collectGift=function(g){
+  let guaranteed=nonWeapon11>=2;
+  if(guaranteed||Math.random()<WEAPON_GIFT_CHANCE11)grantWeapon11(g);else normalGift11(g);
+};
+
+const maybeGift11base=maybeGift;
+maybeGift=function(x,y,ch=.08){return maybeGift11base(x,y,Math.min(.42,ch*1.25))};
+
+function bullet11(x,y,dmgMul=1,cloneMul=1){
+  let w=weaponProfile11(),kind='pulse',pierce=0;
+  if(w.form==='ion'){kind='piercer';pierce=1}
+  else if(w.form==='nova'){kind='explosive'}
+  else if(w.form==='storm'){kind='storm'}
+  else if(w.form==='omega'){kind='explosive';pierce=2}
+  B.push({x,y,vx:0,vy:-p.bs*w.speed,r:w.form==='nova'||w.form==='omega'?5:w.form==='plasma'?4.3:3.5,life:1.35,d:p.dmg*w.dmg*dmgMul*cloneMul,kind,pierce,hitRefs:[],w11:1,wcol11:w.col,wform11:w.form,whot11:w.hot});
+}
+function volley11(cx,cy,mul=1){
+  let w=weaponProfile11(),spacing=w.shots>=6?10:w.shots>=4?12:14,start=-(w.shots-1)*spacing/2;
+  for(let i=0;i<w.shots;i++)bullet11(cx+start+i*spacing,cy-22,1,mul);
+}
+shoot=function(a){
+  if(!p||p.cd>0)return;
+  let w=weaponProfile11(),advanced=(p.advanced||0)>0;
+  p.cd=p.rate*(advanced?.72:1);
+  volley11(p.x,p.y,1);
+  if(advanced){bullet11(p.x-24,p.y-15,.72,1);bullet11(p.x+24,p.y-15,.72,1)}
+  if((p.clone||0)>0){volley11(p.x-34,p.y+5,.45);volley11(p.x+34,p.y+5,.45)}
+  puff(p.x,p.y-18,w.hot?5:3,w.col,.25);
+};
+
+const laser11base=laser;
+laser=function(b){
+  if(!b||!b.w11){laser11base(b);return}
+  let col=b.wcol11||'#2beaff',form=b.wform11||'pulse',a=Math.atan2(b.vy,b.vx);
+  X.save();X.translate(b.x,b.y);X.rotate(a);X.globalCompositeOperation='lighter';X.shadowColor=col;X.shadowBlur=b.whot11?24:16;
+  if(form==='nova'||form==='omega'){
+    X.fillStyle='#fff';X.beginPath();X.arc(0,0,form==='omega'?6.5:5.5,0,6.28);X.fill();X.strokeStyle=col;X.lineWidth=form==='omega'?3:2;X.beginPath();X.arc(0,0,(form==='omega'?11:9)+Math.sin(t*13)*1.5,0,6.28);X.stroke();
+    if(form==='omega'){X.strokeStyle='#fff';X.lineWidth=1.5;X.beginPath();X.moveTo(-16,0);X.lineTo(14,0);X.stroke()}
+  }else if(form==='ion'){
+    X.fillStyle=col;X.beginPath();X.moveTo(12,0);X.lineTo(-2,-5);X.lineTo(-18,0);X.lineTo(-2,5);X.closePath();X.fill();X.fillStyle='#fff';X.beginPath();X.moveTo(10,0);X.lineTo(-5,-1.4);X.lineTo(-13,0);X.lineTo(-5,1.4);X.closePath();X.fill();
+  }else if(form==='storm'){
+    X.strokeStyle=col;X.lineWidth=2.5;X.beginPath();X.moveTo(-20,0);X.lineTo(-10,-3);X.lineTo(-3,2);X.lineTo(5,-2);X.lineTo(13,0);X.stroke();X.strokeStyle='#fff';X.lineWidth=1.2;X.beginPath();X.moveTo(-13,0);X.lineTo(11,0);X.stroke();
+  }else{
+    let thick=form==='plasma'?5.2:3.2,gr=X.createLinearGradient(-20,0,12,0);gr.addColorStop(0,col+'00');gr.addColorStop(.35,col);gr.addColorStop(.78,col);gr.addColorStop(1,'#fff');X.strokeStyle=gr;X.lineWidth=thick;X.beginPath();X.moveTo(-20,0);X.lineTo(10,0);X.stroke();if(form==='plasma'){X.strokeStyle='#fff';X.lineWidth=1.4;X.beginPath();X.moveTo(-10,0);X.lineTo(9,0);X.stroke()}
+  }
+  X.restore();
+};
+
+const reset11base=reset;
+reset=function(){weaponLevel11=0;nonWeapon11=0;reset11base();if(p){p.weaponType='pulse';p.n=1}}
+const over11base=gameover;
+gameover=function(){over11base();if(state==='over'){weaponLevel11=0;nonWeapon11=0}}
+})();
