@@ -1,0 +1,4 @@
+
+/* v7b garage hotfix: safe weapon-crate FX + boss-aware pause/resume */
+function bigExplosion4(x,y,size=1,col='#62eaff'){puff(x,y,Math.round(14+12*size),'#fff2aa',.65+size*.3);puff(x,y,Math.round(18+15*size),col,.9+size*.4);shake=Math.max(shake,4+size*3)}
+(()=>{let return7b='play';function open7b(){if(state!=='play'&&state!=='boss')return;return7b=state;state='shop';shipIndex3=Math.max(0,Object.keys(SHIPS).indexOf(p.shipType));$('upgrade').classList.add('show');renderShop();ui()}function close7b(){$('upgrade').classList.remove('show');state=return7b==='boss'?'boss':'play';last=performance.now();flashStage(state==='boss'?'BOSS FIGHT RESUMED':'FLIGHT RESUMED');ui()}if($('upgrades5'))$('upgrades5').onclick=e=>{e.stopPropagation();open7b()};if($('garageBack7'))$('garageBack7').onclick=close7b;if($('continue'))$('continue').onclick=close7b})();
