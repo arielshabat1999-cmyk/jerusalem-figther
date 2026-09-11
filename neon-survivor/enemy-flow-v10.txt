@@ -1,0 +1,101 @@
+
+/* v10 enemy formation flow + garage cleanup + 50% screen shake */
+(()=>{
+const st10=document.createElement('style');
+st10.textContent=`
+.gift7{display:none!important}
+.garage7{grid-template-rows:auto auto auto 1fr auto!important}
+.ship7Arrow{top:62%!important}
+`;
+document.head.appendChild(st10);
+const gift10=document.querySelector('.gift7');if(gift10)gift10.remove();
+
+let ES10=[];
+function enemyShot10(x,y,speed,dmg,kind='enemy'){
+  ES10.push({x,y,vx:0,vy:speed,r:kind==='orb'?6:kind==='sniper'?3.2:4,life:5,dmg,kind});
+}
+function fireStraight10(e){
+  if(!p||!e)return;
+  if(e.type==='tank'){
+    for(const ox of[-10,0,10])enemyShot10(e.x+ox,e.y+e.r*.62,255,e.shotDmg,'spread');
+    puff(e.x,e.y+e.r,7,'#ff765f',.35);
+  }else if(e.type==='bomber'){
+    enemyShot10(e.x,e.y+e.r*.55,185,e.shotDmg,'orb');
+    puff(e.x,e.y+e.r,10,'#ffb34f',.45);
+  }else if(e.type==='sniper'){
+    enemyShot10(e.x,e.y+e.r*.55,455,e.shotDmg,'sniper');
+    puff(e.x,e.y+e.r,6,'#c27cff',.32);
+  }else if(e.type==='dart'){
+    enemyShot10(e.x-5,e.y+8,330,e.shotDmg,'enemy');
+    enemyShot10(e.x+5,e.y+8,330,e.shotDmg,'enemy');
+    puff(e.x,e.y+8,5,'#ff4f6d',.25);
+  }else{
+    enemyShot10(e.x,e.y+e.r*.5,285,e.shotDmg,'enemy');
+    puff(e.x,e.y+e.r*.4,4,'#ff566d',.22);
+  }
+}
+
+enemy=function(){
+  let diff=1+(stage-1)*.12,r=Math.random(),type=r<.14?'tank':r<.36?'dart':r<.53?'bomber':r<.67?'sniper':'drone';
+  let e={x:R(40,W-40),y:R(-190,-70),type,r:15,hp:34*diff,max:34*diff,spd:42,dmg:11,val:12,credit:4,hit:0,phase:R(0,6.28),rot:R(-.25,.25),fireCd:999,fireRate:1.65,fireChance:-1,shotDmg:6+stage*.35};
+  if(type==='tank')Object.assign(e,{r:23,hp:112*diff,max:112*diff,spd:30,dmg:22,val:36,credit:12,fireRate:2.05,shotDmg:7+stage*.5});
+  if(type==='dart')Object.assign(e,{r:12,hp:25*diff,max:25*diff,spd:60,dmg:9,val:18,credit:6,fireRate:1.2,shotDmg:5+stage*.3});
+  if(type==='bomber')Object.assign(e,{r:19,hp:62*diff,max:62*diff,spd:36,dmg:16,val:27,credit:9,fireRate:2.4,shotDmg:12+stage*.55});
+  if(type==='sniper')Object.assign(e,{r:15,hp:44*diff,max:44*diff,spd:34,dmg:12,val:26,credit:9,fireRate:2.3,shotDmg:10+stage*.45});
+  let targetY=H*(type==='sniper'?R(.18,.27):type==='tank'?R(.23,.32):R(.25,.40));
+  e.flow10={x:e.x,y:e.y,targetY,phase:'enter',hold:type==='tank'?R(5.2,7.2):type==='sniper'?R(5.0,7.0):type==='dart'?R(3.6,5.2):R(4.2,6.2),fire:R(.55,1.5),amp:type==='dart'?Math.min(70,W*.2):type==='sniper'?Math.min(24,W*.08):type==='tank'?Math.min(34,W*.1):Math.min(44,W*.13),freq:type==='dart'?1.8:type==='sniper'?.72:1.05,seed:R(0,6.28)};
+  E.push(e);
+};
+
+const update10base=update;
+update=function(dt){
+  for(const e of E){if(e&&!e.boss5&&!e.boss)e.fireChance=-1;}
+  update10base(dt);
+  if(!p)return;
+  if(state==='boss'||state==='sector'||state==='over'||state==='menu'){ES10=[];return;}
+  if(state!=='play')return;
+  for(let i=E.length-1;i>=0;i--){
+    const e=E[i];if(!e||e.boss5||e.boss)continue;
+    if(!e.flow10){e.flow10={x:e.x,y:e.y,targetY:H*.3,phase:'hold',hold:4.5,fire:.8,amp:30,freq:1,seed:R(0,6.28)};e.fireChance=-1;}
+    const f=e.flow10;
+    if(f.phase==='enter'){
+      f.y+=(145+Math.min(80,stage*5))*dt;
+      f.x+=Math.sin(t*1.5+f.seed)*10*dt;
+      if(f.y>=f.targetY){f.y=f.targetY;f.phase='hold';}
+    }else if(f.phase==='hold'){
+      f.hold-=dt;
+      f.x=W*.5+Math.sin(t*f.freq+f.seed)*f.amp;
+      f.y=f.targetY+Math.sin(t*1.25+f.seed)*5;
+      f.fire-=dt;
+      if(f.fire<=0){fireStraight10(e);f.fire=R((e.fireRate||1.7)*.82,(e.fireRate||1.7)*1.22);}
+      if(f.hold<=0){f.phase='exit';}
+    }else{
+      f.y+=(155+stage*4)*dt;
+      f.x+=Math.sin(t*1.7+f.seed)*11*dt;
+      if(f.y>H+110){E.splice(i,1);continue;}
+    }
+    e.x=cl(f.x,22,W-22);e.y=f.y;e.fireChance=-1;
+  }
+  for(let i=ES10.length-1;i>=0;i--){
+    const b=ES10[i];b.x+=b.vx*dt;b.y+=b.vy*dt;b.life-=dt;
+    if(b.life<=0||b.y>H+70){ES10.splice(i,1);continue;}
+    if(Math.hypot(p.x-b.x,p.y-b.y)<p.r+b.r){hurt(b.dmg);puff(b.x,b.y,8,b.kind==='orb'?'#ffad4c':b.kind==='sniper'?'#be78ff':'#ff526c',.45);ES10.splice(i,1);}
+  }
+};
+
+function drawShot10(b){
+  const col=b.kind==='orb'?'#ffad4c':b.kind==='sniper'?'#be78ff':'#ff526c';
+  X.save();X.globalCompositeOperation='lighter';X.shadowBlur=b.kind==='orb'?22:14;X.shadowColor=col;X.fillStyle=b.kind==='orb'?'#fff1a8':'#fff';X.beginPath();X.arc(b.x,b.y,b.r,0,6.28);X.fill();X.strokeStyle=col;X.lineWidth=2;X.beginPath();X.arc(b.x,b.y,b.r+3,0,6.28);X.stroke();X.restore();
+}
+const draw10base=draw;
+draw=function(){
+  const s10=shake;shake=s10*.5;
+  draw10base();
+  shake=s10;
+  for(const b of ES10)drawShot10(b);
+};
+
+const reset10base=reset;reset=function(){ES10=[];reset10base()};
+const begin10base=beginSector;beginSector=function(){ES10=[];begin10base()};
+const over10base=gameover;gameover=function(){ES10=[];over10base()};
+})();
