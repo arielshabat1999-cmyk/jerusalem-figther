@@ -1,0 +1,73 @@
+/* v24 shell completion pass */
+;(()=>{
+const css=document.createElement('style');css.textContent=`
+:root{--shellEdge:#8b9aa433;--shellText:#ecf2f5;--shellMute:#8e9ea8;--shellPanelTop:#171d24f1;--shellPanelBot:#080c11f5}
+.screen{background:radial-gradient(circle at 50% 12%,#2737452a 0,#0a1015f0 42%,#03060af7 100%)!important;backdrop-filter:blur(14px)!important}
+.panel,.panel.hero,#over .panel{position:relative;overflow:hidden;border:1px solid var(--shellEdge)!important;background:linear-gradient(180deg,var(--shellPanelTop),#0d1319f2 28%,var(--shellPanelBot) 100%)!important;border-radius:22px!important;box-shadow:0 30px 90px #000d,inset 0 1px 0 #ffffff10,inset 0 -30px 60px #00000045!important}
+.panel:before,.garagePanel:before,#over .panel:before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 15% 14%,#ffffff08,transparent 18%),radial-gradient(circle at 85% 10%,#9fb7c60c,transparent 15%),linear-gradient(135deg,transparent 0 46%,#ffffff05 50%,transparent 54%);pointer-events:none}
+.panel.hero{max-width:min(540px,92vw)!important;height:min(760px,92dvh)!important;padding:24px 22px!important;display:grid!important;grid-template-rows:1fr auto!important;align-content:space-between!important}
+.heroDock{position:relative;margin:16px 0 8px;height:185px;border-radius:18px;border:1px solid #7e919c2e;background:radial-gradient(ellipse at 50% 55%,#31435528 0,#121920 46%,#080b10 82%);box-shadow:inset 0 1px 0 #ffffff0c,inset 0 0 70px #ffffff04,0 12px 32px #0007;overflow:hidden}
+.heroDock:before{content:'';position:absolute;left:15%;right:15%;bottom:24px;height:30px;border-radius:50%;border:1px solid #9eb1bb24;background:radial-gradient(ellipse at center,#ffffff12,transparent 65%)}
+.heroShipStage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.heroTagline{display:flex;justify-content:space-between;gap:10px;margin-top:10px}.heroPill{flex:1;padding:10px 12px;border-radius:12px;border:1px solid #7a8d9728;background:linear-gradient(180deg,#171e25df,#0a0f14e8);box-shadow:0 8px 18px #0005 inset,0 8px 20px #0004}.heroPill span{display:block;font-size:9px;letter-spacing:.18em;color:#7f909c;margin-bottom:4px}.heroPill b{font-size:13px;color:#eef4f7;letter-spacing:.05em}
+.panel .eyebrow{font-size:10px!important;letter-spacing:.32em!important;color:#91a3b0!important;text-shadow:none!important}.panel h1{font-size:48px!important;line-height:.92!important;margin:6px 0 10px!important;color:#f3f6f8!important}.panel h1 em{font-style:normal!important;color:#c8d6df!important}.panel p{font-size:14px!important;line-height:1.58!important;color:#98a8b2!important;max-width:34ch!important}
+.heroLaunchWrap{display:grid;gap:10px}.sub{display:flex!important;justify-content:space-between!important;align-items:center!important;margin-top:0!important;padding:12px 14px!important;border:1px solid #7e8f9b20!important;border-radius:13px!important;background:linear-gradient(180deg,#151c23dc,#090e13e8)!important;box-shadow:0 8px 20px #0005,inset 0 1px 0 #ffffff0a!important}.sub span{font-size:10px!important;letter-spacing:.18em!important;color:#82939f!important}.sub b{font-size:18px!important;color:#f0f4f6!important}.hint{margin-top:2px!important;padding:10px 2px 0!important;border-top:1px solid #ffffff0d!important;font-size:10px!important;letter-spacing:.06em!important;color:#70818d!important;line-height:1.55!important}
+.btn{height:56px!important;border-radius:14px!important;font-size:15px!important;letter-spacing:.18em!important}
+#over .panel{width:min(430px,92vw)!important;padding:24px 22px!important}.result{padding:14px 0!important;border-bottom:1px solid #ffffff10!important}.result span{font-size:11px!important;letter-spacing:.18em!important;color:#8b9ba6!important}.result b{font-size:24px!important;color:#f6f8f9!important}.overFooter{margin-top:12px;padding-top:12px;border-top:1px solid #ffffff0d;font-size:10px;letter-spacing:.14em;color:#75848f;text-align:center}
+.overBtns{display:grid;grid-template-columns:1fr;gap:10px;margin-top:16px}.overBadge{display:inline-block;margin-top:4px;padding:7px 12px;border-radius:999px;border:1px solid #92777b33;background:#151011aa;color:#e8d9d8;font-size:10px;letter-spacing:.18em}
+.stageflash{display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:0!important;text-align:center!important}.stageflash .big{line-height:1.02!important}.stageflash small{opacity:.9}.stageflash .tiny{margin-top:7px;font-size:9px;letter-spacing:.28em;color:#70818d}
+.garagePanel{position:relative;overflow:hidden;background:linear-gradient(180deg,#141a21fc,#080c11fc 58%,#030509fc)!important;padding:max(12px,env(safe-area-inset-top)) 12px max(12px,env(safe-area-inset-bottom))!important}.garagePanel:before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 15% 12%,#ffffff08,transparent 16%),radial-gradient(circle at 82% 10%,#8ea4b409,transparent 14%),linear-gradient(135deg,transparent 0 46%,#ffffff04 50%,transparent 54%);pointer-events:none}
+.garageTop{grid-template-columns:94px 1fr 94px!important;align-items:center!important;margin-bottom:6px!important}.garageBack,.garageWallet{height:42px!important;border-radius:12px!important}.garageTitle h2{font-size:27px!important;letter-spacing:.08em!important;color:#f2f6f8!important}.garageTitle small{color:#8ea0ab!important;letter-spacing:.30em!important}.garageSub{display:flex;justify-content:center;gap:12px;position:relative;margin:4px 0 10px!important;color:#7a8b95!important;font-size:9px!important;letter-spacing:.22em!important}
+.shipShowcase{padding:10px 10px 11px!important;border-radius:19px!important}.shipIdentity{display:grid;justify-items:center;gap:6px}.shipIdentity h3{margin:0!important;font-size:23px!important}.shipState{padding:7px 14px!important}.shipBuy{width:100%!important;max-width:240px!important;height:42px!important}.shipStatsRow{margin-top:9px!important}.shipDots2{margin-top:9px!important}
+.upgradeGrid6{margin-top:10px!important}.upgradeTile6{position:relative;overflow:hidden}.upgradeTile6:before{content:'';position:absolute;inset:0;background:linear-gradient(160deg,#ffffff07,transparent 32%);pointer-events:none}.upgradeTile6 .stats{margin-top:4px!important}.garageContinue{margin-top:10px!important;display:grid!important;gap:8px!important}.garageFooter{font-size:9px!important;letter-spacing:.24em!important;color:#687985!important;text-align:center!important}
+.sectionStamp{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;border:1px solid #7f929d2b;background:#11171daa;color:#dce6eb;font-size:9px;letter-spacing:.22em}
+`;document.head.appendChild(css);
+
+function ensureMenuShell(){
+  const hero=document.querySelector('#menu .panel.hero'); if(!hero || hero.dataset.shellDone) return; hero.dataset.shellDone='1';
+  const intro=hero.firstElementChild; const launch=hero.lastElementChild;
+  const dock=document.createElement('div'); dock.className='heroDock';
+  dock.innerHTML='<div class="heroShipStage"><canvas id="heroPreview" width="300" height="170" style="width:100%;height:100%"></canvas></div>'+ 
+    '<div class="heroTagline">'+
+      '<div class="heroPill"><span>COMBAT</span><b>AUTO-FIRE FORWARD</b></div>'+ 
+      '<div class="heroPill"><span>GOAL</span><b>SURVIVE · UPGRADE · PUSH FARTHER</b></div>'+ 
+    '</div>';
+  intro.appendChild(dock);
+  launch.classList.add('heroLaunchWrap');
+  const stamp=document.createElement('div'); stamp.className='sectionStamp'; stamp.textContent='PILOT READY';
+  intro.insertBefore(stamp,intro.children[1]);
+}
+function ensureOverShell(){
+  const over=document.querySelector('#over .panel'); if(!over || over.dataset.shellDone) return; over.dataset.shellDone='1';
+  const badge=document.createElement('div'); badge.className='overBadge'; badge.textContent='RUN TERMINATED';
+  const eyebrow=over.querySelector('.eyebrow'); if(eyebrow) eyebrow.insertAdjacentElement('afterend',badge);
+  const again=$('again'); if(again){const wrap=document.createElement('div'); wrap.className='overBtns'; again.parentNode.insertBefore(wrap,again); wrap.appendChild(again);} 
+  const foot=document.createElement('div'); foot.className='overFooter'; foot.textContent='ALL RUN CREDITS RESET · GARAGE LOADOUT RETURNS TO BASE MODEL'; over.appendChild(foot);
+}
+function ensureGarageShell(){
+  const gp=document.querySelector('.garagePanel'); if(!gp || gp.dataset.shellDone) return; gp.dataset.shellDone='1';
+  const sub=document.querySelector('.garageSub'); if(sub){sub.innerHTML='<span>UPGRADE</span><span>◆</span><span>CUSTOMIZE</span><span>◆</span><span>SURVIVE</span>'}
+}
+function drawHeroPreview(){
+  const c=$('heroPreview'); if(!c || !window.devicePixelRatio) return; const r=window.devicePixelRatio||1; const box=c.getBoundingClientRect(); if(box.width<10||box.height<10) return; c.width=Math.floor(box.width*r); c.height=Math.floor(box.height*r); const cx=c.getContext('2d'); cx.setTransform(r,0,0,r,0,0); const w=box.width,h=box.height;
+  cx.clearRect(0,0,w,h);
+  let bg=cx.createRadialGradient(w*.5,h*.56,10,w*.5,h*.56,w*.44); bg.addColorStop(0,'rgba(109,147,176,.18)'); bg.addColorStop(.55,'rgba(35,48,61,.06)'); bg.addColorStop(1,'rgba(0,0,0,0)'); cx.fillStyle=bg; cx.fillRect(0,0,w,h);
+  cx.save(); cx.translate(w/2,h*.47); cx.scale(1.5,1.5);
+  const s=30;
+  let g=cx.createLinearGradient(-s,-s,s,s); g.addColorStop(0,'#eef8ff'); g.addColorStop(.18,'#94afbe'); g.addColorStop(.46,'#395061'); g.addColorStop(1,'#171a20');
+  cx.fillStyle=g; cx.strokeStyle='#9db1bd'; cx.lineWidth=1.2;
+  cx.beginPath(); cx.moveTo(0,-s*1.06); cx.lineTo(s*.14,-s*.82); cx.lineTo(s*.44,-s*.48); cx.lineTo(s*.78,-s*.14); cx.lineTo(s*.88,s*.24); cx.lineTo(s*.56,s*.60); cx.lineTo(s*.24,s*.70); cx.lineTo(0,s*.42); cx.lineTo(-s*.24,s*.70); cx.lineTo(-s*.56,s*.60); cx.lineTo(-s*.88,s*.24); cx.lineTo(-s*.78,-s*.14); cx.lineTo(-s*.44,-s*.48); cx.lineTo(-s*.14,-s*.82); cx.closePath(); cx.fill(); cx.stroke();
+  cx.fillStyle='#18212a'; cx.beginPath(); cx.moveTo(0,-s*.76); cx.lineTo(s*.18,-s*.32); cx.lineTo(s*.12,s*.20); cx.lineTo(0,s*.36); cx.lineTo(-s*.12,s*.20); cx.lineTo(-s*.18,-s*.32); cx.closePath(); cx.fill();
+  let canopy=cx.createRadialGradient(0,-s*.20,1,0,-s*.20,s*.22); canopy.addColorStop(0,'#eff8fb'); canopy.addColorStop(.38,'#87a9b8'); canopy.addColorStop(1,'rgba(0,0,0,0)'); cx.fillStyle=canopy; cx.beginPath(); cx.ellipse(0,-s*.19,s*.12,s*.22,0,0,Math.PI*2); cx.fill();
+  for(const side of[-1,1]){ let len=s*.54,gx=side*s*.18,gy=s*.70; let tg=cx.createLinearGradient(gx,gy,gx,gy+len); tg.addColorStop(0,'#fff'); tg.addColorStop(.14,'#d4f1fc'); tg.addColorStop(.46,'rgba(95,151,182,.45)'); tg.addColorStop(1,'rgba(0,0,0,0)'); cx.globalCompositeOperation='lighter'; cx.fillStyle=tg; cx.beginPath(); cx.moveTo(gx-s*.055,gy); cx.lineTo(gx+s*.055,gy); cx.lineTo(gx+s*.025,gy+len); cx.lineTo(gx-s*.025,gy+len); cx.closePath(); cx.fill(); }
+  cx.restore();
+}
+
+const startOrig=start; start=function(){ ensureMenuShell(); ensureOverShell(); ensureGarageShell(); startOrig(); drawHeroPreview(); };
+const renderShopOrig=renderShop; renderShop=function(){ ensureGarageShell(); renderShopOrig(); };
+const gameoverOrig=gameover; gameover=function(){ ensureOverShell(); gameoverOrig(); const h=document.querySelector('#over h2'); if(h) h.textContent='GAME OVER'; const e=document.querySelector('#over .eyebrow'); if(e) e.textContent='MISSION FAILED'; const badge=document.querySelector('.overBadge'); if(badge) badge.textContent=lives<=0?'NO LIVES REMAINING':'RUN TERMINATED'; };
+const flashOrig=flashStage; flashStage=function(sub){ flashOrig(sub); const f=$('stageflash'); if(!f) return; const sm=f.querySelector('small'); const txt=(sub||'').toUpperCase(); let tiny=''; if(txt.includes('BOSS')) tiny='HEAVY HOSTILE CLASS INCOMING'; else if(txt.includes('BOOST')) tiny='TEMPORARY THRUST OVERDRIVE'; else if(txt.includes('RESPAWN')) tiny='HULL RECONSTRUCTED · RETURN TO COMBAT'; else if(txt.includes('RESUMED')) tiny='SYSTEMS ONLINE'; else if(txt.includes('WARP')) tiny='DEBRIS FIELD RECONFIGURING'; else tiny='DEEP SPACE COMBAT PROTOCOL'; let t=f.querySelector('.tiny'); if(!t){ t=document.createElement('div'); t.className='tiny'; f.appendChild(t);} t.textContent=tiny; if(sm && txt.includes('BOSS')) sm.textContent='HEAVY HOSTILE SIGNATURE DETECTED'; };
+
+ensureMenuShell(); ensureOverShell(); ensureGarageShell();
+addEventListener('resize',()=>drawHeroPreview()); setTimeout(drawHeroPreview,60); setTimeout(drawHeroPreview,220);
+})();
