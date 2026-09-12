@@ -1,8 +1,9 @@
-/* v33 visible live marker - redeploy */
+/* v35 inner renderer marker */
 (()=>{
-  const old=document.getElementById('cinematicVersion31'); if(old) old.remove();
-  let v=document.getElementById('liveVersion33');
-  if(!v){v=document.createElement('div');v.id='liveVersion33';document.body.appendChild(v)}
-  v.textContent='V33 LIVE';
-  Object.assign(v.style,{position:'fixed',left:'8px',top:'8px',zIndex:'2147483647',padding:'7px 10px',border:'2px solid #ffe46b',borderRadius:'9px',background:'#05070df2',color:'#ffe46b',font:'900 12px/1 system-ui,-apple-system,sans-serif',letterSpacing:'.16em',boxShadow:'0 0 18px #ffd84a99',pointerEvents:'none'});
+  const old31=document.getElementById('cinematicVersion31'); if(old31) old31.remove();
+  const old33=document.getElementById('liveVersion33'); if(old33) old33.remove();
+  let v=document.getElementById('renderVersion35');
+  if(!v){v=document.createElement('div');v.id='renderVersion35';document.body.appendChild(v)}
+  v.textContent='RENDER V35';
+  Object.assign(v.style,{position:'fixed',left:'8px',bottom:'8px',zIndex:'2147483647',padding:'6px 9px',border:'2px solid #6fffe9',borderRadius:'9px',background:'#03100df2',color:'#6fffe9',font:'900 11px/1 system-ui,-apple-system,sans-serif',letterSpacing:'.14em',boxShadow:'0 0 18px #42ffd599',pointerEvents:'none'});
 })();
