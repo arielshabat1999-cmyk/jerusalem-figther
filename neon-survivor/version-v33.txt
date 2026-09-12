@@ -1,0 +1,8 @@
+/* v33 visible live marker */
+(()=>{
+  const old=document.getElementById('cinematicVersion31'); if(old) old.remove();
+  let v=document.getElementById('liveVersion33');
+  if(!v){v=document.createElement('div');v.id='liveVersion33';document.body.appendChild(v)}
+  v.textContent='V33 LIVE';
+  Object.assign(v.style,{position:'fixed',left:'8px',top:'8px',zIndex:'2147483647',padding:'7px 10px',border:'2px solid #ffe46b',borderRadius:'9px',background:'#05070df2',color:'#ffe46b',font:'900 12px/1 system-ui,-apple-system,sans-serif',letterSpacing:'.16em',boxShadow:'0 0 18px #ffd84a99',pointerEvents:'none'});
+})();
