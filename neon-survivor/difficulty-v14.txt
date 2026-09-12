@@ -1,0 +1,58 @@
+/* v14 stage-5+ difficulty escalation */
+(()=>{
+let reinforce14=2.1,lastStage14=stage||1;
+const enemy14base=enemy;
+enemy=function(){
+  let before=E.length;
+  enemy14base();
+  let e=E[E.length-1];
+  if(!e||E.length===before||e.boss||e.boss5||stage<5)return;
+  let k=stage-4;
+  let hpMul=Math.min(2.65,1+.20*k), dmgMul=Math.min(2.1,1+.12*k), fireMul=Math.max(.48,1-.075*k);
+  e.hp*=hpMul;e.max*=hpMul;e.dmg*=dmgMul;e.shotDmg*=dmgMul;e.fireRate*=fireMul;
+  e.val=Math.round((e.val||10)*(1+.08*k));e.credit=Math.round((e.credit||4)*(1+.055*k));
+  if(e.flow10){e.flow10.hold*=Math.min(1.55,1+.055*k);e.flow10.fire*=fireMul;e.flow10.amp*=Math.min(1.28,1+.025*k)}
+  let eliteChance=Math.min(.28,Math.max(0,(stage-6)*.035));
+  if(stage>=7&&Math.random()<eliteChance){
+    e.elite14=1;e.hp*=1.45;e.max*=1.45;e.dmg*=1.18;e.shotDmg*=1.2;e.fireRate*=.78;e.val=Math.round(e.val*1.5);e.credit=Math.round(e.credit*1.35);
+    if(e.flow10){e.flow10.hold*=1.15;e.flow10.fire*=.8}
+  }
+};
+function spawnWave14(){
+  if(stage<5||state!=='play')return;
+  let k=stage-4,maxEnemies=Math.min(15,7+k),free=Math.max(0,maxEnemies-E.filter(e=>e&&!e.boss&&!e.boss5).length);
+  if(free<=0)return;
+  let count=Math.min(free,Math.min(4,2+Math.floor((stage-5)/2)));
+  let start=.14,end=.86;
+  for(let i=0;i<count;i++){
+    enemy();
+    let e=E[E.length-1];if(!e||e.boss||e.boss5)continue;
+    let x=W*(count===1?.5:start+(end-start)*(i/Math.max(1,count-1)));
+    e.x=x;
+    if(e.flow10){e.flow10.x=x;e.flow10.targetY=H*(.20+((i%3)*.09)+Math.random()*.035);e.flow10.seed=i*1.7+stage*.43+Math.random()*.5}
+  }
+}
+const update14base=update;
+update=function(dt){
+  update14base(dt);
+  if(!p)return;
+  if(stage!==lastStage14){
+    if(stage>=5){flashStage(stage===5?'THREAT LEVEL INCREASED':'THREAT LEVEL '+stage);reinforce14=.8}
+    lastStage14=stage;
+  }
+  if(state!=='play'||stage<5){reinforce14=Math.min(reinforce14,2.2);return}
+  let k=stage-4;
+  reinforce14-=dt;
+  if(reinforce14<=0){
+    spawnWave14();
+    reinforce14=Math.max(1.15,2.65-k*.15)*R(.88,1.12);
+  }
+};
+const drawEnemy14base=drawEnemy;
+drawEnemy=function(e){
+  drawEnemy14base(e);
+  if(!e||!e.elite14)return;
+  X.save();X.translate(e.x,e.y);X.globalCompositeOperation='lighter';X.strokeStyle='#ffcf62';X.shadowBlur=14;X.shadowColor='#ffad42';X.globalAlpha=.6+.22*Math.sin(t*5+(e.phase||0));X.lineWidth=1.6;X.beginPath();X.ellipse(0,0,e.r*1.38,e.r*1.05,0,0,6.28);X.stroke();X.fillStyle='#fff1a0';X.beginPath();X.arc(0,-e.r*.22,2.2,0,6.28);X.fill();X.restore();
+};
+const reset14base=reset;reset=function(){reinforce14=2.1;lastStage14=1;reset14base()};
+})();
