@@ -1,0 +1,13 @@
+/* V47 exclusive mobile control: capture-phase relative drag, independent of legacy touch code */
+;(()=>{
+const G=window.__V42;if(!G)return;const C=G.canvas;C.style.touchAction='none';
+let drag=null,target={x:0,y:0},raf=0;
+function sig(s){try{parent.postMessage({source:'controls-v47',status:s},'*')}catch(_){}try{let d=document.getElementById('controlV47');if(!d){d=document.createElement('div');d.id='controlV47';d.style.cssText='position:fixed;left:8px;bottom:max(8px,env(safe-area-inset-bottom));z-index:2147483646;padding:4px 7px;border:1px solid #88dff033;border-radius:7px;background:#02060bd8;color:#dff8ff;font:900 7px/1 system-ui;letter-spacing:.1em;pointer-events:none';document.body.appendChild(d)}d.textContent='CONTROL V47 · '+s}catch(_){}}
+function allowed(){return G.player&&(G.state==='play'||G.state==='boss')}
+function down(e){if(e.pointerType==='mouse'||!allowed())return;e.preventDefault();e.stopImmediatePropagation();const p=G.player,rect=C.getBoundingClientRect();drag={id:e.pointerId,x:e.clientX,y:e.clientY,sx:G.W/Math.max(1,rect.width),sy:G.H/Math.max(1,rect.height)};target.x=p.x;target.y=p.y;G.touch.m=null;try{C.setPointerCapture(e.pointerId)}catch(_){}}
+function move(e){if(!drag||e.pointerId!==drag.id)return;e.preventDefault();e.stopImmediatePropagation();const dx=(e.clientX-drag.x)*drag.sx,dy=(e.clientY-drag.y)*drag.sy;drag.x=e.clientX;drag.y=e.clientY;target.x=Math.max(28,Math.min(G.W-28,target.x+dx*1.04));target.y=Math.max(G.H*.36,Math.min(G.H*.85,target.y+dy*.98));G.touch.m=null}
+function end(e){if(!drag||e.pointerId!==drag.id)return;e.preventDefault();e.stopImmediatePropagation();drag=null;G.touch.m=null}
+C.addEventListener('pointerdown',down,{capture:true,passive:false});C.addEventListener('pointermove',move,{capture:true,passive:false});C.addEventListener('pointerup',end,{capture:true,passive:false});C.addEventListener('pointercancel',end,{capture:true,passive:false});
+function step(){const p=G.player;if(drag&&p&&allowed()){G.touch.m=null;p.x+=(target.x-p.x)*.34;p.y+=(target.y-p.y)*.34}raf=requestAnimationFrame(step)}
+step();sig('ON');
+})();
