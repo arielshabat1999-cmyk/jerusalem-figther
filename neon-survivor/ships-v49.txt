@@ -1,0 +1,61 @@
+/* V49 — three real player ship assets for NOVA / VIPER / TITAN */
+;(()=>{
+const G=window.__V42;if(!G)return;
+const X=G.ctx;
+const srcs={nova:window.SHIP1_V49,viper:window.SHIP2_V49,titan:window.SHIP3_V49};
+const imgs={};let loaded=0,failed=false;
+function post(s){try{parent.postMessage({source:'ships-v49',status:s},'*')}catch(_){}}
+for(const id of ['nova','viper','titan']){
+  const im=new Image();imgs[id]=im;
+  im.onload=()=>{loaded++;if(loaded===3&&!failed){post('SHIPS ON');setTimeout(drawGarage49,0)}};
+  im.onerror=()=>{failed=true;post('SHIP ERROR')};
+  im.src=srcs[id]||'';
+}
+post('LOADING');
+const fallback=G.getShip();
+function flame49(ctx,x,y,s,boost,id){
+  ctx.save();ctx.globalCompositeOperation='lighter';
+  const len=s*(boost?3.15:1.10),wide=s*(boost?.30:.16);
+  const mid=id==='viper'?'#ff5575':id==='titan'?'#6deeff':'#32cfff';
+  const gr=ctx.createLinearGradient(x,y,x,y+len);
+  gr.addColorStop(0,'#ffffff');gr.addColorStop(.16,'#e9ffff');gr.addColorStop(.42,mid);gr.addColorStop(1,boost?'#ff58d900':'#258fff00');
+  ctx.fillStyle=gr;ctx.shadowBlur=boost?25:14;ctx.shadowColor=boost?'#8e72ff':mid;
+  ctx.beginPath();ctx.moveTo(x-wide,y);ctx.quadraticCurveTo(x-wide*.65,y+len*.60,x,y+len);ctx.quadraticCurveTo(x+wide*.65,y+len*.60,x+wide,y);ctx.closePath();ctx.fill();
+  if(boost){ctx.strokeStyle='#ff8ee0aa';ctx.lineWidth=1;for(let i=-2;i<=2;i++){ctx.globalAlpha=.34;ctx.beginPath();ctx.moveTo(x+i*s*.11,y+s*.22);ctx.lineTo(x+i*s*.18,y+len*(.64+.04*Math.abs(i)));ctx.stroke()}}
+  ctx.restore();
+}
+G.setShip(function(x,y,s,r=0,en=false,heavy=false,model='nova'){
+  if(en){fallback(x,y,s,r,en,heavy,model);return}
+  const raw=(G.player&&G.player.shipType)||model||'nova';
+  const id=raw==='viper'?'viper':raw==='titan'?'titan':'nova';
+  const im=imgs[id];if(!im||!im.complete||!im.naturalWidth){fallback(x,y,s,r,en,heavy,model);return}
+  const boost=G.boost>0;
+  const scale=id==='viper'?4.60:id==='titan'?4.42:4.55;
+  const h=s*scale,w=h*(im.naturalWidth/im.naturalHeight),bank=(window.__V48Bank||0)*.08;
+  flame49(X,x,y+h*.34,s,boost,id);
+  if(id!=='nova'){
+    const side=id==='viper'?.19:.17,ss=id==='viper'?.43:.36;
+    flame49(X,x-w*side,y+h*.29,s*ss,boost,id);flame49(X,x+w*side,y+h*.29,s*ss,boost,id);
+  }
+  X.save();X.translate(x,y);X.rotate(r+bank);X.shadowBlur=boost?22:12;X.shadowColor=boost?'#8fdfff':'#43d7ff';X.drawImage(im,-w/2,-h/2,w,h);X.restore();
+  const p=G.player;if(p&&p.shield>0){X.save();X.globalCompositeOperation='lighter';X.strokeStyle='#8deaff99';X.lineWidth=1.3;X.shadowBlur=14;X.shadowColor='#42d7ff';X.beginPath();X.ellipse(x,y,w*.47,h*.42,0,0,Math.PI*2);X.stroke();X.restore()}
+});
+function garageCanvas49(cv,id,side){
+  if(!cv)return;const im=imgs[id];if(!im||!im.complete||!im.naturalWidth)return;
+  const ratio=Math.min(devicePixelRatio||1,2),r=cv.getBoundingClientRect(),w=Math.max(60,Math.round(r.width)),h=Math.max(60,Math.round(r.height));
+  cv.width=Math.round(w*ratio);cv.height=Math.round(h*ratio);const c=cv.getContext('2d');c.setTransform(ratio,0,0,ratio,0,0);c.clearRect(0,0,w,h);
+  const maxH=h*(side?.73:.88),maxW=w*(side?.84:.94),ar=im.naturalWidth/im.naturalHeight;let dh=maxH,dw=dh*ar;if(dw>maxW){dw=maxW;dh=dw/ar}
+  c.save();c.translate(w/2,h*.46);c.shadowBlur=side?10:22;c.shadowColor=id==='viper'?'#ff516f':id==='titan'?'#35dfff':'#4bdcff';c.drawImage(im,-dw/2,-dh/2,dw,dh);
+  const pulse=.86+.14*Math.sin(performance.now()/180);c.globalCompositeOperation='lighter';const len=(side?13:24)*pulse,mid=id==='viper'?'#ff5c7b':'#48dfff',gr=c.createLinearGradient(0,dh*.35,0,dh*.35+len);gr.addColorStop(0,'#fff');gr.addColorStop(.35,mid);gr.addColorStop(1,'#0000');c.fillStyle=gr;c.beginPath();c.moveTo(-3,dh*.35);c.lineTo(0,dh*.35+len);c.lineTo(3,dh*.35);c.closePath();c.fill();c.restore();
+}
+function drawGarage49(){
+  try{
+    if(typeof state!=='undefined'&&state!=='shop')return;if(typeof SHIPS==='undefined'||typeof shipIndex3==='undefined')return;
+    const ks=Object.keys(SHIPS),i=((shipIndex3%ks.length)+ks.length)%ks.length;
+    garageCanvas49(document.getElementById('shipMain7'),ks[i],false);
+    garageCanvas49(document.getElementById('shipLeft7'),ks[(i-1+ks.length)%ks.length],true);
+    garageCanvas49(document.getElementById('shipRight7'),ks[(i+1)%ks.length],true);
+  }catch(e){console.error('V49 garage draw',e)}
+}
+try{const oldRender49=renderShop;renderShop=function(){oldRender49();requestAnimationFrame(drawGarage49)};drawPreview3=drawGarage49}catch(_){}
+})();
