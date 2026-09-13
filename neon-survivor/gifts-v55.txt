@@ -1,7 +1,7 @@
-/* V59 — three pickup classes, ten reward outcomes, distinct reward feedback */
+/* V60 — weapon-heavy pickup distribution with visible weapon evolution */
 ;(()=>{
 const bridge=window.__V42;if(!bridge)return;
-const ctx=bridge.ctx,VERSION='20260913v59';
+const ctx=bridge.ctx,VERSION='20260913v60';
 const TYPES=['survival','weapon','ability'];
 const cfg={
   survival:{file:'survival.webp',glow:'#55ff9a',size:35},
@@ -10,10 +10,11 @@ const cfg={
 };
 const imgs={},jobs=[];
 for(const id of TYPES)jobs.push(new Promise((resolve,reject)=>{const im=new Image();imgs[id]=im;im.onload=resolve;im.onerror=reject;im.src='./assets/gifts/'+cfg[id].file+'?v='+VERSION}));
-Promise.all(jobs).catch(e=>console.error('V59 gift asset load',e));
+Promise.all(jobs).catch(e=>console.error('V60 gift asset load',e));
 
 giftDrop=function(x=R(35,W-35),y=-35){
-  const kind=TYPES[Math.floor(Math.random()*TYPES.length)];
+  const roll=Math.random();
+  const kind=roll<.65?'weapon':roll<.80?'survival':'ability';
   G.push({x,y,kind,r:15,rot:R(-.12,.12),spin:R(-.38,.38),bob:R(0,6.28)});
 };
 
@@ -49,6 +50,14 @@ function showReward59(g,reward){
   shake=Math.max(shake,4);
 }
 collectGift=function(g){
+  if(g.kind==='weapon'&&typeof window.__grantWeaponUpgrade11==='function'){
+    window.__grantWeaponUpgrade11(g);
+    const w=typeof window.__weaponProfile11==='function'?window.__weaponProfile11():null;
+    const col=w&&w.col?w.col:'#ff5fbe';
+    popText(g.x,g.y-34,'✹',col,28);
+    puff(g.x,g.y,24,col,1.02);
+    return;
+  }
   const reward=g.kind==='survival'?rewardSurvival59():g.kind==='weapon'?rewardWeapon59():rewardAbility59();
   showReward59(g,reward);ui();
 };
