@@ -1,7 +1,7 @@
-/* V55 — three equal-chance pickup classes with real transparent assets */
+/* V59 — three pickup classes, ten reward outcomes, distinct reward feedback */
 ;(()=>{
 const bridge=window.__V42;if(!bridge)return;
-const ctx=bridge.ctx,VERSION='20260913v56';
+const ctx=bridge.ctx,VERSION='20260913v59';
 const TYPES=['survival','weapon','ability'];
 const cfg={
   survival:{file:'survival.webp',glow:'#55ff9a',size:35},
@@ -10,41 +10,47 @@ const cfg={
 };
 const imgs={},jobs=[];
 for(const id of TYPES)jobs.push(new Promise((resolve,reject)=>{const im=new Image();imgs[id]=im;im.onload=resolve;im.onerror=reject;im.src='./assets/gifts/'+cfg[id].file+'?v='+VERSION}));
-Promise.all(jobs).catch(e=>console.error('V55 gift asset load',e));
+Promise.all(jobs).catch(e=>console.error('V59 gift asset load',e));
 
 giftDrop=function(x=R(35,W-35),y=-35){
   const kind=TYPES[Math.floor(Math.random()*TYPES.length)];
   G.push({x,y,kind,r:15,rot:R(-.12,.12),spin:R(-.38,.38),bob:R(0,6.28)});
 };
 
-function rewardSurvival55(g){
-  let label,col;
+function rewardSurvival59(){
   if(Math.random()<.5){
     const amount=Math.round(Math.min(42,Math.max(0,p.max-p.hp)));
-    p.hp=Math.min(p.max,p.hp+42);label=amount?'HULL +'+amount:'HULL FULL';col='#66ff9c';
-  }else{
-    const amount=Math.round(Math.min(52,Math.max(0,p.maxShield-(p.shield||0))));
-    p.shield=Math.min(p.maxShield,(p.shield||0)+52);label=amount?'SHIELD +'+amount:'SHIELD FULL';col='#58eaff';
+    p.hp=Math.min(p.max,p.hp+42);
+    return{icon:'✚',label:amount?'HULL +'+amount:'HULL FULL',col:'#69ff9d'};
   }
-  return{label,col};
+  const amount=Math.round(Math.min(52,Math.max(0,p.maxShield-(p.shield||0))));
+  p.shield=Math.min(p.maxShield,(p.shield||0)+52);
+  return{icon:'◈',label:amount?'SHIELD +'+amount:'SHIELD FULL',col:'#55eaff'};
 }
-function rewardWeapon55(){
+function rewardWeapon59(){
   const roll=Math.floor(Math.random()*4);
-  if(roll===0){p.dmg*=1.18;return{label:'WEAPON DAMAGE +18%',col:'#ff6bc2'}}
-  if(roll===1){p.rate=Math.max(.06,p.rate*.86);return{label:'RAPID FIRE +14%',col:'#ff8d54'}}
-  if(roll===2){p.bs*=1.2;return{label:'SHOT SPEED +20%',col:'#ffd25c'}}
-  p.dmg*=1.1;p.bs*=1.12;return{label:'PLASMA OVERLOAD',col:'#ffb05a'};
+  if(roll===0){p.dmg*=1.18;return{icon:'✹',label:'WEAPON DAMAGE +18%',col:'#ff5fbe'}}
+  if(roll===1){p.rate=Math.max(.06,p.rate*.86);return{icon:'»',label:'RAPID FIRE +14%',col:'#ff8750'}}
+  if(roll===2){p.bs*=1.2;return{icon:'➤',label:'SHOT SPEED +20%',col:'#ffd257'}}
+  p.dmg*=1.1;p.bs*=1.12;return{icon:'⚡',label:'PLASMA OVERLOAD',col:'#ffad58'};
 }
-function rewardAbility55(){
+function rewardAbility59(){
   const roll=Math.floor(Math.random()*4);
-  if(roll===0){p.guardian=Math.max(p.guardian||0,10);p.guardianCd=0;return{label:'GUARDIAN · 10 SEC',col:'#65ffb1'}}
-  if(roll===1){p.dodge=Math.max(p.dodge||0,10);return{label:'HYPER SPEED · 10 SEC',col:'#52eaff'}}
-  if(roll===2){p.advanced=Math.max(p.advanced||0,9);return{label:'OVERFIRE · 9 SEC',col:'#ff68da'}}
-  p.clone=Math.max(p.clone||0,10);return{label:'SHIP CLONES · 10 SEC',col:'#9b88ff'};
+  if(roll===0){p.guardian=Math.max(p.guardian||0,10);p.guardianCd=0;return{icon:'◉',label:'GUARDIAN · 10 SEC',col:'#63ffad'}}
+  if(roll===1){p.dodge=Math.max(p.dodge||0,10);return{icon:'≫',label:'HYPER SPEED · 10 SEC',col:'#4eeaff'}}
+  if(roll===2){p.advanced=Math.max(p.advanced||0,9);return{icon:'✦',label:'OVERFIRE · 9 SEC',col:'#ff63d8'}}
+  p.clone=Math.max(p.clone||0,10);return{icon:'◆◆',label:'SHIP CLONES · 10 SEC',col:'#9b87ff'};
+}
+function showReward59(g,reward){
+  popText(g.x,g.y-31,reward.icon,reward.col,27);
+  popText(g.x,g.y-8,reward.label,reward.col,16);
+  puff(g.x,g.y,24,reward.col,1.02);
+  puff(p.x,p.y,11,reward.col,.42);
+  shake=Math.max(shake,4);
 }
 collectGift=function(g){
-  const reward=g.kind==='survival'?rewardSurvival55(g):g.kind==='weapon'?rewardWeapon55():rewardAbility55();
-  popText(g.x,g.y-11,reward.label,reward.col,17);puff(g.x,g.y,20,reward.col,.9);shake=Math.max(shake,3);ui();
+  const reward=g.kind==='survival'?rewardSurvival59():g.kind==='weapon'?rewardWeapon59():rewardAbility59();
+  showReward59(g,reward);ui();
 };
 
 bridge.setGift(function(g){
