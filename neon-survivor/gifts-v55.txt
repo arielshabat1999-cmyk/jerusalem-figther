@@ -1,7 +1,7 @@
 /* V55 — three equal-chance pickup classes with real transparent assets */
 ;(()=>{
 const bridge=window.__V42;if(!bridge)return;
-const ctx=bridge.ctx,VERSION='20260913v55';
+const ctx=bridge.ctx,VERSION='20260913v56';
 const TYPES=['survival','weapon','ability'];
 const cfg={
   survival:{file:'survival.webp',glow:'#55ff9a',size:35},
