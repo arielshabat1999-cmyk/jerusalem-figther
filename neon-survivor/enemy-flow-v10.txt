@@ -15,24 +15,8 @@ function enemyShot10(x,y,speed,dmg,kind='enemy'){
   ES10.push({x,y,vx:0,vy:speed,r:kind==='orb'?6:kind==='sniper'?3.2:4,life:5,dmg,kind});
 }
 function fireStraight10(e){
-  if(!p||!e)return;
-  if(e.type==='tank'){
-    for(const ox of[-10,0,10])enemyShot10(e.x+ox,e.y+e.r*.62,255,e.shotDmg,'spread');
-    puff(e.x,e.y+e.r,7,'#ff765f',.35);
-  }else if(e.type==='bomber'){
-    enemyShot10(e.x,e.y+e.r*.55,185,e.shotDmg,'orb');
-    puff(e.x,e.y+e.r,10,'#ffb34f',.45);
-  }else if(e.type==='sniper'){
-    enemyShot10(e.x,e.y+e.r*.55,455,e.shotDmg,'sniper');
-    puff(e.x,e.y+e.r,6,'#c27cff',.32);
-  }else if(e.type==='dart'){
-    enemyShot10(e.x-5,e.y+8,330,e.shotDmg,'enemy');
-    enemyShot10(e.x+5,e.y+8,330,e.shotDmg,'enemy');
-    puff(e.x,e.y+8,5,'#ff4f6d',.25);
-  }else{
-    enemyShot10(e.x,e.y+e.r*.5,285,e.shotDmg,'enemy');
-    puff(e.x,e.y+e.r*.4,4,'#ff566d',.22);
-  }
+  /* V63 owns all regular-enemy weapons. */
+  return;
 }
 
 enemy=function(){

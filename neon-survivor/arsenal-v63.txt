@@ -1,0 +1,91 @@
+/* V63 — unified escalating arsenal: one weapon per enemy, two combined weapons per boss */
+;(()=>{
+let shots63=[],serial63=0;
+const COLORS63={
+  striker:'#ff4e66',sweeper:'#3ce8ff',mortar:'#ffad42',phantom:'#d05cff',gunship:'#76ff4e',
+  dreadCannon:'#ff5268',dreadMissile:'#ff9b45',ravagerWave:'#36e4ff',ravagerBurst:'#fff07a',
+  wraithRail:'#e269ff',wraithPhase:'#866cff',hiveDrone:'#70ff55',hiveSpore:'#c5ff5d',
+  siegeMine:'#ff9b35',siegeShell:'#ff5542'
+};
+
+function level63(){const n=Math.max(0,stage-1);return{n,dmg:1+n*.12,speed:1+Math.min(.52,n*.035),rate:Math.max(.48,Math.pow(.94,n)),density:Math.min(4,Math.floor(n/3))}}
+function enemyKind63(e){if(e.type==='striker'||e.type==='dart')return'striker';if(e.type==='sweeper')return'sweeper';if(e.type==='mortar'||e.type==='bomber')return'mortar';if(e.type==='phantom'||e.type==='sniper')return'phantom';return'gunship'}
+function aim63(x,y,speed,offset=0){let a=Math.atan2(p.y-y,p.x-x)+offset;return{vx:Math.cos(a)*speed,vy:Math.sin(a)*speed}}
+function add63(kind,x,y,vx,vy,r,dmg,life=6,extra={}){if(shots63.length>=260)return;shots63.push({kind,x,y,vx,vy,r,dmg,life,maxLife:life,serial:serial63++,...extra})}
+function muzzle63(e,col,size=7){puff(e.x,e.y+(e.r||15)*.62,size,col,.3)}
+
+function fireEnemy63(e){
+  const lv=level63(),kind=enemyKind63(e),base=(e.shotDmg||6)*lv.dmg;
+  if(kind==='striker'){
+    for(const side of[-1,1]){const v=aim63(e.x+side*7,e.y+8,335*lv.speed,side*.035);add63('striker',e.x+side*7,e.y+8,v.vx,v.vy,3.2,base*.78,5)}
+  }else if(kind==='sweeper'){
+    const n=3+lv.density,a0=Math.atan2(p.y-e.y,p.x-e.x);for(let i=0;i<n;i++){const a=a0+(i-(n-1)/2)*.16;add63('sweeper',e.x,e.y+10,Math.cos(a)*270*lv.speed,Math.sin(a)*270*lv.speed,3.8,base*.58,5.5)}
+  }else if(kind==='mortar'){
+    const v=aim63(e.x,e.y+10,155*lv.speed);add63('mortar',e.x,e.y+10,v.vx,v.vy,8.2,base*1.18,7,{blast:48+lv.density*3});
+  }else if(kind==='phantom'){
+    const count=1+(lv.n>=6?1:0);for(let i=0;i<count;i++){const v=aim63(e.x,e.y+8,540*lv.speed,(i-(count-1)/2)*.055);add63('phantom',e.x,e.y+8,v.vx,v.vy,2.6,base*.95,4,{long:true})}
+  }else{
+    const count=1+Math.min(2,Math.floor(lv.n/4));for(let i=0;i<count;i++){const v=aim63(e.x,e.y+10,205*lv.speed,(i-(count-1)/2)*.12);add63('gunship',e.x,e.y+10,v.vx,v.vy,4.6,base*.82,7,{turn:2.0+lv.n*.05})}
+  }
+  muzzle63(e,COLORS63[kind],kind==='mortar'?10:6);
+  const baseRate=kind==='striker'?1.05:kind==='sweeper'?1.55:kind==='mortar'?2.35:kind==='phantom'?1.85:1.45;
+  e.weapon63.cd=Math.max(kind==='mortar'?.95:.50,baseRate*lv.rate)*R(.88,1.14);
+}
+
+function fireBoss63(e){
+  const lv=level63(),id=(e.boss32&&e.boss32.id)||['dread','ravager','wraith','hive','siege'][(Math.max(1,stage)-1)%5],base=(7.5+stage*1.1)*lv.dmg,a0=Math.atan2(p.y-e.y,p.x-e.x),r=e.r||55;
+  if(id==='dread'){
+    const fan=3+lv.density;for(let i=0;i<fan;i++){const a=a0+(i-(fan-1)/2)*.11;add63('dreadCannon',e.x,e.y+r*.25,Math.cos(a)*315*lv.speed,Math.sin(a)*315*lv.speed,4.2,base*.56,5)}
+    for(const side of[-1,1]){const v=aim63(e.x+side*r*.65,e.y+r*.18,215*lv.speed,side*.08);add63('dreadMissile',e.x+side*r*.65,e.y+r*.18,v.vx,v.vy,5.2,base*.78,7,{turn:1.45})}
+  }else if(id==='ravager'){
+    const fan=7+lv.density*2;for(let i=0;i<fan;i++){const a=Math.PI*.18+Math.PI*.64*(i/(fan-1));add63('ravagerWave',e.x,e.y+r*.2,Math.cos(a)*235*lv.speed,Math.sin(a)*235*lv.speed,5,base*.40,6)}
+    for(let i=-1;i<=1;i++){const a=a0+i*.075;add63('ravagerBurst',e.x+i*r*.25,e.y+r*.3,Math.cos(a)*410*lv.speed,Math.sin(a)*410*lv.speed,3.3,base*.58,4.5)}
+  }else if(id==='wraith'){
+    const lanes=3+Math.min(2,lv.density),target=cl(p.x+R(-28,28),24,W-24);for(let i=0;i<lanes;i++){const x=target+(i-(lanes-1)/2)*18;add63('wraithRail',x,e.y+r*.42,0,590*lv.speed,2.5,base*.62,3.8,{long:true})}
+    for(const side of[-1,1]){for(let j=0;j<2;j++){const v=aim63(e.x+side*r*.55,e.y+r*.15,295*lv.speed,side*(.10+j*.08));add63('wraithPhase',e.x+side*r*.55,e.y+r*.15,v.vx,v.vy,4.4,base*.44,5.5)}}
+  }else if(id==='hive'){
+    const drones=2+Math.min(3,lv.density);for(let i=0;i<drones;i++){const v=aim63(e.x,e.y+r*.25,175*lv.speed,(i-(drones-1)/2)*.22);add63('hiveDrone',e.x,e.y+r*.25,v.vx,v.vy,6,base*.48,8,{turn:2.35})}
+    const spores=5+lv.density*2;for(let i=0;i<spores;i++){const a=Math.PI*.20+Math.PI*.60*(i/(spores-1));add63('hiveSpore',e.x,e.y+r*.34,Math.cos(a)*195*lv.speed,Math.sin(a)*195*lv.speed,5.2,base*.34,7)}
+  }else{
+    for(const side of[-1,0,1])add63('siegeMine',e.x+side*r*.52,e.y+r*.28,side*28,105*lv.speed,8.4,base*.72,8,{blast:58+lv.density*4});
+    for(const side of[-1,1]){const v=aim63(e.x+side*r*.55,e.y+r*.18,360*lv.speed,side*.045);add63('siegeShell',e.x+side*r*.55,e.y+r*.18,v.vx,v.vy,6,base*.78,5,{blast:34})}
+  }
+  muzzle63(e,(e.boss32&&e.boss32.col)||'#ff596f',13);
+  e.weapon63.cd=Math.max(.58,1.52*lv.rate)*R(.88,1.10);
+}
+
+function explode63(q){const col=COLORS63[q.kind]||'#fff';puff(q.x,q.y,q.blast?14:8,col,.52);if(q.blast&&p&&Math.hypot(p.x-q.x,p.y-q.y)<q.blast+p.r)hurt(q.dmg)}
+function updateShot63(q,dt){
+  if(q.turn&&p){const speed=Math.hypot(q.vx,q.vy),want=Math.atan2(p.y-q.y,p.x-q.x),now=Math.atan2(q.vy,q.vx),diff=Math.atan2(Math.sin(want-now),Math.cos(want-now)),a=now+cl(diff,-q.turn*dt,q.turn*dt);q.vx=Math.cos(a)*speed;q.vy=Math.sin(a)*speed}
+  q.x+=q.vx*dt;q.y+=q.vy*dt;q.life-=dt;
+}
+function updateShots63(dt){
+  for(let i=shots63.length-1;i>=0;i--){const q=shots63[i];updateShot63(q,dt);let remove=q.life<=0||q.x<-110||q.x>W+110||q.y<-120||q.y>H+120;if(!remove&&p&&Math.hypot(p.x-q.x,p.y-q.y)<p.r+q.r){if(q.blast)explode63(q);else{hurt(q.dmg);puff(q.x,q.y,9,COLORS63[q.kind]||'#fff',.46)}remove=true}else if(remove&&q.life<=0&&q.blast)explode63(q);if(remove)shots63.splice(i,1)}
+}
+
+const updateBase63=update;update=function(dt){
+  updateBase63(dt);
+  if(!p||(state!=='play'&&state!=='boss')){shots63=[];return}
+  for(const e of E){
+    if(!e)continue;const isBoss=e.boss||e.boss5;
+    if(!e.weapon63)e.weapon63={cd:isBoss?R(.7,1.15):R(.45,1.35)};
+    if(isBoss){if(state!=='boss')continue;e.weapon63.cd-=dt;if(e.weapon63.cd<=0)fireBoss63(e)}
+    else if(state==='play'&&e.flow10&&e.flow10.phase==='hold'){e.weapon63.cd-=dt;if(e.weapon63.cd<=0)fireEnemy63(e)}
+  }
+  updateShots63(dt);
+};
+
+function drawShot63(q){
+  const col=COLORS63[q.kind]||'#fff',speed=Math.max(1,Math.hypot(q.vx,q.vy)),nx=q.vx/speed,ny=q.vy/speed,trail=q.long?32:q.kind.includes('Missile')||q.kind==='gunship'||q.kind==='hiveDrone'?18:10;
+  ctx.save();ctx.globalCompositeOperation='lighter';ctx.shadowBlur=q.r>7?22:14;ctx.shadowColor=col;ctx.strokeStyle=col;ctx.lineWidth=Math.max(1.5,q.r*.55);ctx.globalAlpha=.42;ctx.beginPath();ctx.moveTo(q.x-nx*trail,q.y-ny*trail);ctx.lineTo(q.x,q.y);ctx.stroke();ctx.globalAlpha=.94;ctx.fillStyle=col;
+  if(q.kind==='phantom'||q.kind==='wraithRail'){ctx.translate(q.x,q.y);ctx.rotate(Math.atan2(q.vy,q.vx));ctx.fillRect(-q.r*3,-q.r*.55,q.r*6,q.r*1.1)}
+  else if(q.kind.includes('Missile')||q.kind==='gunship'||q.kind==='hiveDrone'){ctx.translate(q.x,q.y);ctx.rotate(Math.atan2(q.vy,q.vx));ctx.beginPath();ctx.moveTo(q.r*1.55,0);ctx.lineTo(-q.r,-q.r*.72);ctx.lineTo(-q.r,q.r*.72);ctx.closePath();ctx.fill()}
+  else{ctx.beginPath();ctx.arc(q.x,q.y,q.r,0,Math.PI*2);ctx.fill();if(q.blast){ctx.globalAlpha=.38;ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(q.x,q.y,q.r+4+Math.sin(t*7+q.serial)*2,0,Math.PI*2);ctx.stroke()}}
+  ctx.restore();
+}
+const drawBase63=draw;draw=function(){drawBase63();for(const q of shots63)drawShot63(q)};
+const resetBase63=reset;reset=function(){shots63=[];serial63=0;resetBase63()};
+const beginBase63=beginSector;beginSector=function(){shots63=[];beginBase63()};
+const overBase63=gameover;gameover=function(){shots63=[];overBase63()};
+try{parent.postMessage({source:'arsenal-v63',status:'ARSENAL ON'},'*')}catch(_){}
+})();
