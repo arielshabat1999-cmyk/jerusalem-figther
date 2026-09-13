@@ -1,0 +1,29 @@
+/* V52 — five real regular enemy ship assets */
+;(()=>{
+const G=window.__V42;if(!G)return;
+const X=G.ctx,VERSION='20260913v52';
+const files={striker:'striker.webp',sweeper:'sweeper.webp',mortar:'mortar.webp',phantom:'phantom.webp',gunship:'gunship.webp'};
+const glow={striker:'#ff4559',sweeper:'#28dfff',mortar:'#ff9b32',phantom:'#c94cff',gunship:'#80ff32'};
+const scale={striker:3.25,sweeper:4.35,mortar:3.75,phantom:3.35,gunship:3.75};
+const imgs={},jobs=[];
+function post(status){try{parent.postMessage({source:'enemies-v52',status},'*')}catch(_){}}
+for(const [id,file] of Object.entries(files))jobs.push(new Promise((resolve,reject)=>{const im=new Image();imgs[id]=im;im.onload=resolve;im.onerror=reject;im.src='./assets/enemies/'+file+'?v='+VERSION}));
+post('LOADING');
+Promise.all(jobs).then(()=>post('ENEMIES ON')).catch(e=>{console.error('V52 enemy asset load',e);post('ENEMY ERROR')});
+const previous=G.getEnemy();
+function enemyId(e){
+  if(e.type==='striker'||e.type==='dart')return'striker';
+  if(e.type==='sweeper')return'sweeper';
+  if(e.type==='mortar'||e.type==='bomber')return'mortar';
+  if(e.type==='phantom'||e.type==='sniper')return'phantom';
+  return'gunship';
+}
+G.setEnemy(function(e){
+  if(!e||(e.boss||e.boss5)){previous(e);return}
+  const id=enemyId(e),im=imgs[id];if(!im||!im.complete||!im.naturalWidth)return;
+  const r=e.r||15,w=r*scale[id]*(e.elite14?1.12:1),h=w*(im.naturalHeight/im.naturalWidth),hit=e.hit>0,rot=(e.rot||0)*.08;
+  X.save();X.translate(e.x,e.y);X.rotate(rot);X.globalAlpha=hit?.68:1;X.shadowBlur=e.elite14?20:hit?18:9;X.shadowColor=hit?'#ffffff':glow[id];X.drawImage(im,-w/2,-h/2,w,h);
+  if(e.elite14){X.globalCompositeOperation='lighter';X.globalAlpha=.30+.08*Math.sin(G.time*5);X.strokeStyle=glow[id];X.lineWidth=1.5;X.beginPath();X.ellipse(0,0,w*.48,h*.46,0,0,Math.PI*2);X.stroke()}
+  X.restore();
+});
+})();
