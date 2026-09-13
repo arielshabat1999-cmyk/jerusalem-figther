@@ -12,7 +12,7 @@ const WC11=[
   {name:'OMEGA',base:'#5defff',hot:'#ffd95b',form:'omega',speed:1.12,classDmg:1.32}
 ];
 function weaponProfile11(){
-  let lv=Math.max(0,weaponLevel11|0),shots=Math.min(7,1+Math.ceil(lv/2)),power=Math.floor(lv/2),ci=Math.min(WC11.length-1,Math.floor(lv/4)),c=WC11[ci],hot=lv>0&&lv%2===0;
+  let lv=Math.max(0,weaponLevel11|0),shots=Math.min(7,1+Math.ceil(lv/2)),power=Math.floor(lv/2),ci=Math.min(WC11.length-1,Math.floor(Math.max(0,lv-1)/2)),c=WC11[ci],hot=lv>0&&lv%2===0;
   return {lv,shots,power,ci,name:c.name,form:c.form,col:hot?c.hot:c.base,hot,speed:c.speed,dmg:(1+power*.28)*c.classDmg};
 }
 function specialLevel11(){let el=document.querySelector('.up7.special .up7Level');if(!el)return 0;let m=(el.textContent||'').match(/(\d+)/);return m?+m[1]:0}
