@@ -72,10 +72,11 @@ obstacle=function(){
 };
 
 const BOSS_TYPES32=[
-  {id:'dread',name:'DREADNOUGHT',hp:1.22,col:'#d79a94'},
-  {id:'warden',name:'ORBITAL WARDEN',hp:1.08,col:'#d5bd87'},
-  {id:'harrier',name:'VOID HARRIER',hp:.90,col:'#b6a7df'},
-  {id:'lancer',name:'ION LANCER',hp:1.00,col:'#9ebfca'}
+  {id:'dread',name:'DREADNOUGHT',hp:1.24,col:'#ff4058'},
+  {id:'ravager',name:'RAVAGER',hp:1.05,col:'#35dfff'},
+  {id:'wraith',name:'WRAITH',hp:.92,col:'#cf55ff'},
+  {id:'hive',name:'HIVE CARRIER',hp:1.16,col:'#68ff55'},
+  {id:'siege',name:'SIEGE TITAN',hp:1.38,col:'#ff9b32'}
 ];
 function initBoss32(e){
   if(e.boss32)return;const def=BOSS_TYPES32[(stage-1)%BOSS_TYPES32.length];e.boss32={...def,fire:R(.7,1.15),phase:0};
@@ -84,13 +85,15 @@ function initBoss32(e){
 function fireBoss32(e){
   const b=e.boss32,lv=stage,spd=220+Math.min(180,lv*11),dmg=6.5+lv*1.45;
   if(b.id==='dread'){
-    const n=Math.min(11,5+Math.floor(lv/2));for(let i=0;i<n;i++){let a=Math.PI/2+(i-(n-1)/2)*.14;shot32(bossShots32,e.x,e.y+e.r*.45,Math.cos(a)*spd,Math.sin(a)*spd,4,dmg,'dread')}
-  }else if(b.id==='warden'){
-    const n=Math.min(14,7+lv);for(let i=0;i<n;i++){let a=Math.PI*.18+Math.PI*.64*(i/(n-1));shot32(bossShots32,e.x,e.y+5,Math.cos(a)*(spd*.72),Math.sin(a)*(spd*.72),6,dmg*.78,'warden')}
-  }else if(b.id==='harrier'){
-    const dir=Math.sin(t*1.7)>0?1:-1;for(let k=-2;k<=2;k++)shot32(bossShots32,e.x+k*18,e.y+e.r*.45,dir*(65+k*22),spd*1.28,3.2,dmg*.82,'harrier');
+    const aim=Math.atan2(p.y-e.y,p.x-e.x);for(const side of[-1,1])for(let i=-1;i<=1;i++){let a=aim+i*.085+side*.035;shot32(bossShots32,e.x+side*e.r*.72,e.y+e.r*.16,Math.cos(a)*spd*.92,Math.sin(a)*spd*.92,4.8,dmg,'missile')}
+  }else if(b.id==='ravager'){
+    const n=Math.min(15,8+lv);for(let i=0;i<n;i++){let a=Math.PI*.12+Math.PI*.76*(i/(n-1));shot32(bossShots32,e.x,e.y+8,Math.cos(a)*spd*.78,Math.sin(a)*spd*.78,5.5,dmg*.76,'plasma')}
+  }else if(b.id==='wraith'){
+    const lane=cl(p.x+R(-24,24),24,W-24);for(const off of[-12,0,12])shot32(bossShots32,lane+off,e.y+e.r*.55,0,spd*1.78,3.2,dmg*1.02,'rail');
+  }else if(b.id==='hive'){
+    const aim=Math.atan2(p.y-e.y,p.x-e.x);for(let i=-2;i<=2;i++){let a=aim+i*.20;shot32(bossShots32,e.x+i*e.r*.24,e.y+e.r*.25,Math.cos(a)*spd*.58,Math.sin(a)*spd*.58,7.2,dmg*.72,'drone',7)}
   }else{
-    const lane=cl(p.x+R(-35,35),28,W-28);for(const off of[-16,0,16])shot32(bossShots32,lane+off,e.y+e.r*.35,0,spd*1.58,3.1,dmg*.94,'lancer');
+    for(const off of[-e.r*.52,0,e.r*.52]){let vx=R(-38,38);shot32(bossShots32,e.x+off,e.y+e.r*.28,vx,spd*.44,9,dmg*1.18,'mine',8)}
   }
   puff(e.x,e.y+e.r*.5,b.id==='dread'?13:8,b.col,.42);
   b.fire=Math.max(.48,1.42-lv*.055)*R(.86,1.12);
@@ -146,7 +149,7 @@ update=function(dt){
   if(state==='boss'){const b=E.find(e=>e&&(e.boss5||e.boss));if(b&&b.boss32&&$('bossname5'))$('bossname5').textContent='SECTOR '+stage+' · '+b.boss32.name}
 };
 
-function drawProjectile32(q,boss){let col=q.kind==='mortar'?'#edbc7d':q.kind==='phantom'?'#c6b3e6':q.kind==='sweeper'?'#e3a3a9':q.kind==='striker'?'#efaeb0':q.kind==='warden'?'#dfc083':q.kind==='harrier'?'#c2b1e3':q.kind==='lancer'?'#acd3df':'#e1a3a1';X.save();X.globalCompositeOperation='lighter';X.shadowBlur=q.r>6?20:13;X.shadowColor=col;X.fillStyle='#fff';X.globalAlpha=.9;X.beginPath();X.arc(q.x,q.y,q.r,0,6.28);X.fill();X.globalAlpha=.36;X.fillStyle=col;X.beginPath();X.arc(q.x,q.y,q.r+(boss?5:3),0,6.28);X.fill();X.restore()}
+function drawProjectile32(q,boss){let col=q.kind==='mortar'?'#edbc7d':q.kind==='phantom'?'#c6b3e6':q.kind==='sweeper'?'#e3a3a9':q.kind==='striker'?'#efaeb0':q.kind==='missile'?'#ff5268':q.kind==='plasma'?'#42ddff':q.kind==='rail'?'#d85cff':q.kind==='drone'?'#72ff57':q.kind==='mine'?'#ff9d36':'#e1a3a1';X.save();X.globalCompositeOperation='lighter';X.shadowBlur=q.r>6?20:13;X.shadowColor=col;X.fillStyle='#fff';X.globalAlpha=.9;X.beginPath();X.arc(q.x,q.y,q.r,0,6.28);X.fill();X.globalAlpha=.36;X.fillStyle=col;X.beginPath();X.arc(q.x,q.y,q.r+(boss?5:3),0,6.28);X.fill();X.restore()}
 const drawBase32=draw;
 draw=function(){drawBase32();for(const q of enemyShots32)drawProjectile32(q,false);for(const q of bossShots32)drawProjectile32(q,true)};
 
