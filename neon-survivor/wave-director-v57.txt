@@ -1,38 +1,49 @@
-/* V57 — deterministic 1..20 enemy wave cycle with escalating threat tiers */
+/* V58 — disguised irregular enemy pressure with escalating threat tiers */
 ;(()=>{
-let wave57=1,tier57=0,cooldown57=.45,waveSerial57=0;
+let pressure57=0,tier57=0,cooldown57=.45,waveSerial57=0;
 const spawnOne57=enemy;
 
 function regular57(){return E.filter(e=>e&&!e.boss&&!e.boss5)}
 function strengthen57(e){
   if(!e||e.boss||e.boss5)return;
-  const hpMul=1+tier57*.42,dmgMul=1+tier57*.20,fireMul=Math.max(.48,1-tier57*.075);
+  const hpMul=1.28+tier57*.46,dmgMul=1.16+tier57*.22,fireMul=Math.max(.44,.90-tier57*.075);
   e.hp*=hpMul;e.max*=hpMul;e.dmg*=dmgMul;e.shotDmg*=dmgMul;e.fireRate*=fireMul;
   e.val=Math.round((e.val||10)*(1+tier57*.18));e.credit=Math.round((e.credit||4)*(1+tier57*.10));
   e.threatTier57=tier57;
   if(e.flow10){e.flow10.hold*=Math.min(1.55,1+tier57*.07);e.flow10.fire*=fireMul}
 }
-function formation57(e,i,count){
+function formation57(e,i,count,usedX){
   if(!e||!e.flow10)return;
-  const cols=Math.min(5,count),rows=Math.ceil(count/cols),row=Math.floor(i/cols),col=i%cols;
-  const used=row===rows-1?count-row*cols:cols;
-  const x=W*(used===1?.5:.12+.76*(col/Math.max(1,used-1)));
-  const y=-70-row*48-R(0,12),f=e.flow10;
+  let x=R(38,W-38);
+  for(let tries=0;tries<8&&usedX.some(v=>Math.abs(v-x)<42);tries++)x=R(38,W-38);
+  usedX.push(x);
+  const y=R(-225,-68)-Math.floor(i/6)*24,f=e.flow10;
   e.x=x;e.y=y;f.x=x;f.y=y;f.anchorX=x;
-  f.targetY=H*(.17+(row%4)*.095+R(0,.025));
-  f.seed=waveSerial57*.71+i*1.37+R(0,.3);
+  f.targetY=H*R(.17,.48);
+  f.seed=waveSerial57*.71+i*1.37+R(0,.8);
+}
+function groupSize57(){
+  const heat=Math.min(1,pressure57/11),r=Math.random();
+  if(r<.27)return 1;
+  if(r<.62)return Math.floor(R(2,5));
+  if(r<.91)return Math.floor(R(5,9+heat*4));
+  return Math.min(20,Math.floor(R(10,15+heat*6)));
 }
 function spawnWave57(){
-  const count=wave57;waveSerial57++;
+  const active=regular57().length,heat=Math.min(1,pressure57/11);
+  const cap=Math.min(20,Math.round(7+stage*.8+tier57*2+heat*7));
+  const count=Math.max(0,Math.min(groupSize57(),cap-active));
+  if(!count){cooldown57=R(.55,1.1);return}
+  waveSerial57++;const usedX=[];
   for(let i=0;i<count;i++){
     const before=E.length;spawnOne57();
     const e=E[E.length-1];if(E.length===before||!e)continue;
-    strengthen57(e);formation57(e,i,count);
+    strengthen57(e);formation57(e,i,count,usedX);
   }
-  flashStage('WAVE '+count+(tier57?' · THREAT '+(tier57+1):''));
-  popText(W*.5,H*.23,count+' HOSTILE'+(count===1?'':'S'),'#ff7a78',17);
-  if(wave57>=20){wave57=1;tier57++}else wave57++;
-  cooldown57=.8;
+  if(count>=5)flashStage('HOSTILE FORMATION INBOUND');
+  pressure57++;
+  if(pressure57>=12){pressure57=0;tier57++;flashStage('ENEMY SYSTEMS EVOLVED')}
+  cooldown57=R(Math.max(.8,1.55-heat*.35),Math.max(1.4,3.1-heat*.75));
 }
 
 const update57base=update;
@@ -44,12 +55,12 @@ update=function(dt){
   /* V53 reserves the last pixels of a sector for clearing before the boss. */
   if(distance>=stage*STAGE_M-3)return;
   cooldown57-=dt;
-  if(cooldown57<=0&&regular57().length===0)spawnWave57();
+  if(cooldown57<=0)spawnWave57();
 };
 
 const checkpoint57base=checkpoint;
 checkpoint=function(){checkpoint57base();if(state==='play'){spawn=999;cooldown57=.65}};
 
 const reset57base=reset;
-reset=function(){wave57=1;tier57=0;cooldown57=.45;waveSerial57=0;reset57base();spawn=999};
+reset=function(){pressure57=0;tier57=0;cooldown57=.45;waveSerial57=0;reset57base();spawn=999};
 })();
