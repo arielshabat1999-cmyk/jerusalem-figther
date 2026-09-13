@@ -66,13 +66,6 @@ bridge.setAsteroid(function(o){
 
 const giftBase60=bridge.getGift();bridge.setGift(function(g){if(g&&g.y<bridge.H-24)giftBase60(g)});
 
-/* Replace target-like legacy debris with unmistakable spaceship wreckage. */
-scrap=function(o){
-  ctx.save();ctx.translate(o.x,o.y);ctx.rotate(o.rot);const r=o.r;
-  ctx.shadowBlur=7;ctx.shadowColor='#1fc9e844';ctx.fillStyle='#151d27';ctx.strokeStyle='#6b8291';ctx.lineWidth=1.3;ctx.beginPath();ctx.moveTo(-r*.9,-r*.42);ctx.lineTo(r*.54,-r*.62);ctx.lineTo(r*.92,r*.18);ctx.lineTo(-r*.32,r*.7);ctx.closePath();ctx.fill();ctx.stroke();
-  ctx.fillStyle='#203747';ctx.fillRect(-r*.52,-r*.12,r*.72,r*.22);ctx.fillStyle='#ff9e35';ctx.fillRect(r*.25,-r*.45,r*.18,r*.52);ctx.fillStyle='#63e8ff';ctx.globalAlpha=.65;ctx.fillRect(-r*.66,r*.22,r*.36,r*.11);ctx.restore();
-};
-
 /* Base click handlers are installed before legacy wrappers. Rebind to the final start/reset chain. */
 const restart61=$('again');let restartLock61=false;
 function runRestart61(e){
