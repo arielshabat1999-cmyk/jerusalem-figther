@@ -1,0 +1,63 @@
+/* v53 deterministic stage entry and clear-before-boss rules */
+(()=>{
+let clearing53=false,completed53=0,lockDistance53=0;
+
+function regularEnemies53(){return E.filter(e=>e&&!e.boss5&&!e.boss)}
+function holdEnemy53(e){
+  if(!e.flow10)return;
+  const f=e.flow10;
+  if(f.phase==='exit'){
+    f.phase='hold';
+    f.targetY=cl(e.y,H*.18,H*.55);
+    f.y=f.targetY;
+    f.anchorX=e.x-Math.sin(t*f.freq+f.seed)*f.amp;
+  }
+  if(f.phase==='hold')f.hold=999;
+}
+
+const begin53base=beginSector;
+beginSector=function(){
+  /* Boss victory already owns the warp into the next sector. */
+  if(state==='boss'){begin53base();return}
+  completed53=Math.max(1,stage-1);
+  stage=completed53;
+  lockDistance53=Math.max(0,completed53*STAGE_M-2);
+  distance=lockDistance53;
+  clearing53=true;
+  spawn=999;obspawn=999;
+  for(const e of regularEnemies53())holdEnemy53(e);
+  flashStage('CLEAR THE SECTOR');
+  popText(W*.5,H*.25,'DESTROY ALL HOSTILES','#ffcf68',18);
+  ui();
+};
+
+const update53base=update;
+update=function(dt){
+  if(clearing53&&state==='play'){
+    distance=lockDistance53;spawn=999;obspawn=999;
+    for(const e of regularEnemies53())holdEnemy53(e);
+    update53base(dt);
+    if(state!=='play'){clearing53=false;return}
+    distance=lockDistance53;spawn=999;obspawn=999;
+    for(const e of regularEnemies53())holdEnemy53(e);
+    if(regularEnemies53().length===0){
+      clearing53=false;
+      stage=completed53+1;
+      distance=stage*STAGE_M;
+      begin53base();
+    }
+    ui();
+    if(clearing53&&$('stageprog'))$('stageprog').style.width='100%';
+    return;
+  }
+  const before=state;
+  update53base(dt);
+  if(before==='sector'&&state==='play'){
+    spawn=Math.max(spawn,.7);
+    obspawn=Math.max(obspawn,.9);
+  }
+};
+
+const reset53base=reset;
+reset=function(){clearing53=false;completed53=0;lockDistance53=0;reset53base()};
+})();

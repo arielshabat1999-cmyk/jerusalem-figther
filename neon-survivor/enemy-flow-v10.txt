@@ -43,7 +43,7 @@ enemy=function(){
   if(type==='bomber')Object.assign(e,{r:19,hp:62*diff,max:62*diff,spd:36,dmg:16,val:27,credit:9,fireRate:2.4,shotDmg:12+stage*.55});
   if(type==='sniper')Object.assign(e,{r:15,hp:44*diff,max:44*diff,spd:34,dmg:12,val:26,credit:9,fireRate:2.3,shotDmg:10+stage*.45});
   let targetY=H*(type==='sniper'?R(.18,.27):type==='tank'?R(.23,.32):R(.25,.40));
-  e.flow10={x:e.x,y:e.y,targetY,phase:'enter',hold:type==='tank'?R(5.2,7.2):type==='sniper'?R(5.0,7.0):type==='dart'?R(3.6,5.2):R(4.2,6.2),fire:R(.55,1.5),amp:type==='dart'?Math.min(70,W*.2):type==='sniper'?Math.min(24,W*.08):type==='tank'?Math.min(34,W*.1):Math.min(44,W*.13),freq:type==='dart'?1.8:type==='sniper'?.72:1.05,seed:R(0,6.28)};
+  e.flow10={x:e.x,y:e.y,anchorX:e.x,targetY,phase:'enter',hold:type==='tank'?R(5.2,7.2):type==='sniper'?R(5.0,7.0):type==='dart'?R(3.6,5.2):R(4.2,6.2),fire:R(.55,1.5),amp:type==='dart'?Math.min(70,W*.2):type==='sniper'?Math.min(24,W*.08):type==='tank'?Math.min(34,W*.1):Math.min(44,W*.13),freq:type==='dart'?1.8:type==='sniper'?.72:1.05,seed:R(0,6.28)};
   E.push(e);
 };
 
@@ -56,15 +56,15 @@ update=function(dt){
   if(state!=='play')return;
   for(let i=E.length-1;i>=0;i--){
     const e=E[i];if(!e||e.boss5||e.boss)continue;
-    if(!e.flow10){e.flow10={x:e.x,y:e.y,targetY:H*.3,phase:'hold',hold:4.5,fire:.8,amp:30,freq:1,seed:R(0,6.28)};e.fireChance=-1;}
+    if(!e.flow10){e.flow10={x:e.x,y:e.y,anchorX:e.x,targetY:H*.3,phase:'hold',hold:4.5,fire:.8,amp:30,freq:1,seed:R(0,6.28)};e.fireChance=-1;}
     const f=e.flow10;
     if(f.phase==='enter'){
       f.y+=(145+Math.min(80,stage*5))*dt;
       f.x+=Math.sin(t*1.5+f.seed)*10*dt;
-      if(f.y>=f.targetY){f.y=f.targetY;f.phase='hold';}
+      if(f.y>=f.targetY){f.y=f.targetY;f.anchorX=f.x-Math.sin(t*f.freq+f.seed)*f.amp;f.phase='hold';}
     }else if(f.phase==='hold'){
       f.hold-=dt;
-      f.x=W*.5+Math.sin(t*f.freq+f.seed)*f.amp;
+      f.x=(f.anchorX==null?f.x:f.anchorX)+Math.sin(t*f.freq+f.seed)*f.amp;
       f.y=f.targetY+Math.sin(t*1.25+f.seed)*5;
       f.fire-=dt;
       if(f.fire<=0){fireStraight10(e);f.fire=R((e.fireRate||1.7)*.82,(e.fireRate||1.7)*1.22);}
