@@ -23,6 +23,8 @@ function grantWeapon11(g){
   let label='WEAPON LV.'+w.lv+' · '+weaponLabel11(w);
   popText(g.x,g.y-14,label,w.col,18);puff(g.x,g.y,26,w.col,1.05);puff(p.x,p.y,12,w.col,.45);shake=Math.max(shake,5);ui();
 }
+window.__grantWeaponUpgrade11=grantWeapon11;
+window.__weaponProfile11=weaponProfile11;
 function normalGift11(g){
   nonWeapon11++;
   let r=Math.random(),label='',col='#72f5ff',special=1+specialLevel11()*.12;
