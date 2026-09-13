@@ -1,4 +1,4 @@
-/* V60 — compact combat HUD, readable enemy health and cohesive combat feedback */
+/* V61 — compact combat HUD, readable feedback and reliable mobile restart */
 ;(()=>{
 const bridge=window.__V42;if(!bridge)return;
 const ctx=bridge.ctx;
@@ -20,6 +20,7 @@ const style=document.createElement('style');style.textContent=`
 .boss5{left:8px!important;bottom:max(12px,calc(env(safe-area-inset-bottom) + 12px))!important;width:min(272px,calc(100vw - 100px))!important;padding:6px 8px!important}
 #damageFlash60{position:fixed;inset:0;z-index:42;pointer-events:none;opacity:0;background:radial-gradient(circle at 50% 72%,#ff395000 8%,#ff24334f 100%);transition:opacity .18s}
 #damageFlash60.hit{opacity:1;transition:none}
+#over.show{pointer-events:auto!important}#again{position:relative!important;z-index:200!important;pointer-events:auto!important;touch-action:manipulation!important}
 @media(max-width:380px){#statusBars60{width:min(224px,62vw)}#hud .chip{min-width:52px!important;padding-inline:6px!important}.upgradePause5,.boostBtn{width:72px!important}}
 `;document.head.appendChild(style);
 
@@ -72,5 +73,19 @@ scrap=function(o){
   ctx.fillStyle='#203747';ctx.fillRect(-r*.52,-r*.12,r*.72,r*.22);ctx.fillStyle='#ff9e35';ctx.fillRect(r*.25,-r*.45,r*.18,r*.52);ctx.fillStyle='#63e8ff';ctx.globalAlpha=.65;ctx.fillRect(-r*.66,r*.22,r*.36,r*.11);ctx.restore();
 };
 
-try{parent.postMessage({source:'hud-polish-v60',status:'HUD ON'},'*')}catch(_){}
+/* Base click handlers are installed before legacy wrappers. Rebind to the final start/reset chain. */
+const restart61=$('again');let restartLock61=false;
+function runRestart61(e){
+  if(e){e.preventDefault();e.stopPropagation()}
+  if(restartLock61||state!=='over')return;
+  restartLock61=true;
+  const death=$('death9');if(death)death.classList.remove('show');
+  $('over').classList.remove('show');$('upgrade').classList.remove('show');
+  start();
+  last=performance.now();
+  setTimeout(()=>{restartLock61=false},180);
+}
+if(restart61){restart61.onclick=runRestart61;restart61.addEventListener('pointerup',e=>{if(e.pointerType==='touch'||e.pointerType==='pen')runRestart61(e)},{passive:false})}
+
+try{parent.postMessage({source:'hud-polish-v61',status:'HUD ON'},'*')}catch(_){}
 })();
