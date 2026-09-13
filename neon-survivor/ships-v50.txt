@@ -1,0 +1,47 @@
+/* V50 — six transparent ship assets: normal + boost for NOVA / VIPER / TITAN */
+;(()=>{
+const G=window.__V42;if(!G)return;
+const X=G.ctx,VERSION='20260913v50';
+const paths={
+  nova:{normal:'./assets/ships/nova-normal.webp',boost:'./assets/ships/nova-boost.webp'},
+  viper:{normal:'./assets/ships/viper-normal.webp',boost:'./assets/ships/viper-boost.webp'},
+  titan:{normal:'./assets/ships/titan-normal.webp',boost:'./assets/ships/titan-boost.webp'}
+};
+const imgs={nova:{},viper:{},titan:{}},jobs=[];
+function post(status){try{parent.postMessage({source:'ships-v50',status},'*')}catch(_){}}
+for(const id of Object.keys(paths))for(const mode of ['normal','boost']){
+  jobs.push(new Promise((resolve,reject)=>{const im=new Image();imgs[id][mode]=im;im.onload=resolve;im.onerror=reject;im.src=paths[id][mode]+'?v='+VERSION}))
+}
+post('LOADING');
+Promise.all(jobs).then(()=>{post('SHIPS ON');requestAnimationFrame(drawGarage50)}).catch(e=>{console.error('V50 ship asset load',e);post('SHIP ERROR')});
+const enemyRenderer=G.getShip();
+const cfg={
+  nova:{scale:4.75,normalAnchor:.48,boostAnchor:.39,glow:'#35dcff'},
+  viper:{scale:4.62,normalAnchor:.47,boostAnchor:.39,glow:'#ff3f7c'},
+  titan:{scale:4.78,normalAnchor:.47,boostAnchor:.38,glow:'#ffae36'}
+};
+function ready(im){return im&&im.complete&&im.naturalWidth}
+function drawSprite(ctx,im,x,y,h,anchor,rotation=0,alpha=1,glow='#49ddff',blur=12){
+  const w=h*(im.naturalWidth/im.naturalHeight);ctx.save();ctx.translate(x,y);ctx.rotate(rotation);ctx.globalAlpha=alpha;ctx.shadowBlur=blur;ctx.shadowColor=glow;ctx.drawImage(im,-w/2,-h*anchor,w,h);ctx.restore();return{w,h}
+}
+G.setShip(function(x,y,s,r=0,en=false,heavy=false,model='nova'){
+  if(en){enemyRenderer(x,y,s,r,en,heavy,model);return}
+  const raw=(G.player&&G.player.shipType)||model||'nova',id=raw==='viper'?'viper':raw==='titan'?'titan':'nova',boost=G.boost>0,mode=boost?'boost':'normal',im=imgs[id][mode];
+  if(!ready(im))return;
+  const c=cfg[id],h=s*c.scale*(boost?1.18:1),anchor=boost?c.boostAnchor:c.normalAnchor,bank=(window.__V48Bank||0)*.08;
+  const box=drawSprite(X,im,x,y,h,anchor,r+bank,1,c.glow,boost?24:13),p=G.player;
+  if(p&&p.shield>0){X.save();X.globalCompositeOperation='lighter';X.strokeStyle='#8deaff99';X.lineWidth=1.3;X.shadowBlur=14;X.shadowColor='#42d7ff';X.beginPath();X.ellipse(x,y,box.w*.45,h*.38,0,0,Math.PI*2);X.stroke();X.restore()}
+});
+function garageCanvas50(cv,id,side){
+  if(!cv)return;const im=imgs[id].normal;if(!ready(im))return;const ratio=Math.min(devicePixelRatio||1,2),r=cv.getBoundingClientRect(),w=Math.max(60,Math.round(r.width)),h=Math.max(60,Math.round(r.height));
+  cv.width=Math.round(w*ratio);cv.height=Math.round(h*ratio);const c=cv.getContext('2d');c.setTransform(ratio,0,0,ratio,0,0);c.clearRect(0,0,w,h);
+  const maxH=h*(side?.82:.98),maxW=w*(side?.90:.98),ar=im.naturalWidth/im.naturalHeight;let dh=maxH,dw=dh*ar;if(dw>maxW){dw=maxW;dh=dw/ar}
+  c.save();c.translate(w/2,h*.49);c.shadowBlur=side?10:22;c.shadowColor=cfg[id].glow;c.drawImage(im,-dw/2,-dh*.48,dw,dh);c.restore();
+}
+function drawGarage50(){
+  try{if(typeof state!=='undefined'&&state!=='shop')return;if(typeof SHIPS==='undefined'||typeof shipIndex3==='undefined')return;const ks=Object.keys(SHIPS),i=((shipIndex3%ks.length)+ks.length)%ks.length;
+    garageCanvas50(document.getElementById('shipMain7'),ks[i],false);garageCanvas50(document.getElementById('shipLeft7'),ks[(i-1+ks.length)%ks.length],true);garageCanvas50(document.getElementById('shipRight7'),ks[(i+1)%ks.length],true)
+  }catch(e){console.error('V50 garage draw',e)}
+}
+try{const oldRender=renderShop;renderShop=function(){oldRender();requestAnimationFrame(drawGarage50)};drawPreview3=drawGarage50}catch(_){}
+})();
