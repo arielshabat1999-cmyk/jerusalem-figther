@@ -18,7 +18,7 @@
   <div id="load">LOADING V70…</div>
   <iframe id="game" allow="autoplay; fullscreen" referrerpolicy="same-origin"></iframe>
   <script>
-  const VERSION='20260914v70',badge=document.getElementById('outerVersion');
+  const VERSION='20260914v70b',badge=document.getElementById('outerVersion');
   let renderState='WAIT',ctrlState='WAIT',shipState='',bossState='',enemyState='',hudState='';
   function paint(){badge.textContent='V70 LIVE · '+renderState+(shipState==='SHIPS ON'?' · SHIPS ON':shipState==='SHIP ERROR'?' · SHIP ERROR':'')+(bossState==='BOSSES ON'?' · BOSSES ON':bossState==='BOSS ERROR'?' · BOSS ERROR':'')+(enemyState==='ENEMIES ON'?' · ENEMIES ON':enemyState==='ENEMY ERROR'?' · ENEMY ERROR':'')+(hudState==='HUD ON'?' · HUD ON':'')+(ctrlState==='ON'?' · CTRL ON':ctrlState==='ERROR'?' · CTRL ERROR':'')}
   addEventListener('message',e=>{const d=e.data;if(!d||typeof d.status!=='string')return;if(d.source==='cinematic-v48')renderState=d.status;else if(d.source==='controls-v48')ctrlState=d.status;else if(d.source==='ships-v50')shipState=d.status;else if(d.source==='bosses-v51')bossState=d.status;else if(d.source==='enemies-v52')enemyState=d.status;else if(d.source==='hud-polish-v61')hudState=d.status;paint()});
