@@ -127,7 +127,7 @@ export const ENEMY_FIRST_STAGE = { enemy1: 1, enemy2: 3, enemy3: 5, heavy: 7, el
 // counts/maxAlive the economy reset specified), extended with the pacing
 // fields the block/spawn-director architecture needs.
 export const STAGE_COMPOSITION = {
-  1: { maxAlive: 3, counts: { enemy1: 12 }, weights: { enemy1: 100 }, spawnDelayRange: [2.5, 3.5] },
+  1: { maxAlive: 2, counts: { enemy1: 8 }, weights: { enemy1: 100 }, spawnDelayRange: [3.0, 4.2] },
   2: { maxAlive: 4, counts: { enemy1: 15 }, weights: { enemy1: 100 }, spawnDelayRange: [2.5, 3.5] },
   3: { maxAlive: 4, counts: { enemy1: 12, enemy2: 5 }, weights: { enemy1: 70, enemy2: 30 }, spawnDelayRange: [2.2, 3.0] },
   4: { maxAlive: 5, counts: { enemy1: 10, enemy2: 8 }, weights: { enemy1: 55, enemy2: 45 }, spawnDelayRange: [2.2, 3.0] },
