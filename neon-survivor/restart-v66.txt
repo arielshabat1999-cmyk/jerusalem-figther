@@ -1,0 +1,11 @@
+/* v66 restart hotfix: always invoke the latest wrapped start() */
+;(()=>{
+  const btn=$('again');
+  if(!btn)return;
+  btn.disabled=false;
+  btn.style.pointerEvents='auto';
+  btn.onclick=e=>{
+    if(e){e.preventDefault();e.stopPropagation()}
+    start();
+  };
+})();
