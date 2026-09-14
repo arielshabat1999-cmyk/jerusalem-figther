@@ -1,4 +1,4 @@
-/* V67 — stage 1 onboarding balance; irregular pressure from stage 2 onward */
+/* V68 — calmer pacing: fewer simultaneous enemies, difficulty comes from stronger enemies instead of screen-filling swarms */
 ;(()=>{
 let pressure57=0,tier57=0,cooldown57=1.4,waveSerial57=0;
 const spawnOne57=enemy;
@@ -6,7 +6,7 @@ const spawnOne57=enemy;
 function regular57(){return E.filter(e=>e&&!e.boss&&!e.boss5)}
 function strengthen57(e){
   if(!e||e.boss||e.boss5)return;
-  const hpMul=1.28+tier57*.46,dmgMul=1.16+tier57*.22,fireMul=Math.max(.44,.90-tier57*.075);
+  const hpMul=1.28+tier57*.46,dmgMul=1.16+tier57*.22,fireMul=Math.max(.65,.96-tier57*.04);
   e.hp*=hpMul;e.max*=hpMul;e.dmg*=dmgMul;e.shotDmg*=dmgMul;e.fireRate*=fireMul;
   e.val=Math.round((e.val||10)*(1+tier57*.18));e.credit=Math.round((e.credit||4)*(1+tier57*.10));
   e.threatTier57=tier57;
@@ -23,30 +23,42 @@ function formation57(e,i,count,usedX){
   f.seed=waveSerial57*.71+i*1.37+R(0,.8);
 }
 function groupSize57(){
+  const r=Math.random();
   if(stage===1)return 1;
-  const heat=Math.min(1,pressure57/11),r=Math.random();
-  if(r<.27)return 1;
-  if(r<.62)return Math.floor(R(2,5));
-  if(r<.91)return Math.floor(R(5,9+heat*4));
-  return Math.min(20,Math.floor(R(10,15+heat*6)));
+  if(stage===2)return r<.78?1:2;
+  if(stage<=4)return r<.55?1:r<.90?2:3;
+  return r<.40?1:r<.78?2:r<.95?3:4;
+}
+function cap57(){
+  if(stage===1)return 2;
+  if(stage===2)return 3;
+  if(stage===3)return 4;
+  if(stage<=5)return 5;
+  if(stage<=7)return 6;
+  return Math.min(8,6+Math.floor((stage-6)/3));
+}
+function nextDelay57(){
+  if(stage===1)return R(3.1,4.4);
+  if(stage===2)return R(2.8,4.2);
+  if(stage<=4)return R(2.4,3.8);
+  return R(2.0,3.3);
 }
 function spawnWave57(){
-  const active=regular57().length,heat=Math.min(1,pressure57/11);
-  const cap=stage===1?2:Math.min(20,Math.round(7+stage*.8+tier57*2+heat*7));
-  const count=Math.max(0,Math.min(groupSize57(),cap-active));
-  if(!count){cooldown57=stage===1?R(1.2,1.8):R(.55,1.1);return}
+  const active=regular57().length;
+  const count=Math.max(0,Math.min(groupSize57(),cap57()-active));
+  if(!count){cooldown57=stage===1?R(1.2,1.8):R(.9,1.4);return}
   waveSerial57++;const usedX=[];
   for(let i=0;i<count;i++){
     const before=E.length;spawnOne57();
     const e=E[E.length-1];if(E.length===before||!e)continue;
     strengthen57(e);formation57(e,i,count,usedX);
   }
-  if(count>=5)flashStage('HOSTILE FORMATION INBOUND');
+  if(count>=4)flashStage('HOSTILE FORMATION INBOUND');
   if(stage>1){
     pressure57++;
     if(pressure57>=12){pressure57=0;tier57++;flashStage('ENEMY SYSTEMS EVOLVED')}
   }
-  cooldown57=stage===1?R(3.1,4.4):R(Math.max(.8,1.55-heat*.35),Math.max(1.4,3.1-heat*.75));
+  cooldown57=nextDelay57();
 }
 
 const update57base=update;
