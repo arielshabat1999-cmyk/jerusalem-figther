@@ -77,11 +77,11 @@ const updateBase63=update;update=function(dt){
 
 function drawShot63(q){
   const col=COLORS63[q.kind]||'#fff',speed=Math.max(1,Math.hypot(q.vx,q.vy)),nx=q.vx/speed,ny=q.vy/speed,trail=q.long?32:q.kind.includes('Missile')||q.kind==='gunship'||q.kind==='hiveDrone'?18:10;
-  ctx.save();ctx.globalCompositeOperation='lighter';ctx.shadowBlur=q.r>7?22:14;ctx.shadowColor=col;ctx.strokeStyle=col;ctx.lineWidth=Math.max(1.5,q.r*.55);ctx.globalAlpha=.42;ctx.beginPath();ctx.moveTo(q.x-nx*trail,q.y-ny*trail);ctx.lineTo(q.x,q.y);ctx.stroke();ctx.globalAlpha=.94;ctx.fillStyle=col;
-  if(q.kind==='phantom'||q.kind==='wraithRail'){ctx.translate(q.x,q.y);ctx.rotate(Math.atan2(q.vy,q.vx));ctx.fillRect(-q.r*3,-q.r*.55,q.r*6,q.r*1.1)}
-  else if(q.kind.includes('Missile')||q.kind==='gunship'||q.kind==='hiveDrone'){ctx.translate(q.x,q.y);ctx.rotate(Math.atan2(q.vy,q.vx));ctx.beginPath();ctx.moveTo(q.r*1.55,0);ctx.lineTo(-q.r,-q.r*.72);ctx.lineTo(-q.r,q.r*.72);ctx.closePath();ctx.fill()}
-  else{ctx.beginPath();ctx.arc(q.x,q.y,q.r,0,Math.PI*2);ctx.fill();if(q.blast){ctx.globalAlpha=.38;ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(q.x,q.y,q.r+4+Math.sin(t*7+q.serial)*2,0,Math.PI*2);ctx.stroke()}}
-  ctx.restore();
+  X.save();X.globalCompositeOperation='lighter';X.shadowBlur=q.r>7?22:14;X.shadowColor=col;X.strokeStyle=col;X.lineWidth=Math.max(1.5,q.r*.55);X.globalAlpha=.42;X.beginPath();X.moveTo(q.x-nx*trail,q.y-ny*trail);X.lineTo(q.x,q.y);X.stroke();X.globalAlpha=.94;X.fillStyle=col;
+  if(q.kind==='phantom'||q.kind==='wraithRail'){X.translate(q.x,q.y);X.rotate(Math.atan2(q.vy,q.vx));X.fillRect(-q.r*3,-q.r*.55,q.r*6,q.r*1.1)}
+  else if(q.kind.includes('Missile')||q.kind==='gunship'||q.kind==='hiveDrone'){X.translate(q.x,q.y);X.rotate(Math.atan2(q.vy,q.vx));X.beginPath();X.moveTo(q.r*1.55,0);X.lineTo(-q.r,-q.r*.72);X.lineTo(-q.r,q.r*.72);X.closePath();X.fill()}
+  else{X.beginPath();X.arc(q.x,q.y,q.r,0,Math.PI*2);X.fill();if(q.blast){X.globalAlpha=.38;X.lineWidth=1.5;X.beginPath();X.arc(q.x,q.y,q.r+4+Math.sin(t*7+q.serial)*2,0,Math.PI*2);X.stroke()}}
+  X.restore();
 }
 const drawBase63=draw;draw=function(){drawBase63();for(const q of shots63)drawShot63(q)};
 const resetBase63=reset;reset=function(){shots63=[];serial63=0;resetBase63()};
