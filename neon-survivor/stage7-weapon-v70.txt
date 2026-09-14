@@ -1,0 +1,78 @@
+/* V70 — Stage 7 STARFORGE: dramatic automatic player-weapon power spike */
+;(()=>{
+let active70=false,volley70=0;
+
+function tier70(){return Math.max(1,1+Math.floor((stage-7)/3))}
+function activate70(g){
+  if(active70||!p||stage<7)return;
+  active70=true;volley70=0;
+  p.dmg*=1.65;
+  p.rate=Math.max(.055,p.rate*.76);
+  p.bs*=1.12;
+  flashStage('STARFORGE WEAPON ONLINE');
+  popText(g&&g.x!=null?g.x:p.x,g&&g.y!=null?g.y-30:p.y-46,'STARFORGE ACQUIRED','#fff078',23);
+  puff(p.x,p.y,34,'#51ecff',1.15);
+  puff(p.x,p.y,24,'#ff4ed8',1.0);
+  shake=Math.max(shake,11);
+}
+function bolt70(kind,a,speed,dmg,r,offset=0){
+  const sideX=Math.cos(a+Math.PI/2)*offset,sideY=Math.sin(a+Math.PI/2)*offset;
+  B.push({x:p.x+Math.cos(a)*28+sideX,y:p.y+Math.sin(a)*28+sideY,vx:Math.cos(a)*p.bs*speed,vy:Math.sin(a)*p.bs*speed,r,life:1.55,d:p.dmg*dmg,kind,w70:kind,serial70:volley70});
+}
+
+const shoot70base=shoot;
+shoot=function(a){
+  if(!p||p.cd>0){shoot70base(a);return}
+  if(stage<7||!active70){shoot70base(a);return}
+  shoot70base(a);
+  const tier=tier70();
+  bolt70('core',a,1.24,2.25+tier*.28,6.4);
+  bolt70('wing',a-.15,1.10,.68+tier*.08,4.1,-17);
+  bolt70('wing',a+.15,1.10,.68+tier*.08,4.1,17);
+  volley70++;
+  if(volley70%3===0)bolt70('nova',a,1.02,3.15+tier*.35,8.2);
+  puff(p.x,p.y-28,volley70%3===0?9:5,volley70%3===0?'#ffe766':'#58efff',.38);
+};
+
+const grant70base=window.__grantWeaponUpgrade11;
+if(typeof grant70base==='function')window.__grantWeaponUpgrade11=function(g){
+  grant70base(g);
+  if(stage>=7&&!active70)activate70(g);
+};
+
+const laser70base=laser;
+laser=function(b){
+  if(!b||!b.w70){laser70base(b);return}
+  const a=Math.atan2(b.vy,b.vx);
+  X.save();X.translate(b.x,b.y);X.rotate(a+Math.PI/2);X.globalCompositeOperation='lighter';
+  if(b.w70==='core'){
+    X.shadowBlur=26;X.shadowColor='#42eaff';X.fillStyle='#38dfff';X.globalAlpha=.48;X.fillRect(-5,-38,10,52);
+    X.shadowBlur=18;X.shadowColor='#ff49d7';X.fillStyle='#fff';X.globalAlpha=.96;X.fillRect(-2,-43,4,59);
+    X.strokeStyle='#ffe96b';X.lineWidth=1.5;X.beginPath();X.moveTo(0,-49);X.lineTo(-7,-36);X.lineTo(0,-40);X.lineTo(7,-36);X.closePath();X.stroke();
+  }else if(b.w70==='nova'){
+    const pulse=13+Math.sin(t*15+b.serial70)*2;
+    X.shadowBlur=30;X.shadowColor='#ff4fd8';X.fillStyle='#fff6aa';X.beginPath();X.arc(0,0,7.2,0,Math.PI*2);X.fill();
+    X.strokeStyle='#5df3ff';X.lineWidth=2.4;X.beginPath();X.arc(0,0,pulse,0,Math.PI*2);X.stroke();
+    X.strokeStyle='#ff58dd';X.lineWidth=1.4;X.beginPath();X.arc(0,0,pulse+6,0,Math.PI*2);X.stroke();
+  }else{
+    X.shadowBlur=20;X.shadowColor=b.vx<0?'#ff54d9':'#55efff';X.fillStyle='#fff';X.beginPath();X.moveTo(0,-25);X.lineTo(-5,8);X.lineTo(0,4);X.lineTo(5,8);X.closePath();X.fill();
+    X.strokeStyle=b.vx<0?'#ff54d9':'#55efff';X.lineWidth=2;X.beginPath();X.moveTo(0,-27);X.lineTo(0,12);X.stroke();
+  }
+  X.restore();
+};
+
+const draw70base=draw;
+draw=function(){
+  draw70base();
+  if(!active70||!p||(state!=='play'&&state!=='boss'))return;
+  X.save();X.translate(p.x,p.y);X.globalCompositeOperation='lighter';
+  X.globalAlpha=.34+.08*Math.sin(t*7);X.shadowBlur=18;X.shadowColor='#4eeaff';X.strokeStyle='#57efff';X.lineWidth=1.8;
+  X.beginPath();X.arc(0,0,30+Math.sin(t*6)*2,t*1.7,t*1.7+4.6);X.stroke();
+  X.shadowColor='#ff4ed8';X.strokeStyle='#ff58dc';X.beginPath();X.arc(0,0,36,-t*1.35,-t*1.35+4.1);X.stroke();
+  X.restore();
+};
+
+const reset70base=reset;
+reset=function(){active70=false;volley70=0;reset70base()};
+try{parent.postMessage({source:'stage7-weapon-v70',status:'STARFORGE READY'},'*')}catch(_){}
+})();
