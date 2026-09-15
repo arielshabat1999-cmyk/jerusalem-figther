@@ -1,0 +1,77 @@
+/* V75 — selectable four-minute onslaught mission */
+;(()=>{
+const startBase75=start,updateBase75=update,uiBase75=ui,gameoverBase75=gameover;
+let special75=false,elapsed75=0,clearing75=false,waveCd75=1,total75=0,uiCd75=0,seen75=new WeakSet();
+
+const css75=document.createElement('style');
+css75.textContent='#special75{margin-top:10px;background:linear-gradient(110deg,#ff315f,#934dff 58%,#21dfff);box-shadow:0 0 25px #ff3a8055}.specialNote75{margin:8px 0 0;text-align:center;color:#ffb9dc;font-size:9px;font-weight:900;letter-spacing:.16em}.specialTime75{color:#ff72cb!important;text-shadow:0 0 12px #ff3bac}#specialWin75 .panel{border-color:#ff61be66;box-shadow:0 25px 90px #000d,0 0 55px #ff3eaa38!important}#specialWin75 h2{color:#fff;text-shadow:0 0 25px #ff42b5,0 0 52px #31dfff}';
+document.head.appendChild(css75);
+
+const play75=$('play'),specialBtn75=document.createElement('button');
+specialBtn75.id='special75';specialBtn75.className='btn';specialBtn75.textContent='4-MINUTE ONSLAUGHT';
+play75.parentNode.insertBefore(specialBtn75,play75.nextSibling);
+const note75=document.createElement('div');note75.className='specialNote75';note75.textContent='ONE LONG STAGE · HUNDREDS OF HOSTILES';
+specialBtn75.parentNode.insertBefore(note75,specialBtn75.nextSibling);
+
+const win75=document.createElement('div');win75.id='specialWin75';win75.className='screen';
+win75.innerHTML='<div class="panel"><div class="eyebrow">SPECIAL MISSION COMPLETE</div><h2>ONSLAUGHT SURVIVED</h2><div class="result"><span>MISSION TIME</span><b>04:00</b></div><div class="result"><span>HOSTILES DEPLOYED</span><b id="specialCount75">0</b></div><div class="result"><span>SCORE</span><b id="specialScore75">0</b></div><button id="specialAgain75" class="btn">REPLAY MISSION</button><button id="specialMenu75" class="btn" style="margin-top:10px;background:#14233a">MAIN MENU</button></div>';
+document.body.appendChild(win75);
+
+function regular75(){return E.filter(e=>e&&!e.boss&&!e.boss5)}
+function format75(s){s=Math.max(0,Math.ceil(s));return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
+function decorate75(){
+ if(!special75)return;
+ $('stage').textContent='1/1';$('dist').textContent=format75(240-elapsed75);$('dist').classList.add('specialTime75');
+ $('stageprog').style.width=Math.min(100,elapsed75/2.4)+'%'
+}
+ui=function(){uiBase75();if(special75)decorate75();else $('dist').classList.remove('specialTime75')};
+
+function bindRestart75(replaySpecial){
+ const old=$('again');if(!old)return;const fresh=old.cloneNode(true);old.replaceWith(fresh);
+ fresh.disabled=false;fresh.style.pointerEvents='auto';fresh.textContent=replaySpecial?'REPLAY SPECIAL MISSION':'RESTART';
+ fresh.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();launch75(replaySpecial)})
+}
+function launch75(isSpecial){
+ special75=!!isSpecial;elapsed75=0;clearing75=false;waveCd75=.65;total75=0;uiCd75=0;seen75=new WeakSet();
+ win75.classList.remove('show');startBase75();
+ if(special75){stage=1;distance=0;flashStage('04:00 · ONSLAUGHT STARTED');ui()}
+}
+function strengthen75(){
+ const tier=Math.floor(elapsed75/40),hp=1+tier*.22,dmg=1+tier*.10;
+ for(const e of regular75())if(!seen75.has(e)){seen75.add(e);e.hp*=hp;e.max*=hp;e.dmg*=dmg;if(Number.isFinite(e.shotDmg))e.shotDmg*=dmg;total75++}
+}
+function burst75(){
+ const active=regular75().length,room=Math.max(0,22-active);if(!room)return;
+ const r=Math.random(),wanted=r<.36?1:r<.60?2:r<.78?4:r<.92?6:Math.floor(R(8,11)),count=Math.min(room,wanted),tier=1+Math.floor(elapsed75/40);
+ for(let i=0;i<count;i++){const old=stage;try{stage=tier;enemy()}finally{stage=old}}
+ if(count>=6)flashStage('HOSTILE SWARM INBOUND')
+}
+function winMission75(){
+ special75=false;state='specialwin';$('hud').style.display='none';
+ $('specialCount75').textContent=total75.toLocaleString();$('specialScore75').textContent=(score|0).toLocaleString();
+ win75.classList.add('show');saveProfile()
+}
+update=function(dt){
+ if(!special75){updateBase75(dt);return}
+ if(state!=='play'){updateBase75(dt);return}
+ stage=1;distance=clearing75?247:Math.min(distance,205);
+ if(clearing75){spawn=999;obspawn=999;dropSpawn=999}
+ updateBase75(dt);
+ if(state!=='play')return;
+ stage=1;elapsed75=Math.min(240,elapsed75+dt);if(!clearing75&&distance>210)distance=0;
+ strengthen75();
+ if(!clearing75){
+  waveCd75-=dt;if(waveCd75<=0){burst75();strengthen75();waveCd75=R(1.75,3.35)}
+  if(elapsed75>=240){clearing75=true;spawn=999;obspawn=999;dropSpawn=999;flashStage('TIME COMPLETE · DESTROY THE LAST HOSTILES')}
+ }else if(!regular75().length){winMission75();return}
+ uiCd75-=dt;if(uiCd75<=0){uiCd75=.10;decorate75()}
+};
+gameover=function(){
+ const replay=special75;gameoverBase75();special75=false;bindRestart75(replay);
+ if(replay){if($('fs'))$('fs').textContent='1/1';const eye=$('over')&&$('over').querySelector('.eyebrow');if(eye)eye.textContent='SPECIAL MISSION ENDED'}
+};
+play75.onclick=()=>launch75(false);specialBtn75.onclick=()=>launch75(true);
+$('specialAgain75').onclick=()=>launch75(true);
+$('specialMenu75').onclick=()=>{special75=false;win75.classList.remove('show');state='menu';$('hud').style.display='none';$('menu').classList.add('show')};
+try{parent.postMessage({source:'special-stage-v75',status:'SPECIAL ON'},'*')}catch(_){}
+})();
