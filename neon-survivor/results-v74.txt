@@ -1,0 +1,37 @@
+/* V74 — authoritative game-over results and reliable restart */
+;(()=>{
+let restarting74=false,lastRestart74=0;
+const overBase74=gameover;
+gameover=function(){
+ const run74={stage:Math.max(1,stage|0),score:Math.max(0,score|0),distance:Math.max(0,Math.floor(distance||0))};
+ overBase74();
+ const ov=$('over');if(ov){ov.classList.add('show');const h=ov.querySelector('h2');if(h)h.textContent='GAME OVER';const eye=ov.querySelector('.eyebrow');if(eye)eye.textContent='MISSION ENDED'}
+ if($('fs'))$('fs').textContent=run74.stage;
+ if($('fscore'))$('fscore').textContent=run74.score.toLocaleString();
+ if($('fd'))$('fd').textContent=run74.distance+' m';
+ const again=$('again');if(again)again.textContent='RESTART';
+};
+function launch74(e){
+ if(e){e.preventDefault();e.stopPropagation()}
+ const now=performance.now();if(restarting74||now-lastRestart74<450)return;
+ restarting74=true;lastRestart74=now;
+ try{
+  const death=$('death9');if(death)death.classList.remove('show');
+  $('over').classList.remove('show');$('menu').classList.remove('show');$('upgrade').classList.remove('show');
+  start();
+  state='play';$('hud').style.display='block';last=performance.now();
+ }catch(err){
+  console.error('V74 restart recovery',err);
+  try{reset();state='play';$('over').classList.remove('show');$('hud').style.display='block';last=performance.now()}catch(fatal){console.error('V74 restart failed',fatal)}
+ }
+ setTimeout(()=>{restarting74=false},500)
+}
+const old74=$('again');
+if(old74){
+ const btn74=old74.cloneNode(true);old74.replaceWith(btn74);
+ btn74.disabled=false;btn74.style.pointerEvents='auto';btn74.textContent='RESTART';
+ btn74.addEventListener('click',launch74);
+ btn74.addEventListener('pointerup',e=>{if(e.pointerType==='touch')launch74(e)},{passive:false});
+}
+try{parent.postMessage({source:'results-v74',status:'RESTART READY'},'*')}catch(_){}
+})();
