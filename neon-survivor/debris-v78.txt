@@ -1,0 +1,34 @@
+/* V78 — six premium transparent wreckage assets; legacy debris removed completely */
+;(()=>{
+const bridge=window.__V42;if(!bridge)return;
+const X=bridge.ctx,VERSION='20260915v78';
+const defs=[
+ {id:'cockpit-wreck',file:'cockpit-wreck.webp',scale:2.76,glow:'#ff7650'},
+ {id:'relay-wreck',file:'relay-wreck.webp',scale:3.08,glow:'#45ddff'},
+ {id:'fuel-cell-wreck',file:'fuel-cell-wreck.webp',scale:2.70,glow:'#ff9a3d'},
+ {id:'reactor-nacelle',file:'reactor-nacelle.webp',scale:2.78,glow:'#42edff'},
+ {id:'antenna-module',file:'antenna-module.webp',scale:2.88,glow:'#69dfff'},
+ {id:'cargo-crate',file:'cargo-crate.webp',scale:2.58,glow:'#ff9d45'}
+],imgs={};
+let loaded=0,failed=0;
+for(const d of defs){
+ const im=new Image();imgs[d.id]=im;
+ im.onload=()=>{loaded++;if(loaded+failed===defs.length)signal78()};
+ im.onerror=()=>{failed++;if(loaded+failed===defs.length)signal78()};
+ im.src='./assets/debris/'+d.file+'?v='+VERSION
+}
+function signal78(){try{parent.postMessage({source:'debris-v78',status:failed?'DEBRIS PARTIAL':'DEBRIS ON'},'*')}catch(_){}}
+function pick78(o){
+ if(!o.debris78){const seed=Math.abs(Math.floor(((o.seed||Math.random()*99)*104729)));o.debris78=defs[seed%defs.length].id}
+ return defs.find(d=>d.id===o.debris78)||defs[0]
+}
+scrap=function(o){
+ if(!o)return;const d=pick78(o),im=imgs[d.id];if(!im||!im.complete||!im.naturalWidth)return;
+ const r=o.r||24,w=r*d.scale,h=w*(im.naturalHeight/im.naturalWidth),pulse=.80+.20*Math.sin(bridge.time*3.8+(o.seed||0));
+ X.save();X.translate(o.x,o.y);X.rotate(o.rot||0);
+ X.globalCompositeOperation='lighter';X.globalAlpha=.09*pulse;X.fillStyle=d.glow;X.shadowBlur=17;X.shadowColor=d.glow;X.beginPath();X.ellipse(0,0,w*.33,h*.28,0,0,Math.PI*2);X.fill();
+ X.globalCompositeOperation='source-over';X.globalAlpha=1;X.shadowBlur=8;X.shadowColor='#000c';X.drawImage(im,-w/2,-h/2,w,h);
+ if(d.id==='fuel-cell-wreck'||d.id==='reactor-nacelle'){X.globalCompositeOperation='lighter';X.globalAlpha=.12*pulse;X.fillStyle=d.glow;X.beginPath();X.arc(0,0,r*.32,0,Math.PI*2);X.fill()}
+ X.restore()
+};
+})();
