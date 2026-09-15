@@ -1,0 +1,69 @@
+/* V80 — layered impacts and persistent physical destruction fragments */
+;(()=>{
+const updateBase80=update,drawBase80=draw,killBase80=kill,destroyBase80=destroyAsteroid;
+let shards80=[],fx80=[],dead80=new WeakSet(),hitCd80=new WeakMap();
+const METAL80=['#eef7ff','#9cabba','#4d5865','#222b35'],ROCK80=['#d2b58e','#8c7358','#514338','#282521'];
+function cap80(){if(shards80.length>170)shards80.splice(0,shards80.length-170);if(fx80.length>230)fx80.splice(0,fx80.length-230)}
+function ring80(x,y,col,r=5,grow=105,life=.28){fx80.push({kind:'ring',x,y,r,grow,life,max:life,col})}
+function spark80(x,y,col,n=7,power=1){
+ for(let i=0;i<n;i++){const a=R(0,6.28),s=R(85,265)*power;fx80.push({kind:'spark',x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,r:R(1,2.6),life:R(.18,.48),max:.48,col})}
+}
+function smoke80(x,y,n=3,power=1){
+ for(let i=0;i<n;i++)fx80.push({kind:'smoke',x:x+R(-5,5),y:y+R(-5,5),vx:R(-22,22)*power,vy:R(-75,-22)*power,r:R(5,12)*power,grow:R(13,25),life:R(.48,.9),max:.9,col:Math.random()<.4?'#6d7480':'#252b33'})
+}
+function impact80(o,rock=false){
+ const r=Math.max(10,o.r||16),col=rock?'#ffd09a':(o.boss32&&o.boss32.col)||'#ff6a77';
+ ring80(o.x,o.y,col,3,80+Math.min(100,r*2.5),.22);spark80(o.x,o.y,col,rock?8:7,.75+Math.min(.55,r/90));
+ smoke80(o.x,o.y,rock?2:1,.55);puff(o.x,o.y,rock?5:4,rock?'#fff1c7':'#ffffff',.38);
+}
+function shard80(x,y,r,rock,power,col){
+ const a=R(0,6.28),speed=R(55,210)*power,size=R(r*.14,r*.34);
+ shards80.push({x,y,vx:Math.cos(a)*speed,vy:Math.sin(a)*speed-R(15,75),rot:R(0,6.28),spin:R(-7,7),w:size*R(.75,1.45),h:size*R(.55,1.15),life:R(.68,1.42)*(r>55?1.25:1),max:1.42,rock,col,seed:R(0,99)})
+}
+function death80(o,rock=false){
+ if(!o||dead80.has(o))return;dead80.add(o);
+ const r=Math.max(12,o.r||18),boss=!!(o.boss||o.boss5||o.boss32),giant=!!o.colossus59;
+ const count=boss?20:giant?16:rock?Math.round(cl(r/5,7,13)):Math.round(cl(r/3.5,6,12));
+ const col=rock?'#ffba72':(o.boss32&&o.boss32.col)||(o.type==='bomber'?'#ff9b42':o.type==='phantom'?'#bd68ff':'#ff536d');
+ ring80(o.x,o.y,col,r*.18,145+(boss?85:0),boss?.65:.42);ring80(o.x,o.y,'#fff3cf',r*.42,82,boss?.82:.58);
+ spark80(o.x,o.y,col,boss?28:giant?24:15,boss?1.8:giant?1.55:1.12);smoke80(o.x,o.y,boss?11:giant?9:5,boss?1.45:1);
+ for(let i=0;i<count;i++)shard80(o.x+R(-r*.24,r*.24),o.y+R(-r*.2,r*.2),r,rock,boss?1.45:giant?1.25:1,col);
+ puff(o.x,o.y,boss?48:giant?40:Math.round(18+r*.35),'#fff4d2',boss?2:1.35);
+ shake=Math.max(shake,boss?16:giant?14:7);cap80();
+}
+kill=function(e){death80(e,false);killBase80(e)};
+destroyAsteroid=function(o){death80(o,true);destroyBase80(o)};
+function snapshot80(){
+ const m=new Map();for(const e of E)if(e&&Number.isFinite(e.hp))m.set(e,e.hp);for(const o of O)if(o&&o.type==='asteroid'&&Number.isFinite(o.hp))m.set(o,o.hp);return m
+}
+update=function(dt){
+ const before=snapshot80();updateBase80(dt);
+ for(const [o,hp] of before){
+  const alive=(o.type==='asteroid'?O:E).includes(o);
+  if(alive&&o.hp<hp){
+   const last=hitCd80.get(o)||0;if(t-last>.055){hitCd80.set(o,t);impact80(o,o.type==='asteroid')}
+  }else if(!alive&&o.hp<=0)death80(o,o.type==='asteroid')
+ }
+ const flow=(state==='play'||state==='boss'||state==='sector')?(125+stage*7):0;
+ for(let i=shards80.length-1;i>=0;i--){const q=shards80[i];q.x+=q.vx*dt;q.y+=(q.vy+flow*.42)*dt;q.vx*=Math.pow(.96,dt*60);q.vy+=95*dt;q.rot+=q.spin*dt;q.life-=dt;if(q.life<=0||q.y>H+100)shards80.splice(i,1)}
+ for(let i=fx80.length-1;i>=0;i--){const q=fx80[i];q.life-=dt;if(q.kind==='ring')q.r+=q.grow*dt;else{q.x+=q.vx*dt;q.y+=(q.vy+flow*.24)*dt;if(q.kind==='smoke'){q.r+=q.grow*dt;q.vx*=.98;q.vy*=.98}}if(q.life<=0)fx80.splice(i,1)}
+ cap80()
+};
+function drawShard80(q){
+ const a=cl(q.life/q.max,0,1),pal=q.rock?ROCK80:METAL80,fill=pal[Math.abs(q.seed|0)%pal.length];
+ X.save();X.translate(q.x,q.y);X.rotate(q.rot);X.globalAlpha=Math.min(1,a*1.65);X.shadowBlur=q.rock?5:9;X.shadowColor=q.rock?'#ff8b42':q.col;
+ X.fillStyle=fill;X.strokeStyle=q.rock?'#e5bd87':q.col;X.lineWidth=1;
+ X.beginPath();X.moveTo(-q.w*.58,-q.h*.28);X.lineTo(q.w*.42,-q.h*.55);X.lineTo(q.w*.58,q.h*.32);X.lineTo(-q.w*.18,q.h*.58);X.closePath();X.fill();X.stroke();
+ X.globalCompositeOperation='lighter';X.globalAlpha=a*.55;X.strokeStyle=q.rock?'#ff8d49':'#dffbff';X.beginPath();X.moveTo(-q.w*.32,-q.h*.12);X.lineTo(q.w*.28,q.h*.18);X.stroke();X.restore()
+}
+function drawFX80(q){
+ const a=cl(q.life/q.max,0,1);X.save();X.globalCompositeOperation=q.kind==='smoke'?'source-over':'lighter';X.globalAlpha=q.kind==='smoke'?a*.28:a;
+ if(q.kind==='ring'){X.strokeStyle=q.col;X.lineWidth=1+3*a;X.shadowBlur=18;X.shadowColor=q.col;X.beginPath();X.arc(q.x,q.y,q.r,0,6.28);X.stroke()}
+ else if(q.kind==='spark'){X.strokeStyle=q.col;X.lineWidth=Math.max(1,q.r*a);X.shadowBlur=11;X.shadowColor=q.col;X.beginPath();X.moveTo(q.x-q.vx*.025,q.y-q.vy*.025);X.lineTo(q.x,q.y);X.stroke()}
+ else{X.fillStyle=q.col;X.beginPath();X.arc(q.x,q.y,q.r,0,6.28);X.fill()}
+ X.restore()
+}
+draw=function(){drawBase80();if(!shards80.length&&!fx80.length)return;X.save();for(const q of fx80)if(q.kind==='smoke')drawFX80(q);for(const q of shards80)drawShard80(q);for(const q of fx80)if(q.kind!=='smoke')drawFX80(q);X.restore()};
+const resetBase80=reset;reset=function(){shards80=[];fx80=[];dead80=new WeakSet();hitCd80=new WeakMap();resetBase80()};
+try{parent.postMessage({source:'destruction-fx-v80',status:'DESTRUCTION ON'},'*')}catch(_){}
+})();
