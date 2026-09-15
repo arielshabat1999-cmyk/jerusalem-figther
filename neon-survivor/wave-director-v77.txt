@@ -1,4 +1,4 @@
-/* V68 — calmer pacing: fewer simultaneous enemies, difficulty comes from stronger enemies instead of screen-filling swarms */
+/* V77 — denser regular-sector formations with guarded mobile performance */
 ;(()=>{
 let pressure57=0,tier57=0,cooldown57=1.4,waveSerial57=0;
 const spawnOne57=enemy;
@@ -24,29 +24,29 @@ function formation57(e,i,count,usedX){
 }
 function groupSize57(){
   const r=Math.random();
-  if(stage===1)return 1;
-  if(stage===2)return r<.78?1:2;
-  if(stage<=4)return r<.55?1:r<.90?2:3;
-  return r<.40?1:r<.78?2:r<.95?3:4;
+  if(stage===1)return r<.58?1:2;
+  if(stage===2)return r<.38?1:r<.80?2:3;
+  if(stage<=4)return r<.25?2:r<.70?3:4;
+  if(stage<=7)return r<.18?2:r<.48?3:r<.80?4:5;
+  return r<.14?2:r<.38?3:r<.66?4:r<.88?5:6;
 }
 function cap57(){
-  if(stage===1)return 2;
-  if(stage===2)return 3;
-  if(stage===3)return 4;
-  if(stage<=5)return 5;
-  if(stage<=7)return 6;
-  return Math.min(8,6+Math.floor((stage-6)/3));
+  if(stage===1)return 5;
+  if(stage===2)return 7;
+  if(stage<=4)return 9;
+  if(stage<=7)return 11;
+  return Math.min(16,12+Math.floor((stage-8)/3));
 }
 function nextDelay57(){
-  if(stage===1)return R(3.1,4.4);
-  if(stage===2)return R(2.8,4.2);
-  if(stage<=4)return R(2.4,3.8);
-  return R(2.0,3.3);
+  if(stage===1)return R(1.7,2.5);
+  if(stage===2)return R(1.5,2.3);
+  if(stage<=4)return R(1.3,2.0);
+  return R(1.1,1.8);
 }
 function spawnWave57(){
   const active=regular57().length;
   const count=Math.max(0,Math.min(groupSize57(),cap57()-active));
-  if(!count){cooldown57=stage===1?R(1.2,1.8):R(.9,1.4);return}
+  if(!count){cooldown57=stage===1?R(.72,1.05):R(.58,.90);return}
   waveSerial57++;const usedX=[];
   for(let i=0;i<count;i++){
     const before=E.length;spawnOne57();
