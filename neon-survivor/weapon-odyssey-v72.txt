@@ -1,0 +1,69 @@
+/* V72 — Weapon Odyssey: gift-only progression from level 6 through dozens of evolving tiers */
+;(()=>{
+let volley72=0,lastLevel72=0;
+const names72=[
+ [6,'TWIN RAIL'],[8,'PLASMA FORK'],[10,'ARC BLADES'],[12,'ION SPEARS'],[15,'NOVA PODS'],
+ [18,'PRISM CANNONS'],[22,'COMET ARRAY'],[26,'RIFT LANCES'],[30,'SOLAR CROWN'],[40,'VOID CHOIR'],[50,'INFINITY DRIVE']
+];
+const palettes72=[
+ ['#55f4ff','#fff','#ff4fd8'],['#ffe65c','#fff','#ff7a32'],['#91ff67','#eaffff','#4ee8ff'],
+ ['#bd72ff','#fff','#ff4f93'],['#67a8ff','#fff6a3','#4dfff3']
+];
+function level72(){return Math.max(0,weaponLevel11|0)}
+function title72(lv){let n='TWIN RAIL';for(const a of names72)if(lv>=a[0])n=a[1];return n}
+function palette72(lv){return palettes72[Math.floor(Math.max(0,lv-6)/5)%palettes72.length]}
+function add72(kind,a,off,speed,damage,r,col){
+ const sx=Math.cos(a+Math.PI/2)*off,sy=Math.sin(a+Math.PI/2)*off;
+ B.push({x:p.x+Math.cos(a)*27+sx,y:p.y+Math.sin(a)*27+sy,vx:Math.cos(a)*p.bs*speed,vy:Math.sin(a)*p.bs*speed,r,life:1.55,d:p.dmg*damage,kind,pierce:kind==='lance'||kind==='crown'?2:0,w72:kind,c72:col,v72:volley72})
+}
+const shootBase72=shoot;
+shoot=function(a){
+ if(!p||p.cd>0||level72()<6){shootBase72(a);return}
+ shootBase72(a);
+ const lv=level72(),tier=Math.floor((lv-6)/3),c=palette72(lv),power=1+Math.min(2.5,tier*.10);
+ add72('rail',a,-14,1.12,.34*power,3.2,c[0]);add72('rail',a,14,1.12,.34*power,3.2,c[2]);
+ if(lv>=8){add72('fork',a-.13,-8,1.04,.24*power,3.4,c[0]);add72('fork',a+.13,8,1.04,.24*power,3.4,c[2])}
+ if(lv>=12&&volley72%2===0)add72('lance',a,0,1.28,.92*power,5,c[1]);
+ if(lv>=15&&volley72%3===0){add72('nova',a-.06,-20,.92,.62*power,6.4,c[0]);add72('nova',a+.06,20,.92,.62*power,6.4,c[2])}
+ if(lv>=22&&volley72%4===0){add72('comet',a-.22,-25,1.18,.45*power,4,c[0]);add72('comet',a+.22,25,1.18,.45*power,4,c[2])}
+ if(lv>=30&&volley72%5===0)add72('crown',a,0,.88,1.65*power,8.5,c[1]);
+ volley72++;if(volley72%3===0)puff(p.x,p.y-28,5,c[volley72%2?0:2],.30)
+};
+const grantBase72=window.__grantWeaponUpgrade11;
+if(typeof grantBase72==='function')window.__grantWeaponUpgrade11=function(g){
+ grantBase72(g);const lv=level72();lastLevel72=lv;
+ if(lv<6)return;
+ p.dmg*=1.10;p.rate=Math.max(.052,p.rate*.975);p.bs*=1.012;
+ const name=title72(lv),cycle=lv>50?' · ASCENSION '+(lv-49):'';
+ flashStage('WEAPON '+lv+' · '+name+cycle);
+ popText(g&&g.x!=null?g.x:p.x,g&&g.y!=null?g.y-22:p.y-45,name+' LV.'+lv,palette72(lv)[0],21);
+ puff(p.x,p.y,18,palette72(lv)[0],.7);shake=Math.max(shake,6)
+};
+const laserBase72=laser;
+laser=function(b){
+ if(!b||!b.w72){laserBase72(b);return}
+ const c=b.c72||'#63efff',a=Math.atan2(b.vy,b.vx);
+ X.save();X.translate(b.x,b.y);X.rotate(a+Math.PI/2);X.globalCompositeOperation='lighter';X.shadowColor=c;X.shadowBlur=b.w72==='crown'?30:18;
+ if(b.w72==='rail'||b.w72==='lance'){
+  X.globalAlpha=.42;X.fillStyle=c;X.fillRect(-b.r,-30,b.r*2,40);X.globalAlpha=1;X.fillStyle='#fff';X.fillRect(-1.2,-35,2.4,47)
+ }else if(b.w72==='fork'||b.w72==='comet'){
+  X.fillStyle=c;X.beginPath();X.moveTo(0,-20);X.lineTo(-b.r,7);X.lineTo(0,3);X.lineTo(b.r,7);X.closePath();X.fill();
+  X.strokeStyle='#fff';X.lineWidth=1.2;X.beginPath();X.moveTo(0,-22);X.lineTo(0,8);X.stroke()
+ }else{
+  const pulse=b.r+4+Math.sin(t*14+b.v72)*2;X.fillStyle='#fff';X.beginPath();X.arc(0,0,b.r*.65,0,6.28);X.fill();
+  X.strokeStyle=c;X.lineWidth=2.2;X.beginPath();X.arc(0,0,pulse,0,6.28);X.stroke();
+  if(b.w72==='crown'){X.rotate(t*2);for(let i=0;i<6;i++){X.rotate(Math.PI/3);X.fillStyle=c;X.fillRect(-1,-pulse-8,2,7)}}
+ }
+ X.restore()
+};
+const drawBase72=draw;
+draw=function(){
+ drawBase72();const lv=level72();if(lv<6||!p||(state!=='play'&&state!=='boss'))return;
+ const c=palette72(lv),rings=Math.min(3,1+Math.floor((lv-6)/12));
+ X.save();X.translate(p.x,p.y);X.globalCompositeOperation='lighter';
+ for(let i=0;i<rings;i++){X.globalAlpha=.20;X.strokeStyle=c[i%3];X.shadowBlur=15;X.shadowColor=c[i%3];X.lineWidth=1.4;X.beginPath();X.arc(0,0,29+i*6,t*(1.2+i*.3),t*(1.2+i*.3)+4.5);X.stroke()}
+ X.restore()
+};
+const resetBase72=reset;reset=function(){volley72=0;lastLevel72=0;resetBase72()};
+try{parent.postMessage({source:'weapon-odyssey-v72',status:'ODYSSEY READY'},'*')}catch(_){}
+})();
