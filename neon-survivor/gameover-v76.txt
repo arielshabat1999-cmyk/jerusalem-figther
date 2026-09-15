@@ -1,0 +1,34 @@
+/* V76 — standalone authoritative death screen; bypasses all legacy life/restart chains */
+;(()=>{
+const css=document.createElement('style');
+css.textContent='#finalOver76{position:fixed!important;inset:0!important;z-index:10000!important;display:none!important;align-items:center!important;justify-content:center!important;padding:22px!important;background:radial-gradient(circle at 50% 32%,#40102cdd,#02040af7 68%)!important;pointer-events:auto!important}#finalOver76.show{display:flex!important}#finalOver76 .panel{width:min(470px,94vw);border:1px solid #ff5b8966;background:linear-gradient(180deg,#190918f7,#040713fc);box-shadow:0 30px 90px #000e,0 0 58px #ff315f38}#finalOver76 h2{margin:8px 0 20px;font-size:clamp(48px,14vw,76px);line-height:.9;color:#fff;text-shadow:0 0 24px #ff4267,0 0 55px #8b4fff}#restart76{margin-top:14px;background:linear-gradient(100deg,#ff315f,#7a5dff 56%,#00d7ff)}#menu76{margin-top:9px;background:#142238}';
+document.head.appendChild(css);
+const screen=document.createElement('div');screen.id='finalOver76';
+screen.innerHTML='<div class="panel"><div class="eyebrow">MISSION ENDED</div><h2>GAME OVER</h2><div class="result"><span>SECTOR REACHED</span><b id="sector76">1</b></div><div class="result"><span>SCORE</span><b id="score76">0</b></div><div class="result"><span>DISTANCE</span><b id="distance76">0 m</b></div><button id="restart76" class="btn">RESTART</button><button id="menu76" class="btn">MAIN MENU</button></div>';
+document.body.appendChild(screen);
+let specialRun76=false,lock76=false;
+
+gameover=function(){
+ if(state==='finalover76')return;
+ specialRun76=$('stage')&&$('stage').textContent==='1/1';
+ const finishedStage=specialRun76?'1/1':String(Math.max(1,stage|0)),finishedScore=Math.max(0,score|0),finishedDistance=Math.max(0,Math.floor(distance||0));
+ state='finalover76';
+ const d=$('death9');if(d)d.classList.remove('show');
+ $('over').classList.remove('show');$('menu').classList.remove('show');$('upgrade').classList.remove('show');
+ const sw=$('specialWin75');if(sw)sw.classList.remove('show');
+ $('hud').style.display='none';
+ $('sector76').textContent=finishedStage;$('score76').textContent=finishedScore.toLocaleString();$('distance76').textContent=finishedDistance+' m';
+ screen.classList.add('show');
+ try{saveProfile()}catch(_){}
+};
+function restart76(){
+ if(lock76)return;lock76=true;screen.classList.remove('show');
+ const target=specialRun76?$('special75'):$('play');
+ try{if(target)target.click();else{start();state='play';$('hud').style.display='block';last=performance.now()}}catch(err){console.error('V76 restart',err)}
+ setTimeout(()=>{lock76=false},500)
+}
+$('restart76').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();restart76()});
+$('restart76').addEventListener('pointerup',e=>{if(e.pointerType==='touch'){e.preventDefault();e.stopPropagation();restart76()}},{passive:false});
+$('menu76').onclick=e=>{e.preventDefault();screen.classList.remove('show');state='menu';$('hud').style.display='none';$('menu').classList.add('show')};
+try{parent.postMessage({source:'gameover-v76',status:'GAMEOVER READY'},'*')}catch(_){}
+})();
