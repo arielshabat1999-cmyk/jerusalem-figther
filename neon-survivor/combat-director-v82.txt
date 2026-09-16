@@ -1,0 +1,78 @@
+/* V82 — dense regular sectors and weapon-aware enemy/boss durability */
+;(()=>{
+const updateBase82=update,resetBase82=reset;
+let reinforceCd82=.9,balanceCd82=0,known82=new WeakSet();
+function weaponLevel82(){try{const q=typeof window.__weaponProfile11==='function'?window.__weaponProfile11():null;return Math.max(0,(q&&q.lv)||0)}catch(_){return 0}}
+function volley82(){
+ if(!p)return 1;
+ const lv=weaponLevel82(),n=Math.max(1,p.n||1);let extra=0;
+ if(lv>=6){const tier=Math.floor((lv-6)/3),power=1+Math.min(2.5,tier*.10);extra+=.68*power;if(lv>=8)extra+=.48*power;if(lv>=12)extra+=.46*power;if(lv>=15)extra+=.41*power;if(lv>=22)extra+=.23*power;if(lv>=30)extra+=.33*power}
+ return Math.max(1,(p.dmg||1)*(n*.82+extra*.72))
+}
+function enemyMul82(e){
+ if(e.type==='dart'||e.type==='striker')return .82;
+ if(e.type==='tank')return 1.85;
+ if(e.type==='bomber'||e.type==='mortar')return 1.42;
+ if(e.type==='sniper'||e.type==='phantom')return 1.08;
+ if(e.type==='sweeper')return 1.18;
+ return 1;
+}
+function desired82(e){
+ const volley=volley82(),lv=weaponLevel82();
+ if(e.boss||e.boss5||e.boss32){
+  const rate=Math.max(.052,p.rate||.2),dps=volley/rate,seconds=Math.min(27,16+stage*.65+lv*.075);
+  return Math.max(e.max||1,dps*seconds*.74)
+ }
+ const hits=2.35+Math.min(.55,stage*.025)+Math.min(.35,lv*.006);
+ return volley*hits*enemyMul82(e)
+}
+function balance82(e){
+ if(!e||!p||!Number.isFinite(e.hp))return;
+ const target=desired82(e);if(!Number.isFinite(target)||target<1)return;
+ const old=Math.max(1,e.max||e.hp||1);
+ if(target>old*1.025){
+  const ratio=cl(e.hp/old,.04,1);e.max=Math.ceil(target);e.hp=Math.max(1,Math.ceil(e.max*ratio));
+ }
+ e.powerScale82=volley82();known82.add(e)
+}
+function regular82(){return E.filter(e=>e&&!e.boss&&!e.boss5&&!e.boss32)}
+function regularMode82(){
+ const label=$('stage')&&$('stage').textContent;
+ return state==='play'&&label!=='RUSH'&&label!=='1/1'
+}
+function cap82(){return stage===1?10:stage===2?13:stage<=4?16:stage<=7?19:Math.min(25,21+Math.floor((stage-8)/4))}
+function group82(){
+ const r=Math.random();
+ if(stage===1)return r<.42?2:r<.82?3:4;
+ if(stage===2)return r<.28?2:r<.67?3:r<.9?4:5;
+ return r<.18?2:r<.43?3:r<.70?4:r<.90?5:Math.min(8,5+Math.floor(stage/5))
+}
+function reinforce82(){
+ const active=regular82().length,room=Math.max(0,cap82()-active);if(!room)return;
+ const count=Math.min(room,group82()),used=[];
+ for(let i=0;i<count;i++){
+  const before=E.length;enemy();if(E.length<=before)continue;const e=E[E.length-1];if(!e||e.boss||e.boss5)continue;
+  let x=R(34,W-34);for(let tries=0;tries<7&&used.some(v=>Math.abs(v-x)<36);tries++)x=R(34,W-34);used.push(x);
+  e.x=x;e.y=R(-260,-72)-Math.floor(i/6)*28;
+  if(e.flow10){e.flow10.x=x;e.flow10.y=e.y;e.flow10.anchorX=x;e.flow10.targetY=H*R(.16,.51)}
+  balance82(e)
+ }
+ if(count>=6)flashStage('HEAVY HOSTILE WAVE')
+}
+update=function(dt){
+ updateBase82(dt);
+ if(!p)return;
+ balanceCd82-=dt;
+ if(balanceCd82<=0){balanceCd82=.18;for(const e of E)balance82(e)}
+ if(!regularMode82())return;
+ if(distance>=stage*STAGE_M-3){reinforceCd82=Math.max(reinforceCd82,.65);return}
+ reinforceCd82-=dt;
+ if(reinforceCd82<=0){
+  reinforce82();
+  const pressure=Math.min(.42,(stage-1)*.025),crowd=regular82().length/cap82();
+  reinforceCd82=R(.72,1.30)*(1-pressure*.55)*(crowd>.78?1.34:1)
+ }
+};
+reset=function(){reinforceCd82=.75;balanceCd82=0;known82=new WeakSet();resetBase82()};
+try{parent.postMessage({source:'combat-director-v82',status:'COMBAT BALANCED'},'*')}catch(_){}
+})();
