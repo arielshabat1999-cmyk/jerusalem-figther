@@ -11,7 +11,7 @@ const COLORS63={
 function level63(){const n=Math.max(0,stage-1);return{n,dmg:1+n*.12,speed:1+Math.min(.52,n*.035),rate:Math.max(.48,Math.pow(.94,n)),density:Math.min(4,Math.floor(n/3))}}
 function enemyKind63(e){if(e.type==='striker'||e.type==='dart')return'striker';if(e.type==='sweeper')return'sweeper';if(e.type==='mortar'||e.type==='bomber')return'mortar';if(e.type==='phantom'||e.type==='sniper')return'phantom';return'gunship'}
 function aim63(x,y,speed,offset=0){let a=Math.atan2(p.y-y,p.x-x)+offset;return{vx:Math.cos(a)*speed,vy:Math.sin(a)*speed}}
-function add63(kind,x,y,vx,vy,r,dmg,life=6,extra={}){if(shots63.length>=260)return;shots63.push({kind,x,y,vx,vy,r,dmg,life,maxLife:life,serial:serial63++,...extra})}
+function add63(kind,x,y,vx,vy,r,dmg,life=6,extra={}){const cap=window.__quality84===0?90:window.__quality84===1?125:165;if(shots63.length>=cap)return;shots63.push({kind,x,y,vx,vy,r,dmg,life,maxLife:life,serial:serial63++,...extra})}
 function muzzle63(e,col,size=7){puff(e.x,e.y+(e.r||15)*.62,size,col,.3)}
 
 function fireEnemy63(e){

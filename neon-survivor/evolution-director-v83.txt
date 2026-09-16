@@ -1,7 +1,7 @@
 /* V83 — tactical enemies, active asteroids, combo system, hazards and boss phases */
 ;(()=>{
 const updateBase83=update,drawBase83=draw,killBase83=kill,hurtBase83=hurt,destroyBase83=destroyAsteroid,resetBase83=reset;
-let elapsed83=0,combo83=0,comboKills83=0,known83=new WeakSet(),knownAst83=new WeakSet(),hazardCd83=5,gate83=null,black83=null,boss83=null;
+let elapsed83=0,combo83=0,comboKills83=0,known83=new WeakSet(),knownAst83=new WeakSet(),hazardCd83=5,asteroidCheck83=0,gate83=null,black83=null,boss83=null;
 const comboBox83=document.createElement('div');comboBox83.id='combo83';comboBox83.style.cssText='position:fixed;right:12px;top:max(112px,calc(env(safe-area-inset-top) + 98px));z-index:44;display:none;text-align:right;color:#fff;font:1000 11px/1 system-ui;letter-spacing:.12em;text-shadow:0 0 15px #ff4fb8;pointer-events:none';
 comboBox83.innerHTML='<span style="color:#ff82d2;font-size:8px">COMBO</span><b id="comboMul83" style="display:block;font-size:27px;margin-top:2px">×1</b><small id="comboKills83" style="color:#86efff;font-size:8px">0 KILLS</small>';$('hud').appendChild(comboBox83);
 function regularMode83(){const s=$('stage')&&$('stage').textContent;return state==='play'&&s!=='RUSH'&&s!=='1/1'}
@@ -74,8 +74,9 @@ function updateEnvironment83(dt){
 }
 function asteroidDynamics83(dt){
  for(const o of O){if(!o||o.type!=='asteroid')continue;initAst83(o);if(o.surge83&&!o.surge83.done){o.surge83.wait-=dt;if(o.surge83.wait<=0){o.surge83.done=true;o.speed59=(o.speed59||0)+R(120,205);puff(o.x,o.y,10,'#ff8e45',.55)}}}
- for(let i=0;i<O.length;i++){const a=O[i];if(!a||a.type!=='asteroid')continue;for(let j=i+1;j<O.length;j++){const b=O[j];if(!b||b.type!=='asteroid')continue;const d=Math.hypot(a.x-b.x,a.y-b.y),rr=(a.r+b.r)*.52;if(d<rr&&!(a.bump83>t||b.bump83>t)){a.bump83=b.bump83=t+.65;const vx=a.vx59||0;a.vx59=(b.vx59||0)*.65+R(-45,45);b.vx59=vx*.65+R(-45,45);puff((a.x+b.x)/2,(a.y+b.y)/2,8,'#d8c1a0',.5);if(O.length<34){const r=Math.max(8,Math.min(a.r,b.r)*.22);O.push({x:(a.x+b.x)/2,y:(a.y+b.y)/2,type:'asteroid',r,rot:R(0,6.28),spin:R(-3,3),seed:R(0,99),w:r*1.6,h:r*1.2,hp:r,max:r,hit:0,credit:1,ast59:'shard',astKind32:'shard',speed59:R(110,180),vx59:R(-110,110),child83:true})}break}}
- }
+ asteroidCheck83-=dt;if(asteroidCheck83>0)return;asteroidCheck83=window.__quality84===0?.18:.11;
+ const cell=96,grid=new Map();for(const o of O){if(!o||o.type!=='asteroid')continue;const k=((o.x/cell)|0)+','+((o.y/cell)|0);if(!grid.has(k))grid.set(k,[]);grid.get(k).push(o)}
+ for(const list of grid.values())for(let i=0;i<list.length;i++){const a=list[i];for(let j=i+1;j<list.length;j++){const b=list[j],d=Math.hypot(a.x-b.x,a.y-b.y),rr=(a.r+b.r)*.52;if(d<rr&&!(a.bump83>t||b.bump83>t)){a.bump83=b.bump83=t+.65;const vx=a.vx59||0;a.vx59=(b.vx59||0)*.65+R(-45,45);b.vx59=vx*.65+R(-45,45);puff((a.x+b.x)/2,(a.y+b.y)/2,window.__quality84===0?3:5,'#d8c1a0',.4);if(O.length<26&&window.__quality84!==0){const r=Math.max(8,Math.min(a.r,b.r)*.22);O.push({x:(a.x+b.x)/2,y:(a.y+b.y)/2,type:'asteroid',r,rot:R(0,6.28),spin:R(-3,3),seed:R(0,99),w:r*1.6,h:r*1.2,hp:r,max:r,hit:0,credit:1,ast59:'shard',astKind32:'shard',speed59:R(110,180),vx59:R(-110,110),child83:true})}break}}}
 }
 function initBoss83(e){if(!e||!(e.boss||e.boss5||e.boss32)||boss83===e)return;boss83=e;e.phase83=1;e.summon83=6;e.storm83=9}
 function bossPhase83(dt){
@@ -105,6 +106,6 @@ update=function(dt){
  asteroidDynamics83(dt);updateEnvironment83(dt);if(state==='boss')bossPhase83(dt);comboUI83()
 };
 draw=function(){drawBase83();for(const e of E)drawEnemyOverlay83(e);drawEnvironment83();if(boss83&&boss83.phase83===2){X.save();X.globalCompositeOperation='lighter';X.strokeStyle='#ff4778';X.globalAlpha=.3+.15*Math.sin(t*8);X.lineWidth=3;X.beginPath();X.arc(boss83.x,boss83.y,boss83.r*1.7,0,6.28);X.stroke();X.restore()}};
-reset=function(){elapsed83=0;combo83=0;comboKills83=0;known83=new WeakSet();knownAst83=new WeakSet();hazardCd83=5;gate83=null;black83=null;boss83=null;comboUI83();resetBase83()};
+reset=function(){elapsed83=0;combo83=0;comboKills83=0;known83=new WeakSet();knownAst83=new WeakSet();hazardCd83=5;asteroidCheck83=0;gate83=null;black83=null;boss83=null;comboUI83();resetBase83()};
 try{parent.postMessage({source:'evolution-director-v83',status:'EVOLUTION ON'},'*')}catch(_){}
 })();

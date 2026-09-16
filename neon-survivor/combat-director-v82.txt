@@ -40,7 +40,7 @@ function regularMode82(){
  const label=$('stage')&&$('stage').textContent;
  return state==='play'&&label!=='RUSH'&&label!=='1/1'
 }
-function cap82(){return stage===1?10:stage===2?13:stage<=4?16:stage<=7?19:Math.min(25,21+Math.floor((stage-8)/4))}
+function cap82(){return stage===1?8:stage===2?11:stage<=4?14:stage<=7?16:18}
 function group82(){
  const r=Math.random();
  if(stage===1)return r<.42?2:r<.82?3:4;

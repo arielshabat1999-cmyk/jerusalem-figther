@@ -37,14 +37,14 @@ G81.setBackground(function(){
  nebula81(W,H,sector);X81.save();X81.drawImage(cache81,0,0,W,H);
  planet81(W,H,t,sector);
  X81.globalCompositeOperation='lighter';
- for(const s of stars81){
+ for(let si=0;si<stars81.length;si++){if(window.__quality84===0&&si%2)continue;if(window.__quality84===1&&si%4===3)continue;const s=stars81[si];
   const speed=.012+s.z*s.z*.092,yy=(s.y*(H+18)+scroll*speed)%(H+18)-9,xx=s.x*W,tw=s.a*(.73+.27*Math.sin(t*(.32+s.z*.85)+s.p));
   X81.globalAlpha=tw;X81.strokeStyle=s.c;X81.fillStyle=s.c;X81.shadowBlur=s.z>.82?7:0;X81.shadowColor=s.c;
   if(boost&&s.z>.42){const len=18+s.z*78;X81.lineWidth=Math.max(.5,s.r*s.z);X81.beginPath();X81.moveTo(xx,yy-len);X81.lineTo(xx,yy+2);X81.stroke()}
   else{X81.beginPath();X81.arc(xx,yy,s.r*(.3+s.z*.78),0,6.283);X81.fill();if(s.z>.86&&s.r>1.18){X81.globalAlpha=tw*.28;X81.lineWidth=.7;X81.beginPath();X81.moveTo(xx-4,yy);X81.lineTo(xx+4,yy);X81.moveTo(xx,yy-4);X81.lineTo(xx,yy+4);X81.stroke()}}
  }
  X81.shadowBlur=0;X81.globalCompositeOperation='source-over';
- for(const d of dust81){const yy=(d.y*(H+40)+scroll*(.025+d.z*.05))%(H+40)-20,xx=d.x*W,a=d.a*(.65+.35*Math.sin(t*.24+d.p));X81.globalAlpha=a;X81.fillStyle='#a9d9ff';X81.beginPath();X81.arc(xx,yy,d.r,0,6.283);X81.fill()}
+ if(window.__quality84!==0)for(const d of dust81){const yy=(d.y*(H+40)+scroll*(.025+d.z*.05))%(H+40)-20,xx=d.x*W,a=d.a*(.65+.35*Math.sin(t*.24+d.p));X81.globalAlpha=a;X81.fillStyle='#a9d9ff';X81.beginPath();X81.arc(xx,yy,d.r,0,6.283);X81.fill()}
  X81.globalAlpha=1;let vg=X81.createRadialGradient(W*.5,H*.48,Math.min(W,H)*.12,W*.5,H*.48,Math.max(W,H)*.86);vg.addColorStop(.28,'#0000');vg.addColorStop(.74,'#00000022');vg.addColorStop(1,'#000000b8');X81.fillStyle=vg;X81.fillRect(0,0,W,H);
  X81.restore()
 });

@@ -1,0 +1,24 @@
+/* V84 — adaptive mobile performance governor */
+;(()=>{
+const updateBase84=update,uiBase84=ui,resetBase84=reset;
+let frameAvg84=16.7,lastReal84=performance.now(),qualityTimer84=0,lastUi84=0,lastState84='';
+window.__quality84=1;
+function limits84(){
+ const q=window.__quality84;
+ return q===0?{bullets:74,particles:54,text:22}:q===1?{bullets:105,particles:82,text:30}:{bullets:138,particles:118,text:42}
+}
+function trim84(a,max){if(a.length>max)a.splice(0,a.length-max)}
+ui=function(){
+ const now=performance.now(),changed=state!==lastState84;
+ if(!changed&&(state==='play'||state==='boss'||state==='sector')&&now-lastUi84<90)return;
+ lastUi84=now;lastState84=state;uiBase84()
+};
+update=function(dt){
+ const now=performance.now(),real=Math.min(80,Math.max(1,now-lastReal84));lastReal84=now;frameAvg84=frameAvg84*.94+real*.06;qualityTimer84-=real;
+ if(qualityTimer84<=0){const old=window.__quality84;window.__quality84=frameAvg84>31?0:frameAvg84>21?1:2;if(old!==window.__quality84)qualityTimer84=1800;else qualityTimer84=700}
+ updateBase84(dt);
+ const lim=limits84();trim84(B,lim.bullets);trim84(P,lim.particles);trim84(T,lim.text);
+};
+reset=function(){frameAvg84=16.7;lastReal84=performance.now();qualityTimer84=0;lastUi84=0;lastState84='';window.__quality84=1;resetBase84()};
+try{parent.postMessage({source:'performance-v84',status:'PERFORMANCE ON'},'*')}catch(_){}
+})();
