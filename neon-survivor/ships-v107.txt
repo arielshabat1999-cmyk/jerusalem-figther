@@ -1,0 +1,40 @@
+/* V107 — five scalable base hull assets for Garage + gameplay */
+;(()=>{
+const G=window.__V42;if(!G)return;
+const X=G.ctx,VERSION='20260917v107';
+const paths={
+  falcon:'./assets/ships/base/falcon.svg',
+  vanguard:'./assets/ships/base/vanguard.svg',
+  titan:'./assets/ships/base/titan.svg',
+  phantom:'./assets/ships/base/phantom.svg',
+  nova:'./assets/ships/base/nova.svg'
+};
+const cfg={
+  falcon:{scale:4.44,anchor:.49,glow:'#55edff'},
+  vanguard:{scale:4.62,anchor:.49,glow:'#45dfff'},
+  titan:{scale:4.92,anchor:.49,glow:'#ffb54f'},
+  phantom:{scale:4.54,anchor:.49,glow:'#bd7bff'},
+  nova:{scale:4.72,anchor:.49,glow:'#54f5ff'}
+};
+const imgs={},jobs=[];
+function post(status){try{parent.postMessage({source:'ships-v107',status},'*')}catch(_){}}
+for(const id of Object.keys(paths))jobs.push(new Promise((resolve,reject)=>{const im=new Image();imgs[id]=im;im.onload=resolve;im.onerror=reject;im.src=paths[id]+'?v='+VERSION}));
+post('LOADING');Promise.all(jobs).then(()=>{post('SHIPS ON');requestAnimationFrame(drawGarage107)}).catch(e=>{console.error('V107 ship asset load',e);post('SHIP ERROR')});
+const enemyRenderer=G.getShip();
+const ready=im=>im&&im.complete&&im.naturalWidth;
+function resolveId(raw){return paths[raw]?raw:'falcon'}
+function drawSprite(ctx,im,x,y,h,anchor,rotation=0,alpha=1,glow='#49ddff',blur=12){const w=h*(im.naturalWidth/im.naturalHeight);ctx.save();ctx.translate(x,y);ctx.rotate(rotation);ctx.globalAlpha=alpha;ctx.shadowBlur=blur;ctx.shadowColor=glow;ctx.drawImage(im,-w/2,-h*anchor,w,h);ctx.restore();return{w,h}}
+function boostFlare(ctx,x,y,s,id){const c=cfg[id];ctx.save();ctx.globalCompositeOperation='lighter';ctx.translate(x,y+s*1.36);const g=ctx.createLinearGradient(0,-s*.15,0,s*1.2);g.addColorStop(0,'#efffff');g.addColorStop(.24,c.glow);g.addColorStop(1,'#39aaff00');ctx.fillStyle=g;ctx.shadowBlur=22;ctx.shadowColor=c.glow;ctx.beginPath();ctx.moveTo(-s*.18,-s*.08);ctx.lineTo(0,s*1.05);ctx.lineTo(s*.18,-s*.08);ctx.closePath();ctx.fill();ctx.restore()}
+G.setShip(function(x,y,s,r=0,en=false,heavy=false,model='falcon'){
+  if(en){enemyRenderer(x,y,s,r,en,heavy,model);return}
+  const raw=(G.player&&G.player.shipType)||model||'falcon',id=resolveId(raw),im=imgs[id];if(!ready(im))return;
+  const c=cfg[id],boost=G.boost>0,h=s*c.scale*(boost?1.09:1),bank=(window.__V48Bank||0)*.08;
+  if(boost)boostFlare(X,x,y,s,id);
+  const box=drawSprite(X,im,x,y,h,c.anchor,r+bank,1,c.glow,boost?24:13),p=G.player;
+  if(p&&p.shield>0){X.save();X.globalCompositeOperation='lighter';X.strokeStyle='#8deaff99';X.lineWidth=1.3;X.shadowBlur=14;X.shadowColor='#42d7ff';X.beginPath();X.ellipse(x,y,box.w*.45,h*.38,0,0,Math.PI*2);X.stroke();X.restore()}
+});
+function garageCanvas107(cv,id,side){if(!cv)return;id=resolveId(id);const im=imgs[id];if(!ready(im))return;const ratio=Math.min(devicePixelRatio||1,2),r=cv.getBoundingClientRect(),w=Math.max(60,Math.round(r.width)),h=Math.max(60,Math.round(r.height));cv.width=Math.round(w*ratio);cv.height=Math.round(h*ratio);const c=cv.getContext('2d');c.setTransform(ratio,0,0,ratio,0,0);c.clearRect(0,0,w,h);const maxH=h*(side?.82:.98),maxW=w*(side?.90:.98),ar=im.naturalWidth/im.naturalHeight;let dh=maxH,dw=dh*ar;if(dw>maxW){dw=maxW;dh=dw/ar}c.save();c.translate(w/2,h*.49);c.shadowBlur=side?10:22;c.shadowColor=cfg[id].glow;c.drawImage(im,-dw/2,-dh*.49,dw,dh);c.restore()}
+function drawGarage107(){try{if(typeof state!=='undefined'&&state!=='shop')return;if(typeof SHIPS==='undefined'||typeof shipIndex3==='undefined')return;const ks=Object.keys(SHIPS),i=((shipIndex3%ks.length)+ks.length)%ks.length;garageCanvas107(document.getElementById('shipMain7'),ks[i],false);garageCanvas107(document.getElementById('shipLeft7'),ks[(i-1+ks.length)%ks.length],true);garageCanvas107(document.getElementById('shipRight7'),ks[(i+1)%ks.length],true)}catch(e){console.error('V107 garage draw',e)}}
+try{const oldRender=renderShop;renderShop=function(){oldRender();requestAnimationFrame(drawGarage107)};drawPreview3=drawGarage107}catch(_){ }
+window.__SHIP_ASSETS_V107={version:107,paths,cfg,drawGarage:drawGarage107};
+})();
