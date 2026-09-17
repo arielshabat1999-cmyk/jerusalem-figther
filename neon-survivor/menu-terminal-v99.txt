@@ -5,7 +5,7 @@ if(!menu99||!panel99)return;
 
 const css99=document.createElement('style');
 css99.textContent=`
-#menu.menu99{z-index:145!important;display:none!important;padding:0!important;background:#01040a url('./assets/ui/menu-command-v99.webp?v=20260917v101') center/cover no-repeat!important;backdrop-filter:none!important;overflow:hidden}
+#menu.menu99{z-index:145!important;display:none!important;padding:0!important;background:#01040a url('./assets/ui/menu-command-v106.webp?v=106') center/cover no-repeat!important;backdrop-filter:none!important;overflow:hidden}
 #menu.menu99.show{display:flex!important}
 #menu.menu99:before{content:"";position:absolute;z-index:1;inset:-18% 0 auto;height:24%;pointer-events:none;background:linear-gradient(180deg,transparent,#74efff18,transparent);mix-blend-mode:screen;animation:menuScan99 5.8s linear infinite}
 #menu.menu99:after{content:"";position:absolute;z-index:1;left:24%;right:24%;top:23%;height:29%;pointer-events:none;border-radius:50%;background:radial-gradient(ellipse,#38dfff13,transparent 68%);filter:blur(6px);animation:menuPulse99 2.6s ease-in-out infinite}
@@ -15,12 +15,10 @@ css99.textContent=`
 #menu.menu99 .panel.hero>div:last-child{position:static!important}
 #menu.menu99 .btn,#menu.menu99 .menuGarage99{position:absolute!important;z-index:8!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:#fff0!important;box-shadow:none!important;clip-path:none!important;color:transparent!important;font-size:0!important;pointer-events:auto!important;touch-action:manipulation!important;opacity:1!important}
 #menu.menu99 .btn:active,#menu.menu99 .menuGarage99:active{background:#9ff3ff1b!important;box-shadow:inset 0 0 28px #7ef3ff55!important}
-#menu.menu99 #play{left:8.5%!important;right:8.5%!important;top:39.2%!important;width:auto!important;height:10.4%!important}
-#menu.menu99 .modesRemoved105{position:absolute;z-index:6;left:6.6%;right:6.6%;top:50.2%;height:23.1%;border:3px solid #3b4953;background:linear-gradient(145deg,#151d23f8,#050a0ffb 45%,#111820f8);box-shadow:0 0 0 2px #050708,inset 0 0 0 1px #74828c55,inset 0 0 34px #000;clip-path:polygon(3% 0,97% 0,100% 8%,100% 92%,97% 100%,3% 100%,0 92%,0 8%);pointer-events:none}
-#menu.menu99 .modesRemoved105:before{content:"CLASSIC SURVIVAL";position:absolute;left:7%;right:7%;top:34%;padding:16px 0;border-top:1px solid #42ddff55;border-bottom:1px solid #42ddff55;color:#87eaff;font:900 clamp(10px,3vw,16px)/1 system-ui;letter-spacing:.25em;text-align:center;text-shadow:0 0 10px #39dfff}.modesRemoved105:after{content:"ONE RUN · ENDLESS PROGRESSION";position:absolute;left:0;right:0;top:62%;color:#6e8595;font:800 clamp(7px,2vw,10px)/1 system-ui;letter-spacing:.18em;text-align:center}
-#menu.menu99 .menuGarage99{left:35.1%!important;top:80.2%!important;width:29.8%!important;height:9.2%!important}
+#menu.menu99 #play{left:8.5%!important;right:8.5%!important;top:42.5%!important;width:auto!important;height:11.5%!important}
+#menu.menu99 .menuGarage99{left:35.1%!important;top:57.7%!important;width:29.8%!important;height:10.2%!important}
 .menuStat99{position:absolute;z-index:7;display:grid;place-items:center;min-width:25%;height:3.2%;padding:0 4px;background:#06111bc9;color:#6ff2ff;font:900 clamp(10px,3vw,15px)/1 system-ui,-apple-system,sans-serif;letter-spacing:.08em;text-shadow:0 0 9px #35eaff;pointer-events:none}
-.menuStat99.distance99{left:4.8%;top:87.25%}.menuStat99.survival99{display:none}.menuStat99.credits99{left:37%;top:95.0%;min-width:26%}
+.menuStat99.distance99{left:4.8%;top:63.0%}.menuStat99.survival99{display:none}.menuStat99.credits99{left:37%;top:71.0%;min-width:26%}
 @media(min-aspect-ratio:3/4){#menu.menu99{background-size:contain!important}#menu.menu99 .panel.hero{width:min(100vw,56.285vh)!important;height:min(100vh,177.667vw)!important}.menuStat99{font-size:12px}}
 @media(prefers-reduced-motion:reduce){#menu.menu99:before,#menu.menu99:after{animation:none!important}}
 `;
@@ -31,8 +29,7 @@ const garage99=document.createElement('button');garage99.className='menuGarage99
 const distance99=document.createElement('div');distance99.className='menuStat99 distance99';
 const survival99=document.createElement('div');survival99.className='menuStat99 survival99';
 const credits99=document.createElement('div');credits99.className='menuStat99 credits99';
-const removedModes105=document.createElement('div');removedModes105.className='modesRemoved105';
-panel99.append(removedModes105,distance99,survival99,credits99);
+panel99.append(distance99,survival99,credits99);
 
 function time99(v){v=Math.max(0,Math.floor(+v||0));return String(Math.floor(v/60)).padStart(2,'0')+':'+String(v%60).padStart(2,'0')}
 function stats99(){
