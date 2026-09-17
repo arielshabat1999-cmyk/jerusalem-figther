@@ -1,0 +1,101 @@
+/* V87 — XP player levels, three-choice builds, rarities and synergies */
+;(()=>{
+const oldReset=reset,oldUpdate=update,oldDraw=draw,oldKill=kill,oldAst=destroyAsteroid,oldHurt=hurt,oldGameover=gameover;
+let L=1,xp=0,next=100,pending=0,lastOffers=[],novaCd=15,streakShots=0,streakTime=0,overdriveTime=0,damageBuff=0;
+const owned={},rarity={common:'#9fb5c8',rare:'#37cfff',epic:'#bf63ff',legendary:'#ffb52f'};
+const css=document.createElement('style');css.textContent=`
+#xp87{position:fixed;z-index:26;left:16px;right:16px;top:max(78px,calc(env(safe-area-inset-top) + 62px));height:8px;border:1px solid #6ee9ff88;border-radius:99px;background:#020714cc;overflow:hidden;box-shadow:0 0 10px #39dfff44;pointer-events:none}#xp87i{height:100%;width:0;background:linear-gradient(90deg,#2ce7ff,#8b63ff,#ff55ca);box-shadow:0 0 12px #52eaff;transition:width .18s}#xp87l{position:fixed;z-index:27;left:18px;top:max(62px,calc(env(safe-area-inset-top) + 46px));font:900 10px/1 system-ui;color:#dffcff;letter-spacing:.12em;text-shadow:0 0 8px #39dfff;pointer-events:none}
+#level87{position:fixed;z-index:120;inset:0;display:none;align-items:center;justify-content:center;padding:18px;background:radial-gradient(circle at 50% 28%,#152653ee,#02040afa 64%);backdrop-filter:blur(5px);color:#fff}#level87.show{display:flex}#level87 .panel{width:min(620px,100%);max-height:94vh;overflow:auto;text-align:center}#level87 h2{margin:0;color:#dffcff;font:1000 clamp(28px,8vw,52px)/1 system-ui;letter-spacing:.12em;text-shadow:0 0 24px #35dfff}#level87 .sub{margin:9px 0 18px;color:#91b5ce;font:800 11px/1.3 system-ui;letter-spacing:.14em}.choices87{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.card87{position:relative;min-height:185px;padding:16px 10px 13px;border:1px solid var(--c);border-radius:17px;background:linear-gradient(160deg,#132039ee,#060914f5);color:#fff;box-shadow:0 0 20px color-mix(in srgb,var(--c) 30%,transparent);touch-action:manipulation}.card87:active{transform:scale(.97)}.card87 .rar{color:var(--c);font:900 9px/1 system-ui;letter-spacing:.16em}.card87 .ico{display:block;margin:17px 0 12px;color:var(--c);font:900 29px/1 system-ui;text-shadow:0 0 15px var(--c)}.card87 b{display:block;font:900 13px/1.15 system-ui;letter-spacing:.04em}.card87 p{margin:10px 0 0;color:#b7c9d7;font:700 10px/1.35 system-ui}.card87 .lv{position:absolute;right:9px;bottom:8px;color:#8295a6;font:800 8px/1 system-ui}@media(max-width:430px){.choices87{gap:6px}.card87{min-height:174px;padding:13px 7px}.card87 b{font-size:11px}.card87 p{font-size:9px}}
+`;document.head.appendChild(css);
+const bar=document.createElement('div');bar.id='xp87';bar.innerHTML='<div id="xp87i"></div>';document.body.appendChild(bar);
+const lab=document.createElement('div');lab.id='xp87l';document.body.appendChild(lab);
+const modal=document.createElement('div');modal.id='level87';modal.innerHTML='<div class="panel"><h2>LEVEL UP</h2><div class="sub" id="levelSub87"></div><div class="choices87" id="choices87"></div></div>';document.body.appendChild(modal);
+function need(l){const a=[0,100,150,225,325,450,600,775,975,1200];return l<a.length?a[l]:Math.round(1200*Math.pow(1.225,l-9)/25)*25}
+function n(id){return owned[id]||0}function has(id){return n(id)>0}
+function U(id,name,cat,rar,max,icon,desc,apply,req=null){return{id,name,cat,rar,max,icon,desc,apply,req}}
+const pool=[
+ U('dmg10','CALIBRATED CORE','DAMAGE','common',8,'✹','+10% damage',()=>p.dmg*=1.10),
+ U('dmg20','PLASMA PRESSURE','DAMAGE','rare',5,'✹','+20% damage',()=>p.dmg*=1.20),
+ U('dmg35','ANNIHILATOR CORE','DAMAGE','epic',3,'✦','+35% damage',()=>p.dmg*=1.35),
+ U('dmg50','OMEGA POWER','DAMAGE','legendary',1,'☀','+50% damage',()=>p.dmg*=1.50),
+ U('crit','CRITICAL MATRIX','DAMAGE','rare',5,'◇','+5% critical chance',()=>p.crit87=Math.min(.5,(p.crit87||0)+.05)),
+ U('critd','CRITICAL FORCE','DAMAGE','rare',4,'◆','+25% critical damage',()=>p.critD87=(p.critD87||1.75)+.25,()=>has('crit')),
+ U('far','LONG RANGE CORE','DAMAGE','rare',3,'⌖','More damage to distant enemies',()=>p.far87=(p.far87||0)+.12),
+ U('execute','EXECUTION PROTOCOL','DAMAGE','epic',3,'▼','More damage to wounded enemies',()=>p.exec87=(p.exec87||0)+.15),
+ U('killdmg','HUNTER MOMENTUM','DAMAGE','rare',3,'↟','Kills grant temporary damage',()=>p.killDmg87=(p.killDmg87||0)+.12),
+ U('elite','GIANT SLAYER','DAMAGE','rare',3,'♛','Bonus damage to Elites and Bosses',()=>p.eliteDmg87=(p.eliteDmg87||0)+.18),
+ U('rate10','COOLED BARRELS','FIRE RATE','common',8,'»','+10% fire rate',()=>p.rate=Math.max(.045,p.rate*.90)),
+ U('rate20','TURBO CYCLER','FIRE RATE','rare',5,'»','+20% fire rate',()=>p.rate=Math.max(.045,p.rate*.80)),
+ U('rate30','HYPER FEED','FIRE RATE','epic',3,'≋','+30% fire rate',()=>p.rate=Math.max(.045,p.rate*.70)),
+ U('extra5','DOUBLE TAP','FIRE RATE','legendary',1,'Ⅱ','Every fifth shot fires twice',()=>p.double87=1),
+ U('closeRate','PANIC TRIGGER','FIRE RATE','rare',3,'◎','Faster fire near enemies',()=>p.closeRate87=(p.closeRate87||0)+.12),
+ U('killRate','KILL SWITCH','FIRE RATE','rare',3,'↯','Kills grant temporary fire rate',()=>p.killRate87=(p.killRate87||0)+.12),
+ U('projectile','EXTRA CANNON','PROJECTILES','rare',4,'＋','+1 projectile',()=>p.n=Math.min(7,(p.n||1)+1)),
+ U('projectile2','TWIN ARRAY','PROJECTILES','epic',2,'＋＋','+2 projectiles',()=>p.n=Math.min(7,(p.n||1)+2),()=>L>=8),
+ U('tight','FOCUS LENS','PROJECTILES','common',4,'⋮','Tighter, more accurate spread',()=>p.spread87=Math.max(.035,(p.spread87||.13)*.78)),
+ U('wide','SCATTER ARRAY','PROJECTILES','common',3,'⋰','Wider shotgun spread and +8% damage',()=>{p.spread87=Math.min(.34,(p.spread87||.13)*1.3);p.dmg*=1.08}),
+ U('pierce','PIERCING ROUNDS','PROJECTILES','rare',3,'⇈','Shots continue through more enemies',()=>p.pierce87=(p.pierce87||0)+1),
+ U('ricochet','RICOCHET','PROJECTILES','epic',2,'⌁','Kills rebound a shot to another enemy',()=>p.ricochet87=(p.ricochet87||0)+1),
+ U('split','SPLINTER SHOT','PROJECTILES','epic',2,'⌘','Kills split shots into smaller rounds',()=>p.split87=(p.split87||0)+1),
+ U('slow','CRYO ROUNDS','PROJECTILES','rare',3,'❄','Hits can slow enemies',()=>p.slow87=(p.slow87||0)+.15),
+ U('explosive','EXPLOSIVE ROUNDS','PROJECTILES','epic',4,'✺','Explosions grow stronger each level',()=>p.explode87=(p.explode87||0)+1),
+ U('homing','HOMING PROJECTILES','PROJECTILES','epic',3,'⌁','Projectiles steer toward enemies',()=>p.homing87=(p.homing87||0)+1),
+ U('speed','ION VELOCITY','PROJECTILES','common',6,'➤','+18% projectile speed',()=>p.bs*=1.18),
+ U('size','HEAVY CALIBER','PROJECTILES','rare',4,'●','Larger projectiles and +10% damage',()=>{p.size87=(p.size87||1)*1.18;p.dmg*=1.10}),
+ U('missile','MISSILE CLOCK','SPECIAL','epic',3,'▲','Every 10 shots launches a missile',()=>p.missile87=(p.missile87||0)+1),
+ U('deathboom','VOLATILE KILLS','SPECIAL','rare',3,'✷','Kills can trigger an explosion',()=>p.deathBoom87=(p.deathBoom87||0)+.14),
+ U('chain','CHAIN LIGHTNING','SPECIAL','epic',3,'ϟ','Kills arc lightning to another enemy',()=>p.chain87=(p.chain87||0)+1),
+ U('nova','NOVA PULSE','SPECIAL','epic',3,'⊙','A damaging nova fires every 15 seconds',()=>p.nova87=(p.nova87||0)+1),
+ U('shieldkill','ENERGY SIPHON','SPECIAL','rare',4,'◈','Kills restore 1% shield',()=>p.shieldKill87=(p.shieldKill87||0)+.01),
+ U('hp','REINFORCED HULL','DEFENSE','common',6,'✚','+20 max HP and heal 20',()=>{p.max+=20;p.hp=Math.min(p.max,p.hp+20)}),
+ U('shield','SHIELD CAPACITOR','DEFENSE','common',6,'◈','+10 max shield and restore it',()=>{p.maxShield+=10;p.shield=Math.min(p.maxShield,(p.shield||0)+10)}),
+ U('regen','SHIELD REGENERATION','DEFENSE','rare',4,'◌','Shield slowly regenerates',()=>p.regen87=(p.regen87||0)+1),
+ U('move','THRUSTER TUNING','DEFENSE','common',5,'≫','+10% movement speed',()=>p.spd*=1.10),
+ U('inv','PHASE ARMOR','DEFENSE','epic',2,'◐','Longer invincibility after damage',()=>p.invBonus87=(p.invBonus87||0)+.65),
+ U('dodge','EVASION MATRIX','DEFENSE','rare',4,'◇','+6% chance to evade damage',()=>p.evade87=Math.min(.3,(p.evade87||0)+.06)),
+ U('lowdef','LAST STAND','DEFENSE','rare',3,'⬟','Damage resistance at low health',()=>p.lowDef87=(p.lowDef87||0)+.12),
+ U('void','VOID AMMO','LEGENDARY','legendary',1,'◉','Piercing shots gain +20% damage per pass',()=>p.void87=1,()=>has('pierce')),
+ U('reaction','CHAIN REACTION','LEGENDARY','legendary',1,'✹','Explosion kills can create another explosion',()=>p.reaction87=1,()=>has('explosive')),
+ U('overdrive','OVERDRIVE','LEGENDARY','legendary',1,'∞','After 20 continuous shots, damage and fire rate surge',()=>p.overdrive87=1),
+ U('blackhole','BLACK HOLE ROUNDS','LEGENDARY','legendary',1,'●','Critical hits can pull and damage nearby enemies',()=>p.blackhole87=1,()=>has('crit')),
+ U('penetrate','PENETRATING EXPLOSION','SYNERGY','legendary',1,'✦','Piercing explosions grow on every pass',()=>p.penBoom87=1,()=>has('pierce')&&has('explosive')),
+ U('thunder','THUNDERSTORM','SYNERGY','legendary',1,'ϟ','Rapid fire causes extra chain lightning',()=>p.thunder87=1,()=>has('chain')&&(has('rate20')||n('rate10')>=3)),
+ U('swarm','MISSILE SWARM','SYNERGY','legendary',1,'▲','Extra projectiles periodically become homing missiles',()=>p.swarm87=1,()=>has('homing')&&n('projectile')+n('projectile2')>=2),
+ U('critboom','CRITICAL DETONATION','SYNERGY','legendary',1,'☄','Critical rounds trigger powerful detonations',()=>p.critBoom87=1,()=>has('crit')&&has('explosive'))
+];
+function weights(){if(L<5)return{common:72,rare:25,epic:3,legendary:0};if(L<10)return{common:52,rare:36,epic:11,legendary:1};if(L<18)return{common:37,rare:41,epic:19,legendary:3};return{common:27,rare:40,epic:27,legendary:6}}
+function available(){return pool.filter(u=>n(u.id)<u.max&&(!u.req||u.req())&&!lastOffers.includes(u.id))}
+function rollOne(list,used){let a=list.filter(u=>!used.includes(u.id)),w=weights(),sum=a.reduce((s,u)=>s+(w[u.rar]||0),0);if(!sum)return a[0]||null;let r=Math.random()*sum;for(const u of a){r-=w[u.rar]||0;if(r<=0)return u}return a[a.length-1]}
+function offers(){let list=available();if(list.length<3)list=pool.filter(u=>n(u.id)<u.max&&(!u.req||u.req()));let out=[];while(out.length<3){let u=rollOne(list,out.map(x=>x.id));if(!u)break;out.push(u)}return out}
+function refresh(){if(!p)return;document.getElementById('xp87i').style.width=Math.min(100,xp/next*100)+'%';lab.textContent='LV '+L+' · '+Math.floor(xp)+' / '+next+' XP'}
+function openLevel(){
+ const opts=offers();if(!opts.length){state='play';pending=0;return}state='levelup';modal.classList.add('show');document.getElementById('levelSub87').textContent='PLAYER LEVEL '+L+' · CHOOSE ONE UPGRADE';
+ const box=document.getElementById('choices87');box.innerHTML='';for(const u of opts){const b=document.createElement('button');b.className='card87';b.style.setProperty('--c',rarity[u.rar]);b.innerHTML='<span class="rar">'+u.rar.toUpperCase()+(u.cat==='SYNERGY'?' · SYNERGY':'')+'</span><span class="ico">'+u.icon+'</span><b>'+u.name+'</b><p>'+u.desc+'</p><span class="lv">LV '+(n(u.id)+1)+'/'+u.max+'</span>';b.onclick=()=>choose(u,opts);box.appendChild(b)}
+ }
+function choose(u,opts){owned[u.id]=n(u.id)+1;u.apply();lastOffers=opts.filter(x=>x!==u).map(x=>x.id);modal.classList.remove('show');flashStage(u.cat==='SYNERGY'?'SYNERGY · '+u.name:u.name);pending--;last=performance.now();if(pending>0)setTimeout(openLevel,120);else state=(E.some(e=>e&&(e.boss||e.boss5||e.boss32))?'boss':'play');refresh();ui()}
+function addXP(v,x,y){if(!p||state==='over')return;xp+=Math.max(1,Math.round(v));if(x!=null&&Math.random()<.22)popText(x,y,'+'+Math.round(v)+' XP','#8defff',12);while(xp>=next){xp-=next;L++;next=need(L);pending++}refresh();if(pending&&state!=='levelup')setTimeout(openLevel,0)}
+function nearest(x,y,skip){let best=null,bd=1e9;for(const e of E){if(!e||e===skip)continue;let d=Math.hypot(e.x-x,e.y-y);if(d<bd){bd=d;best=e}}return best}
+function orb(x,y,target,d=.55,kind='chain'){if(!target)return;let a=Math.atan2(target.y-y,target.x-x);B.push({x,y,vx:Math.cos(a)*p.bs*.8,vy:Math.sin(a)*p.bs*.8,r:4*(p.size87||1),life:1.4,d:p.dmg*d,kind,w87:1,homing87:kind==='missile'})}
+function blast(x,y,power,chain=false){let rad=42+power*11,dam=p.dmg*(.32+power*.18),killed=[];puff(x,y,Math.min(26,10+power*4),'#ff8b45',.8);for(const e of E){if(!e||Math.hypot(e.x-x,e.y-y)>rad)continue;e.hp-=dam;e.hit=.1;if(e.hp<=0)killed.push(e)}for(const e of killed){let i=E.indexOf(e);if(i>=0){oldKill(e);addXP((e.val||12)*.8,e.x,e.y);E.splice(i,1);if(chain&&p.reaction87)blast(e.x,e.y,Math.max(1,power-1),false)}}}
+kill=function(e){oldKill(e);addXP((e.val||12)*(e.boss||e.boss5?5:1),e.x,e.y);damageBuff=Math.max(damageBuff,has('killdmg')?3:0);if(has('killRate'))p.killRateTime87=3;if(p.shieldKill87)p.shield=Math.min(p.maxShield,(p.shield||0)+p.maxShield*p.shieldKill87);if(p.explode87||Math.random()<(p.deathBoom87||0))blast(e.x,e.y,p.explode87||1,true);if(p.chain87){let q=nearest(e.x,e.y,e);if(q){q.hp-=p.dmg*(.35+p.chain87*.18);puff(q.x,q.y,7,'#73eaff',.45)}}if(p.ricochet87)orb(e.x,e.y,nearest(e.x,e.y,e),.45+p.ricochet87*.12,'ricochet');if(p.pierce87)orb(e.x,e.y,nearest(e.x,e.y,e),(.48+p.pierce87*.12)*(p.void87?1.2:1),'pierce');if(p.split87)for(let i=-1;i<=1;i++){let a=-Math.PI/2+i*.38;B.push({x:e.x,y:e.y,vx:Math.cos(a)*p.bs*.75,vy:Math.sin(a)*p.bs*.75,r:2.5,life:.9,d:p.dmg*.28*p.split87,kind:'split',w87:1})}if(p.killDmg87)damageBuff=3};
+destroyAsteroid=function(o){oldAst(o);addXP(Math.max(5,Math.round(o.r*.32)),o.x,o.y)};
+hurt=function(v){if(p&&p.evade87&&Math.random()<p.evade87){popText(p.x,p.y-22,'EVADE','#8defff',14);p.inv=.22;return}if(p&&p.lowDef87&&p.hp<p.max*.35)v*=Math.max(.5,1-p.lowDef87);oldHurt(v);if(p)p.inv+=(p.invBonus87||0)};
+function fire(a){
+ if(!p||p.cd>0)return;let close=p.closeRate87&&E.some(e=>e&&Math.hypot(e.x-p.x,e.y-p.y)<180),rate=p.rate*(close?Math.max(.55,1-p.closeRate87):1)*(p.killRateTime87>0?Math.max(.55,1-(p.killRate87||0)):1)*(overdriveTime>0?.62:1);p.cd=rate;streakShots++;streakTime=1.15;if(p.overdrive87&&streakShots>=20){overdriveTime=3;streakShots=0}
+ const count=Math.max(1,p.n||1),spread=p.spread87||.13;for(let i=0;i<count;i++){let z=a+(i-(count-1)/2)*spread,crit=Math.random()<(p.crit87||0),d=p.dmg*(crit?(p.critD87||1.75):1)*(overdriveTime>0?1.45:1)*(damageBuff>0?1+(p.killDmg87||0):1);B.push({x:p.x+Math.cos(z)*23,y:p.y+Math.sin(z)*23,vx:Math.cos(z)*p.bs,vy:Math.sin(z)*p.bs,r:3.5*(p.size87||1),life:1.35,d,kind:crit?'critical':'xp87',w87:1,homing87:p.homing87,crit87:crit})}
+ if(p.double87&&streakShots%5===0)setTimeout(()=>{if(p&&state!=='over'){p.cd=0;fire(a)}},35);
+ if(p.missile87&&streakShots%10===0){let q=nearest(p.x,p.y);orb(p.x,p.y-20,q,.8+p.missile87*.22,'missile')}
+ if(p.swarm87&&streakShots%12===0)for(let i=0;i<Math.min(4,count);i++)orb(p.x+(i-1.5)*10,p.y-12,nearest(p.x,p.y),.52,'missile');
+ puff(p.x,p.y-18,3,crit?'#ffd36e':'#72eaff',.22)
+}
+shoot=fire;
+function tickBullets(dt){for(const b of B){if(!b||!(b.homing87||p.homing87))continue;const q=nearest(b.x,b.y);if(!q)continue;let sp=Math.hypot(b.vx,b.vy)||p.bs,a=Math.atan2(q.y-b.y,q.x-b.x),turn=Math.min(1,dt*(2.4+(p.homing87||1)));b.vx=b.vx*(1-turn)+Math.cos(a)*sp*turn;b.vy=b.vy*(1-turn)+Math.sin(a)*sp*turn}}
+update=function(dt){if(state==='levelup')return;tickBullets(dt);oldUpdate(dt);if(!p)return;streakTime-=dt;if(streakTime<=0)streakShots=0;overdriveTime=Math.max(0,overdriveTime-dt);damageBuff=Math.max(0,damageBuff-dt);p.killRateTime87=Math.max(0,(p.killRateTime87||0)-dt);if(p.regen87&&(p.shield||0)<p.maxShield)p.shield=Math.min(p.maxShield,p.shield+dt*(.65+p.regen87*.55));if(p.nova87&&(state==='play'||state==='boss')){novaCd-=dt;if(novaCd<=0){novaCd=Math.max(8,15-p.nova87);puff(p.x,p.y,38,'#8b7cff',1.1);for(const e of E)if(e&&Math.hypot(e.x-p.x,e.y-p.y)<150+p.nova87*18)e.hp-=p.dmg*(1+p.nova87*.45)}}};
+draw=function(){oldDraw();if(state==='levelup'){/* DOM overlay owns pause visuals */}};
+checkpoint=function(){$('upgrade').classList.remove('show');state='play';last=performance.now();flashStage('NEW SECTOR');ui()};
+window.__grantWeaponUpgrade11=function(g){const gain=Math.max(30,Math.round(next*.35));addXP(gain,g.x,g.y);popText(g.x,g.y-28,'XP CORE +'+gain,'#ff67d8',17);puff(g.x,g.y,24,'#ff67d8',1)};
+window.__weaponProfile11=function(){return{lv:0,shots:p?p.n:1,power:0,name:'BUILD',form:'pulse',col:'#55eaff',hot:false,speed:1,dmg:1}};
+reset=function(){oldReset();L=1;xp=0;next=need(1);pending=0;lastOffers=[];novaCd=15;streakShots=0;streakTime=0;overdriveTime=0;damageBuff=0;for(const k in owned)delete owned[k];modal.classList.remove('show');if(p){p.n=1;p.spread87=.13;p.critD87=1.75}refresh()};
+gameover=function(){modal.classList.remove('show');pending=0;oldGameover()};
+refresh();try{parent.postMessage({source:'xp-builds-v87',status:'XP BUILDS ON'},'*')}catch(_){}
+})();
