@@ -1,0 +1,32 @@
+/* V97 — selected option 3 reactor HUD, exact artwork with dynamic game data */
+;(()=>{
+const hud=$('hud');if(!hud)return;
+const style=document.createElement('style');style.textContent=`
+#hud>.top,#statusBars60,#xp87,#xp87l,#hudArmor96{display:none!important}
+#hudReactor97{position:fixed;z-index:39;left:50%;top:max(3px,env(safe-area-inset-top));width:min(1024px,100vw);height:min(384px,37.5vw);transform:translateX(-50%);pointer-events:none;color:#fff;background:url('./assets/ui/hud-reactor-v97.webp?v=97') center top/100% 100% no-repeat;filter:drop-shadow(0 8px 13px #000b);overflow:hidden}
+.hudValue97{position:absolute;z-index:4;display:grid;place-items:center;text-align:center;white-space:nowrap;text-shadow:0 0 4px #fff8,0 0 10px currentColor;background:radial-gradient(ellipse,#06131cea 20%,#06131ccf 58%,transparent 76%)}
+#hudLevel97{left:46.15%;top:28.2%;width:7.7%;height:18.4%;color:#eefcff;font:1000 clamp(22px,7vw,68px)/1 system-ui}
+#hudSector97{left:47.2%;top:62.1%;width:5.7%;height:10.3%;color:#ecfbff;font:1000 clamp(12px,4.3vw,42px)/1 system-ui}
+#hudScore97{left:43.7%;top:81.3%;width:12.7%;height:10.5%;color:#ffc05f;font:1000 clamp(10px,3.4vw,34px)/1 system-ui;background:linear-gradient(180deg,#2a1306f2,#160902f3);text-shadow:0 0 8px #ff8d2f}
+#hudHullPct97{left:31.1%;top:34.4%;width:5.6%;height:10.2%;color:#ffad65;font:1000 clamp(8px,2.6vw,26px)/1 system-ui;background:linear-gradient(90deg,#0a1119,#071017)}
+#hudShieldPct97{left:84.1%;top:34.4%;width:5.7%;height:10.2%;color:#62e5ff;font:1000 clamp(8px,2.6vw,26px)/1 system-ui;background:linear-gradient(90deg,#06131c,#08141d)}
+.energyTrack97{position:absolute;z-index:3;top:34.5%;width:25.25%;height:9.8%;padding:.55%;background:#03070b;box-shadow:inset 0 0 6px #000;clip-path:polygon(2% 0,98% 0,100% 18%,100% 82%,98% 100%,2% 100%,0 82%,0 18%);overflow:hidden}.energyTrack97 i{position:relative;display:block;width:100%;height:100%;transition:width .25s ease-out}.energyTrack97 i:after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 18%,#fff9 49%,transparent 72%);transform:translateX(-130%);animation:chargeSweep97 2.6s ease-in-out infinite}
+.hullTrack97{left:11.85%}.hullTrack97 i{background:repeating-linear-gradient(90deg,#ff6d31 0 11%,#ff9a46 11% 13%,#0000 13% 14%);box-shadow:0 0 10px #ff4b30}.shieldTrack97{left:63.35%}.shieldTrack97 i{background:repeating-linear-gradient(90deg,#1ebde9 0 11%,#65efff 11% 13%,#0000 13% 14%);box-shadow:0 0 10px #26dfff}
+.levelRing97{position:absolute;z-index:3;left:41.7%;top:3.8%;width:16.6%;aspect-ratio:1;border-radius:50%;background:conic-gradient(#46e8ff var(--xp),transparent 0);mask:radial-gradient(circle,transparent 61%,#000 63%,#000 68%,transparent 70%);filter:drop-shadow(0 0 5px #31dfff);opacity:.72;animation:ringPulse97 2.4s ease-in-out infinite}
+.reactorScan97{position:absolute;z-index:5;left:39.5%;top:2%;width:21%;height:57%;border-radius:50%;background:linear-gradient(110deg,transparent 32%,#a8f8ff20 49%,transparent 66%);transform:translateX(-125%);animation:reactorScan97 4.8s ease-in-out infinite}
+#hudReactor97.low .hullTrack97,#hudReactor97.low #hudHullPct97{animation:hullAlarm97 .75s ease-in-out infinite}
+.wallet{top:max(39vw,calc(env(safe-area-inset-top) + 151px))!important;right:8px!important}
+@keyframes chargeSweep97{0%,54%{transform:translateX(-130%)}90%,100%{transform:translateX(130%)}}@keyframes ringPulse97{50%{opacity:1;filter:drop-shadow(0 0 9px #31dfff)}}@keyframes reactorScan97{0%,48%{transform:translateX(-125%)}86%,100%{transform:translateX(125%)}}@keyframes hullAlarm97{50%{filter:brightness(1.45);text-shadow:0 0 12px #ff304d}}
+@media(min-width:1024px){.wallet{top:396px!important}}@media(prefers-reduced-motion:reduce){.energyTrack97 i:after,.levelRing97,.reactorScan97,#hudReactor97.low .hullTrack97,#hudReactor97.low #hudHullPct97{animation:none!important}}
+`;document.head.appendChild(style);
+const panel=document.createElement('section');panel.id='hudReactor97';panel.setAttribute('aria-label','Combat status');panel.style.setProperty('--xp','0%');panel.innerHTML='<div class="levelRing97"></div><div class="reactorScan97"></div><div class="energyTrack97 hullTrack97"><i id="hudHullFill97"></i></div><div class="energyTrack97 shieldTrack97"><i id="hudShieldFill97"></i></div><b class="hudValue97" id="hudLevel97">1</b><b class="hudValue97" id="hudSector97">1</b><b class="hudValue97" id="hudScore97">0</b><b class="hudValue97" id="hudHullPct97">100%</b><b class="hudValue97" id="hudShieldPct97">0%</b>';
+hud.appendChild(panel);
+const text=id=>{const e=$(id);return e?e.textContent.trim():''},pct=v=>Math.max(0,Math.min(100,parseFloat(v)||0));
+function syncHud97(){
+ const lv=text('xp87l').match(/LV\s+(\d+)/),hp=pct(text('hppct60')),sh=pct(text('shieldpct60')),xpFill=$('xp87i'),xp=xpFill?pct(xpFill.style.width):0;
+ $('hudLevel97').textContent=lv?lv[1]:'1';$('hudSector97').textContent=text('stage')||'1';$('hudScore97').textContent=text('score')||'0';
+ $('hudHullPct97').textContent=Math.ceil(hp)+'%';$('hudShieldPct97').textContent=Math.ceil(sh)+'%';$('hudHullFill97').style.width=hp+'%';$('hudShieldFill97').style.width=sh+'%';panel.style.setProperty('--xp',xp+'%');panel.classList.toggle('low',hp>0&&hp<30);
+}
+syncHud97();setInterval(syncHud97,120);
+try{parent.postMessage({source:'hud-reactor-v97',status:'REACTOR HUD ON'},'*')}catch(_){}
+})();
