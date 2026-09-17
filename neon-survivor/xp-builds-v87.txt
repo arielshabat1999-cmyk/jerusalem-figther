@@ -9,7 +9,7 @@ const css=document.createElement('style');css.textContent=`
 `;document.head.appendChild(css);
 const bar=document.createElement('div');bar.id='xp87';bar.innerHTML='<div id="xp87i"></div>';document.body.appendChild(bar);
 const lab=document.createElement('div');lab.id='xp87l';document.body.appendChild(lab);
-const modal=document.createElement('div');modal.id='level87';modal.innerHTML='<div class="panel"><h2>LEVEL UP</h2><div class="sub" id="levelSub87"></div><div class="choices87" id="choices87"></div></div>';document.body.appendChild(modal);
+const modal=document.createElement('div');modal.id='level87';modal.innerHTML='<section class="terminal92" aria-label="Level up upgrades"><header class="terminalHead92"><i class="lamp92 left"></i><div class="title92">LEVEL UP</div><div class="level92" id="levelSub87">LEVEL 1</div><div class="xpTrack92"><i></i></div><div class="xpDone92">XP COMPLETED</div><i class="lamp92 right"></i></header><div class="terminalBody92"><div class="rail92 top"></div><div class="choices87" id="choices87"></div><footer class="terminalFoot92"><span>HUMANITY ENDURES</span><b>NEON SURVIVOR</b><span>ONE PILOT · MANY WORLDS</span></footer></div></section>';document.body.appendChild(modal);
 function need(l){const a=[0,100,150,225,325,450,600,775,975,1200];return l<a.length?a[l]:Math.round(1200*Math.pow(1.225,l-9)/25)*25}
 function n(id){return owned[id]||0}function has(id){return n(id)>0}
 function U(id,name,cat,rar,max,icon,desc,apply,req=null){return{id,name,cat,rar,max,icon,desc,apply,req}}
@@ -67,10 +67,18 @@ function weights(){if(L<5)return{common:72,rare:25,epic:3,legendary:0};if(L<10)r
 function available(){return pool.filter(u=>n(u.id)<u.max&&(!u.req||u.req())&&!lastOffers.includes(u.id))}
 function rollOne(list,used){let a=list.filter(u=>!used.includes(u.id)),w=weights(),sum=a.reduce((s,u)=>s+(w[u.rar]||0),0);if(!sum)return a[0]||null;let r=Math.random()*sum;for(const u of a){r-=w[u.rar]||0;if(r<=0)return u}return a[a.length-1]}
 function offers(){let list=available();if(list.length<3)list=pool.filter(u=>n(u.id)<u.max&&(!u.req||u.req()));let out=[];while(out.length<3){let u=rollOne(list,out.map(x=>x.id));if(!u)break;out.push(u)}return out}
+function iconSVG92(u){
+ const common='viewBox="0 0 96 96" aria-hidden="true"';
+ if(u.cat==='DEFENSE')return'<svg '+common+'><path d="M48 9 78 20v25c0 20-12 34-30 43C30 79 18 65 18 45V20Z"/><path d="M48 19v57M28 39h40"/></svg>';
+ if(u.cat==='FIRE RATE')return'<svg '+common+'><path d="M19 61 63 17l14 14-44 44-19 5Z"/><path d="m53 27 16 16M15 34h22M10 48h20M18 20h27"/></svg>';
+ if(u.cat==='PROJECTILES')return'<svg '+common+'><path d="M48 10c10 13 14 27 10 43L48 68 38 53c-4-16 0-30 10-43Z"/><path d="m38 50-13 9 10 5m23-14 13 9-10 5M43 68l5 17 5-17"/></svg>';
+ if(u.cat==='SPECIAL'||u.cat==='SYNERGY'||u.cat==='LEGENDARY')return'<svg '+common+'><path d="m53 7-29 47h21l-5 35 32-51H51Z"/></svg>';
+ return'<svg '+common+'><circle cx="48" cy="48" r="25"/><path d="M48 10v18m0 40v18M10 48h18m40 0h18M21 21l13 13m28 28 13 13M75 21 62 34M34 62 21 75"/></svg>'
+}
 function refresh(){if(!p)return;document.getElementById('xp87i').style.width=Math.min(100,xp/next*100)+'%';lab.textContent='LV '+L+' · '+Math.floor(xp)+' / '+next+' XP'}
 function openLevel(){
- const opts=offers();if(!opts.length){state='play';pending=0;return}state='levelup';modal.classList.add('show');document.getElementById('levelSub87').textContent='PLAYER LEVEL '+L+' · CHOOSE ONE UPGRADE';
- const box=document.getElementById('choices87');box.innerHTML='';for(const u of opts){const b=document.createElement('button');b.className='card87';b.style.setProperty('--c',rarity[u.rar]);b.innerHTML='<span class="rar">'+u.rar.toUpperCase()+(u.cat==='SYNERGY'?' · SYNERGY':'')+'</span><span class="ico">'+u.icon+'</span><b>'+u.name+'</b><p>'+u.desc+'</p><span class="lv">LV '+(n(u.id)+1)+'/'+u.max+'</span>';b.onclick=()=>choose(u,opts);box.appendChild(b)}
+ const opts=offers();if(!opts.length){state='play';pending=0;return}state='levelup';modal.classList.add('show');document.getElementById('levelSub87').textContent='LEVEL '+L;
+ const box=document.getElementById('choices87');box.innerHTML='';for(const u of opts){const current=n(u.id),b=document.createElement('button');b.className='upgradeRow92';b.style.setProperty('--c',rarity[u.rar]);b.innerHTML='<span class="rivet92 r1"></span><span class="rivet92 r2"></span><span class="iconBay92"><span class="icon92">'+iconSVG92(u)+'</span></span><span class="upgradeCopy92"><b>'+u.name+'</b><strong>'+u.desc+'</strong><span class="meta92"><em>'+u.rar.toUpperCase()+(u.cat==='SYNERGY'?' · SYNERGY':'')+'</em><span>LV '+current+' <i>››</i> LV '+(current+1)+'</span></span></span><span class="select92"><b>SELECT ONE</b><i>⌄</i></span>';b.onclick=()=>choose(u,opts);box.appendChild(b)}
  }
 function choose(u,opts){owned[u.id]=n(u.id)+1;u.apply();lastOffers=opts.filter(x=>x!==u).map(x=>x.id);modal.classList.remove('show');flashStage(u.cat==='SYNERGY'?'SYNERGY · '+u.name:u.name);pending--;last=performance.now();if(pending>0)setTimeout(openLevel,120);else state=(E.some(e=>e&&(e.boss||e.boss5||e.boss32))?'boss':'play');refresh();ui()}
 function addXP(v,x,y){if(!p||state==='over')return;xp+=Math.max(1,Math.round(v));if(x!=null&&Math.random()<.22)popText(x,y,'+'+Math.round(v)+' XP','#8defff',12);while(xp>=next){xp-=next;L++;next=need(L);pending++}refresh();if(pending&&state!=='levelup')setTimeout(openLevel,0)}
