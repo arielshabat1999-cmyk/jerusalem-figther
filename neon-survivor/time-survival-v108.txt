@@ -1,4 +1,4 @@
-/* V108 — endless time progression, minute bosses, hard 25-hostile ceiling */
+/* V109 — endless time progression, minute bosses, post-minute-3 elites, hard 25-hostile ceiling */
 ;(()=>{
 let elapsed108=0,nextBossMinute108=1,bossesCleared108=0;
 window.__timeSurvival108=true;window.__runTime108=0;
@@ -7,13 +7,14 @@ function bossAlive108(){return E.some(e=>e&&(e.boss5||e.boss||e.boss32))}
 function regularCount108(){return E.reduce((n,e)=>n+!!(e&&!e.boss5&&!e.boss&&!e.boss32),0)}
 function safeDistance108(){return Math.max(0,(Math.max(1,stage)-1)*STAGE_M+Math.min(90,STAGE_M*.18))}
 function evolveSurvivors108(){const mul=1.10+Math.min(.45,bossesCleared108*.025);for(const e of E){if(!e||e.boss5||e.boss||e.boss32)continue;const ratio=e.hp/Math.max(1,e.max||e.hp);e.max=Math.ceil((e.max||e.hp||1)*mul);e.hp=Math.max(1,Math.ceil(e.max*ratio));e.dmg=(e.dmg||10)*(1.07+bossesCleared108*.01);e.shotDmg=(e.shotDmg||5)*(1.07+bossesCleared108*.01)}}
+function makeElite108(e){if(!e||elapsed108<180||e.boss5||e.boss||e.boss32)return;const minute=Math.max(3,Math.floor(elapsed108/60)),chance=Math.min(.42,.16+(minute-3)*.035);if(Math.random()>chance)return;const kinds=['mortar','phantom','sweeper','gunship'],kind=kinds[(minute+Math.floor(Math.random()*kinds.length))%kinds.length],hpMul=1.8+Math.min(1.4,(minute-3)*.11);e.type=kind;e.elite14=true;e.timeElite108=true;e.r=(e.r||15)*(1.42+Math.min(.26,(minute-3)*.02));e.max=Math.ceil((e.max||e.hp||20)*hpMul);e.hp=e.max;e.dmg=(e.dmg||10)*(1.3+minute*.025);e.shotDmg=(e.shotDmg||6)*(1.35+minute*.03);if(e.flow10)e.flow10.hold=Math.max(.55,(e.flow10.hold||1)*.78);if(kind==='mortar')e.spd=(e.spd||100)*.78;else if(kind==='phantom')e.spd=(e.spd||100)*1.14;else if(kind==='sweeper')e.spd=(e.spd||100)*.96;else e.spd=(e.spd||100)*.86;}
 const enemy108base=enemy;
-enemy=function(){if(E.length>=25||regularCount108()>=24)return;enemy108base()};
+enemy=function(){if(E.length>=25||regularCount108()>=24)return;const before=E.length;enemy108base();if(E.length>before)makeElite108(E[E.length-1])};
 const begin108base=beginSector;
 beginSector=function(){if(window.__timeSurvival108&&state==='boss'){bossesCleared108++;state='play';stage=Math.max(stage,bossesCleared108+1);distance=safeDistance108();spawn=Math.min(spawn,.55);obspawn=Math.min(obspawn,.9);evolveSurvivors108();flashStage('THREAT LEVEL '+stage);popText(W*.5,H*.25,'ENEMIES EVOLVED','#ffb14e',18);ui();return}begin108base()};
-function summonMinuteBoss108(minute){if(bossAlive108())return false;stage=Math.max(stage,minute);try{startBoss5()}catch(err){console.error('V108 minute boss',err);return false}flashStage('MINUTE '+minute+' · BOSS INCOMING');return true}
+function summonMinuteBoss108(minute){if(bossAlive108())return false;stage=Math.max(stage,minute);try{startBoss5()}catch(err){console.error('V109 minute boss',err);return false}const b=E.find(e=>e&&(e.boss5||e.boss||e.boss32));if(b){const mul=1+Math.min(.85,minute*.055);b.max=Math.ceil((b.max||b.hp||100)*mul);b.hp=b.max;b.r=(b.r||45)*(1+Math.min(.28,minute*.018));b.shotDmg=(b.shotDmg||8)*(1+minute*.045)}flashStage('MINUTE '+minute+' · BOSS INCOMING');return true}
 const update108base=update;
-update=function(dt){if((state==='play'||state==='boss')&&p)distance=safeDistance108();update108base(dt);if((state!=='play'&&state!=='boss')||!p)return;elapsed108+=dt;window.__runTime108=elapsed108;distance=safeDistance108();const reached=Math.floor(elapsed108/60);if(reached>=nextBossMinute108&&summonMinuteBoss108(nextBossMinute108))nextBossMinute108++;if(E.length>=25)spawn=999};
+update=function(dt){if((state==='play'||state==='boss')&&p)distance=safeDistance108();update108base(dt);if((state!=='play'&&state!=='boss')||!p)return;elapsed108+=dt;window.__runTime108=elapsed108;distance=safeDistance108();const reached=Math.floor(elapsed108/60);stage=Math.max(1,reached+1);if(reached>=nextBossMinute108&&summonMinuteBoss108(nextBossMinute108))nextBossMinute108++;if(E.length>=25)spawn=999;else if(state==='play'){const minute=Math.floor(elapsed108/60),pressure=Math.max(.13,.68-minute*.055);spawn=Math.min(spawn,pressure)}};
 const reset108base=reset;
 reset=function(){elapsed108=0;nextBossMinute108=1;bossesCleared108=0;window.__runTime108=0;reset108base();stage=1;distance=0};
 try{parent.postMessage({source:'time-survival-v108',status:'TIME SURVIVAL ON'},'*')}catch(_){}
