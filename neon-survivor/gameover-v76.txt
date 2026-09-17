@@ -1,34 +1,31 @@
-/* V76 — standalone authoritative death screen; bypasses all legacy life/restart chains */
+/* V105 — armored authoritative death screen with direct reliable restart */
 ;(()=>{
 const css=document.createElement('style');
-css.textContent='#finalOver76{position:fixed!important;inset:0!important;z-index:10000!important;display:none!important;align-items:center!important;justify-content:center!important;padding:22px!important;background:radial-gradient(circle at 50% 32%,#40102cdd,#02040af7 68%)!important;pointer-events:auto!important}#finalOver76.show{display:flex!important}#finalOver76 .panel{width:min(470px,94vw);border:1px solid #ff5b8966;background:linear-gradient(180deg,#190918f7,#040713fc);box-shadow:0 30px 90px #000e,0 0 58px #ff315f38}#finalOver76 h2{margin:8px 0 20px;font-size:clamp(48px,14vw,76px);line-height:.9;color:#fff;text-shadow:0 0 24px #ff4267,0 0 55px #8b4fff}#restart76{margin-top:14px;background:linear-gradient(100deg,#ff315f,#7a5dff 56%,#00d7ff)}#menu76{margin-top:9px;background:#142238}';
+css.textContent=`#finalOver76{position:fixed!important;inset:0!important;z-index:10000!important;display:none!important;align-items:center!important;justify-content:center!important;padding:18px!important;background:radial-gradient(circle at 50% 20%,#163c58e8,#02050af9 62%)!important;pointer-events:auto!important;backdrop-filter:blur(7px)}#finalOver76.show{display:flex!important}.overShell76{position:relative;width:min(520px,95vw);padding:10px;background:linear-gradient(145deg,#65727c,#141a20 18%,#05090d 52%,#46525b);clip-path:polygon(6% 0,94% 0,100% 6%,100% 94%,94% 100%,6% 100%,0 94%,0 6%);box-shadow:0 28px 80px #000e,0 0 42px #27dfff35}.overShell76:before{content:"";position:absolute;inset:5px;border:2px solid #7f909c66;clip-path:inherit;pointer-events:none}.overPanel76{position:relative;padding:24px 20px 20px;background:linear-gradient(180deg,#101d27f8,#061019fc 58%,#090d12fc);border:2px solid #24323c;clip-path:polygon(5% 0,95% 0,100% 5%,100% 95%,95% 100%,5% 100%,0 95%,0 5%);box-shadow:inset 0 0 35px #000}.overLights76{display:flex;justify-content:space-between;margin:-3px 4% 12px}.overLights76 i{width:9px;height:42px;background:#ff9f36;box-shadow:0 0 12px #ff7b24,0 0 25px #ff7b2466}.overEyebrow76{color:#77eaff;font:900 10px/1 system-ui;letter-spacing:.3em;text-align:center}.overPanel76 h2{margin:10px 0 20px;color:#f5fbff;font:1000 clamp(42px,13vw,70px)/.9 system-ui;letter-spacing:.06em;text-align:center;text-shadow:0 0 12px #4de5ff,0 0 35px #238dff88}.overGrid76{display:grid;grid-template-columns:1fr 1fr;gap:8px}.overStat76{min-height:72px;padding:12px;border:1px solid #4f6777;background:linear-gradient(180deg,#10212d,#071019);box-shadow:inset 0 0 15px #000}.overStat76 span{display:block;color:#7893a5;font:850 8px/1 system-ui;letter-spacing:.16em}.overStat76 b{display:block;margin-top:8px;color:#eefcff;font:1000 22px/1 system-ui;text-shadow:0 0 8px #49dfff}.overStat76.bank b{color:#ffc35e;text-shadow:0 0 9px #ff932f}.overActions76{display:grid;grid-template-columns:1.25fr .75fr;gap:9px;margin-top:14px}.overActions76 .btn{height:58px!important;margin:0!important;border-radius:0!important;clip-path:polygon(8% 0,92% 0,100% 18%,100% 82%,92% 100%,8% 100%,0 82%,0 18%);font:1000 14px/1 system-ui!important;letter-spacing:.08em!important}.overActions76 .btn:active{transform:scale(.98);filter:brightness(1.3)}#restart76{border:2px solid #ffad4d!important;background:linear-gradient(180deg,#63300d,#281105)!important;color:#ffd292!important;box-shadow:0 0 18px #ff8c354d,inset 0 0 14px #ff8c3529!important}#menu76{border:1px solid #42dfff88!important;background:linear-gradient(180deg,#102d3c,#07131d)!important;color:#9defff!important}@media(max-width:380px){.overPanel76{padding:18px 14px 15px}.overStat76{min-height:64px}.overPanel76 h2{margin-bottom:15px}.overActions76 .btn{height:52px!important;font-size:12px!important}}`;
 document.head.appendChild(css);
 const screen=document.createElement('div');screen.id='finalOver76';
-screen.innerHTML='<div class="panel"><div class="eyebrow">MISSION ENDED</div><h2>GAME OVER</h2><div class="result"><span>SECTOR REACHED</span><b id="sector76">1</b></div><div class="result"><span>SCORE</span><b id="score76">0</b></div><div class="result"><span>DISTANCE</span><b id="distance76">0 m</b></div><button id="restart76" class="btn">RESTART</button><button id="menu76" class="btn">MAIN MENU</button></div>';
+screen.innerHTML='<div class="overShell76"><div class="overPanel76"><div class="overLights76"><i></i><i></i></div><div class="overEyebrow76">MISSION TERMINATED</div><h2>GAME OVER</h2><div class="overGrid76"><div class="overStat76"><span>SECTOR REACHED</span><b id="sector76">1</b></div><div class="overStat76"><span>FINAL SCORE</span><b id="score76">0</b></div><div class="overStat76"><span>DISTANCE</span><b id="distance76">0 m</b></div><div class="overStat76 bank"><span>CREDIT BANK</span><b id="credit76">0 ⬡</b></div></div><div class="overActions76"><button id="restart76" class="btn" type="button">RESTART</button><button id="menu76" class="btn" type="button">MAIN MENU</button></div></div></div>';
 document.body.appendChild(screen);
-let specialRun76=false,lock76=false;
+let lock76=false;
 
 gameover=function(){
  if(state==='finalover76')return;
- specialRun76=$('stage')&&$('stage').textContent==='1/1';
- const finishedStage=specialRun76?'1/1':String(Math.max(1,stage|0)),finishedScore=Math.max(0,score|0),finishedDistance=Math.max(0,Math.floor(distance||0));
+ const finishedStage=String(Math.max(1,stage|0)),finishedScore=Math.max(0,score|0),finishedDistance=Math.max(0,Math.floor(distance||0));
  state='finalover76';
  const d=$('death9');if(d)d.classList.remove('show');
  $('over').classList.remove('show');$('menu').classList.remove('show');$('upgrade').classList.remove('show');
- const sw=$('specialWin75');if(sw)sw.classList.remove('show');
  $('hud').style.display='none';
- $('sector76').textContent=finishedStage;$('score76').textContent=finishedScore.toLocaleString();$('distance76').textContent=finishedDistance+' m';
- screen.classList.add('show');
  try{saveProfile()}catch(_){}
+ $('sector76').textContent=finishedStage;$('score76').textContent=finishedScore.toLocaleString();$('distance76').textContent=finishedDistance+' m';$('credit76').textContent=Math.floor(credits).toLocaleString()+' ⬡';
+ screen.classList.add('show');
 };
 function restart76(){
  if(lock76)return;lock76=true;screen.classList.remove('show');
- const target=specialRun76?$('special75'):$('play');
- try{if(target)target.click();else{start();state='play';$('hud').style.display='block';last=performance.now()}}catch(err){console.error('V76 restart',err)}
+ try{saveProfile();start();state='play';$('menu').classList.remove('show');$('over').classList.remove('show');$('upgrade').classList.remove('show');$('hud').style.display='block';last=performance.now()}catch(err){console.error('V105 restart',err);try{$('play').click()}catch(_){}}
  setTimeout(()=>{lock76=false},500)
 }
 $('restart76').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();restart76()});
 $('restart76').addEventListener('pointerup',e=>{if(e.pointerType==='touch'){e.preventDefault();e.stopPropagation();restart76()}},{passive:false});
-$('menu76').onclick=e=>{e.preventDefault();screen.classList.remove('show');state='menu';$('hud').style.display='none';$('menu').classList.add('show')};
+$('menu76').onclick=e=>{e.preventDefault();try{saveProfile()}catch(_){}screen.classList.remove('show');state='menu';$('hud').style.display='none';$('menu').classList.add('show')};
 try{parent.postMessage({source:'gameover-v76',status:'GAMEOVER READY'},'*')}catch(_){}
 })();

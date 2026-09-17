@@ -18,29 +18,20 @@ const st6=document.createElement('style');st6.textContent=`
 /* Show the player clearly has three total lives. */
 const livesBox6=document.querySelector('.lives5');if(livesBox6){livesBox6.childNodes[0]&&livesBox6.childNodes[0].nodeType===3&&(livesBox6.childNodes[0].textContent='LIVES ×');}
 
-/* A final Game Over starts the next run completely fresh. Best-distance remains only as a record. */
+/* A new run clears temporary combat state only. Credits and owned ships are permanent profile data. */
 function wipeRunProgress6(){
-  credits=0;boostTimer=0;shopOffers=[];
-  ownedShips=['nova'];equippedShip='nova';
-  try{ownedWeapons3=['pulse'];equippedWeapon3='pulse';shipIndex3=0;weaponIndex3=0}catch(_){}
-  try{
-    localStorage.removeItem('NScredits');
-    localStorage.NSownedShips='["nova"]';
-    localStorage.NSequippedShip='nova';
-    localStorage.NSownedWeapons='["pulse"]';
-    localStorage.NSequippedWeapon='pulse';
-  }catch(_){}
+  boostTimer=0;shopOffers=[];
   try{saveProfile()}catch(_){}
-  if($('bank'))$('bank').textContent='0 ⬡';
-  if($('fcredits'))$('fcredits').textContent='0 ⬡';
-  if($('credits'))$('credits').textContent='0';
-  if($('shopcredits'))$('shopcredits').textContent='0';
+  if($('bank'))$('bank').textContent=Math.floor(credits)+' ⬡';
+  if($('fcredits'))$('fcredits').textContent=Math.floor(credits)+' ⬡';
+  if($('credits'))$('credits').textContent=Math.floor(credits);
+  if($('shopcredits'))$('shopcredits').textContent=Math.floor(credits);
 }
 const gameover6base=gameover;gameover=function(){
   gameover6base();
   if(state==='over'){
     wipeRunProgress6();
-    if($('fcredits'))$('fcredits').textContent='0 ⬡';
+    if($('fcredits'))$('fcredits').textContent=Math.floor(credits)+' ⬡';
   }
 };
 
