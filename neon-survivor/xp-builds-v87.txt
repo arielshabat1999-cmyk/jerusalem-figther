@@ -45,7 +45,7 @@ function iconSVG92(u){
  if(u.cat==='SPECIAL'||u.cat==='SYNERGY'||u.cat==='LEGENDARY')return'<svg '+common+'<path class="metal" d="M68 4 24 67h29l-8 49 51-72H66Z"/><path class="energy bolt" d="M68 17 39 59h25l-6 32 24-37H57Z"/></svg>';
  return'<svg '+common+'<circle class="metal" cx="60" cy="60" r="39"/><circle class="dark" cx="60" cy="60" r="28"/><circle class="core" cx="60" cy="60" r="17"/><path class="metal spokes" d="M60 5v28m0 54v28M5 60h28m54 0h28M21 21l20 20m38 38 20 20m0-78L79 41M41 79 21 99"/></svg>'
 }
-function iconAsset94(u){const k=u.cat==='FIRE RATE'?'fire-rate':u.cat==='PROJECTILES'?'projectiles':u.cat==='SPECIAL'?'special':u.cat==='DEFENSE'?'defense':u.cat==='LEGENDARY'?'legendary':u.cat==='SYNERGY'?'synergy':'damage';return'./assets/upgrade-icons/'+k+'.webp?v=95'}
+function iconAsset94(u){const icons={core:'calibrated-core',cycler:'turbo-cycler',cannon:'extra-cannon',homing:'homing-projectiles',pierce:'piercing-rounds',explosive:'explosive-rounds',caliber:'heavy-caliber',shield:'shield-capacitor',regen:'shield-regeneration',move:'thruster-tuning',dodge:'evasion-matrix',missile:'missile-clock',chain:'chain-lightning',nova:'nova-pulse',velocity:'ion-velocity'};return'./assets/upgrade-icons-v102/'+icons[u.id]+'.webp?v=103'}
 function refresh(){if(!p)return;document.getElementById('xp87i').style.width=Math.min(100,xp/next*100)+'%';lab.textContent='LV '+L+' · '+Math.floor(xp)+' / '+next+' XP'}
 function openLevel(){
  const opts=offers();if(!opts.length){state='play';pending=0;return}state='levelup';modal.classList.add('show');document.getElementById('levelSub87').textContent='LEVEL '+L;
