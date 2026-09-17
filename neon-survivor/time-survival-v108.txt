@@ -1,0 +1,20 @@
+/* V108 — endless time progression, minute bosses, hard 25-hostile ceiling */
+;(()=>{
+let elapsed108=0,nextBossMinute108=1,bossesCleared108=0;
+window.__timeSurvival108=true;window.__runTime108=0;
+window.__formatRunTime108=function(){const total=Math.max(0,Math.floor(elapsed108)),m=Math.floor(total/60),s=total%60;return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')};
+function bossAlive108(){return E.some(e=>e&&(e.boss5||e.boss||e.boss32))}
+function regularCount108(){return E.reduce((n,e)=>n+!!(e&&!e.boss5&&!e.boss&&!e.boss32),0)}
+function safeDistance108(){return Math.max(0,(Math.max(1,stage)-1)*STAGE_M+Math.min(90,STAGE_M*.18))}
+function evolveSurvivors108(){const mul=1.10+Math.min(.45,bossesCleared108*.025);for(const e of E){if(!e||e.boss5||e.boss||e.boss32)continue;const ratio=e.hp/Math.max(1,e.max||e.hp);e.max=Math.ceil((e.max||e.hp||1)*mul);e.hp=Math.max(1,Math.ceil(e.max*ratio));e.dmg=(e.dmg||10)*(1.07+bossesCleared108*.01);e.shotDmg=(e.shotDmg||5)*(1.07+bossesCleared108*.01)}}
+const enemy108base=enemy;
+enemy=function(){if(E.length>=25||regularCount108()>=24)return;enemy108base()};
+const begin108base=beginSector;
+beginSector=function(){if(window.__timeSurvival108&&state==='boss'){bossesCleared108++;state='play';stage=Math.max(stage,bossesCleared108+1);distance=safeDistance108();spawn=Math.min(spawn,.55);obspawn=Math.min(obspawn,.9);evolveSurvivors108();flashStage('THREAT LEVEL '+stage);popText(W*.5,H*.25,'ENEMIES EVOLVED','#ffb14e',18);ui();return}begin108base()};
+function summonMinuteBoss108(minute){if(bossAlive108())return false;stage=Math.max(stage,minute);try{startBoss5()}catch(err){console.error('V108 minute boss',err);return false}flashStage('MINUTE '+minute+' · BOSS INCOMING');return true}
+const update108base=update;
+update=function(dt){if((state==='play'||state==='boss')&&p)distance=safeDistance108();update108base(dt);if((state!=='play'&&state!=='boss')||!p)return;elapsed108+=dt;window.__runTime108=elapsed108;distance=safeDistance108();const reached=Math.floor(elapsed108/60);if(reached>=nextBossMinute108&&summonMinuteBoss108(nextBossMinute108))nextBossMinute108++;if(E.length>=25)spawn=999};
+const reset108base=reset;
+reset=function(){elapsed108=0;nextBossMinute108=1;bossesCleared108=0;window.__runTime108=0;reset108base();stage=1;distance=0};
+try{parent.postMessage({source:'time-survival-v108',status:'TIME SURVIVAL ON'},'*')}catch(_){}
+})();

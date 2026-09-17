@@ -24,7 +24,7 @@ hud.appendChild(panel);
 const text=id=>{const e=$(id);return e?e.textContent.trim():''},pct=v=>Math.max(0,Math.min(100,parseFloat(v)||0));
 function syncHud97(){
  const lv=text('xp87l').match(/LV\s+(\d+)/),hp=pct(text('hppct60')),sh=pct(text('shieldpct60')),xpFill=$('xp87i'),xp=xpFill?pct(xpFill.style.width):0;
- $('hudLevel97').textContent=lv?lv[1]:'1';$('hudSector97').textContent=text('stage')||'1';$('hudScore97').textContent=text('score')||'0';
+ $('hudLevel97').textContent=lv?lv[1]:'1';$('hudSector97').textContent=typeof window.__formatRunTime108==='function'?window.__formatRunTime108():(text('stage')||'00:00');$('hudScore97').textContent=text('score')||'0';
  $('hudHullPct97').textContent=Math.ceil(hp)+'%';$('hudShieldPct97').textContent=Math.ceil(sh)+'%';$('hudHullFill97').style.width=hp+'%';$('hudShieldFill97').style.width=sh+'%';panel.style.setProperty('--xp',xp+'%');panel.classList.toggle('low',hp>0&&hp<30);
 }
 syncHud97();setInterval(syncHud97,120);

@@ -5,7 +5,7 @@ css.textContent=`
 #finalOver76{position:fixed!important;inset:0!important;z-index:10000!important;display:none!important;background:#01050a url('./assets/ui/game-over-v107.webp?v=107') center/cover no-repeat!important;pointer-events:auto!important;overflow:hidden!important}
 #finalOver76.show{display:block!important}
 .overValue76{position:absolute;left:15%;width:70%;height:8%;display:flex;align-items:center;justify-content:center;color:#ecfbff;font:1000 clamp(28px,9vw,54px)/1 system-ui;letter-spacing:.06em;text-align:center;text-shadow:0 0 8px #3ee7ff,0 0 22px #179dff;pointer-events:none}
-#sector76{top:43.5%}#score76{top:56.9%}
+#timeLabel108{position:absolute;z-index:2;left:22%;top:38.2%;width:56%;height:5%;display:grid;place-items:center;background:#06131cf2;color:#65eaff;font:900 clamp(12px,3.8vw,24px)/1 system-ui;letter-spacing:.12em;text-shadow:0 0 9px #20dfff;pointer-events:none}#sector76{top:43.5%}#score76{top:56.9%}
 .overHit76{position:absolute;left:13%;width:74%;border:0!important;background:transparent!important;color:transparent!important;font-size:0!important;cursor:pointer;clip-path:polygon(7% 0,93% 0,100% 18%,100% 82%,93% 100%,7% 100%,0 82%,0 18%);touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .overHit76:active{background:#fff2!important;filter:brightness(1.35)}
 #restart76{top:68.7%;height:9.8%}#menu76{top:79.1%;height:8.2%}
@@ -13,18 +13,18 @@ css.textContent=`
 `;
 document.head.appendChild(css);
 const screen=document.createElement('div');screen.id='finalOver76';
-screen.innerHTML='<div id="sector76" class="overValue76">1</div><div id="score76" class="overValue76">0</div><button id="restart76" class="overHit76" type="button" aria-label="Restart game">RESTART</button><button id="menu76" class="overHit76" type="button" aria-label="Main menu">MAIN MENU</button>';
+screen.innerHTML='<div id="timeLabel108">SURVIVAL TIME</div><div id="sector76" class="overValue76">00:00</div><div id="score76" class="overValue76">0</div><button id="restart76" class="overHit76" type="button" aria-label="Restart game">RESTART</button><button id="menu76" class="overHit76" type="button" aria-label="Main menu">MAIN MENU</button>';
 document.body.appendChild(screen);
 let lock76=false;
 gameover=function(){
  if(state==='finalover76')return;
- const finishedStage=String(Math.max(1,stage|0)),finishedScore=Math.max(0,score|0);
+ const finishedTime=typeof window.__formatRunTime108==='function'?window.__formatRunTime108():'00:00',finishedScore=Math.max(0,score|0);
  state='finalover76';
  const d=$('death9');if(d)d.classList.remove('show');
  $('over').classList.remove('show');$('menu').classList.remove('show');$('upgrade').classList.remove('show');
  $('hud').style.display='none';
  try{saveProfile()}catch(_){}
- $('sector76').textContent=finishedStage;$('score76').textContent=finishedScore.toLocaleString();
+ $('sector76').textContent=finishedTime;$('score76').textContent=finishedScore.toLocaleString();
  screen.classList.add('show');
 };
 function restart76(){
