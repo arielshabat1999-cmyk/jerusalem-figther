@@ -5,7 +5,7 @@ if(!menu99||!panel99)return;
 
 const css99=document.createElement('style');
 css99.textContent=`
-#menu.menu99{z-index:145!important;display:none!important;padding:0!important;background:#01040a url('./assets/ui/menu-command-v99.webp?v=20260917v100') center/cover no-repeat!important;backdrop-filter:none!important;overflow:hidden}
+#menu.menu99{z-index:145!important;display:none!important;padding:0!important;background:#01040a url('./assets/ui/menu-command-v99.webp?v=20260917v101') center/cover no-repeat!important;backdrop-filter:none!important;overflow:hidden}
 #menu.menu99.show{display:flex!important}
 #menu.menu99:before{content:"";position:absolute;z-index:1;inset:-18% 0 auto;height:24%;pointer-events:none;background:linear-gradient(180deg,transparent,#74efff18,transparent);mix-blend-mode:screen;animation:menuScan99 5.8s linear infinite}
 #menu.menu99:after{content:"";position:absolute;z-index:1;left:24%;right:24%;top:23%;height:29%;pointer-events:none;border-radius:50%;background:radial-gradient(ellipse,#38dfff13,transparent 68%);filter:blur(6px);animation:menuPulse99 2.6s ease-in-out infinite}
