@@ -16,9 +16,8 @@ try{
   }
   if(typeof equippedShip==='string'&&!SHIPS[equippedShip])equippedShip='falcon';
   if(typeof p!=='undefined'&&p&&p.shipType&&!SHIPS[p.shipType])p.shipType=equippedShip||'falcon';
-  if(typeof shipIndex3!=='undefined'){const ids=Object.keys(SHIPS),at=ids.indexOf((p&&p.shipType)||equippedShip);shipIndex3=Math.max(0,at)}
-  localStorage.NSequippedShip=equippedShip;
-  localStorage.NSownedShips=JSON.stringify(ownedShips);
+  if(typeof shipIndex3!=='undefined'){const ids=Object.keys(SHIPS),current=(typeof p!=='undefined'&&p&&p.shipType)||equippedShip||'falcon',at=ids.indexOf(current);shipIndex3=Math.max(0,at)}
+  if(typeof saveProfile==='function')saveProfile();
 }catch(_){ }
 window.__SHIP_LIBRARY_V107={version:107,ids:Object.keys(LIB107),ships:LIB107};
 const tag=document.createElement('div');tag.className='shipLibrary107';tag.textContent='BASE HULL LIBRARY · 5 SHIPS';
