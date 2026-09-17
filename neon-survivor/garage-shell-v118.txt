@@ -1,0 +1,69 @@
+/* V118 — isolated Garage shell. Does not modify the main LAUNCH handler. */
+;(()=>{try{
+  const root=$('upgrade'), menu=$('menu');
+  if(!root||!menu)return;
+
+  const style=document.createElement('style');
+  style.textContent=`
+  #upgrade.g118host{z-index:160!important;padding:0!important;background:#020304!important;backdrop-filter:none!important;align-items:stretch!important;justify-content:stretch!important;overflow:hidden!important}
+  .g118{position:relative;width:100%;height:100dvh;overflow:hidden;color:#fff;background:
+    radial-gradient(ellipse at 50% 31%,#18445a 0,#0b1d29 20%,#05090c 49%,#020304 78%),
+    linear-gradient(180deg,#10171b,#020304);font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+  .g118:before{content:"";position:absolute;inset:0;pointer-events:none;background:
+    linear-gradient(90deg,transparent 0 8%,#ff982313 8% 8.3%,transparent 8.3% 91.7%,#ff982313 91.7% 92%,transparent 92%),
+    linear-gradient(180deg,#ffffff08,transparent 15% 84%,#0008);mix-blend-mode:screen}
+  .g118Top{position:absolute;z-index:5;left:3.5%;right:3.5%;top:max(1.6%,env(safe-area-inset-top));height:6.2%;display:grid;grid-template-columns:11% 1fr auto;gap:10px;align-items:center}
+  .g118Back{height:100%;border:1px solid #ff9b327a;background:linear-gradient(145deg,#202326,#090b0c);color:#fff;font-size:32px;font-weight:400;box-shadow:inset 0 0 0 1px #000,0 0 15px #ff7f001d;touch-action:manipulation}
+  .g118Title{padding-left:4px}.g118Title b{display:block;font-size:clamp(21px,6.1vw,34px);line-height:.95;letter-spacing:.13em;text-shadow:0 0 12px #fff3}.g118Title span{display:block;margin-top:5px;color:#b2bcc1;font-size:clamp(6px,1.7vw,9px);letter-spacing:.32em}
+  .g118Wallets{display:flex;gap:6px;height:72%}.g118Wallet{min-width:72px;padding:0 9px;display:flex;align-items:center;justify-content:center;border:1px solid #ff9a2857;background:#080c0fe8;font:900 clamp(10px,2.7vw,15px)/1 system-ui;box-shadow:inset 0 0 12px #000}.g118Wallet.coin:before{content:"⬡";color:#ffb22f;margin-right:6px}.g118Wallet.dia:before{content:"♦";color:#4de9ff;margin-right:6px;text-shadow:0 0 8px #25dfff}
+  .g118Hangar{position:absolute;left:3.8%;right:3.8%;top:9.5%;height:57%;overflow:hidden;border:1px solid #ff8b2428;background:
+    radial-gradient(ellipse at 50% 78%,#34dfff22 0,#0c334528 24%,transparent 49%),
+    linear-gradient(90deg,#0d1114,#131b1f 50%,#0b0e10);box-shadow:inset 0 0 70px #000,0 0 26px #ff7b0010}
+  .g118Hangar:before{content:"";position:absolute;left:10%;right:10%;bottom:8%;height:13%;border:3px solid #ff8e2d88;border-radius:50%;transform:perspective(230px) rotateX(66deg);background:radial-gradient(ellipse,#30dfff20,#05080a 58%,#000 72%);box-shadow:0 0 26px #ff7b0035,inset 0 0 22px #20dfff22}
+  .g118Hangar:after{content:"";position:absolute;left:50%;top:8%;bottom:20%;width:33%;transform:translateX(-50%);clip-path:polygon(34% 0,66% 0,100% 100%,0 100%);background:linear-gradient(90deg,transparent,#52dcff0b,#d8fbff0e,#52dcff0b,transparent);animation:g118beam 2.8s ease-in-out infinite alternate}
+  @keyframes g118beam{to{opacity:.48}}
+  .g118Empty{position:absolute;z-index:2;left:50%;top:47%;transform:translate(-50%,-50%);text-align:center;color:#829097;pointer-events:none}.g118Empty i{display:block;margin:auto;width:46px;height:46px;border:1px solid #ff9a2a55;clip-path:polygon(22% 0,78% 0,100% 22%,100% 78%,78% 100%,22% 100%,0 78%,0 22%);box-shadow:0 0 13px #ff7b002b}.g118Empty b{display:block;margin-top:14px;font-size:10px;letter-spacing:.22em;color:#bac1c4}.g118Empty span{display:block;margin-top:5px;font-size:7px;letter-spacing:.16em}
+  .g118Dock{position:absolute;left:3.8%;right:3.8%;top:68%;bottom:2.4%;border:2px solid #353738;background:linear-gradient(180deg,#131516,#070809);box-shadow:inset 0 0 34px #000}.g118Dock:before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,transparent,#ff8b2b,#ffb04f,#ff8b2b,transparent);box-shadow:0 0 10px #ff7a00}
+  .g118DockTitle{position:absolute;left:5%;right:5%;top:14%;text-align:center}.g118DockTitle b{display:block;color:#fff;font-size:14px;letter-spacing:.16em}.g118DockTitle span{display:block;margin-top:6px;color:#858d91;font-size:8px;letter-spacing:.14em}
+  .g118Launch{position:absolute;left:20%;right:20%;bottom:8%;height:23%;border:2px solid #ff9b31;background:linear-gradient(180deg,#a64b0d,#491902);color:#fff6e7;font:1000 clamp(15px,4.5vw,23px)/1 system-ui;letter-spacing:.18em;box-shadow:0 0 20px #ff740059,inset 0 0 16px #ffad2230;touch-action:manipulation}
+  .g118Back:active,.g118Launch:active{filter:brightness(1.25);transform:translateY(1px)}
+  @media(min-aspect-ratio:3/4){.g118{width:min(100vw,56.3dvh);margin:auto}}
+  `;
+  document.head.appendChild(style);
+
+  function render118(){
+    root.classList.add('g118host');
+    root.innerHTML=`<div class="g118">
+      <div class="g118Top">
+        <button id="g118Back" class="g118Back" aria-label="Back">‹</button>
+        <div class="g118Title"><b>GARAGE</b><span>CUSTOMIZE YOUR SHIP</span></div>
+        <div class="g118Wallets"><div id="g118Dia" class="g118Wallet dia">0</div><div id="g118Coin" class="g118Wallet coin">0</div></div>
+      </div>
+      <section class="g118Hangar"><div class="g118Empty"><i></i><b>GARAGE PREVIEW</b><span>SHIP SYSTEM COMING NEXT</span></div></section>
+      <section class="g118Dock"><div class="g118DockTitle"><b>GARAGE SYSTEM ONLINE</b><span>BASE SHELL · NO CUSTOMIZATION MODULES LOADED</span></div><button id="g118Launch" class="g118Launch">LAUNCH</button></section>
+    </div>`;
+
+    const coin=document.getElementById('g118Coin'),dia=document.getElementById('g118Dia');
+    let d=0;try{d=Math.max(0,parseInt(localStorage.NSdiamonds||'0',10)||0)}catch(_){}
+    if(coin)coin.textContent=(typeof credits==='number'?Math.floor(credits):0).toLocaleString();
+    if(dia)dia.textContent=d.toLocaleString();
+
+    document.getElementById('g118Back').onclick=()=>{
+      root.classList.remove('show','g118host');
+      $('hud').style.display='none';
+      state='menu';
+      menu.classList.add('show');
+    };
+
+    document.getElementById('g118Launch').onclick=()=>{
+      root.classList.remove('show','g118host');
+      try{
+        if(typeof start==='function'){start();return}
+      }catch(e){console.error('GARAGE V118 launch handoff failed',e)}
+    };
+  }
+
+  window.renderGarageShell118=render118;
+  renderShop=render118;
+  try{parent.postMessage({source:'garage-shell-v118',status:'GARAGE SHELL ON'},'*')}catch(_){}
+}catch(e){console.error('GARAGE SHELL V118 SAFE FAIL',e)}})();
