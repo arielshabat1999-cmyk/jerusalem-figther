@@ -5,12 +5,12 @@ if(!menu99||!panel99)return;
 
 const css99=document.createElement('style');
 css99.textContent=`
-#menu.menu99{z-index:145!important;display:none!important;padding:0!important;background:#01040a url('./assets/ui/menu-command-v99.webp?v=20260917v99') center/cover no-repeat!important;backdrop-filter:none!important;overflow:hidden}
+#menu.menu99{z-index:145!important;display:none!important;padding:0!important;background:#01040a url('./assets/ui/menu-command-v99.webp?v=20260917v100') center/cover no-repeat!important;backdrop-filter:none!important;overflow:hidden}
 #menu.menu99.show{display:flex!important}
 #menu.menu99:before{content:"";position:absolute;z-index:1;inset:-18% 0 auto;height:24%;pointer-events:none;background:linear-gradient(180deg,transparent,#74efff18,transparent);mix-blend-mode:screen;animation:menuScan99 5.8s linear infinite}
 #menu.menu99:after{content:"";position:absolute;z-index:1;left:24%;right:24%;top:23%;height:29%;pointer-events:none;border-radius:50%;background:radial-gradient(ellipse,#38dfff13,transparent 68%);filter:blur(6px);animation:menuPulse99 2.6s ease-in-out infinite}
 @keyframes menuScan99{to{transform:translateY(510%)}}@keyframes menuPulse99{50%{opacity:.42;transform:scale(1.045)}}
-#menu.menu99 .panel.hero{position:absolute!important;z-index:3!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;padding:0!important;border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;clip-path:none!important;overflow:visible!important}
+#menu.menu99 .panel.hero{position:absolute!important;z-index:3!important;inset:auto!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;width:max(100vw,56.285vh)!important;height:max(100vh,177.667vw)!important;max-width:none!important;padding:0!important;border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;clip-path:none!important;overflow:visible!important}
 #menu.menu99 .panel.hero:before,#menu.menu99 .panel.hero:after,#menu.menu99 .panel.hero>div:first-child,#menu.menu99 .sub,#menu.menu99 .hint,#menu.menu99 .specialNote75,#menu.menu99 .meteorNote79,#menu.menu99 .meteorBest79{display:none!important}
 #menu.menu99 .panel.hero>div:last-child{position:static!important}
 #menu.menu99 .btn,#menu.menu99 .menuGarage99{position:absolute!important;z-index:8!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:#fff0!important;box-shadow:none!important;clip-path:none!important;color:transparent!important;font-size:0!important;pointer-events:auto!important;touch-action:manipulation!important;opacity:1!important}
@@ -21,7 +21,7 @@ css99.textContent=`
 #menu.menu99 .menuGarage99{left:35.1%!important;top:80.2%!important;width:29.8%!important;height:9.2%!important}
 .menuStat99{position:absolute;z-index:7;display:grid;place-items:center;min-width:25%;height:3.2%;padding:0 4px;background:#06111bc9;color:#6ff2ff;font:900 clamp(10px,3vw,15px)/1 system-ui,-apple-system,sans-serif;letter-spacing:.08em;text-shadow:0 0 9px #35eaff;pointer-events:none}
 .menuStat99.distance99{left:4.8%;top:87.25%}.menuStat99.survival99{right:4.8%;top:87.25%}.menuStat99.credits99{left:37%;top:95.0%;min-width:26%}
-@media(min-aspect-ratio:3/4){#menu.menu99{background-size:contain!important}.menuStat99{font-size:12px}}
+@media(min-aspect-ratio:3/4){#menu.menu99{background-size:contain!important}#menu.menu99 .panel.hero{width:min(100vw,56.285vh)!important;height:min(100vh,177.667vw)!important}.menuStat99{font-size:12px}}
 @media(prefers-reduced-motion:reduce){#menu.menu99:before,#menu.menu99:after{animation:none!important}}
 `;
 document.head.appendChild(css99);
@@ -31,7 +31,7 @@ const garage99=document.createElement('button');garage99.className='menuGarage99
 const distance99=document.createElement('div');distance99.className='menuStat99 distance99';
 const survival99=document.createElement('div');survival99.className='menuStat99 survival99';
 const credits99=document.createElement('div');credits99.className='menuStat99 credits99';
-menu99.append(distance99,survival99,credits99);
+panel99.append(distance99,survival99,credits99);
 
 function time99(v){v=Math.max(0,Math.floor(+v||0));return String(Math.floor(v/60)).padStart(2,'0')+':'+String(v%60).padStart(2,'0')}
 function stats99(){
