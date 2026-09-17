@@ -1,4 +1,4 @@
-/* V118 — isolated Garage shell. Does not modify the main LAUNCH handler. */
+/* V119 — isolated Garage shell. Garage LAUNCH delegates to the proven main LAUNCH button. */
 ;(()=>{try{
   const root=$('upgrade'), menu=$('menu');
   if(!root||!menu)return;
@@ -56,14 +56,16 @@
     };
 
     document.getElementById('g118Launch').onclick=()=>{
+      /* Use the exact same proven launch path as the main menu.
+         Do not call start() directly and do not duplicate game-start logic. */
+      const playBtn=$('play');
+      if(!playBtn){console.error('GARAGE V119: main LAUNCH button not found');return}
       root.classList.remove('show','g118host');
-      try{
-        if(typeof start==='function'){start();return}
-      }catch(e){console.error('GARAGE V118 launch handoff failed',e)}
+      try{playBtn.click()}catch(e){console.error('GARAGE V119 launch handoff failed',e)}
     };
   }
 
   window.renderGarageShell118=render118;
   renderShop=render118;
-  try{parent.postMessage({source:'garage-shell-v118',status:'GARAGE SHELL ON'},'*')}catch(_){}
+  try{parent.postMessage({source:'garage-shell-v119',status:'GARAGE SHELL ON'},'*')}catch(_){}
 }catch(e){console.error('GARAGE SHELL V118 SAFE FAIL',e)}})();
