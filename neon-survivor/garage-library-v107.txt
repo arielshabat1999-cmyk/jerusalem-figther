@@ -2,12 +2,8 @@
 ;(()=>{
 if(typeof SHIPS==='undefined')return;
 const LIB107={
-  falcon:{name:'FALCON',cost:0,desc:'Light interceptor hull. Narrow profile and fast handling.',hp:92,spd:272,rate:.17,dmg:15,role:'SCOUT / INTERCEPTOR'},
-  vanguard:{name:'VANGUARD',cost:140,desc:'Balanced fighter hull built for reliable all-round combat.',hp:112,spd:238,rate:.18,dmg:18,role:'BALANCED FIGHTER'},
-  titan:{name:'TITAN',cost:240,desc:'Heavy armored hull. Slower movement, higher durability and impact.',hp:152,spd:194,rate:.205,dmg:23,role:'HEAVY SHIP'},
-  phantom:{name:'PHANTOM',cost:320,desc:'Advanced stealth-tech hull with sharp handling and precision.',hp:104,spd:254,rate:.155,dmg:20,role:'STEALTH / ADVANCED'},
-  nova:{name:'NOVA',cost:420,desc:'Experimental exotic hull with an unconventional high-energy frame.',hp:124,spd:226,rate:.145,dmg:24,role:'EXPERIMENTAL / EXOTIC'}
-};
+  falcon:{name:'FALCON',cost:0,desc:'Modular interceptor hull. First ship in the new modular fleet.',hp:92,spd:272,rate:.17,dmg:15,role:'MODULAR INTERCEPTOR'}
+}
 Object.keys(SHIPS).forEach(k=>delete SHIPS[k]);Object.assign(SHIPS,LIB107);
 try{
   /* V121 one-time starter migration: make the new Falcon the active first ship. */
