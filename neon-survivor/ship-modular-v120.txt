@@ -16,7 +16,7 @@ function image(src,optional=false){return new Promise((resolve,reject)=>{const i
 function paths(id){
  const base='./assets/ships/modular/'+id+'/';
  const o={};
- for(const l of LAYERS)o[l]=base+l+'.png';
+ for(const l of LAYERS)o[l]=base+l+(id==='falcon'?'.webp':'.png');
  o.fallback='./assets/ships/base/'+id+'.svg';
  return o;
 }
