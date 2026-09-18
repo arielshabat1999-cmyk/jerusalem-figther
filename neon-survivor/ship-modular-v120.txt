@@ -46,7 +46,7 @@ function tintMask(img,color){
   return cv;
 }
 function compositeKey(id,opt={}){return id+'|'+(opt.color||'')+'|'+(opt.livery||'')}
-async function prepare(id='falcon',opt={}){
+function prepare(id='falcon',opt={}){
   if(!IDS.includes(id))id='falcon';
   const key=compositeKey(id,opt);
   if(prepared.has(key))return prepared.get(key);
