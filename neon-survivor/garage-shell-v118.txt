@@ -49,17 +49,17 @@
     if(dia)dia.textContent=d.toLocaleString();
 
     document.getElementById('g118Back').onclick=()=>{
-      root.classList.remove('show','g118host');
-      $('hud').style.display='none';
-      state='menu';
-      menu.classList.add('show');
+      root.classList.remove('g118host');
+      if(window.GameAPI&&GameAPI.showMenu)GameAPI.showMenu('garage-shell-back');
+      else{root.classList.remove('show');$('hud').style.display='none';state='menu';menu.classList.add('show')}
     };
 
     document.getElementById('g118Launch').onclick=()=>{
-      root.classList.remove('show','g118host');
-      try{
-        if(typeof start==='function'){start();return}
-      }catch(e){console.error('GARAGE V118 launch handoff failed',e)}
+      root.classList.remove('g118host');
+      if(window.GameAPI&&GameAPI.startRun){
+        if(GameAPI.startRun('garage-shell'))return;
+      }
+      try{if(typeof start==='function')start()}catch(e){console.error('GARAGE V118 launch handoff failed',e)}
     };
   }
 
