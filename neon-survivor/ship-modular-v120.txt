@@ -17,8 +17,19 @@ function loadImage(src,optional=false){
   return new Promise((resolve,reject)=>{
     const im=new Image();
     im.decoding='async';
-    im.onload=async()=>{try{if(im.decode)await im.decode()}catch(_){}resolve(im)};
-    im.onerror=()=>optional?resolve(null):reject(new Error('MODULAR ASSET FAILED '+src));
+    im.onload=async()=>{
+      try{
+        if(im.decode)await im.decode();
+        resolve(im);
+      }catch(e){
+        console.error('MODULAR ASSET DECODE FAILED',src,e);
+        optional?resolve(null):reject(new Error('MODULAR ASSET DECODE FAILED '+src));
+      }
+    };
+    im.onerror=()=>{
+      console.error('MODULAR ASSET LOAD FAILED',src);
+      optional?resolve(null):reject(new Error('MODULAR ASSET LOAD FAILED '+src));
+    };
     im.src=src;
   });
 }
