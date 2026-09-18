@@ -1,0 +1,72 @@
+/* V120 — isolated modular ship asset loader + renderer. Not wired to gameplay or Garage yet. */
+;(()=>{try{
+const VERSION='20260918v120';
+const IDS=['falcon','vanguard','titan','phantom','nova'];
+const META={
+ falcon:{anchor:{x:.5,y:.5},enginePoints:[{x:.43,y:.84},{x:.57,y:.84}],muzzlePoints:[{x:.43,y:.19},{x:.57,y:.19}],trailPoint:{x:.5,y:.9}},
+ vanguard:{anchor:{x:.5,y:.5},enginePoints:[{x:.38,y:.81},{x:.5,y:.86},{x:.62,y:.81}],muzzlePoints:[{x:.5,y:.18}],trailPoint:{x:.5,y:.9}},
+ titan:{anchor:{x:.5,y:.5},enginePoints:[{x:.34,y:.82},{x:.5,y:.86},{x:.66,y:.82}],muzzlePoints:[{x:.34,y:.23},{x:.66,y:.23}],trailPoint:{x:.5,y:.91}},
+ phantom:{anchor:{x:.5,y:.5},enginePoints:[{x:.42,y:.83},{x:.58,y:.83}],muzzlePoints:[{x:.32,y:.27},{x:.68,y:.27}],trailPoint:{x:.5,y:.9}},
+ nova:{anchor:{x:.5,y:.5},enginePoints:[{x:.41,y:.84},{x:.5,y:.88},{x:.59,y:.84}],muzzlePoints:[{x:.5,y:.15}],trailPoint:{x:.5,y:.91}}
+};
+const LAYERS=['hull-base','color-mask','livery-mask','lights-emissive','cockpit','engine-flame','shadow-ao'];
+const cache=new Map(),composites=new Map();
+
+function image(src,optional=false){return new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>resolve(im);im.onerror=()=>optional?resolve(null):reject(new Error('asset '+src));im.src=src+(src.includes('?')?'&':'?')+'v='+VERSION})}
+function paths(id){
+ const base='./assets/ships/modular/'+id+'/';
+ const o={};
+ for(const l of LAYERS)o[l]=base+l+'.png';
+ o.fallback='./assets/ships/base/'+id+'.svg';
+ return o;
+}
+async function load(id){
+ if(!IDS.includes(id))id='falcon';
+ if(cache.has(id))return cache.get(id);
+ const p=paths(id);
+ const promise=(async()=>{
+   const fallback=await image(p.fallback,false);
+   const entries=await Promise.all(LAYERS.map(async l=>[l,await image(p[l],true)]));
+   const layers=Object.fromEntries(entries);
+   return{id,meta:META[id],fallback,layers,modular:!!layers['hull-base']};
+ })();
+ cache.set(id,promise);return promise;
+}
+function tint(img,color,mode='source-in'){
+ if(!img)return null;
+ const cv=document.createElement('canvas');cv.width=img.naturalWidth||img.width;cv.height=img.naturalHeight||img.height;
+ const c=cv.getContext('2d');c.drawImage(img,0,0,cv.width,cv.height);c.globalCompositeOperation=mode;c.fillStyle=color;c.fillRect(0,0,cv.width,cv.height);c.globalCompositeOperation='source-over';return cv;
+}
+function key(id,opt){return[id,opt.color||'',opt.livery||'',opt.skin||''].join('|')}
+async function composite(id,opt={}){
+ const k=key(id,opt);if(composites.has(k))return composites.get(k);
+ const a=await load(id);
+ if(!a.modular){composites.set(k,a.fallback);return a.fallback}
+ const base=a.layers['hull-base'],w=base.naturalWidth,h=base.naturalHeight,cv=document.createElement('canvas');cv.width=w;cv.height=h;const c=cv.getContext('2d');
+ if(a.layers['shadow-ao'])c.drawImage(a.layers['shadow-ao'],0,0,w,h);
+ c.drawImage(base,0,0,w,h);
+ if(a.layers['color-mask']&&opt.color){const t=tint(a.layers['color-mask'],opt.color);c.save();c.globalCompositeOperation='multiply';c.drawImage(t,0,0,w,h);c.restore()}
+ if(a.layers['cockpit'])c.drawImage(a.layers['cockpit'],0,0,w,h);
+ composites.set(k,cv);return cv;
+}
+function drawGlow(ctx,img,color,x,y,w,h){
+ if(!img)return;const t=tint(img,color||'#55edff');ctx.save();ctx.globalCompositeOperation='lighter';ctx.globalAlpha=.5;ctx.filter='blur(8px)';ctx.drawImage(t,x,y,w,h);ctx.filter='none';ctx.globalAlpha=1;ctx.drawImage(t,x,y,w,h);ctx.restore()
+}
+function engine(ctx,meta,color,x,y,w,h,time=0){
+ ctx.save();ctx.globalCompositeOperation='lighter';
+ for(const p of meta.enginePoints){const px=x+p.x*w,py=y+p.y*h,len=h*(.07+.015*Math.sin(time*9+p.x*7));const g=ctx.createLinearGradient(px,py,px,py+len);g.addColorStop(0,'#fff');g.addColorStop(.2,color||'#55edff');g.addColorStop(1,'#00aaff00');ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(px-w*.012,py);ctx.lineTo(px,py+len);ctx.lineTo(px+w*.012,py);ctx.closePath();ctx.fill()}
+ ctx.restore()
+}
+async function draw(ctx,opt={}){
+ const id=IDS.includes(opt.shipId)?opt.shipId:'falcon',a=await load(id),img=await composite(id,opt);
+ const nw=img.naturalWidth||img.width,nh=img.naturalHeight||img.height,scale=opt.scale||1,h=(opt.height||100)*scale,w=h*(nw/nh),x=(opt.x||0)-w*.5,y=(opt.y||0)-h*.5;
+ ctx.save();ctx.translate(opt.x||0,opt.y||0);ctx.rotate(opt.rotation||0);ctx.globalAlpha=opt.alpha??1;ctx.translate(-(opt.x||0),-(opt.y||0));ctx.drawImage(img,x,y,w,h);
+ if(a.modular&&opt.showGlow!==false)drawGlow(ctx,a.layers['lights-emissive'],opt.engineGlow||'#55edff',x,y,w,h);
+ if(opt.showEngineFlame!==false)engine(ctx,a.meta,opt.engineGlow||'#55edff',x,y,w,h,opt.time||0);
+ ctx.restore();
+ return{w,h,meta:a.meta,modular:a.modular};
+}
+function clearCompositeCache(id){if(!id){composites.clear();return}for(const k of [...composites.keys()])if(k.startsWith(id+'|'))composites.delete(k)}
+window.__SHIP_MODULAR_V120={version:120,ids:IDS,meta:META,paths,load,preloadAll:()=>Promise.all(IDS.map(load)),draw,composite,clearCompositeCache};
+try{parent.postMessage({source:'ship-modular-v120',status:'MODULAR SHIP RENDERER READY'},'*')}catch(_){}
+}catch(e){console.error('SHIP MODULAR V120 SAFE FAIL',e)}})();
