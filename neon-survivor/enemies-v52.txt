@@ -23,7 +23,6 @@ G.setEnemy(function(e){
   const id=enemyId(e),im=imgs[id];if(!im||!im.complete||!im.naturalWidth)return;
   const r=e.r||15,w=r*scale[id]*(e.elite14?1.12:1),h=w*(im.naturalHeight/im.naturalWidth),hit=e.hit>0,rot=(e.rot||0)*.08;
   X.save();X.translate(e.x,e.y);X.rotate(rot);X.globalAlpha=hit?.68:1;X.shadowBlur=e.elite14?20:hit?18:9;X.shadowColor=hit?'#ffffff':glow[id];X.drawImage(im,-w/2,-h/2,w,h);
-  if(e.elite14){X.globalCompositeOperation='lighter';X.globalAlpha=.30+.08*Math.sin(G.time*5);X.strokeStyle=glow[id];X.lineWidth=1.5;X.beginPath();X.ellipse(0,0,w*.48,h*.46,0,0,Math.PI*2);X.stroke()}
   X.restore();
 });
 })();

@@ -29,7 +29,7 @@ G.setEnemy(function(e){
  enemy0(e);
  if(boss){
   X.save();X.translate(e.x,e.y);X.rotate(G.time*.09);X.globalCompositeOperation='lighter';X.globalAlpha=.20+.08*pulse;X.strokeStyle=col;X.lineWidth=1.2;X.setLineDash([12,10]);X.beginPath();X.ellipse(0,0,wr*.92,hr*1.18,0,0,TAU);X.stroke();X.setLineDash([]);X.rotate(-G.time*.22);for(let i=0;i<4;i++){let a=i*Math.PI/2;X.beginPath();X.moveTo(Math.cos(a)*wr*.83,Math.sin(a)*hr*1.05);X.lineTo(Math.cos(a)*wr*.98,Math.sin(a)*hr*1.25);X.stroke()}X.restore()
- }else if(quality()>0&&e.flow10&&e.flow10.phase==='hold')corners(e.x,e.y,r*2.8,r*2.35,col,.30+.16*pulse);
+ }
 });
 G.setAsteroid(function(o){
  if(!o)return;const id=o.ast59||o.astKind32||'basalt',danger=o.hunter59||o.colossus59,col=o.colossus59?'#ff4058':o.hunter59?'#ff6a3d':id==='ice'?'#62eaff':id==='shard'?'#ff925d':'#9bc7dd',r=o.r||24,pulse=.72+.28*Math.sin(G.time*4+(o.seed||0));

@@ -46,6 +46,8 @@ function iconSVG92(u){
  return'<svg '+common+'<circle class="metal" cx="60" cy="60" r="39"/><circle class="dark" cx="60" cy="60" r="28"/><circle class="core" cx="60" cy="60" r="17"/><path class="metal spokes" d="M60 5v28m0 54v28M5 60h28m54 0h28M21 21l20 20m38 38 20 20m0-78L79 41M41 79 21 99"/></svg>'
 }
 function iconAsset94(u){const icons={core:'calibrated-core',cycler:'turbo-cycler',cannon:'extra-cannon',homing:'homing-projectiles',pierce:'piercing-rounds',explosive:'explosive-rounds',caliber:'heavy-caliber',shield:'shield-capacitor',regen:'shield-regeneration',move:'thruster-tuning',dodge:'evasion-matrix',missile:'missile-clock',chain:'chain-lightning',nova:'nova-pulse',velocity:'ion-velocity'};return'./assets/upgrade-icons-v102/'+icons[u.id]+'.webp?v=104'}
+const levelAssetUrls87=['./assets/ui/level-up-reference-v94.jpg?v=95',...pool.map(iconAsset94)];
+const levelAssetsReady87=Promise.all(levelAssetUrls87.map(src=>new Promise(resolve=>{const im=new Image();im.onload=()=>{if(im.decode)im.decode().catch(()=>{}).finally(resolve);else resolve()};im.onerror=resolve;im.src=src})));
 function refresh(){if(!p)return;document.getElementById('xp87i').style.width=Math.min(100,xp/next*100)+'%';lab.textContent='LV '+L+' · '+Math.floor(xp)+' / '+next+' XP'}
 function frame87(){return new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))}
 async function readyLevel87(box){
@@ -62,6 +64,7 @@ async function openLevel(){
  state='levelup';modal.classList.remove('show');document.getElementById('levelSub87').textContent='LEVEL '+L;
  const box=document.getElementById('choices87');box.innerHTML='';
  for(const u of opts){const current=n(u.id),evo=current===5,b=document.createElement('button');b.className='option94'+(evo?' evolution87':'');b.style.setProperty('--c',rarity[evo?'legendary':u.rar]);b.setAttribute('aria-label','Select '+label(u,current));b.innerHTML='<span class="art94"><img src="'+iconAsset94(u)+'" alt=""></span><span class="copy94"><b>'+label(u,current)+'</b><strong>'+description(u,current)+'</strong><span class="meta94"><em>'+(evo?'EVOLUTION':u.rar.toUpperCase())+'</em><span>'+rank(u,current)+' <i>››</i> '+(evo?'MAX':rank(u,current+1))+'</span></span></span><span class="selectPulse94"></span>';b.onclick=()=>choose(u,opts);box.appendChild(b)}
+ await levelAssetsReady87;
  await readyLevel87(box);
  if(state==='levelup')modal.classList.add('show');
 }

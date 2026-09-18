@@ -27,7 +27,7 @@ function chooseAI83(){
 }
 function initEnemy83(e){
  if(!e||e.boss||e.boss5||e.boss32||known83.has(e))return;known83.add(e);const ai=chooseAI83();e.ai83=ai;e.aiPhase83=R(0,6.28);
- if(ai==='interceptor'){e.type='striker';e.r=Math.min(e.r,14);e.spd=110+stage*5;e.val=Math.round((e.val||15)*1.35);e.y=Math.min(H+65,Math.max(H*.82,e.y));e.x=Math.random()<.5?32:W-32}
+ if(ai==='interceptor'){e.type='striker';e.r=Math.min(e.r,14);e.spd=110+stage*5;e.val=Math.round((e.val||15)*1.35);}
  else if(ai==='sniper'){e.type='mortar';e.r=Math.min(17,e.r);e.shotDmg=(e.shotDmg||8)*1.65;e.val=Math.round((e.val||20)*1.5)}
  else if(ai==='kamikaze'){e.type='dart';e.spd=145+stage*7;e.dmg=(e.dmg||10)*1.65;e.val=Math.round((e.val||15)*1.55)}
  else if(ai==='tank'){e.type='tank';e.r=Math.max(23,e.r);e.shield83=Math.max(30,e.max*.58);e.maxShield83=e.shield83;e.val=Math.round((e.val||25)*1.45)}
@@ -38,6 +38,7 @@ function initEnemy83(e){
 function sync83(e){if(e.flow10){e.flow10.x=e.x;e.flow10.y=e.y;e.flow10.anchorX=e.x-Math.sin(t*e.flow10.freq+e.flow10.seed)*e.flow10.amp}}
 function moveEnemy83(e,dt){
  const ai=e.ai83;if(!ai||!p)return;
+ if(e.flow10&&e.flow10.phase==='enter')return;
  if(ai==='interceptor'){const tx=p.x+Math.sin(t*2+e.aiPhase83)*45,ty=Math.min(H-24,p.y+72);e.x+=(tx-e.x)*Math.min(1,dt*2.3);e.y+=(ty-e.y)*Math.min(1,dt*1.75)}
  else if(ai==='sniper'){const tx=cl(p.x+Math.sin(t*.7+e.aiPhase83)*W*.30,30,W-30),ty=H*.15;e.x+=(tx-e.x)*Math.min(1,dt*.8);e.y+=(ty-e.y)*Math.min(1,dt*1.2)}
  else if(ai==='kamikaze'){const dx=p.x-e.x,dy=p.y-e.y,l=Math.hypot(dx,dy)||1;e.x+=dx/l*(125+stage*5)*dt;e.y+=dy/l*(125+stage*5)*dt;e.rot=Math.atan2(dy,dx)-Math.PI/2}
@@ -105,7 +106,7 @@ update=function(dt){
  for(const e of E){initEnemy83(e);if(hp.has(e))absorbTank83(e,hp.get(e));if(state==='play'&&!e.boss&&!e.boss5)moveEnemy83(e,dt)}
  asteroidDynamics83(dt);updateEnvironment83(dt);if(state==='boss')bossPhase83(dt);comboUI83()
 };
-draw=function(){drawBase83();for(const e of E)drawEnemyOverlay83(e);drawEnvironment83();if(boss83&&boss83.phase83===2){X.save();X.globalCompositeOperation='lighter';X.strokeStyle='#ff4778';X.globalAlpha=.3+.15*Math.sin(t*8);X.lineWidth=3;X.beginPath();X.arc(boss83.x,boss83.y,boss83.r*1.7,0,6.28);X.stroke();X.restore()}};
+draw=function(){drawBase83();drawEnvironment83();if(boss83&&boss83.phase83===2){X.save();X.globalCompositeOperation='lighter';X.strokeStyle='#ff4778';X.globalAlpha=.3+.15*Math.sin(t*8);X.lineWidth=3;X.beginPath();X.arc(boss83.x,boss83.y,boss83.r*1.7,0,6.28);X.stroke();X.restore()}};
 reset=function(){elapsed83=0;combo83=0;comboKills83=0;known83=new WeakSet();knownAst83=new WeakSet();hazardCd83=5;asteroidCheck83=0;gate83=null;black83=null;boss83=null;comboUI83();resetBase83()};
 try{parent.postMessage({source:'evolution-director-v83',status:'EVOLUTION ON'},'*')}catch(_){}
 })();
