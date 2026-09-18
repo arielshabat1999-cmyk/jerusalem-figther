@@ -3,14 +3,14 @@
 const G=window.__V42;if(!G)return;
 const X=G.ctx,VERSION='20260917v107';
 const paths={
-  falcon:'./assets/ships/base/falcon.svg',
+  falcon:'./assets/ships/modular/falcon/hull-base.webp',
   vanguard:'./assets/ships/base/vanguard.svg',
   titan:'./assets/ships/base/titan.svg',
   phantom:'./assets/ships/base/phantom.svg',
   nova:'./assets/ships/base/nova.svg'
 };
 const cfg={
-  falcon:{scale:4.44,anchor:.49,glow:'#55edff'},
+  falcon:{scale:4.88,anchor:.50,glow:'#55edff'},
   vanguard:{scale:4.62,anchor:.49,glow:'#45dfff'},
   titan:{scale:4.92,anchor:.49,glow:'#ffb54f'},
   phantom:{scale:4.54,anchor:.49,glow:'#bd7bff'},
