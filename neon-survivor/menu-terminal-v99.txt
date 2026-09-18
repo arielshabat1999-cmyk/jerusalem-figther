@@ -1,5 +1,53 @@
 /* V99 — selected command-terminal opening screen with live controls and stats */
 ;(()=>{
+/* V120 SAFETY LAYER — dormant facade. Existing buttons keep their original handlers. */
+try{
+  if(!window.GameAPI){
+    const api={
+      version:120,
+      health(){
+        return {
+          ready:true,
+          state:typeof state==='string'?state:null,
+          start:typeof start==='function',
+          reset:typeof reset==='function',
+          renderShop:typeof renderShop==='function',
+          playButton:!!$('play'),
+          menu:!!$('menu'),
+          garage:!!$('upgrade')
+        };
+      },
+      startRun(source='api'){
+        try{if(typeof start!=='function')throw new Error('start unavailable');start();return true}
+        catch(e){console.error('GameAPI.startRun failed',source,e);return false}
+      },
+      showMenu(source='api'){
+        try{
+          state='menu';
+          $('hud').style.display='none';
+          $('over').classList.remove('show');
+          $('upgrade').classList.remove('show');
+          $('menu').classList.add('show');
+          return true
+        }catch(e){console.error('GameAPI.showMenu failed',source,e);return false}
+      },
+      openGarage(source='api'){
+        try{
+          if(!p&&typeof reset==='function')reset();
+          state='shop';
+          $('menu').classList.remove('show');
+          $('hud').style.display='none';
+          $('upgrade').classList.add('show');
+          if(typeof renderShop==='function')renderShop();
+          return true
+        }catch(e){console.error('GameAPI.openGarage failed',source,e);return false}
+      }
+    };
+    window.GameAPI=api;
+    try{parent.postMessage({source:'game-api-v120',status:'GAME API READY',health:api.health()},'*')}catch(_){}
+  }
+}catch(e){console.error('GAME API V120 SAFE FAIL',e)}
+
 const menu99=$('menu'),panel99=menu99&&menu99.querySelector('.panel.hero');
 if(!menu99||!panel99)return;
 
