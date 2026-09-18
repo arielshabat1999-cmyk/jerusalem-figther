@@ -22,7 +22,7 @@
   .g118Hangar:before{content:"";position:absolute;left:10%;right:10%;bottom:8%;height:13%;border:3px solid #ff8e2d88;border-radius:50%;transform:perspective(230px) rotateX(66deg);background:radial-gradient(ellipse,#30dfff20,#05080a 58%,#000 72%);box-shadow:0 0 26px #ff7b0035,inset 0 0 22px #20dfff22}
   .g118Hangar:after{content:"";position:absolute;left:50%;top:8%;bottom:20%;width:33%;transform:translateX(-50%);clip-path:polygon(34% 0,66% 0,100% 100%,0 100%);background:linear-gradient(90deg,transparent,#52dcff0b,#d8fbff0e,#52dcff0b,transparent);animation:g118beam 2.8s ease-in-out infinite alternate}
   @keyframes g118beam{to{opacity:.48}}@keyframes g118float{50%{transform:translate(-50%,-50%) translateY(-7px)}}
-  .g118Ship{position:absolute;z-index:3;left:50%;top:43%;width:min(68%,330px);height:58%;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;pointer-events:none;animation:g118float 3.2s ease-in-out infinite}.g118Ship img{display:block;max-width:100%;max-height:100%;object-fit:contain;filter:drop-shadow(0 0 12px #45eaff) drop-shadow(0 0 28px #45eaff66)}.g118ShipMeta{position:absolute;z-index:4;left:50%;bottom:12%;transform:translateX(-50%);width:86%;text-align:center;pointer-events:none}.g118ShipMeta b{display:block;color:#f7ffff;font:1000 clamp(18px,5vw,28px)/1 system-ui;letter-spacing:.16em;text-shadow:0 0 13px #46e8ff}.g118ShipMeta span{display:block;margin-top:7px;color:#67dff0;font:900 clamp(7px,1.8vw,10px)/1 system-ui;letter-spacing:.22em}.g118Empty{display:none}
+  .g118Ship{position:absolute;z-index:3;left:50%;top:43%;width:min(68%,330px);height:58%;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;pointer-events:none;animation:g118float 3.2s ease-in-out infinite}.g118Ship canvas{display:block;width:100%;height:100%;filter:drop-shadow(0 0 12px #45eaff) drop-shadow(0 0 28px #45eaff66)}.g118ShipMeta{position:absolute;z-index:4;left:50%;bottom:12%;transform:translateX(-50%);width:86%;text-align:center;pointer-events:none}.g118ShipMeta b{display:block;color:#f7ffff;font:1000 clamp(18px,5vw,28px)/1 system-ui;letter-spacing:.16em;text-shadow:0 0 13px #46e8ff}.g118ShipMeta span{display:block;margin-top:7px;color:#67dff0;font:900 clamp(7px,1.8vw,10px)/1 system-ui;letter-spacing:.22em}.g118Empty{display:none}
   .g118Dock{position:absolute;left:3.8%;right:3.8%;top:68%;bottom:2.4%;border:2px solid #353738;background:linear-gradient(180deg,#131516,#070809);box-shadow:inset 0 0 34px #000}.g118Dock:before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,transparent,#ff8b2b,#ffb04f,#ff8b2b,transparent);box-shadow:0 0 10px #ff7a00}
   .g118DockTitle{position:absolute;left:5%;right:5%;top:14%;text-align:center}.g118DockTitle b{display:block;color:#fff;font-size:14px;letter-spacing:.16em}.g118DockTitle span{display:block;margin-top:6px;color:#858d91;font-size:8px;letter-spacing:.14em}
   .g118Launch{position:absolute;left:20%;right:20%;bottom:8%;height:23%;border:2px solid #ff9b31;background:linear-gradient(180deg,#a64b0d,#491902);color:#fff6e7;font:1000 clamp(15px,4.5vw,23px)/1 system-ui;letter-spacing:.18em;box-shadow:0 0 20px #ff740059,inset 0 0 16px #ffad2230;touch-action:manipulation}
@@ -32,19 +32,20 @@
   document.head.appendChild(style);
 
   function nextFrame118(){return new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))}
-  async function settleGarage118(shipImg){
+  async function settleGarage118(shipCanvas){
+    const M=window.__SHIP_MODULAR_V120;
+    if(!M||typeof M.prepare!=='function'||typeof M.renderCanvas!=='function'){
+      console.error('GARAGE V121: modular ship renderer unavailable');
+      return;
+    }
     try{
-      if(shipImg){
-        if(!shipImg.complete)await new Promise(r=>{
-          const done=()=>{shipImg.removeEventListener('load',done);shipImg.removeEventListener('error',done);r()};
-          shipImg.addEventListener('load',done);shipImg.addEventListener('error',done);
-        });
-        if(shipImg.decode)try{await shipImg.decode()}catch(_){}
-      }
+      await M.prepare('falcon');
+      await M.renderCanvas(shipCanvas,{shipId:'falcon',engineGlow:'#55edff',showGlow:true,showEngineFlame:true,time:0});
       if(document.fonts&&document.fonts.ready)try{await document.fonts.ready}catch(_){}
       await nextFrame118();
-    }finally{
       root.classList.remove('g118prep');
+    }catch(e){
+      console.error('GARAGE V121: Falcon render failed',e);
     }
   }
   function render118(){
@@ -59,7 +60,7 @@
           <div class="g118Title"><b>GARAGE</b><span>CUSTOMIZE YOUR SHIP</span></div>
           <div class="g118Wallets"><div id="g118Dia" class="g118Wallet dia">0</div><div id="g118Coin" class="g118Wallet coin">0</div></div>
         </div>
-        <section class="g118Hangar"><div class="g118Ship"><img id="g118ShipImg" alt="Equipped ship"></div><div class="g118ShipMeta"><b id="g118ShipName">SHIP</b><span id="g118ShipRole">BASE HULL</span></div><div class="g118Empty"><i></i><b>GARAGE PREVIEW</b><span>SHIP SYSTEM COMING NEXT</span></div></section>
+        <section class="g118Hangar"><div class="g118Ship"><canvas id="g118ShipCanvas" aria-label="Equipped modular Falcon"></canvas></div><div class="g118ShipMeta"><b id="g118ShipName">SHIP</b><span id="g118ShipRole">BASE HULL</span></div><div class="g118Empty"><i></i><b>GARAGE PREVIEW</b><span>SHIP SYSTEM COMING NEXT</span></div></section>
         <section class="g118Dock"><div class="g118DockTitle"><b>GARAGE SYSTEM ONLINE</b><span>BASE SHELL · NO CUSTOMIZATION MODULES LOADED</span></div><button id="g118Launch" class="g118Launch">LAUNCH</button></section>
       `;
       root.appendChild(shell);
@@ -70,29 +71,11 @@
     if(coin)coin.textContent=(typeof credits==='number'?Math.floor(credits):0).toLocaleString();
     if(dia)dia.textContent=d.toLocaleString();
 
-    const shipIds=['falcon','vanguard','titan','phantom','nova'];
-    const currentId=shipIds.includes(typeof equippedShip==='string'?equippedShip:'')?equippedShip:'falcon';
-    const shipData=(typeof SHIPS!=='undefined'&&SHIPS[currentId])||{};
-    const shipImg=shell.querySelector('#g118ShipImg'),shipName=shell.querySelector('#g118ShipName'),shipRole=shell.querySelector('#g118ShipRole');
-    if(shipImg){
-      shipImg.onerror=null;
-      if(currentId==='falcon'){
-        shipImg.onerror=()=>{
-          if(shipImg.dataset.fallback==='1')return;
-          shipImg.dataset.fallback='1';
-          console.warn('Garage Falcon primary asset failed; using stable fallback');
-          shipImg.src='./assets/ships/base/falcon.svg?v=20260918fallback';
-        };
-        shipImg.dataset.fallback='0';
-        shipImg.src='./assets/ships/modular/falcon/hull-base.webp?v=20260918f121';
-      }else{
-        shipImg.dataset.fallback='0';
-        shipImg.src='./assets/ships/base/'+currentId+'.svg?v=20260918g120';
-      }
-    }
-    if(shipName)shipName.textContent=(shipData.name||currentId).toUpperCase();
-    if(shipRole)shipRole.textContent=(shipData.role||'BASE HULL').toUpperCase();
-    settleGarage118(shipImg);
+    const currentId='falcon',shipData=(typeof SHIPS!=='undefined'&&SHIPS.falcon)||{};
+    const shipCanvas=shell.querySelector('#g118ShipCanvas'),shipName=shell.querySelector('#g118ShipName'),shipRole=shell.querySelector('#g118ShipRole');
+    if(shipName)shipName.textContent=(shipData.name||'FALCON').toUpperCase();
+    if(shipRole)shipRole.textContent=(shipData.role||'MODULAR INTERCEPTOR').toUpperCase();
+    settleGarage118(shipCanvas);
 
     shell.querySelector('#g118Back').onclick=()=>{
       root.classList.remove('show','g118host');
