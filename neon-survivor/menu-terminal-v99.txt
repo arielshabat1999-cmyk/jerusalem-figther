@@ -39,8 +39,8 @@ function stats99(){
 stats99();
 
 let fromMenu99=false;
-function closeGarage99(){fromMenu99=false;$('upgrade').classList.remove('show');$('hud').style.display='none';state='menu';menu99.classList.add('show');stats99()}
-garage99.onclick=e=>{e.preventDefault();if(!p)reset();fromMenu99=true;state='shop';menu99.classList.remove('show');$('hud').style.display='none';$('upgrade').classList.add('show');try{renderShop()}catch(_){}};
+function closeGarage99(){fromMenu99=false;if(window.GameAPI&&GameAPI.showMenu)GameAPI.showMenu('garage-back');else{$('upgrade').classList.remove('show');$('hud').style.display='none';state='menu';menu99.classList.add('show')}stats99()}
+garage99.onclick=e=>{e.preventDefault();fromMenu99=true;if(window.GameAPI&&GameAPI.openGarage)GameAPI.openGarage('menu-garage');else{if(!p)reset();state='shop';menu99.classList.remove('show');$('hud').style.display='none';$('upgrade').classList.add('show');try{renderShop()}catch(_){}}};
 for(const id of ['garageBack7','continue']){const b=$(id);if(!b)continue;const old=b.onclick;b.onclick=function(e){if(fromMenu99){if(e){e.preventDefault();e.stopPropagation()}closeGarage99();return}if(old)return old.call(this,e)}}
 
 for(const id of ['play']){const b=$(id);if(!b)continue;b.addEventListener('click',()=>{stats99()},{capture:true})}
