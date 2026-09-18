@@ -47,10 +47,24 @@ function iconSVG92(u){
 }
 function iconAsset94(u){const icons={core:'calibrated-core',cycler:'turbo-cycler',cannon:'extra-cannon',homing:'homing-projectiles',pierce:'piercing-rounds',explosive:'explosive-rounds',caliber:'heavy-caliber',shield:'shield-capacitor',regen:'shield-regeneration',move:'thruster-tuning',dodge:'evasion-matrix',missile:'missile-clock',chain:'chain-lightning',nova:'nova-pulse',velocity:'ion-velocity'};return'./assets/upgrade-icons-v102/'+icons[u.id]+'.webp?v=104'}
 function refresh(){if(!p)return;document.getElementById('xp87i').style.width=Math.min(100,xp/next*100)+'%';lab.textContent='LV '+L+' · '+Math.floor(xp)+' / '+next+' XP'}
-function openLevel(){
- const opts=offers();if(!opts.length){state='play';pending=0;return}state='levelup';modal.classList.add('show');document.getElementById('levelSub87').textContent='LEVEL '+L;
- const box=document.getElementById('choices87');box.innerHTML='';for(const u of opts){const current=n(u.id),evo=current===5,b=document.createElement('button');b.className='option94'+(evo?' evolution87':'');b.style.setProperty('--c',rarity[evo?'legendary':u.rar]);b.setAttribute('aria-label','Select '+label(u,current));b.innerHTML='<span class="art94"><img src="'+iconAsset94(u)+'" alt=""></span><span class="copy94"><b>'+label(u,current)+'</b><strong>'+description(u,current)+'</strong><span class="meta94"><em>'+(evo?'EVOLUTION':u.rar.toUpperCase())+'</em><span>'+rank(u,current)+' <i>››</i> '+(evo?'MAX':rank(u,current+1))+'</span></span></span><span class="selectPulse94"></span>';b.onclick=()=>choose(u,opts);box.appendChild(b)}
-  }
+function frame87(){return new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))}
+async function readyLevel87(box){
+ const imgs=[...box.querySelectorAll('img')];
+ await Promise.all(imgs.map(async im=>{
+  if(!im.complete)await new Promise(r=>{im.onload=im.onerror=()=>r()});
+  if(im.decode)try{await im.decode()}catch(_){}
+ }));
+ if(document.fonts&&document.fonts.ready)try{await document.fonts.ready}catch(_){}
+ await frame87();
+}
+async function openLevel(){
+ const opts=offers();if(!opts.length){state='play';pending=0;return}
+ state='levelup';modal.classList.remove('show');document.getElementById('levelSub87').textContent='LEVEL '+L;
+ const box=document.getElementById('choices87');box.innerHTML='';
+ for(const u of opts){const current=n(u.id),evo=current===5,b=document.createElement('button');b.className='option94'+(evo?' evolution87':'');b.style.setProperty('--c',rarity[evo?'legendary':u.rar]);b.setAttribute('aria-label','Select '+label(u,current));b.innerHTML='<span class="art94"><img src="'+iconAsset94(u)+'" alt=""></span><span class="copy94"><b>'+label(u,current)+'</b><strong>'+description(u,current)+'</strong><span class="meta94"><em>'+(evo?'EVOLUTION':u.rar.toUpperCase())+'</em><span>'+rank(u,current)+' <i>››</i> '+(evo?'MAX':rank(u,current+1))+'</span></span></span><span class="selectPulse94"></span>';b.onclick=()=>choose(u,opts);box.appendChild(b)}
+ await readyLevel87(box);
+ if(state==='levelup')modal.classList.add('show');
+}
  function choose(u,opts){const newRank=n(u.id)+1;owned[u.id]=newRank;u.apply(newRank);lastOffers=opts.filter(x=>x!==u).map(x=>x.id);modal.classList.remove('show');flashStage(newRank===6?'EVOLUTION · '+u.evo:u.name+' · '+rank(u,newRank));pending--;last=performance.now();if(pending>0)setTimeout(openLevel,120);else state=(E.some(e=>e&&(e.boss||e.boss5||e.boss32))?'boss':'play');refresh();ui()}
 function addXP(v,x,y){if(!p||state==='over')return;xp+=Math.max(1,Math.round(v));if(x!=null&&Math.random()<.22)popText(x,y,'+'+Math.round(v)+' XP','#8defff',12);while(xp>=next){xp-=next;L++;next=need(L);pending++}refresh();if(pending&&state!=='levelup')setTimeout(openLevel,0)}
 function nearest(x,y,skip){let best=null,bd=1e9;for(const e of E){if(!e||e===skip)continue;let d=Math.hypot(e.x-x,e.y-y);if(d<bd){bd=d;best=e}}return best}
