@@ -8,7 +8,7 @@ const META={
     muzzlePoints:[{x:.3125,y:.210},{x:.6875,y:.210}],
     trailPoint:{x:.5,y:.889}
   }
-};
+}
 const LAYERS=['hull-base','color-mask','livery-mask','lights-emissive','cockpit','engine-flame','shadow-ao'];
 const cache=new Map(),prepared=new Map();
 
