@@ -1,0 +1,107 @@
+/* Modular Ship Renderer v1 — isolated prototype, not loaded by the game yet */
+;(()=>{
+  const cache=new Map();
+  const tintCanvas=document.createElement('canvas');
+  const tintCtx=tintCanvas.getContext('2d');
+
+  async function loadImage(src){
+    if(cache.has(src))return cache.get(src);
+    const p=new Promise((resolve,reject)=>{
+      const img=new Image();
+      img.onload=()=>resolve(img);
+      img.onerror=reject;
+      img.src=src;
+    });
+    cache.set(src,p);
+    return p;
+  }
+
+  async function loadShip(basePath){
+    const meta=await fetch(basePath+'/meta.json',{cache:'no-store'}).then(r=>{
+      if(!r.ok)throw new Error('meta '+r.status);
+      return r.json();
+    });
+    const names=meta.layers;
+    const entries=await Promise.all(Object.entries(names).map(async ([key,file])=>[key,await loadImage(basePath+'/'+file)]));
+    return {meta,layers:Object.fromEntries(entries)};
+  }
+
+  function drawTinted(ctx,img,x,y,w,h,color,alpha=1,blend='source-over'){
+    tintCanvas.width=Math.max(1,Math.round(w));
+    tintCanvas.height=Math.max(1,Math.round(h));
+    tintCtx.clearRect(0,0,tintCanvas.width,tintCanvas.height);
+    tintCtx.globalCompositeOperation='source-over';
+    tintCtx.drawImage(img,0,0,tintCanvas.width,tintCanvas.height);
+    tintCtx.globalCompositeOperation='source-in';
+    tintCtx.fillStyle=color;
+    tintCtx.fillRect(0,0,tintCanvas.width,tintCanvas.height);
+    tintCtx.globalCompositeOperation='source-over';
+
+    ctx.save();
+    ctx.globalAlpha=alpha;
+    ctx.globalCompositeOperation=blend;
+    ctx.drawImage(tintCanvas,x,y,w,h);
+    ctx.restore();
+  }
+
+  function drawLayer(ctx,img,x,y,w,h,opts={}){
+    if(!img)return;
+    ctx.save();
+    ctx.globalAlpha=opts.alpha??1;
+    ctx.globalCompositeOperation=opts.blend||'source-over';
+    if(opts.glow){
+      ctx.shadowBlur=opts.glow.blur||18;
+      ctx.shadowColor=opts.glow.color||'#45eaff';
+    }
+    ctx.drawImage(img,x,y,w,h);
+    ctx.restore();
+  }
+
+  function drawShip(ctx,ship,opts={}){
+    const {meta,layers}=ship;
+    const scale=opts.scale??1;
+    const w=meta.canvasWidth*scale;
+    const h=meta.canvasHeight*scale;
+    const x=(opts.x??0)-w*(meta.anchor.x/meta.canvasWidth);
+    const y=(opts.y??0)-h*(meta.anchor.y/meta.canvasHeight);
+
+    drawLayer(ctx,layers.shadowAO,x,y,w,h,{alpha:opts.shadowAlpha??1});
+    drawLayer(ctx,layers.hull,x,y,w,h);
+
+    if(opts.color){
+      drawTinted(ctx,layers.colorMask,x,y,w,h,opts.color,opts.colorAlpha??0.85,'source-over');
+    }
+
+    if(opts.liveryImage){
+      ctx.save();
+      const maskCanvas=document.createElement('canvas');
+      maskCanvas.width=Math.round(w); maskCanvas.height=Math.round(h);
+      const mc=maskCanvas.getContext('2d');
+      mc.drawImage(opts.liveryImage,0,0,w,h);
+      mc.globalCompositeOperation='destination-in';
+      mc.drawImage(layers.liveryMask,0,0,w,h);
+      ctx.globalAlpha=opts.liveryAlpha??1;
+      ctx.drawImage(maskCanvas,x,y,w,h);
+      ctx.restore();
+    }else if(opts.liveryColor){
+      drawTinted(ctx,layers.liveryMask,x,y,w,h,opts.liveryColor,opts.liveryAlpha??1);
+    }
+
+    drawLayer(ctx,layers.cockpit,x,y,w,h);
+
+    if(opts.glowColor){
+      drawTinted(ctx,layers.emissive,x,y,w,h,opts.glowColor,1,'lighter');
+      drawLayer(ctx,layers.emissive,x,y,w,h,{blend:'lighter',glow:{color:opts.glowColor,blur:opts.glowBlur??22}});
+    }else{
+      drawLayer(ctx,layers.emissive,x,y,w,h,{blend:'lighter'});
+    }
+
+    if(opts.engineColor){
+      drawTinted(ctx,layers.engineFlame,x,y,w,h,opts.engineColor,1,'lighter');
+    }else{
+      drawLayer(ctx,layers.engineFlame,x,y,w,h,{blend:'lighter'});
+    }
+  }
+
+  window.ModularShipRenderer={loadShip,drawShip};
+})();
