@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "format": "neon-survivor-modular-ship",
+  "ships": [
+    "falcon",
+    "vanguard",
+    "titan",
+    "phantom",
+    "nova"
+  ],
+  "requiredLayers": [
+    "hull-base.png",
+    "color-mask.png",
+    "livery-mask.png",
+    "lights-emissive.png",
+    "cockpit.png",
+    "engine-flame.png",
+    "shadow-ao.png",
+    "meta.json"
+  ]
+}
