@@ -10,6 +10,15 @@ const LIB107={
 };
 Object.keys(SHIPS).forEach(k=>delete SHIPS[k]);Object.assign(SHIPS,LIB107);
 try{
+  /* V121 one-time starter migration: make the new Falcon the active first ship. */
+  let migrateFalcon121=false;
+  try{migrateFalcon121=localStorage.NSFalconV121Migrated!=='1'}catch(_){}
+  if(migrateFalcon121){
+    if(Array.isArray(ownedShips)&&!ownedShips.includes('falcon'))ownedShips.unshift('falcon');
+    equippedShip='falcon';
+    if(typeof p!=='undefined'&&p)p.shipType='falcon';
+    try{localStorage.NSFalconV121Migrated='1'}catch(_){}
+  }
   if(Array.isArray(ownedShips)){
     const keep=ownedShips.filter(id=>SHIPS[id]);
     ownedShips.splice(0,ownedShips.length,...(keep.length?keep:['falcon']));
