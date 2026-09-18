@@ -71,7 +71,7 @@
     const currentId=shipIds.includes(typeof equippedShip==='string'?equippedShip:'')?equippedShip:'falcon';
     const shipData=(typeof SHIPS!=='undefined'&&SHIPS[currentId])||{};
     const shipImg=shell.querySelector('#g118ShipImg'),shipName=shell.querySelector('#g118ShipName'),shipRole=shell.querySelector('#g118ShipRole');
-    if(shipImg)shipImg.src='./assets/ships/base/'+currentId+'.svg?v=20260918g120';
+    if(shipImg)shipImg.src=currentId==='falcon'?'./assets/ships/modular/falcon/hull-base.webp?v=20260918f121':'./assets/ships/base/'+currentId+'.svg?v=20260918g120';
     if(shipName)shipName.textContent=(shipData.name||currentId).toUpperCase();
     if(shipRole)shipRole.textContent=(shipData.role||'BASE HULL').toUpperCase();
     settleGarage118(shipImg);
