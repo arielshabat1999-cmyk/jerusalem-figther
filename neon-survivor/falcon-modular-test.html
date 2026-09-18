@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Falcon Modular Test</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:#05080b;color:#eef8ff;min-height:100vh}
+main{width:min(100%,720px);margin:auto;padding:16px 14px 28px}
+h1{font-size:20px;letter-spacing:.12em;margin:0 0 4px}.sub{color:#8ba1ad;font-size:12px;margin-bottom:12px}
+.stage{position:relative;aspect-ratio:1/1;border:1px solid #1f4556;border-radius:18px;overflow:hidden;background:radial-gradient(circle at 50% 52%,#12394d 0,#08141c 38%,#030506 74%);box-shadow:inset 0 0 60px #000}
+.stage:after{content:"";position:absolute;left:16%;right:16%;bottom:10%;height:11%;border:2px solid #27d9ff66;border-radius:50%;transform:perspective(220px) rotateX(65deg);box-shadow:0 0 25px #23dfff55,inset 0 0 18px #23dfff33;pointer-events:none}
+canvas{position:absolute;inset:0;width:100%;height:100%;z-index:2}.status{position:absolute;z-index:3;left:12px;top:10px;padding:6px 9px;border-radius:999px;background:#081016cc;border:1px solid #244958;color:#8defff;font-size:11px}
+.controls{display:grid;gap:12px;margin-top:14px}.group{padding:12px;border:1px solid #1c3038;border-radius:14px;background:#0a0f13}.group b{display:block;font-size:12px;letter-spacing:.11em;margin-bottom:9px}.opts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+button{min-height:44px;border:1px solid #31424a;border-radius:10px;background:#11181d;color:#e8f6ff;font-weight:800;font-size:12px;touch-action:manipulation}
+button.on{border-color:#ff9b31;box-shadow:0 0 0 2px #ff9b3133,inset 0 0 12px #ff9b311f}
+.swatch{display:inline-block;width:11px;height:11px;border-radius:50%;vertical-align:-1px;margin-right:5px;background:var(--c)}
+.note{font-size:11px;line-height:1.45;color:#83959f;margin-top:12px}
+@media(min-width:620px){.controls{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<main>
+<h1>FALCON · MODULAR TEST</h1>
+<div class="sub">Isolated renderer test — does not touch the live game boot or LAUNCH.</div>
+<section class="stage"><div id="status" class="status">LOADING</div><canvas id="cv"></canvas></section>
+<section class="controls">
+  <div class="group"><b>COLOR</b><div class="opts" data-key="color">
+    <button data-v="#dfe6ee"><span class="swatch" style="--c:#dfe6ee"></span>WHITE</button>
+    <button data-v="#ef354d"><span class="swatch" style="--c:#ef354d"></span>RED</button>
+    <button data-v="#18a8ff"><span class="swatch" style="--c:#18a8ff"></span>BLUE</button>
+    <button data-v="#f0b83f"><span class="swatch" style="--c:#f0b83f"></span>GOLD</button>
+  </div></div>
+  <div class="group"><b>GLOW</b><div class="opts" data-key="glowColor">
+    <button data-v="#45eaff"><span class="swatch" style="--c:#45eaff"></span>CYAN</button>
+    <button data-v="#9f5bff"><span class="swatch" style="--c:#9f5bff"></span>PURPLE</button>
+    <button data-v="#41ff99"><span class="swatch" style="--c:#41ff99"></span>GREEN</button>
+    <button data-v="#ff405b"><span class="swatch" style="--c:#ff405b"></span>RED</button>
+  </div></div>
+  <div class="group"><b>ENGINE</b><div class="opts" data-key="engineColor">
+    <button data-v="#45eaff"><span class="swatch" style="--c:#45eaff"></span>CYAN</button>
+    <button data-v="#ff8b25"><span class="swatch" style="--c:#ff8b25"></span>ORANGE</button>
+    <button data-v="#a65cff"><span class="swatch" style="--c:#a65cff"></span>PURPLE</button>
+    <button data-v="#43ff91"><span class="swatch" style="--c:#43ff91"></span>GREEN</button>
+  </div></div>
+  <div class="group"><b>LIVERY</b><div class="opts" data-key="liveryColor">
+    <button data-v="">NONE</button>
+    <button data-v="#ffffff"><span class="swatch" style="--c:#fff"></span>WHITE</button>
+    <button data-v="#e83245"><span class="swatch" style="--c:#e83245"></span>RED</button>
+    <button data-v="#f0b52b"><span class="swatch" style="--c:#f0b52b"></span>GOLD</button>
+  </div></div>
+</section>
+<div class="note">Prototype purpose: verify layer alignment, hull tint, livery mask, emissive glow and engine flame independently before connecting Falcon to Garage/gameplay.</div>
+</main>
+<script>
+(async()=>{
+ const status=document.getElementById('status'),cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+ const cfg={color:'#dfe6ee',glowColor:'#45eaff',engineColor:'#45eaff',liveryColor:null,glowBlur:24,colorAlpha:.76,liveryAlpha:.78};
+ let ship=null;
+ function fit(){
+   const r=cv.getBoundingClientRect(),dpr=Math.min(devicePixelRatio||1,2);
+   cv.width=Math.max(1,Math.round(r.width*dpr));cv.height=Math.max(1,Math.round(r.height*dpr));
+   ctx.setTransform(dpr,0,0,dpr,0,0); draw();
+ }
+ function draw(){
+   if(!ship)return;
+   const r=cv.getBoundingClientRect();ctx.clearRect(0,0,r.width,r.height);
+   const s=Math.min(r.width/ship.meta.canvasWidth,r.height/ship.meta.canvasHeight)*.86;
+   ModularShipRenderer.drawShip(ctx,ship,{x:r.width/2,y:r.height/2-4,scale:s,...cfg});
+ }
+ try{
+   const code=await fetch('./modular-ship-renderer-v1.txt?v=1',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('renderer '+r.status);return r.text()});
+   (0,eval)(code);
+   ship=await ModularShipRenderer.loadShip('./assets/ships/modular/falcon');
+   status.textContent='READY'; status.style.color='#82ffb6'; fit();
+ }catch(e){console.error(e);status.textContent='ERROR';status.style.color='#ff7187';return}
+ document.querySelectorAll('.opts').forEach(group=>{
+   const key=group.dataset.key;
+   [...group.querySelectorAll('button')].forEach(btn=>{
+     const val=btn.dataset.v;
+     if((cfg[key]??'')===val)btn.classList.add('on');
+     btn.addEventListener('click',()=>{
+       [...group.querySelectorAll('button')].forEach(x=>x.classList.remove('on'));btn.classList.add('on');
+       cfg[key]=val||null;draw();
+     });
+   });
+ });
+ addEventListener('resize',fit,{passive:true});
+})();
+</script>
+</body></html>

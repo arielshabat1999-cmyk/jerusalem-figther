@@ -41,13 +41,14 @@
     "y": 0
   },
   "gameplayScale": 1,
+  "prototype": true,
   "layers": {
-    "hull": "hull-base.png",
-    "colorMask": "color-mask.png",
-    "liveryMask": "livery-mask.png",
-    "emissive": "lights-emissive.png",
-    "cockpit": "cockpit.png",
-    "engineFlame": "engine-flame.png",
-    "shadowAO": "shadow-ao.png"
+    "hull": "hull-base.webp",
+    "colorMask": "color-mask.webp",
+    "liveryMask": "livery-mask.webp",
+    "emissive": "lights-emissive.webp",
+    "cockpit": "cockpit.webp",
+    "engineFlame": "engine-flame.webp",
+    "shadowAO": "shadow-ao.webp"
   }
 }
