@@ -5,6 +5,34 @@ function ui(){if(!p)return;$('stage').textContent=stage;$('dist').textContent=Ma
 function flashStage(sub){let f=$('stageflash');f.innerHTML=`SECTOR ${stage}<small>${sub||(stage===1?'ENTERING DEBRIS FIELD':'THREAT DENSITY INCREASED')}</small>`;f.classList.add('show');flashTimer=1.6;stagePulse=1}
 function reset(){let s=SHIPS[equippedShip]||SHIPS.nova;p={x:W/2,y:H*.73,r:16,hp:s.hp,max:s.hp,spd:s.spd,rate:s.rate,cd:0,bs:690,dmg:s.dmg,n:1,spread:.12,inv:0,mag:95,scoreMul:1,resist:1,mineMul:1,shield:0,maxShield:60,shipType:equippedShip,upg:{}};B=[];E=[];P=[];O=[];G=[];T=[];distance=0;stage=1;score=0;spawn=.3;obspawn=.8;dropSpawn=7;shake=0;scroll=0;sectorTimer=0;boostTimer=0;flashStage('AUTO-FIRE ENGAGED');ui()}
 function start(){reset();state='play';$('menu').classList.remove('show');$('over').classList.remove('show');$('upgrade').classList.remove('show');$('hud').style.display='block';last=performance.now()}
+const GameAPI=window.GameAPI={
+  version:120,
+  startRun(source='unknown'){
+    try{start();return true}catch(e){console.error('GameAPI.startRun failed',source,e);return false}
+  },
+  showMenu(source='unknown'){
+    try{
+      state='menu';
+      $('hud').style.display='none';
+      $('over').classList.remove('show');
+      $('upgrade').classList.remove('show');
+      $('menu').classList.add('show');
+      return true
+    }catch(e){console.error('GameAPI.showMenu failed',source,e);return false}
+  },
+  openGarage(source='unknown'){
+    try{
+      if(!p)reset();
+      state='shop';
+      $('menu').classList.remove('show');
+      $('hud').style.display='none';
+      $('upgrade').classList.add('show');
+      if(typeof renderShop==='function')renderShop();
+      return true
+    }catch(e){console.error('GameAPI.openGarage failed',source,e);return false}
+  },
+  getState(){return state}
+};
 function gameover(){state='over';$('hud').style.display='none';$('fd').textContent=Math.floor(distance)+' m';$('fs').textContent=stage;$('fscore').textContent=(score|0).toLocaleString();$('fcredits').textContent=Math.floor(credits)+' ⬡';$('over').classList.add('show');saveProfile();if(distance>best){best=Math.floor(distance);localStorage.NSbestDistance=best;$('best').textContent=best+' m'}}
 function puff(x,y,n=8,col='#42f4ff',power=1){for(let i=0;i<n;i++){let a=Math.random()*6.28,s=R(30,190)*power;P.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:R(.25,.72),max:.72,col,sz:R(1,4.2),trail:Math.random()<.45})}}
 function popText(x,y,text,col='#7ef7ff',size=18){T.push({x,y,text,col,size,life:.88,max:.88,vy:R(34,48)})}
