@@ -1,6 +1,6 @@
 /* V121 — Falcon modular ship renderer: preload once, then render synchronously in Garage + gameplay. */
 ;(()=>{try{
-const VERSION='20260918v121',IDS=['falcon'];
+const VERSION='20260918v122',IDS=['falcon'];
 const META={
   falcon:{
     anchor:{x:.5,y:.5},
