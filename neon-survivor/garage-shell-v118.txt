@@ -21,8 +21,8 @@
     linear-gradient(90deg,#0d1114,#131b1f 50%,#0b0e10);box-shadow:inset 0 0 70px #000,0 0 26px #ff7b0010}
   .g118Hangar:before{content:"";position:absolute;left:10%;right:10%;bottom:8%;height:13%;border:3px solid #ff8e2d88;border-radius:50%;transform:perspective(230px) rotateX(66deg);background:radial-gradient(ellipse,#30dfff20,#05080a 58%,#000 72%);box-shadow:0 0 26px #ff7b0035,inset 0 0 22px #20dfff22}
   .g118Hangar:after{content:"";position:absolute;left:50%;top:8%;bottom:20%;width:33%;transform:translateX(-50%);clip-path:polygon(34% 0,66% 0,100% 100%,0 100%);background:linear-gradient(90deg,transparent,#52dcff0b,#d8fbff0e,#52dcff0b,transparent);animation:g118beam 2.8s ease-in-out infinite alternate}
-  @keyframes g118beam{to{opacity:.48}}
-  .g118Empty{position:absolute;z-index:2;left:50%;top:47%;transform:translate(-50%,-50%);text-align:center;color:#829097;pointer-events:none}.g118Empty i{display:block;margin:auto;width:46px;height:46px;border:1px solid #ff9a2a55;clip-path:polygon(22% 0,78% 0,100% 22%,100% 78%,78% 100%,22% 100%,0 78%,0 22%);box-shadow:0 0 13px #ff7b002b}.g118Empty b{display:block;margin-top:14px;font-size:10px;letter-spacing:.22em;color:#bac1c4}.g118Empty span{display:block;margin-top:5px;font-size:7px;letter-spacing:.16em}
+  @keyframes g118beam{to{opacity:.48}}@keyframes g118float{50%{transform:translate(-50%,-50%) translateY(-7px)}}
+  .g118Ship{position:absolute;z-index:3;left:50%;top:43%;width:min(68%,330px);height:58%;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;pointer-events:none;animation:g118float 3.2s ease-in-out infinite}.g118Ship img{display:block;max-width:100%;max-height:100%;object-fit:contain;filter:drop-shadow(0 0 12px #45eaff) drop-shadow(0 0 28px #45eaff66)}.g118ShipMeta{position:absolute;z-index:4;left:50%;bottom:12%;transform:translateX(-50%);width:86%;text-align:center;pointer-events:none}.g118ShipMeta b{display:block;color:#f7ffff;font:1000 clamp(18px,5vw,28px)/1 system-ui;letter-spacing:.16em;text-shadow:0 0 13px #46e8ff}.g118ShipMeta span{display:block;margin-top:7px;color:#67dff0;font:900 clamp(7px,1.8vw,10px)/1 system-ui;letter-spacing:.22em}.g118Empty{display:none}
   .g118Dock{position:absolute;left:3.8%;right:3.8%;top:68%;bottom:2.4%;border:2px solid #353738;background:linear-gradient(180deg,#131516,#070809);box-shadow:inset 0 0 34px #000}.g118Dock:before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,transparent,#ff8b2b,#ffb04f,#ff8b2b,transparent);box-shadow:0 0 10px #ff7a00}
   .g118DockTitle{position:absolute;left:5%;right:5%;top:14%;text-align:center}.g118DockTitle b{display:block;color:#fff;font-size:14px;letter-spacing:.16em}.g118DockTitle span{display:block;margin-top:6px;color:#858d91;font-size:8px;letter-spacing:.14em}
   .g118Launch{position:absolute;left:20%;right:20%;bottom:8%;height:23%;border:2px solid #ff9b31;background:linear-gradient(180deg,#a64b0d,#491902);color:#fff6e7;font:1000 clamp(15px,4.5vw,23px)/1 system-ui;letter-spacing:.18em;box-shadow:0 0 20px #ff740059,inset 0 0 16px #ffad2230;touch-action:manipulation}
@@ -43,7 +43,7 @@
           <div class="g118Title"><b>GARAGE</b><span>CUSTOMIZE YOUR SHIP</span></div>
           <div class="g118Wallets"><div id="g118Dia" class="g118Wallet dia">0</div><div id="g118Coin" class="g118Wallet coin">0</div></div>
         </div>
-        <section class="g118Hangar"><div class="g118Empty"><i></i><b>GARAGE PREVIEW</b><span>SHIP SYSTEM COMING NEXT</span></div></section>
+        <section class="g118Hangar"><div class="g118Ship"><img id="g118ShipImg" alt="Equipped ship"></div><div class="g118ShipMeta"><b id="g118ShipName">SHIP</b><span id="g118ShipRole">BASE HULL</span></div><div class="g118Empty"><i></i><b>GARAGE PREVIEW</b><span>SHIP SYSTEM COMING NEXT</span></div></section>
         <section class="g118Dock"><div class="g118DockTitle"><b>GARAGE SYSTEM ONLINE</b><span>BASE SHELL · NO CUSTOMIZATION MODULES LOADED</span></div><button id="g118Launch" class="g118Launch">LAUNCH</button></section>
       `;
       root.appendChild(shell);
@@ -53,6 +53,14 @@
     let d=0;try{d=Math.max(0,parseInt(localStorage.NSdiamonds||'0',10)||0)}catch(_){}
     if(coin)coin.textContent=(typeof credits==='number'?Math.floor(credits):0).toLocaleString();
     if(dia)dia.textContent=d.toLocaleString();
+
+    const shipIds=['falcon','vanguard','titan','phantom','nova'];
+    const currentId=shipIds.includes(typeof equippedShip==='string'?equippedShip:'')?equippedShip:'falcon';
+    const shipData=(typeof SHIPS!=='undefined'&&SHIPS[currentId])||{};
+    const shipImg=shell.querySelector('#g118ShipImg'),shipName=shell.querySelector('#g118ShipName'),shipRole=shell.querySelector('#g118ShipRole');
+    if(shipImg)shipImg.src='./assets/ships/base/'+currentId+'.svg?v=20260918g120';
+    if(shipName)shipName.textContent=(shipData.name||currentId).toUpperCase();
+    if(shipRole)shipRole.textContent=(shipData.role||'BASE HULL').toUpperCase();
 
     shell.querySelector('#g118Back').onclick=()=>{
       root.classList.remove('show','g118host');
