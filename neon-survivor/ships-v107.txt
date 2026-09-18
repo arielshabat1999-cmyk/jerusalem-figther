@@ -17,8 +17,22 @@ const cfg={
   nova:{scale:4.72,anchor:.49,glow:'#54f5ff'}
 };
 const imgs={},jobs=[];
+const fallbackPaths={falcon:'./assets/ships/base/falcon.svg'};
 function post(status){try{parent.postMessage({source:'ships-v107',status},'*')}catch(_){}}
-for(const id of Object.keys(paths))jobs.push(new Promise((resolve,reject)=>{const im=new Image();imgs[id]=im;im.onload=resolve;im.onerror=reject;im.src=paths[id]+'?v='+VERSION}));
+for(const id of Object.keys(paths))jobs.push(new Promise((resolve,reject)=>{
+  const im=new Image();imgs[id]=im;let triedFallback=false;
+  im.onload=resolve;
+  im.onerror=()=>{
+    if(!triedFallback&&fallbackPaths[id]){
+      triedFallback=true;
+      console.warn('V107 primary ship asset failed, using fallback',id);
+      im.src=fallbackPaths[id]+'?v='+VERSION+'f';
+      return;
+    }
+    reject(new Error('ship asset failed '+id));
+  };
+  im.src=paths[id]+'?v='+VERSION;
+}));
 post('LOADING');Promise.all(jobs).then(()=>{post('SHIPS ON');requestAnimationFrame(drawGarage107)}).catch(e=>{console.error('V107 ship asset load',e);post('SHIP ERROR')});
 const enemyRenderer=G.getShip();
 const ready=im=>im&&im.complete&&im.naturalWidth;
