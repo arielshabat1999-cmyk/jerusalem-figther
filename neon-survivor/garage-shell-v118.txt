@@ -35,7 +35,10 @@
   async function settleGarage118(shipImg){
     try{
       if(shipImg){
-        if(!shipImg.complete)await new Promise(r=>{shipImg.onload=shipImg.onerror=()=>r()});
+        if(!shipImg.complete)await new Promise(r=>{
+          const done=()=>{shipImg.removeEventListener('load',done);shipImg.removeEventListener('error',done);r()};
+          shipImg.addEventListener('load',done);shipImg.addEventListener('error',done);
+        });
         if(shipImg.decode)try{await shipImg.decode()}catch(_){}
       }
       if(document.fonts&&document.fonts.ready)try{await document.fonts.ready}catch(_){}
@@ -71,7 +74,22 @@
     const currentId=shipIds.includes(typeof equippedShip==='string'?equippedShip:'')?equippedShip:'falcon';
     const shipData=(typeof SHIPS!=='undefined'&&SHIPS[currentId])||{};
     const shipImg=shell.querySelector('#g118ShipImg'),shipName=shell.querySelector('#g118ShipName'),shipRole=shell.querySelector('#g118ShipRole');
-    if(shipImg)shipImg.src=currentId==='falcon'?'./assets/ships/modular/falcon/hull-base.webp?v=20260918f121':'./assets/ships/base/'+currentId+'.svg?v=20260918g120';
+    if(shipImg){
+      shipImg.onerror=null;
+      if(currentId==='falcon'){
+        shipImg.onerror=()=>{
+          if(shipImg.dataset.fallback==='1')return;
+          shipImg.dataset.fallback='1';
+          console.warn('Garage Falcon primary asset failed; using stable fallback');
+          shipImg.src='./assets/ships/base/falcon.svg?v=20260918fallback';
+        };
+        shipImg.dataset.fallback='0';
+        shipImg.src='./assets/ships/modular/falcon/hull-base.webp?v=20260918f121';
+      }else{
+        shipImg.dataset.fallback='0';
+        shipImg.src='./assets/ships/base/'+currentId+'.svg?v=20260918g120';
+      }
+    }
     if(shipName)shipName.textContent=(shipData.name||currentId).toUpperCase();
     if(shipRole)shipRole.textContent=(shipData.role||'BASE HULL').toUpperCase();
     settleGarage118(shipImg);
