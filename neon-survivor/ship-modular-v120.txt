@@ -1,6 +1,6 @@
 /* V121 — Falcon modular ship renderer: preload once, then render synchronously in Garage + gameplay. */
 ;(()=>{try{
-const VERSION='20260918v122',IDS=['falcon'];
+const VERSION='20260918v123',IDS=['falcon'];
 const META={
   falcon:{
     anchor:{x:.5,y:.5},
@@ -11,6 +11,14 @@ const META={
 }
 const LAYERS=['hull-base','color-mask','livery-mask','lights-emissive','cockpit','engine-flame','shadow-ao'];
 const cache=new Map(),prepared=new Map();
+const ENGINE_OPTIONS={
+  blue:{id:'blue',name:'ION BLUE',color:'#35d8ff'},
+  gold:{id:'gold',name:'SOLAR GOLD',color:'#ffb52d'},
+  red:{id:'red',name:'CRIMSON',color:'#ff3a2f'},
+  purple:{id:'purple',name:'NEON VIOLET',color:'#b34dff'},
+  green:{id:'green',name:'PLASMA GREEN',color:'#35ff9b'}
+};
+function engineOption(id){return ENGINE_OPTIONS[id]||ENGINE_OPTIONS.blue}
 
 function pathFor(id,layer){return './assets/ships/modular/'+id+'/'+layer+'.webp?v='+VERSION}
 function loadImage(src,optional=false){
@@ -102,6 +110,15 @@ function drawLayer(ctx,img,x,y,w,h,alpha=1,glow=0,color='#55edff'){
   if(glow){ctx.shadowBlur=glow;ctx.shadowColor=color}
   ctx.drawImage(img,x,y,w,h);ctx.restore();
 }
+function drawEngineVariant(ctx,img,x,y,w,h,engineId,time=0){
+  if(!img)return;
+  const opt=engineOption(engineId),pulse=.72+.22*Math.sin(time*13);
+  const tint=tintMask(img,opt.color);
+  ctx.save();ctx.globalCompositeOperation='lighter';
+  ctx.globalAlpha=pulse;ctx.shadowBlur=18;ctx.shadowColor=opt.color;ctx.drawImage(tint,x,y,w,h);
+  ctx.globalAlpha=.28;ctx.shadowBlur=6;ctx.shadowColor='#ffffff';ctx.drawImage(img,x,y,w,h);
+  ctx.restore();
+}
 function drawSync(ctx,opt={}){
   const id=IDS.includes(opt.shipId)?opt.shipId:'falcon';
   const a=getPrepared(id,opt);
@@ -115,8 +132,7 @@ function drawSync(ctx,opt={}){
     drawLayer(ctx,a.layers['lights-emissive'],x,y,w,h,pulse,12,opt.engineGlow||'#55edff');
   }
   if(opt.showEngineFlame!==false&&a.layers['engine-flame']){
-    const pulse=.72+.22*Math.sin(time*13);
-    drawLayer(ctx,a.layers['engine-flame'],x,y,w,h,pulse,18,opt.engineGlow||'#55edff');
+    drawEngineVariant(ctx,a.layers['engine-flame'],x,y,w,h,opt.engineId||'blue',time);
   }
   ctx.restore();
   return{w,h,meta:a.meta,modular:true};
@@ -131,7 +147,7 @@ async function renderCanvas(canvas,opt={}){
   return drawSync(c,{...opt,x:opt.x??w/2,y:opt.y??h*.47,height:targetH});
 }
 function clearCompositeCache(){prepared.clear()}
-const API={version:121,ids:IDS,meta:META,load,prepare:prepareTracked,drawSync,renderCanvas,clearCompositeCache};
+const API={version:123,ids:IDS,meta:META,engineOptions:ENGINE_OPTIONS,engineOption,load,prepare:prepareTracked,drawSync,renderCanvas,clearCompositeCache};
 window.__SHIP_MODULAR_V120=API;
 prepareTracked('falcon').then(()=>{
   try{parent.postMessage({source:'ship-modular-v120',status:'MODULAR SHIP READY'},'*')}catch(_){}
