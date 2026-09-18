@@ -5,7 +5,7 @@
 
   const style=document.createElement('style');
   style.textContent=`
-  #upgrade.g118host{z-index:160!important;padding:0!important;background:#020304!important;backdrop-filter:none!important;align-items:stretch!important;justify-content:stretch!important;overflow:hidden!important}
+  #upgrade.g118host{z-index:160!important;padding:0!important;background:#020304!important;backdrop-filter:none!important;align-items:stretch!important;justify-content:stretch!important;overflow:hidden!important}#upgrade.g118prep{visibility:hidden!important;pointer-events:none!important}
   #upgrade.g118host>:not(.g118){display:none!important}#upgrade.g118host>.g118{width:100%!important;max-width:none!important;flex:1 1 100%!important}.g118{position:relative;width:100%;height:100dvh;overflow:hidden;color:#fff;background:
     radial-gradient(ellipse at 50% 31%,#18445a 0,#0b1d29 20%,#05090c 49%,#020304 78%),
     linear-gradient(180deg,#10171b,#020304);font-family:system-ui,-apple-system,Segoe UI,sans-serif}
@@ -31,8 +31,21 @@
   `;
   document.head.appendChild(style);
 
+  function nextFrame118(){return new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))}
+  async function settleGarage118(shipImg){
+    try{
+      if(shipImg){
+        if(!shipImg.complete)await new Promise(r=>{shipImg.onload=shipImg.onerror=()=>r()});
+        if(shipImg.decode)try{await shipImg.decode()}catch(_){}
+      }
+      if(document.fonts&&document.fonts.ready)try{await document.fonts.ready}catch(_){}
+      await nextFrame118();
+    }finally{
+      root.classList.remove('g118prep');
+    }
+  }
   function render118(){
-    root.classList.add('g118host');
+    root.classList.add('g118host','g118prep');
     let shell=root.querySelector('.g118');
     if(!shell){
       shell=document.createElement('div');
@@ -61,6 +74,7 @@
     if(shipImg)shipImg.src='./assets/ships/base/'+currentId+'.svg?v=20260918g120';
     if(shipName)shipName.textContent=(shipData.name||currentId).toUpperCase();
     if(shipRole)shipRole.textContent=(shipData.role||'BASE HULL').toUpperCase();
+    settleGarage118(shipImg);
 
     shell.querySelector('#g118Back').onclick=()=>{
       root.classList.remove('show','g118host');
