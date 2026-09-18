@@ -6,7 +6,7 @@
   const style=document.createElement('style');
   style.textContent=`
   #upgrade.g118host{z-index:160!important;padding:0!important;background:#020304!important;backdrop-filter:none!important;align-items:stretch!important;justify-content:stretch!important;overflow:hidden!important}
-  .g118{position:relative;width:100%;height:100dvh;overflow:hidden;color:#fff;background:
+  .g118host>.panel{display:none!important}.g118{position:relative;width:100%;height:100dvh;overflow:hidden;color:#fff;background:
     radial-gradient(ellipse at 50% 31%,#18445a 0,#0b1d29 20%,#05090c 49%,#020304 78%),
     linear-gradient(180deg,#10171b,#020304);font-family:system-ui,-apple-system,Segoe UI,sans-serif}
   .g118:before{content:"";position:absolute;inset:0;pointer-events:none;background:
@@ -33,29 +33,35 @@
 
   function render118(){
     root.classList.add('g118host');
-    root.innerHTML=`<div class="g118">
-      <div class="g118Top">
-        <button id="g118Back" class="g118Back" aria-label="Back">‹</button>
-        <div class="g118Title"><b>GARAGE</b><span>CUSTOMIZE YOUR SHIP</span></div>
-        <div class="g118Wallets"><div id="g118Dia" class="g118Wallet dia">0</div><div id="g118Coin" class="g118Wallet coin">0</div></div>
-      </div>
-      <section class="g118Hangar"><div class="g118Empty"><i></i><b>GARAGE PREVIEW</b><span>SHIP SYSTEM COMING NEXT</span></div></section>
-      <section class="g118Dock"><div class="g118DockTitle"><b>GARAGE SYSTEM ONLINE</b><span>BASE SHELL · NO CUSTOMIZATION MODULES LOADED</span></div><button id="g118Launch" class="g118Launch">LAUNCH</button></section>
-    </div>`;
+    let shell=root.querySelector('.g118');
+    if(!shell){
+      shell=document.createElement('div');
+      shell.className='g118';
+      shell.innerHTML=`
+        <div class="g118Top">
+          <button id="g118Back" class="g118Back" aria-label="Back">‹</button>
+          <div class="g118Title"><b>GARAGE</b><span>CUSTOMIZE YOUR SHIP</span></div>
+          <div class="g118Wallets"><div id="g118Dia" class="g118Wallet dia">0</div><div id="g118Coin" class="g118Wallet coin">0</div></div>
+        </div>
+        <section class="g118Hangar"><div class="g118Empty"><i></i><b>GARAGE PREVIEW</b><span>SHIP SYSTEM COMING NEXT</span></div></section>
+        <section class="g118Dock"><div class="g118DockTitle"><b>GARAGE SYSTEM ONLINE</b><span>BASE SHELL · NO CUSTOMIZATION MODULES LOADED</span></div><button id="g118Launch" class="g118Launch">LAUNCH</button></section>
+      `;
+      root.appendChild(shell);
+    }
 
-    const coin=document.getElementById('g118Coin'),dia=document.getElementById('g118Dia');
+    const coin=shell.querySelector('#g118Coin'),dia=shell.querySelector('#g118Dia');
     let d=0;try{d=Math.max(0,parseInt(localStorage.NSdiamonds||'0',10)||0)}catch(_){}
     if(coin)coin.textContent=(typeof credits==='number'?Math.floor(credits):0).toLocaleString();
     if(dia)dia.textContent=d.toLocaleString();
 
-    document.getElementById('g118Back').onclick=()=>{
+    shell.querySelector('#g118Back').onclick=()=>{
       root.classList.remove('show','g118host');
       $('hud').style.display='none';
       state='menu';
       menu.classList.add('show');
     };
 
-    document.getElementById('g118Launch').onclick=()=>{
+    shell.querySelector('#g118Launch').onclick=()=>{
       /* Use the exact same proven launch path as the main menu.
          Do not call start() directly and do not duplicate game-start logic. */
       const playBtn=$('play');
