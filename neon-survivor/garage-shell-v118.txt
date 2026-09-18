@@ -58,6 +58,9 @@
     document.getElementById('g118Launch').onclick=()=>{
       root.classList.remove('show','g118host');
       try{
+        if(window.GameAPI&&GameAPI.startRun){
+          if(GameAPI.startRun('garage-launch'))return;
+        }
         if(typeof start==='function'){start();return}
       }catch(e){console.error('GARAGE V118 launch handoff failed',e)}
     };
