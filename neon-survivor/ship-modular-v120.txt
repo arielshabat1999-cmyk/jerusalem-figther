@@ -1,7 +1,7 @@
 /* V120 — isolated modular ship asset loader + renderer. Not wired to gameplay or Garage yet. */
 ;(()=>{try{
 const VERSION='20260918v120';
-const IDS=['falcon','vanguard','titan','phantom','nova'];
+const IDS=['falcon'];
 const META={
  falcon:{anchor:{x:.5,y:.5},enginePoints:[{x:.43,y:.84},{x:.57,y:.84}],muzzlePoints:[{x:.43,y:.19},{x:.57,y:.19}],trailPoint:{x:.5,y:.9}},
  vanguard:{anchor:{x:.5,y:.5},enginePoints:[{x:.38,y:.81},{x:.5,y:.86},{x:.62,y:.81}],muzzlePoints:[{x:.5,y:.18}],trailPoint:{x:.5,y:.9}},
