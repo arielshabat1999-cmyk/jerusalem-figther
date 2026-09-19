@@ -1,6 +1,6 @@
 /* V130 — Falcon renderer using pre-rendered hull + engine assets only. No runtime tint masks. */
 ;(()=>{try{
-const VERSION='20260918v130',IDS=['falcon'];
+const VERSION='20260918v131',IDS=['falcon'];
 const META={
   falcon:{
     anchor:{x:.5,y:.5},
@@ -85,9 +85,17 @@ function drawSync(ctx,opt={}){
 
   if(opt.showEngineFlame!==false){
     const glow=engine.id==='gold'?'#ffb52d':engine.id==='red'?'#ff3a2f':engine.id==='purple'?'#b34dff':engine.id==='green'?'#35ff9b':'#35d8ff';
-    drawFrame(ctx,a.engineSheet,engine.frame,5,x,y,w,h,pulse,glow);
+
+    /* The engine sheet is an effects asset, not a full-ship-aligned frame.
+       Place it lower and narrower so the flames emerge from the Falcon's rear
+       instead of sitting over the middle of the hull. */
+    const ew=w*.74,eh=h*.72;
+    const ex=-ew*.5;
+    const ey=-h*.08;
+    drawFrame(ctx,a.engineSheet,engine.frame,5,ex,ey,ew,eh,pulse,glow);
   }
 
+  /* Hull is always drawn last so it cleanly masks the root of the flames. */
   drawFrame(ctx,a.hullSheet,color.frame,5,x,y,w,h,1,'');
 
   ctx.restore();
@@ -105,16 +113,16 @@ async function renderCanvas(canvas,opt={}){
   return drawSync(c,{...opt,x:opt.x??w/2,y:opt.y??h*.47,height:targetH});
 }
 function clearCompositeCache(){prepared.clear()}
-const API={version:130,ids:IDS,meta:META,engineOptions:ENGINE_OPTIONS,engineOption,shipColorOptions:SHIP_COLOR_OPTIONS,shipColorOption,prepare,drawSync,renderCanvas,clearCompositeCache};
+const API={version:131,ids:IDS,meta:META,engineOptions:ENGINE_OPTIONS,engineOption,shipColorOptions:SHIP_COLOR_OPTIONS,shipColorOption,prepare,drawSync,renderCanvas,clearCompositeCache};
 window.__SHIP_MODULAR_V120=API;
 
 prepare('falcon').then(()=>{
   try{parent.postMessage({source:'ship-modular-v120',status:'MODULAR SHIP READY'},'*')}catch(_){}
 }).catch(e=>{
-  console.error('Falcon V130 asset preload failed',e);
+  console.error('Falcon V131 asset preload failed',e);
   try{parent.postMessage({source:'ship-modular-v120',status:'MODULAR SHIP ERROR'},'*')}catch(_){}
 });
 }catch(e){
-  console.error('SHIP MODULAR V130 SAFE FAIL',e);
+  console.error('SHIP MODULAR V131 SAFE FAIL',e);
   try{parent.postMessage({source:'ship-modular-v120',status:'MODULAR SHIP ERROR'},'*')}catch(_){}
 }})();
