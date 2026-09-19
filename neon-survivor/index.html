@@ -18,13 +18,13 @@
   </style>
 </head>
 <body>
-  <div id="outerVersion">V123 LIVE · WAIT</div>
+  <div id="outerVersion">V124 LIVE · WAIT</div>
   <div id="load"><div class="loadPanel99"><div class="loadTitle99">PREPARING LAUNCH</div><div class="loadTrack99"><i id="loadFill99"></i></div><b id="loadPct99" class="loadPct99">3%</b><div id="loadStatus99" class="loadStatus99">INITIALIZING SYSTEMS</div></div></div>
   <iframe id="game" allow="autoplay; fullscreen" referrerpolicy="same-origin"></iframe>
   <script>
   const VERSION='20260918v124',badge=document.getElementById('outerVersion');
   let renderState='WAIT',ctrlState='WAIT',shipState='',bossState='',enemyState='',hudState='',modularState='',frameLoaded99=false,revealGame99=()=>{};
-  function paint(){badge.textContent='V123 LIVE · '+renderState+(modularState==='MODULAR SHIP READY'?' · FALCON READY':modularState==='MODULAR SHIP ERROR'?' · FALCON ERROR':'')+(shipState==='SHIPS ON'?' · SHIPS ON':shipState==='SHIP ERROR'?' · SHIP ERROR':'')+(bossState==='BOSSES ON'?' · BOSSES ON':bossState==='BOSS ERROR'?' · BOSS ERROR':'')+(enemyState==='ENEMIES ON'?' · ENEMIES ON':enemyState==='ENEMY ERROR'?' · ENEMY ERROR':'')+(hudState==='HUD ON'?' · HUD ON':'')+(ctrlState==='ON'?' · CTRL ON':ctrlState==='ERROR'?' · CTRL ERROR':'')}
+  function paint(){badge.textContent='V124 LIVE · '+renderState+(modularState==='MODULAR SHIP READY'?' · FALCON READY':modularState==='MODULAR SHIP ERROR'?' · FALCON ERROR':'')+(shipState==='SHIPS ON'?' · SHIPS ON':shipState==='SHIP ERROR'?' · SHIP ERROR':'')+(bossState==='BOSSES ON'?' · BOSSES ON':bossState==='BOSS ERROR'?' · BOSS ERROR':'')+(enemyState==='ENEMIES ON'?' · ENEMIES ON':enemyState==='ENEMY ERROR'?' · ENEMY ERROR':'')+(hudState==='HUD ON'?' · HUD ON':'')+(ctrlState==='ON'?' · CTRL ON':ctrlState==='ERROR'?' · CTRL ERROR':'')}
   addEventListener('message',e=>{const d=e.data;if(!d||typeof d.status!=='string')return;if(d.source==='cinematic-v48')renderState=d.status;else if(d.source==='controls-v48')ctrlState=d.status;else if(d.source==='ships-v107')shipState=d.status;else if(d.source==='ship-modular-v120'){modularState=d.status;revealGame99()}else if(d.source==='bosses-v51')bossState=d.status;else if(d.source==='enemies-v52')enemyState=d.status;else if(d.source==='hud-polish-v61')hudState=d.status;paint()});
   (async()=>{
     const load=document.getElementById('load'),frame=document.getElementById('game'),fill99=document.getElementById('loadFill99'),pct99=document.getElementById('loadPct99'),status99=document.getElementById('loadStatus99');
@@ -33,7 +33,7 @@
       if(revealed99||!frameLoaded99)return;
       if(modularState==='MODULAR SHIP ERROR'){
         setLoad99(100,'FALCON ASSET ERROR · REFRESH');
-        badge.textContent='V123 LIVE · FALCON ERROR';
+        badge.textContent='V124 LIVE · FALCON ERROR';
         return;
       }
       if(modularState!=='MODULAR SHIP READY'){
