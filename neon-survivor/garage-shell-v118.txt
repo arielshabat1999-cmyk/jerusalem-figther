@@ -16,17 +16,18 @@
   .g118Back{height:100%;border:1px solid #ff9b327a;background:linear-gradient(145deg,#202326,#090b0c);color:#fff;font-size:32px;font-weight:400;box-shadow:inset 0 0 0 1px #000,0 0 15px #ff7f001d;touch-action:manipulation}
   .g118Title{padding-left:4px}.g118Title b{display:block;font-size:clamp(21px,6.1vw,34px);line-height:.95;letter-spacing:.13em;text-shadow:0 0 12px #fff3}.g118Title span{display:block;margin-top:5px;color:#b2bcc1;font-size:clamp(6px,1.7vw,9px);letter-spacing:.32em}
   .g118Wallets{display:flex;gap:6px;height:72%}.g118Wallet{min-width:72px;padding:0 9px;display:flex;align-items:center;justify-content:center;border:1px solid #ff9a2857;background:#080c0fe8;font:900 clamp(10px,2.7vw,15px)/1 system-ui;box-shadow:inset 0 0 12px #000}.g118Wallet.coin:before{content:"⬡";color:#ffb22f;margin-right:6px}.g118Wallet.dia:before{content:"♦";color:#4de9ff;margin-right:6px;text-shadow:0 0 8px #25dfff}
-  .g118Hangar{position:absolute;left:3.8%;right:3.8%;top:9.5%;height:57%;overflow:hidden;border:1px solid #ff8b2428;background:
+  .g118Hangar{position:absolute;left:3.8%;right:3.8%;top:9.5%;height:53%;overflow:hidden;border:1px solid #ff8b2428;background:
     radial-gradient(ellipse at 50% 78%,#34dfff22 0,#0c334528 24%,transparent 49%),
     linear-gradient(90deg,#0d1114,#131b1f 50%,#0b0e10);box-shadow:inset 0 0 70px #000,0 0 26px #ff7b0010}
   .g118Hangar:before{content:"";position:absolute;left:10%;right:10%;bottom:8%;height:13%;border:3px solid #ff8e2d88;border-radius:50%;transform:perspective(230px) rotateX(66deg);background:radial-gradient(ellipse,#30dfff20,#05080a 58%,#000 72%);box-shadow:0 0 26px #ff7b0035,inset 0 0 22px #20dfff22}
   .g118Hangar:after{content:"";position:absolute;left:50%;top:8%;bottom:20%;width:33%;transform:translateX(-50%);clip-path:polygon(34% 0,66% 0,100% 100%,0 100%);background:linear-gradient(90deg,transparent,#52dcff0b,#d8fbff0e,#52dcff0b,transparent);animation:g118beam 2.8s ease-in-out infinite alternate}
   @keyframes g118beam{to{opacity:.48}}@keyframes g118float{50%{transform:translate(-50%,-50%) translateY(-7px)}}
   .g118Ship{position:absolute;z-index:3;left:50%;top:43%;width:min(68%,330px);height:58%;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;pointer-events:none;animation:g118float 3.2s ease-in-out infinite}.g118Ship canvas{display:block;width:100%;height:100%;filter:drop-shadow(0 0 10px #45eaff88) drop-shadow(0 0 22px #45eaff44)}.g118ShipMeta{position:absolute;z-index:4;left:50%;bottom:12%;transform:translateX(-50%);width:86%;text-align:center;pointer-events:none}.g118ShipMeta b{display:block;color:#f7ffff;font:1000 clamp(18px,5vw,28px)/1 system-ui;letter-spacing:.16em;text-shadow:0 0 13px #46e8ff}.g118ShipMeta span{display:block;margin-top:7px;color:#67dff0;font:900 clamp(7px,1.8vw,10px)/1 system-ui;letter-spacing:.22em}.g118Empty{display:none}
-  .g118Dock{position:absolute;left:3.8%;right:3.8%;top:68%;bottom:2.4%;border:2px solid #353738;background:linear-gradient(180deg,#131516,#070809);box-shadow:inset 0 0 34px #000}.g118Dock:before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,transparent,#ff8b2b,#ffb04f,#ff8b2b,transparent);box-shadow:0 0 10px #ff7a00}
-  .g118DockTitle{position:absolute;left:5%;right:5%;top:7%;text-align:center}.g118DockTitle b{display:block;color:#fff;font-size:13px;letter-spacing:.16em}.g118DockTitle span{display:block;margin-top:4px;color:#858d91;font-size:7px;letter-spacing:.14em}
-  .g118Engines{position:absolute;left:5%;right:5%;top:27%;height:28%;display:flex;align-items:center;justify-content:space-between;gap:7px}.g118Engine{flex:1;height:100%;min-width:0;border:1px solid #3b4247;background:#080b0d;color:#d7e3e8;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font:900 6px/1 system-ui;letter-spacing:.08em;touch-action:manipulation;box-shadow:inset 0 0 12px #000}.g118Engine i{width:22px;height:22px;border-radius:50%;display:block;box-shadow:0 0 10px currentColor;border:2px solid #dff8ff}.g118Engine.on{border-color:#ff9b31;color:#fff;box-shadow:0 0 12px #ff7a003d,inset 0 0 14px #271207}.g118Engine:active{transform:translateY(1px);filter:brightness(1.2)}
-  .g118Launch{position:absolute;left:20%;right:20%;bottom:8%;height:23%;border:2px solid #ff9b31;background:linear-gradient(180deg,#a64b0d,#491902);color:#fff6e7;font:1000 clamp(15px,4.5vw,23px)/1 system-ui;letter-spacing:.18em;box-shadow:0 0 20px #ff740059,inset 0 0 16px #ffad2230;touch-action:manipulation}
+  .g118Dock{position:absolute;left:3.8%;right:3.8%;top:64.5%;bottom:2.4%;border:2px solid #353738;background:linear-gradient(180deg,#131516,#070809);box-shadow:inset 0 0 34px #000}.g118Dock:before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,transparent,#ff8b2b,#ffb04f,#ff8b2b,transparent);box-shadow:0 0 10px #ff7a00}
+  .g118DockTitle{position:absolute;left:5%;right:5%;top:4%;text-align:center}.g118DockTitle b,.g118ColorTitle b{display:block;color:#fff;font-size:12px;letter-spacing:.16em}.g118DockTitle span,.g118ColorTitle span{display:block;margin-top:3px;color:#858d91;font-size:6px;letter-spacing:.14em}
+  .g118Engines,.g118Colors{position:absolute;left:5%;right:5%;display:flex;align-items:center;justify-content:space-between;gap:7px}.g118Engines{top:15%;height:18%}.g118Colors{top:48%;height:17%}.g118Engine,.g118Color{flex:1;height:100%;min-width:0;border:1px solid #3b4247;background:#080b0d;color:#d7e3e8;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font:900 6px/1 system-ui;letter-spacing:.06em;touch-action:manipulation;box-shadow:inset 0 0 12px #000}.g118Engine i,.g118Color i{width:19px;height:19px;border-radius:50%;display:block;box-shadow:0 0 9px currentColor;border:2px solid #dff8ff}.g118Engine.on,.g118Color.on{border-color:#ff9b31;color:#fff;box-shadow:0 0 12px #ff7a003d,inset 0 0 14px #271207}.g118Engine:active,.g118Color:active{transform:translateY(1px);filter:brightness(1.2)}
+  .g118ColorTitle{position:absolute;left:5%;right:5%;top:36%;text-align:center}
+  .g118Launch{position:absolute;left:20%;right:20%;bottom:5%;height:18%;border:2px solid #ff9b31;background:linear-gradient(180deg,#a64b0d,#491902);color:#fff6e7;font:1000 clamp(15px,4.5vw,23px)/1 system-ui;letter-spacing:.18em;box-shadow:0 0 20px #ff740059,inset 0 0 16px #ffad2230;touch-action:manipulation}
   .g118Back:active,.g118Launch:active{filter:brightness(1.25);transform:translateY(1px)}
   @media(min-aspect-ratio:3/4){.g118{width:min(100vw,56.3dvh);margin:auto}}
   `;
@@ -38,11 +39,17 @@
     const M=window.__SHIP_MODULAR_V120;
     return M&&M.engineOptions&&M.engineOptions[id]?id:'blue';
   }
-  async function drawFalcon118(shipCanvas,engineId){
+  function selectedColor118(){
+    let id='silver';try{id=localStorage.NSFalconColor||'silver'}catch(_){}
+    const M=window.__SHIP_MODULAR_V120;
+    return M&&M.shipColorOptions&&M.shipColorOptions[id]?id:'silver';
+  }
+  async function drawFalcon118(shipCanvas,engineId,colorId){
     const M=window.__SHIP_MODULAR_V120;
     if(!M||typeof M.renderCanvas!=='function')return;
-    const id=engineId||selectedEngine118();
-    await M.renderCanvas(shipCanvas,{shipId:'falcon',engineId:id,showGlow:true,showEngineFlame:true,time:0});
+    const eid=engineId||selectedEngine118(),cid=colorId||selectedColor118();
+    const shipColor=M.shipColorOption?M.shipColorOption(cid):{color:''};
+    await M.renderCanvas(shipCanvas,{shipId:'falcon',engineId:eid,color:shipColor.color,showGlow:true,showEngineFlame:true,time:0});
   }
   async function settleGarage118(shipCanvas){
     const M=window.__SHIP_MODULAR_V120;
@@ -51,8 +58,9 @@
       return;
     }
     try{
-      await M.prepare('falcon');
-      await drawFalcon118(shipCanvas,selectedEngine118());
+      const colorId=selectedColor118(),shipColor=M.shipColorOption?M.shipColorOption(colorId):{color:''};
+      await M.prepare('falcon',{color:shipColor.color});
+      await drawFalcon118(shipCanvas,selectedEngine118(),colorId);
       if(document.fonts&&document.fonts.ready)try{await document.fonts.ready}catch(_){}
       await nextFrame118();
       root.classList.remove('g118prep');
@@ -82,6 +90,14 @@
     <button class="g118Engine" data-engine="purple"><i style="background:#b34dff;color:#b34dff"></i><span>VIOLET</span></button>
     <button class="g118Engine" data-engine="green"><i style="background:#35ff9b;color:#35ff9b"></i><span>GREEN</span></button>
   </div>
+  <div class="g118ColorTitle"><b>SHIP COLOR</b><span>SELECT HULL COLOR</span></div>
+  <div id="g118Colors" class="g118Colors">
+    <button class="g118Color" data-color="silver"><i style="background:#d8e0e6;color:#d8e0e6"></i><span>SILVER</span></button>
+    <button class="g118Color" data-color="blue"><i style="background:#2f7fff;color:#2f7fff"></i><span>BLUE</span></button>
+    <button class="g118Color" data-color="red"><i style="background:#e53935;color:#e53935"></i><span>RED</span></button>
+    <button class="g118Color" data-color="gold"><i style="background:#d9a441;color:#d9a441"></i><span>GOLD</span></button>
+    <button class="g118Color" data-color="purple"><i style="background:#8b4dff;color:#8b4dff"></i><span>VIOLET</span></button>
+  </div>
   <button id="g118Launch" class="g118Launch">LAUNCH</button>
 </section>
       `;
@@ -98,17 +114,30 @@
     if(shipName)shipName.textContent=(shipData.name||'FALCON').toUpperCase();
     if(shipRole)shipRole.textContent=(shipData.role||'MODULAR INTERCEPTOR').toUpperCase();
 
-    let currentEngine=selectedEngine118();
+    let currentEngine=selectedEngine118(),currentColor=selectedColor118();
     window.__FALCON_ENGINE_ID=currentEngine;
+    window.__FALCON_COLOR_ID=currentColor;
+
     const engineButtons=[...shell.querySelectorAll('.g118Engine')];
+    const colorButtons=[...shell.querySelectorAll('.g118Color')];
     const syncEngineButtons=()=>engineButtons.forEach(b=>b.classList.toggle('on',b.dataset.engine===currentEngine));
-    syncEngineButtons();
+    const syncColorButtons=()=>colorButtons.forEach(b=>b.classList.toggle('on',b.dataset.color===currentColor));
+    syncEngineButtons();syncColorButtons();
+
     engineButtons.forEach(b=>b.onclick=async()=>{
       currentEngine=b.dataset.engine||'blue';
       window.__FALCON_ENGINE_ID=currentEngine;
       try{localStorage.NSFalconEngine=currentEngine}catch(_){}
       syncEngineButtons();
-      try{await drawFalcon118(shipCanvas,currentEngine)}catch(e){console.error('GARAGE V123 engine preview failed',e)}
+      try{await drawFalcon118(shipCanvas,currentEngine,currentColor)}catch(e){console.error('GARAGE V126 engine preview failed',e)}
+    });
+
+    colorButtons.forEach(b=>b.onclick=async()=>{
+      currentColor=b.dataset.color||'silver';
+      window.__FALCON_COLOR_ID=currentColor;
+      try{localStorage.NSFalconColor=currentColor}catch(_){}
+      syncColorButtons();
+      try{await drawFalcon118(shipCanvas,currentEngine,currentColor)}catch(e){console.error('GARAGE V126 color preview failed',e)}
     });
 
     settleGarage118(shipCanvas);
