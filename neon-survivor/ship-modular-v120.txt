@@ -1,6 +1,6 @@
 /* V121 — Falcon modular ship renderer: preload once, then render synchronously in Garage + gameplay. */
 ;(()=>{try{
-const VERSION='20260918v128',IDS=['falcon'];
+const VERSION='20260918v129',IDS=['falcon'];
 const META={
   falcon:{
     anchor:{x:.5,y:.5},
@@ -141,20 +141,24 @@ function drawEngineVariant(ctx,a,x,y,w,h,engineId,time=0){
   if(!sprite)return;
   const frame=ENGINE_FRAME_INDEX[engineId]??0;
   const sw=(sprite.naturalWidth||sprite.width)/5,sh=(sprite.naturalHeight||sprite.height);
-  const pulse=.92+.08*Math.sin(time*11);
+  const pulse=.94+.06*Math.sin(time*11);
+  const color=engineOption(engineId).color;
 
-  /* Each frame is the generated twin-engine asset, so draw it once as a pair.
-     Keep it behind the Falcon and align the nozzles with the rear engine area. */
-  const dw=w*.62,dh=h*.34;
-  const dx=x+(w-dw)*.5;
-  const dy=y+h*.79;
+  /* The sprite contains ONE real generated flame per frame.
+     Draw it twice, centered on the Falcon's real engine points. */
+  const fw=w*.19,fh=h*.30;
 
   ctx.save();
   ctx.globalCompositeOperation='lighter';
   ctx.globalAlpha=pulse;
-  ctx.shadowBlur=Math.max(10,w*.045);
-  ctx.shadowColor=engineOption(engineId).color;
-  ctx.drawImage(sprite,frame*sw,0,sw,sh,dx,dy,dw,dh);
+  ctx.shadowBlur=Math.max(12,w*.05);
+  ctx.shadowColor=color;
+
+  for(const p of a.meta.enginePoints){
+    const px=x+p.x*w;
+    const py=y+p.y*h;
+    ctx.drawImage(sprite,frame*sw,0,sw,sh,px-fw*.5,py-fh*.03,fw,fh);
+  }
   ctx.restore();
 }
 function drawSync(ctx,opt={}){
@@ -192,7 +196,7 @@ async function renderCanvas(canvas,opt={}){
   return drawSync(c,{...opt,x:opt.x??w/2,y:opt.y??h*.47,height:targetH});
 }
 function clearCompositeCache(){prepared.clear()}
-const API={version:128,ids:IDS,meta:META,engineOptions:ENGINE_OPTIONS,engineOption,shipColorOptions:SHIP_COLOR_OPTIONS,shipColorOption,load,prepare:prepareTracked,drawSync,renderCanvas,clearCompositeCache};
+const API={version:129,ids:IDS,meta:META,engineOptions:ENGINE_OPTIONS,engineOption,shipColorOptions:SHIP_COLOR_OPTIONS,shipColorOption,load,prepare:prepareTracked,drawSync,renderCanvas,clearCompositeCache};
 window.__SHIP_MODULAR_V120=API;
 let startupColor='';
 try{startupColor=shipColorOption(localStorage.NSFalconColor||'silver').color}catch(_){}
