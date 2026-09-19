@@ -48,8 +48,7 @@
     const M=window.__SHIP_MODULAR_V120;
     if(!M||typeof M.renderCanvas!=='function')return;
     const eid=engineId||selectedEngine118(),cid=colorId||selectedColor118();
-    const shipColor=M.shipColorOption?M.shipColorOption(cid):{color:''};
-    await M.renderCanvas(shipCanvas,{shipId:'falcon',engineId:eid,color:shipColor.color,showGlow:true,showEngineFlame:true,time:0});
+    await M.renderCanvas(shipCanvas,{shipId:'falcon',engineId:eid,colorId:cid,showGlow:true,showEngineFlame:true,time:0});
   }
   async function settleGarage118(shipCanvas){
     const M=window.__SHIP_MODULAR_V120;
@@ -58,8 +57,8 @@
       return;
     }
     try{
-      const colorId=selectedColor118(),shipColor=M.shipColorOption?M.shipColorOption(colorId):{color:''};
-      await M.prepare('falcon',{color:shipColor.color});
+      const colorId=selectedColor118();
+      await M.prepare('falcon');
       await drawFalcon118(shipCanvas,selectedEngine118(),colorId);
       if(document.fonts&&document.fonts.ready)try{await document.fonts.ready}catch(_){}
       await nextFrame118();
@@ -129,7 +128,7 @@
       window.__FALCON_ENGINE_ID=currentEngine;
       try{localStorage.NSFalconEngine=currentEngine}catch(_){}
       syncEngineButtons();
-      try{await drawFalcon118(shipCanvas,currentEngine,currentColor)}catch(e){console.error('GARAGE V126 engine preview failed',e)}
+      try{await drawFalcon118(shipCanvas,currentEngine,currentColor)}catch(e){console.error('GARAGE V130 engine preview failed',e)}
     });
 
     colorButtons.forEach(b=>b.onclick=async()=>{
@@ -137,7 +136,7 @@
       window.__FALCON_COLOR_ID=currentColor;
       try{localStorage.NSFalconColor=currentColor}catch(_){}
       syncColorButtons();
-      try{await drawFalcon118(shipCanvas,currentEngine,currentColor)}catch(e){console.error('GARAGE V126 color preview failed',e)}
+      try{await drawFalcon118(shipCanvas,currentEngine,currentColor)}catch(e){console.error('GARAGE V130 color preview failed',e)}
     });
 
     settleGarage118(shipCanvas);
