@@ -1,128 +1,21 @@
-/* V130 — Falcon renderer using pre-rendered hull + engine assets only. No runtime tint masks. */
+/* V132 — New Falcon master asset + runtime color mask. */
 ;(()=>{try{
-const VERSION='20260918v131',IDS=['falcon'];
-const META={
-  falcon:{
-    anchor:{x:.5,y:.5},
-    enginePoints:[{x:.347,y:.850},{x:.653,y:.850}],
-    muzzlePoints:[{x:.3125,y:.210},{x:.6875,y:.210}],
-    trailPoint:{x:.5,y:.889}
-  }
-};
-const ENGINE_OPTIONS={
-  blue:{id:'blue',name:'ION BLUE',frame:0},
-  gold:{id:'gold',name:'SOLAR GOLD',frame:1},
-  red:{id:'red',name:'CRIMSON',frame:2},
-  purple:{id:'purple',name:'NEON VIOLET',frame:3},
-  green:{id:'green',name:'PLASMA GREEN',frame:4}
-};
-const SHIP_COLOR_OPTIONS={
-  silver:{id:'silver',name:'SILVER',frame:0},
-  blue:{id:'blue',name:'COBALT',frame:1},
-  red:{id:'red',name:'CRIMSON',frame:2},
-  gold:{id:'gold',name:'GOLD',frame:3},
-  purple:{id:'purple',name:'VIOLET',frame:4}
-};
-const prepared=new Map();
-
+const VERSION='20260919v132',IDS=['falcon'];
+const META={falcon:{anchor:{x:.5,y:.5},enginePoints:[{x:.347,y:.850},{x:.653,y:.850}],muzzlePoints:[{x:.3125,y:.210},{x:.6875,y:.210}],trailPoint:{x:.5,y:.889}}};
+const ENGINE_OPTIONS={blue:{id:'blue',name:'ION BLUE',frame:0},gold:{id:'gold',name:'SOLAR GOLD',frame:1},red:{id:'red',name:'CRIMSON',frame:2},purple:{id:'purple',name:'NEON VIOLET',frame:3},green:{id:'green',name:'PLASMA GREEN',frame:4}};
+const SHIP_COLOR_OPTIONS={silver:{id:'silver',name:'SILVER',color:null},blue:{id:'blue',name:'COBALT',color:'#2f7fff'},red:{id:'red',name:'CRIMSON',color:'#e53935'},gold:{id:'gold',name:'GOLD',color:'#d9a441'},purple:{id:'purple',name:'VIOLET',color:'#8b4dff'}};
+const prepared=new Map(),tints=new Map();
 function engineOption(id){return ENGINE_OPTIONS[id]||ENGINE_OPTIONS.blue}
 function shipColorOption(id){return SHIP_COLOR_OPTIONS[id]||SHIP_COLOR_OPTIONS.silver}
-function loadImage(src){
-  return new Promise((resolve,reject)=>{
-    const im=new Image();im.decoding='async';
-    im.onload=async()=>{try{if(im.decode)await im.decode();resolve(im)}catch(e){reject(e)}};
-    im.onerror=()=>reject(new Error('ASSET LOAD FAILED '+src));
-    im.src=src;
-  });
-}
-function asset(name){return './assets/ships/modular/falcon/'+name+'?v='+VERSION}
-function prepare(id='falcon'){
-  if(!IDS.includes(id))id='falcon';
-  if(prepared.has(id))return prepared.get(id);
-  const p=(async()=>{
-    const [hullSheet,engineSheet]=await Promise.all([
-      loadImage(asset('hull-variants.webp')),
-      loadImage(asset('engine-variants.webp'))
-    ]);
-    return{id,meta:META[id],hullSheet,engineSheet};
-  })();
-  p.then(v=>{p.__value=v;return v});
-  prepared.set(id,p);
-  return p;
-}
-function getPrepared(id='falcon'){
-  const p=prepared.get(IDS.includes(id)?id:'falcon');
-  return p&&p.__value?p.__value:null;
-}
-function drawFrame(ctx,img,frame,total,x,y,w,h,alpha=1,glowColor=''){
-  if(!img)return;
-  const sw=(img.naturalWidth||img.width)/total,sh=(img.naturalHeight||img.height);
-  ctx.save();
-  ctx.globalAlpha=alpha;
-  if(glowColor){
-    ctx.globalCompositeOperation='lighter';
-    ctx.shadowBlur=Math.max(8,w*.045);
-    ctx.shadowColor=glowColor;
-  }
-  ctx.drawImage(img,frame*sw,0,sw,sh,x,y,w,h);
-  ctx.restore();
-}
-function drawSync(ctx,opt={}){
-  const id=IDS.includes(opt.shipId)?opt.shipId:'falcon';
-  const a=getPrepared(id);
-  if(!a)return false;
-
-  const scale=opt.scale||1,h=(opt.height||100)*scale,w=h;
-  const cx=opt.x||0,cy=opt.y||0,x=-w*.5,y=-h*.5,time=opt.time||0;
-  const color=shipColorOption(opt.colorId||'silver');
-  const engine=engineOption(opt.engineId||'blue');
-  const pulse=.92+.08*Math.sin(time*12);
-
-  ctx.save();
-  ctx.translate(cx,cy);
-  ctx.rotate(opt.rotation||0);
-  ctx.globalAlpha=opt.alpha??1;
-
-  if(opt.showEngineFlame!==false){
-    const glow=engine.id==='gold'?'#ffb52d':engine.id==='red'?'#ff3a2f':engine.id==='purple'?'#b34dff':engine.id==='green'?'#35ff9b':'#35d8ff';
-
-    /* The engine sheet is an effects asset, not a full-ship-aligned frame.
-       Place it lower and narrower so the flames emerge from the Falcon's rear
-       instead of sitting over the middle of the hull. */
-    const ew=w*.74,eh=h*.72;
-    const ex=-ew*.5;
-    const ey=-h*.08;
-    drawFrame(ctx,a.engineSheet,engine.frame,5,ex,ey,ew,eh,pulse,glow);
-  }
-
-  /* Hull is always drawn last so it cleanly masks the root of the flames. */
-  drawFrame(ctx,a.hullSheet,color.frame,5,x,y,w,h,1,'');
-
-  ctx.restore();
-  return{w,h,meta:a.meta,modular:true,colorId:color.id,engineId:engine.id};
-}
-async function renderCanvas(canvas,opt={}){
-  await prepare(opt.shipId||'falcon');
-  const r=canvas.getBoundingClientRect(),ratio=Math.min(devicePixelRatio||1,2);
-  const w=Math.max(1,Math.round(r.width)),h=Math.max(1,Math.round(r.height));
-  canvas.width=Math.round(w*ratio);canvas.height=Math.round(h*ratio);
-  const c=canvas.getContext('2d');
-  c.setTransform(ratio,0,0,ratio,0,0);
-  c.clearRect(0,0,w,h);
-  const targetH=opt.height||h*.78;
-  return drawSync(c,{...opt,x:opt.x??w/2,y:opt.y??h*.47,height:targetH});
-}
-function clearCompositeCache(){prepared.clear()}
-const API={version:131,ids:IDS,meta:META,engineOptions:ENGINE_OPTIONS,engineOption,shipColorOptions:SHIP_COLOR_OPTIONS,shipColorOption,prepare,drawSync,renderCanvas,clearCompositeCache};
-window.__SHIP_MODULAR_V120=API;
-
-prepare('falcon').then(()=>{
-  try{parent.postMessage({source:'ship-modular-v120',status:'MODULAR SHIP READY'},'*')}catch(_){}
-}).catch(e=>{
-  console.error('Falcon V131 asset preload failed',e);
-  try{parent.postMessage({source:'ship-modular-v120',status:'MODULAR SHIP ERROR'},'*')}catch(_){}
-});
-}catch(e){
-  console.error('SHIP MODULAR V131 SAFE FAIL',e);
-  try{parent.postMessage({source:'ship-modular-v120',status:'MODULAR SHIP ERROR'},'*')}catch(_){}
-}})();
+function asset(n){return './assets/ships/modular/falcon/'+n+'?v='+VERSION}
+function loadImage(src){return new Promise((res,rej)=>{const im=new Image();im.decoding='async';im.onload=()=>res(im);im.onerror=()=>rej(new Error('ASSET LOAD FAILED '+src));im.src=src})}
+function buildAlphaMask(img){const w=img.naturalWidth||img.width,h=img.naturalHeight||img.height,cv=document.createElement('canvas');cv.width=w;cv.height=h;const c=cv.getContext('2d',{willReadFrequently:true});c.drawImage(img,0,0,w,h);const d=c.getImageData(0,0,w,h),p=d.data;for(let i=0;i<p.length;i+=4){const lum=Math.max(p[i],p[i+1],p[i+2]);p[i]=255;p[i+1]=255;p[i+2]=255;p[i+3]=lum>40?lum:0}c.putImageData(d,0,0);return cv}
+function tint(mask,color){if(!color)return null;const k=color;if(tints.has(k))return tints.get(k);const cv=document.createElement('canvas');cv.width=mask.width;cv.height=mask.height;const c=cv.getContext('2d');c.drawImage(mask,0,0);c.globalCompositeOperation='source-in';c.fillStyle=color;c.fillRect(0,0,cv.width,cv.height);c.globalCompositeOperation='source-over';tints.set(k,cv);return cv}
+function prepare(id='falcon'){if(prepared.has(id))return prepared.get(id);const p=(async()=>{const [base,maskRaw,engineSheet]=await Promise.all([loadImage(asset('falcon_base.png')),loadImage(asset('falcon_color_mask.png')),loadImage(asset('engine-variants.webp'))]);return{id,meta:META.falcon,base,mask:buildAlphaMask(maskRaw),engineSheet}})();p.then(v=>{p.__value=v;return v});prepared.set(id,p);return p}
+function getPrepared(){const p=prepared.get('falcon');return p&&p.__value?p.__value:null}
+function drawEngine(ctx,img,frame,x,y,w,h,glow,alpha){if(!img)return;const sw=(img.naturalWidth||img.width)/5,sh=img.naturalHeight||img.height;ctx.save();ctx.globalAlpha=alpha;ctx.globalCompositeOperation='lighter';ctx.shadowBlur=Math.max(8,w*.045);ctx.shadowColor=glow;ctx.drawImage(img,frame*sw,0,sw,sh,x,y,w,h);ctx.restore()}
+function drawSync(ctx,opt={}){const a=getPrepared();if(!a)return false;const scale=opt.scale||1,h=(opt.height||100)*scale,ratio=(a.base.naturalWidth||a.base.width)/(a.base.naturalHeight||a.base.height),w=h*ratio,cx=opt.x||0,cy=opt.y||0,x=-w*.5,y=-h*.5,time=opt.time||0,color=shipColorOption(opt.colorId||'silver'),engine=engineOption(opt.engineId||'blue'),pulse=.92+.08*Math.sin(time*12);ctx.save();ctx.translate(cx,cy);ctx.rotate(opt.rotation||0);ctx.globalAlpha=opt.alpha??1;if(opt.showEngineFlame!==false){const glow=engine.id==='gold'?'#ffb52d':engine.id==='red'?'#ff3a2f':engine.id==='purple'?'#b34dff':engine.id==='green'?'#35ff9b':'#35d8ff',ew=w*.74,eh=h*.72;drawEngine(ctx,a.engineSheet,engine.frame,-ew*.5,-h*.08,ew,eh,glow,pulse)}ctx.drawImage(a.base,x,y,w,h);if(color.color){const tc=tint(a.mask,color.color);ctx.save();ctx.globalCompositeOperation='source-atop';ctx.globalAlpha=.86;ctx.drawImage(tc,x,y,w,h);ctx.restore()}ctx.restore();return{w,h,meta:a.meta,modular:true,colorId:color.id,engineId:engine.id}}
+async function renderCanvas(canvas,opt={}){await prepare('falcon');const r=canvas.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2),w=Math.max(1,Math.round(r.width)),h=Math.max(1,Math.round(r.height));canvas.width=Math.round(w*d);canvas.height=Math.round(h*d);const c=canvas.getContext('2d');c.setTransform(d,0,0,d,0,0);c.clearRect(0,0,w,h);return drawSync(c,{...opt,x:opt.x??w/2,y:opt.y??h*.47,height:opt.height||h*.78})}
+function clearCompositeCache(){prepared.clear();tints.clear()}
+const API={version:132,ids:IDS,meta:META,engineOptions:ENGINE_OPTIONS,engineOption,shipColorOptions:SHIP_COLOR_OPTIONS,shipColorOption,prepare,drawSync,renderCanvas,clearCompositeCache};window.__SHIP_MODULAR_V120=API;prepare('falcon').then(()=>{try{parent.postMessage({source:'ship-modular-v120',status:'MODULAR SHIP READY'},'*')}catch(_){}}).catch(e=>console.error('Falcon V132 preload failed',e));
+}catch(e){console.error('SHIP MODULAR V132 SAFE FAIL',e)}})();
