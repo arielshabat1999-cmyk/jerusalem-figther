@@ -1,6 +1,6 @@
 /* V121 — Falcon modular ship renderer: preload once, then render synchronously in Garage + gameplay. */
 ;(()=>{try{
-const VERSION='20260918v125',IDS=['falcon'];
+const VERSION='20260918v126',IDS=['falcon'];
 const META={
   falcon:{
     anchor:{x:.5,y:.5},
@@ -18,7 +18,15 @@ const ENGINE_OPTIONS={
   purple:{id:'purple',name:'NEON VIOLET',color:'#b34dff'},
   green:{id:'green',name:'PLASMA GREEN',color:'#35ff9b'}
 };
+const SHIP_COLOR_OPTIONS={
+  silver:{id:'silver',name:'SILVER',color:''},
+  blue:{id:'blue',name:'COBALT',color:'#2f7fff'},
+  red:{id:'red',name:'CRIMSON',color:'#e53935'},
+  gold:{id:'gold',name:'GOLD',color:'#d9a441'},
+  purple:{id:'purple',name:'VIOLET',color:'#8b4dff'}
+};
 function engineOption(id){return ENGINE_OPTIONS[id]||ENGINE_OPTIONS.blue}
+function shipColorOption(id){return SHIP_COLOR_OPTIONS[id]||SHIP_COLOR_OPTIONS.silver}
 
 function pathFor(id,layer){return './assets/ships/modular/'+id+'/'+layer+'.webp?v='+VERSION}
 function loadImage(src,optional=false){
@@ -178,9 +186,14 @@ async function renderCanvas(canvas,opt={}){
   return drawSync(c,{...opt,x:opt.x??w/2,y:opt.y??h*.47,height:targetH});
 }
 function clearCompositeCache(){prepared.clear()}
-const API={version:123,ids:IDS,meta:META,engineOptions:ENGINE_OPTIONS,engineOption,load,prepare:prepareTracked,drawSync,renderCanvas,clearCompositeCache};
+const API={version:126,ids:IDS,meta:META,engineOptions:ENGINE_OPTIONS,engineOption,shipColorOptions:SHIP_COLOR_OPTIONS,shipColorOption,load,prepare:prepareTracked,drawSync,renderCanvas,clearCompositeCache};
 window.__SHIP_MODULAR_V120=API;
-prepareTracked('falcon').then(()=>{
+let startupColor='';
+try{startupColor=shipColorOption(localStorage.NSFalconColor||'silver').color}catch(_){}
+Promise.all([
+  prepareTracked('falcon'),
+  prepareTracked('falcon',{color:startupColor})
+]).then(()=>{
   try{parent.postMessage({source:'ship-modular-v120',status:'MODULAR SHIP READY'},'*')}catch(_){}
 }).catch(e=>{
   console.error('Falcon modular preload failed',e);
