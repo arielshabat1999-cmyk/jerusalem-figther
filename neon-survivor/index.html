@@ -7,7 +7,8 @@
   <title>Neon Survivor — Asteroid Runner</title>
   <style>
     *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#01040a;color:#7ef7ff;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
-    #load{position:fixed;inset:0;z-index:20;display:block;background:#01040a url('./assets/ui/A47595AD-6C81-41CC-9FD5-3EEDFA15C738.png?v=20260919clean') center/cover no-repeat;overflow:hidden}
+    #load{position:fixed;inset:0;z-index:20;display:block;background:#01040a url('./assets/ui/A47595AD-6C81-41CC-9FD5-3EEDFA15C738.png?v=20260919clean') center/cover no-repeat;overflow:hidden;visibility:hidden}
+    #load.ready99{visibility:visible}
     #load:before{content:"";position:absolute;inset:-20% 0 auto;height:22%;background:linear-gradient(180deg,transparent,#5deaff14,transparent);mix-blend-mode:screen;animation:loadScan99 4.8s linear infinite;pointer-events:none}
     .loadPanel99{position:absolute;left:11%;right:11%;bottom:11.05%;min-height:15%;display:flex;flex-direction:column;justify-content:center;padding:1% 4.5%;border:0;background:transparent;box-shadow:none;clip-path:none;text-align:center}
     .loadTitle99{display:none}
@@ -31,6 +32,8 @@
   addEventListener('message',e=>{const d=e.data;if(!d||typeof d.status!=='string')return;if(d.source==='cinematic-v48')renderState=d.status;else if(d.source==='controls-v48')ctrlState=d.status;else if(d.source==='ships-v107')shipState=d.status;else if(d.source==='ship-modular-v120'){modularState=d.status;revealGame99()}else if(d.source==='bosses-v51')bossState=d.status;else if(d.source==='enemies-v52')enemyState=d.status;else if(d.source==='hud-polish-v61')hudState=d.status;else if(d.source==='controls-v48')ctrlState=d.status;paint()});
   (async()=>{
     const load=document.getElementById('load'),frame=document.getElementById('game'),fill99=document.getElementById('loadFill99'),pct99=document.getElementById('loadPct99'),status99=document.getElementById('loadStatus99');
+    const preloadImage99=src=>new Promise((resolve,reject)=>{const im=new Image();im.onload=async()=>{try{if(im.decode)await im.decode()}catch(_){}resolve(im)};im.onerror=()=>reject(new Error('LOADING SCREEN ASSET FAILED '+src));im.src=src});
+    try{await Promise.all([preloadImage99('./assets/ui/A47595AD-6C81-41CC-9FD5-3EEDFA15C738.png?v=20260919clean'),preloadImage99('./assets/ui/loading-track.png?v=20260919bar1'),preloadImage99('./assets/ui/loading-fill.png?v=20260919bar1')]);await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));load.classList.add('ready99')}catch(e){console.error(e);load.classList.add('ready99')}
     let revealed99=false;
     let fetched99=0;const expected99=51,setLoad99=(n,s)=>{n=Math.max(3,Math.min(100,n|0));fill99.parentElement.style.setProperty('--p',n+'%');pct99.textContent=n+'%';if(s)status99.textContent=s};
     revealGame99=()=>{
