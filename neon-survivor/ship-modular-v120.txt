@@ -1,6 +1,6 @@
 /* V121 — Falcon modular ship renderer: preload once, then render synchronously in Garage + gameplay. */
 ;(()=>{try{
-const VERSION='20260918v123',IDS=['falcon'];
+const VERSION='20260918v124',IDS=['falcon'];
 const META={
   falcon:{
     anchor:{x:.5,y:.5},
@@ -104,20 +104,33 @@ async function prepareTracked(id='falcon',opt={}){
   }
   return p;
 }
-function drawLayer(ctx,img,x,y,w,h,alpha=1,glow=0,color='#55edff'){
+function drawTintedLayer(ctx,img,color,x,y,w,h,alpha=1,glow=0){
   if(!img)return;
+  const tint=tintMask(img,color);
+  if(!tint)return;
   ctx.save();ctx.globalCompositeOperation='lighter';ctx.globalAlpha=alpha;
   if(glow){ctx.shadowBlur=glow;ctx.shadowColor=color}
-  ctx.drawImage(img,x,y,w,h);ctx.restore();
+  ctx.drawImage(tint,x,y,w,h);ctx.restore();
 }
-function drawEngineVariant(ctx,img,x,y,w,h,engineId,time=0){
-  if(!img)return;
-  const opt=engineOption(engineId),pulse=.72+.22*Math.sin(time*13);
-  const tint=tintMask(img,opt.color);
+function drawProceduralThrusters(ctx,meta,color,x,y,w,h,time=0){
+  const pulse=.88+.12*Math.sin(time*13),len=h*(.14+.025*Math.sin(time*11));
   ctx.save();ctx.globalCompositeOperation='lighter';
-  ctx.globalAlpha=pulse;ctx.shadowBlur=18;ctx.shadowColor=opt.color;ctx.drawImage(tint,x,y,w,h);
-  ctx.globalAlpha=.28;ctx.shadowBlur=6;ctx.shadowColor='#ffffff';ctx.drawImage(img,x,y,w,h);
+  for(const p of meta.enginePoints){
+    const px=x+p.x*w,py=y+p.y*h,half=Math.max(1.5,w*.018);
+    const g=ctx.createLinearGradient(px,py,px,py+len);
+    g.addColorStop(0,'#ffffff');
+    g.addColorStop(.16,color);
+    g.addColorStop(.62,color+'cc');
+    g.addColorStop(1,color+'00');
+    ctx.globalAlpha=pulse;ctx.fillStyle=g;ctx.shadowBlur=18;ctx.shadowColor=color;
+    ctx.beginPath();ctx.moveTo(px-half,py);ctx.lineTo(px,py+len);ctx.lineTo(px+half,py);ctx.closePath();ctx.fill();
+  }
   ctx.restore();
+}
+function drawEngineVariant(ctx,img,meta,x,y,w,h,engineId,time=0){
+  const opt=engineOption(engineId),pulse=.72+.22*Math.sin(time*13);
+  if(img)drawTintedLayer(ctx,img,opt.color,x,y,w,h,pulse,18);
+  drawProceduralThrusters(ctx,meta,opt.color,x,y,w,h,time);
 }
 function drawSync(ctx,opt={}){
   const id=IDS.includes(opt.shipId)?opt.shipId:'falcon';
@@ -125,14 +138,13 @@ function drawSync(ctx,opt={}){
   if(!a)return false;
   const scale=opt.scale||1,h=(opt.height||100)*scale,w=h*(a.w/a.h);
   const cx=opt.x||0,cy=opt.y||0,x=-w*.5,y=-h*.5,time=opt.time||0;
+  const engine=engineOption(opt.engineId||'blue'),effectColor=engine.color;
   ctx.save();ctx.translate(cx,cy);ctx.rotate(opt.rotation||0);ctx.globalAlpha=opt.alpha??1;
+  if(opt.showEngineFlame!==false)drawEngineVariant(ctx,a.layers['engine-flame'],a.meta,x,y,w,h,engine.id,time);
   ctx.drawImage(a.body,x,y,w,h);
   if(opt.showGlow!==false&&a.layers['lights-emissive']){
     const pulse=.76+.16*Math.sin(time*7);
-    drawLayer(ctx,a.layers['lights-emissive'],x,y,w,h,pulse,12,opt.engineGlow||'#55edff');
-  }
-  if(opt.showEngineFlame!==false&&a.layers['engine-flame']){
-    drawEngineVariant(ctx,a.layers['engine-flame'],x,y,w,h,opt.engineId||'blue',time);
+    drawTintedLayer(ctx,a.layers['lights-emissive'],effectColor,x,y,w,h,pulse,14);
   }
   ctx.restore();
   return{w,h,meta:a.meta,modular:true};
