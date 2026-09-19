@@ -31,5 +31,5 @@ G.setShip(function(x,y,s,r=0,en=false,heavy=false,model='falcon'){
   }
 });
 post('SHIPS ON');
-window.__SHIP_ASSETS_V107={version:130,mode:'modular-falcon-assets'};
+window.__SHIP_ASSETS_V107={version:131,mode:'modular-falcon-assets'};
 })();
