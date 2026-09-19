@@ -13,16 +13,13 @@ G.setShip(function(x,y,s,r=0,en=false,heavy=false,model='falcon'){
     engineId=window.__FALCON_ENGINE_ID||localStorage.NSFalconEngine||'blue';
     shipColorId=window.__FALCON_COLOR_ID||localStorage.NSFalconColor||'silver';
   }catch(_){ }
-  const engine=M.engineOption?M.engineOption(engineId):{color:'#35d8ff'};
-  const shipColor=M.shipColorOption?M.shipColorOption(shipColorId):{color:''};
   const box=M.drawSync(X,{
     shipId:'falcon',
     x,y,height:h,
     rotation:r+bank,
     time:G.time||0,
-    engineGlow:engine.color,
     engineId,
-    color:shipColor.color,
+    colorId:shipColorId,
     showGlow:true,
     showEngineFlame:true
   });
@@ -34,5 +31,5 @@ G.setShip(function(x,y,s,r=0,en=false,heavy=false,model='falcon'){
   }
 });
 post('SHIPS ON');
-window.__SHIP_ASSETS_V107={version:126,mode:'modular-falcon'};
+window.__SHIP_ASSETS_V107={version:130,mode:'modular-falcon-assets'};
 })();
