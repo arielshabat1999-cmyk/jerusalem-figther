@@ -1,6 +1,6 @@
-/* V121 — Falcon modular ship renderer: preload once, then render synchronously in Garage + gameplay. */
+/* V130 — Falcon renderer using pre-rendered hull + engine assets only. No runtime tint masks. */
 ;(()=>{try{
-const VERSION='20260918v126',IDS=['falcon'];
+const VERSION='20260918v130',IDS=['falcon'];
 const META={
   falcon:{
     anchor:{x:.5,y:.5},
@@ -8,198 +8,113 @@ const META={
     muzzlePoints:[{x:.3125,y:.210},{x:.6875,y:.210}],
     trailPoint:{x:.5,y:.889}
   }
-}
-const LAYERS=['hull-base','color-mask','livery-mask','lights-emissive','cockpit','engine-flame','shadow-ao'];
-const cache=new Map(),prepared=new Map();
+};
 const ENGINE_OPTIONS={
-  blue:{id:'blue',name:'ION BLUE',color:'#35d8ff'},
-  gold:{id:'gold',name:'SOLAR GOLD',color:'#ffb52d'},
-  red:{id:'red',name:'CRIMSON',color:'#ff3a2f'},
-  purple:{id:'purple',name:'NEON VIOLET',color:'#b34dff'},
-  green:{id:'green',name:'PLASMA GREEN',color:'#35ff9b'}
+  blue:{id:'blue',name:'ION BLUE',frame:0},
+  gold:{id:'gold',name:'SOLAR GOLD',frame:1},
+  red:{id:'red',name:'CRIMSON',frame:2},
+  purple:{id:'purple',name:'NEON VIOLET',frame:3},
+  green:{id:'green',name:'PLASMA GREEN',frame:4}
 };
 const SHIP_COLOR_OPTIONS={
-  silver:{id:'silver',name:'SILVER',color:''},
-  blue:{id:'blue',name:'COBALT',color:'#2f7fff'},
-  red:{id:'red',name:'CRIMSON',color:'#e53935'},
-  gold:{id:'gold',name:'GOLD',color:'#d9a441'},
-  purple:{id:'purple',name:'VIOLET',color:'#8b4dff'}
+  silver:{id:'silver',name:'SILVER',frame:0},
+  blue:{id:'blue',name:'COBALT',frame:1},
+  red:{id:'red',name:'CRIMSON',frame:2},
+  gold:{id:'gold',name:'GOLD',frame:3},
+  purple:{id:'purple',name:'VIOLET',frame:4}
 };
+const prepared=new Map();
+
 function engineOption(id){return ENGINE_OPTIONS[id]||ENGINE_OPTIONS.blue}
 function shipColorOption(id){return SHIP_COLOR_OPTIONS[id]||SHIP_COLOR_OPTIONS.silver}
-
-function pathFor(id,layer){return './assets/ships/modular/'+id+'/'+layer+'.webp?v='+VERSION}
-function loadImage(src,optional=false){
+function loadImage(src){
   return new Promise((resolve,reject)=>{
-    const im=new Image();
-    im.decoding='async';
-    im.onload=async()=>{
-      try{
-        if(im.decode)await im.decode();
-        resolve(im);
-      }catch(e){
-        console.error('MODULAR ASSET DECODE FAILED',src,e);
-        optional?resolve(null):reject(new Error('MODULAR ASSET DECODE FAILED '+src));
-      }
-    };
-    im.onerror=()=>{
-      console.error('MODULAR ASSET LOAD FAILED',src);
-      optional?resolve(null):reject(new Error('MODULAR ASSET LOAD FAILED '+src));
-    };
+    const im=new Image();im.decoding='async';
+    im.onload=async()=>{try{if(im.decode)await im.decode();resolve(im)}catch(e){reject(e)}};
+    im.onerror=()=>reject(new Error('ASSET LOAD FAILED '+src));
     im.src=src;
   });
 }
-async function load(id='falcon'){
+function asset(name){return './assets/ships/modular/falcon/'+name+'?v='+VERSION}
+function prepare(id='falcon'){
   if(!IDS.includes(id))id='falcon';
-  if(cache.has(id))return cache.get(id);
-  const job=(async()=>{
-    const rows=await Promise.all(LAYERS.map(async layer=>[layer,await loadImage(pathFor(id,layer),layer!=='hull-base')]));
-    const layers=Object.fromEntries(rows);
-    if(!layers['hull-base'])throw new Error('Falcon hull-base missing');
-    return{id,meta:META[id],layers};
+  if(prepared.has(id))return prepared.get(id);
+  const p=(async()=>{
+    const [hullSheet,engineSheet]=await Promise.all([
+      loadImage(asset('hull-variants.webp')),
+      loadImage(asset('engine-variants.webp'))
+    ]);
+    return{id,meta:META[id],hullSheet,engineSheet};
   })();
-  cache.set(id,job);
-  return job;
-}
-function tintMask(img,color){
-  if(!img||!color)return null;
-  const cv=document.createElement('canvas'),w=img.naturalWidth||img.width,h=img.naturalHeight||img.height;
-  cv.width=w;cv.height=h;
-  const c=cv.getContext('2d');
-  c.drawImage(img,0,0,w,h);
-  c.globalCompositeOperation='source-in';
-  c.fillStyle=color;c.fillRect(0,0,w,h);
-  c.globalCompositeOperation='source-over';
-  return cv;
-}
-function compositeKey(id,opt={}){return id+'|'+(opt.color||'')+'|'+(opt.livery||'')}
-function prepare(id='falcon',opt={}){
-  if(!IDS.includes(id))id='falcon';
-  const key=compositeKey(id,opt);
-  if(prepared.has(key))return prepared.get(key);
-  const job=(async()=>{
-    const a=await load(id),base=a.layers['hull-base'];
-    const w=base.naturalWidth||base.width,h=base.naturalHeight||base.height;
-    const cv=document.createElement('canvas');cv.width=w;cv.height=h;
-    const c=cv.getContext('2d');
-    if(a.layers['shadow-ao'])c.drawImage(a.layers['shadow-ao'],0,0,w,h);
-    c.drawImage(base,0,0,w,h);
-    if(opt.color&&a.layers['color-mask']){
-      const t=tintMask(a.layers['color-mask'],opt.color);
-      c.save();c.globalCompositeOperation='source-atop';c.globalAlpha=.72;c.drawImage(t,0,0,w,h);c.restore();
-    }
-    if(opt.livery&&a.layers['livery-mask']){
-      const t=tintMask(a.layers['livery-mask'],opt.livery);
-      c.save();c.globalCompositeOperation='source-atop';c.globalAlpha=.88;c.drawImage(t,0,0,w,h);c.restore();
-    }
-    if(a.layers.cockpit)c.drawImage(a.layers.cockpit,0,0,w,h);
-    return{id,meta:a.meta,layers:a.layers,body:cv,w,h};
-  })();
-  prepared.set(key,job);
-  return job;
-}
-function getPrepared(id='falcon',opt={}){
-  const p=prepared.get(compositeKey(IDS.includes(id)?id:'falcon',opt));
-  if(!p||typeof p.then!=='function')return null;
-  return p.__value||null;
-}
-async function prepareTracked(id='falcon',opt={}){
-  const key=compositeKey(id,opt);
-  const p=prepare(id,opt);
-  if(!p.__tracked){
-    p.__tracked=true;
-    p.then(v=>{p.__value=v;return v});
-  }
+  p.then(v=>{p.__value=v;return v});
+  prepared.set(id,p);
   return p;
 }
-function drawTintedLayer(ctx,img,color,x,y,w,h,alpha=1,glow=0){
+function getPrepared(id='falcon'){
+  const p=prepared.get(IDS.includes(id)?id:'falcon');
+  return p&&p.__value?p.__value:null;
+}
+function drawFrame(ctx,img,frame,total,x,y,w,h,alpha=1,glowColor=''){
   if(!img)return;
-  const tint=tintMask(img,color);
-  if(!tint)return;
-  ctx.save();ctx.globalCompositeOperation='lighter';ctx.globalAlpha=alpha;
-  if(glow){ctx.shadowBlur=glow;ctx.shadowColor=color}
-  ctx.drawImage(tint,x,y,w,h);ctx.restore();
-}
-function drawProceduralThrusters(ctx,meta,color,x,y,w,h,time=0){
-  const pulse=.9+.1*Math.sin(time*13),len=h*(.27+.035*Math.sin(time*11));
-  ctx.save();ctx.globalCompositeOperation='lighter';
-  for(const p of meta.enginePoints){
-    const px=x+p.x*w,py=y+p.y*h,outer=Math.max(3,w*.045),mid=outer*.58,core=outer*.22;
-
-    const outerG=ctx.createLinearGradient(px,py,px,py+len);
-    outerG.addColorStop(0,'#ffffff');
-    outerG.addColorStop(.12,color);
-    outerG.addColorStop(.52,color+'bb');
-    outerG.addColorStop(1,color+'00');
-    ctx.globalAlpha=.55*pulse;ctx.fillStyle=outerG;ctx.shadowBlur=24;ctx.shadowColor=color;
-    ctx.beginPath();ctx.moveTo(px-outer,py);ctx.quadraticCurveTo(px-outer*.45,py+len*.45,px,py+len);ctx.quadraticCurveTo(px+outer*.45,py+len*.45,px+outer,py);ctx.closePath();ctx.fill();
-
-    const midG=ctx.createLinearGradient(px,py,px,py+len*.82);
-    midG.addColorStop(0,'#ffffff');midG.addColorStop(.18,color);midG.addColorStop(1,color+'00');
-    ctx.globalAlpha=.86*pulse;ctx.fillStyle=midG;ctx.shadowBlur=12;ctx.shadowColor=color;
-    ctx.beginPath();ctx.moveTo(px-mid,py);ctx.lineTo(px,py+len*.82);ctx.lineTo(px+mid,py);ctx.closePath();ctx.fill();
-
-    const coreG=ctx.createLinearGradient(px,py,px,py+len*.62);
-    coreG.addColorStop(0,'#ffffff');coreG.addColorStop(.28,'#ffffff');coreG.addColorStop(.58,color);coreG.addColorStop(1,color+'00');
-    ctx.globalAlpha=pulse;ctx.fillStyle=coreG;ctx.shadowBlur=7;ctx.shadowColor='#ffffff';
-    ctx.beginPath();ctx.moveTo(px-core,py);ctx.lineTo(px,py+len*.62);ctx.lineTo(px+core,py);ctx.closePath();ctx.fill();
+  const sw=(img.naturalWidth||img.width)/total,sh=(img.naturalHeight||img.height);
+  ctx.save();
+  ctx.globalAlpha=alpha;
+  if(glowColor){
+    ctx.globalCompositeOperation='lighter';
+    ctx.shadowBlur=Math.max(8,w*.045);
+    ctx.shadowColor=glowColor;
   }
+  ctx.drawImage(img,frame*sw,0,sw,sh,x,y,w,h);
   ctx.restore();
-}
-function drawEngineVariant(ctx,img,meta,x,y,w,h,engineId,time=0){
-  const opt=engineOption(engineId),pulse=.72+.22*Math.sin(time*13);
-  if(img)drawTintedLayer(ctx,img,opt.color,x,y,w,h,pulse,18);
-  drawProceduralThrusters(ctx,meta,opt.color,x,y,w,h,time);
 }
 function drawSync(ctx,opt={}){
   const id=IDS.includes(opt.shipId)?opt.shipId:'falcon';
-  const a=getPrepared(id,opt);
+  const a=getPrepared(id);
   if(!a)return false;
-  const scale=opt.scale||1,h=(opt.height||100)*scale,w=h*(a.w/a.h);
+
+  const scale=opt.scale||1,h=(opt.height||100)*scale,w=h;
   const cx=opt.x||0,cy=opt.y||0,x=-w*.5,y=-h*.5,time=opt.time||0;
+  const color=shipColorOption(opt.colorId||'silver');
   const engine=engineOption(opt.engineId||'blue');
-  ctx.save();ctx.translate(cx,cy);ctx.rotate(opt.rotation||0);ctx.globalAlpha=opt.alpha??1;
+  const pulse=.92+.08*Math.sin(time*12);
 
-  /* Engine choice affects ONLY the engine fire. Draw it behind the hull. */
-  if(opt.showEngineFlame!==false)drawEngineVariant(ctx,a.layers['engine-flame'],a.meta,x,y,w,h,engine.id,time);
+  ctx.save();
+  ctx.translate(cx,cy);
+  ctx.rotate(opt.rotation||0);
+  ctx.globalAlpha=opt.alpha??1;
 
-  ctx.drawImage(a.body,x,y,w,h);
-
-  /* Ship emissive lighting stays the Falcon's original cyan/white lighting. */
-  if(opt.showGlow!==false&&a.layers['lights-emissive']){
-    const pulse=.76+.16*Math.sin(time*7);
-    ctx.save();ctx.globalCompositeOperation='lighter';ctx.globalAlpha=pulse;
-    ctx.shadowBlur=11;ctx.shadowColor='#55edff';
-    ctx.drawImage(a.layers['lights-emissive'],x,y,w,h);
-    ctx.restore();
+  if(opt.showEngineFlame!==false){
+    const glow=engine.id==='gold'?'#ffb52d':engine.id==='red'?'#ff3a2f':engine.id==='purple'?'#b34dff':engine.id==='green'?'#35ff9b':'#35d8ff';
+    drawFrame(ctx,a.engineSheet,engine.frame,5,x,y,w,h,pulse,glow);
   }
+
+  drawFrame(ctx,a.hullSheet,color.frame,5,x,y,w,h,1,'');
+
   ctx.restore();
-  return{w,h,meta:a.meta,modular:true};
+  return{w,h,meta:a.meta,modular:true,colorId:color.id,engineId:engine.id};
 }
 async function renderCanvas(canvas,opt={}){
-  await prepareTracked(opt.shipId||'falcon',opt);
+  await prepare(opt.shipId||'falcon');
   const r=canvas.getBoundingClientRect(),ratio=Math.min(devicePixelRatio||1,2);
   const w=Math.max(1,Math.round(r.width)),h=Math.max(1,Math.round(r.height));
   canvas.width=Math.round(w*ratio);canvas.height=Math.round(h*ratio);
-  const c=canvas.getContext('2d');c.setTransform(ratio,0,0,ratio,0,0);c.clearRect(0,0,w,h);
+  const c=canvas.getContext('2d');
+  c.setTransform(ratio,0,0,ratio,0,0);
+  c.clearRect(0,0,w,h);
   const targetH=opt.height||h*.78;
   return drawSync(c,{...opt,x:opt.x??w/2,y:opt.y??h*.47,height:targetH});
 }
 function clearCompositeCache(){prepared.clear()}
-const API={version:126,ids:IDS,meta:META,engineOptions:ENGINE_OPTIONS,engineOption,shipColorOptions:SHIP_COLOR_OPTIONS,shipColorOption,load,prepare:prepareTracked,drawSync,renderCanvas,clearCompositeCache};
+const API={version:130,ids:IDS,meta:META,engineOptions:ENGINE_OPTIONS,engineOption,shipColorOptions:SHIP_COLOR_OPTIONS,shipColorOption,prepare,drawSync,renderCanvas,clearCompositeCache};
 window.__SHIP_MODULAR_V120=API;
-let startupColor='';
-try{startupColor=shipColorOption(localStorage.NSFalconColor||'silver').color}catch(_){}
-Promise.all([
-  prepareTracked('falcon'),
-  prepareTracked('falcon',{color:startupColor})
-]).then(()=>{
+
+prepare('falcon').then(()=>{
   try{parent.postMessage({source:'ship-modular-v120',status:'MODULAR SHIP READY'},'*')}catch(_){}
 }).catch(e=>{
-  console.error('Falcon modular preload failed',e);
+  console.error('Falcon V130 asset preload failed',e);
   try{parent.postMessage({source:'ship-modular-v120',status:'MODULAR SHIP ERROR'},'*')}catch(_){}
 });
 }catch(e){
- console.error('SHIP MODULAR V121 SAFE FAIL',e);
- try{parent.postMessage({source:'ship-modular-v120',status:'MODULAR SHIP ERROR'},'*')}catch(_){}
+  console.error('SHIP MODULAR V130 SAFE FAIL',e);
+  try{parent.postMessage({source:'ship-modular-v120',status:'MODULAR SHIP ERROR'},'*')}catch(_){}
 }})();
