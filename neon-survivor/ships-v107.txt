@@ -5,31 +5,12 @@ const X=G.ctx,enemyRenderer=G.getShip();
 function post(status){try{parent.postMessage({source:'ships-v107',status},'*')}catch(_){}}
 G.setShip(function(x,y,s,r=0,en=false,heavy=false,model='falcon'){
   if(en){enemyRenderer(x,y,s,r,en,heavy,model);return}
-  const M=window.__SHIP_MODULAR_V120;
-  if(!M||typeof M.drawSync!=='function')return;
+  const M=window.__SHIP_MODULAR_V120;if(!M||typeof M.drawSync!=='function')return;
   const boost=G.boost>0,bank=(window.__V48Bank||0)*.08,h=s*4.88*(boost?1.09:1);
   let engineId=window.__FALCON_ENGINE_ID||'blue',shipColorId=window.__FALCON_COLOR_ID||'silver';
-  try{
-    engineId=window.__FALCON_ENGINE_ID||localStorage.NSFalconEngine||'blue';
-    shipColorId=window.__FALCON_COLOR_ID||localStorage.NSFalconColor||'silver';
-  }catch(_){ }
-  const box=M.drawSync(X,{
-    shipId:'falcon',
-    x,y,height:h,
-    rotation:r+bank,
-    time:G.time||0,
-    engineId,
-    colorId:shipColorId,
-    showGlow:true,
-    showEngineFlame:true
-  });
-  const p=G.player;
-  if(box&&p&&p.shield>0){
-    X.save();X.globalCompositeOperation='lighter';X.strokeStyle='#8deaff99';X.lineWidth=1.3;
-    X.shadowBlur=14;X.shadowColor='#42d7ff';X.beginPath();
-    X.ellipse(x,y,box.w*.45,box.h*.38,0,0,Math.PI*2);X.stroke();X.restore();
-  }
+  try{engineId=window.__FALCON_ENGINE_ID||localStorage.NSFalconEngine||'blue';shipColorId=window.__FALCON_COLOR_ID||localStorage.NSFalconColor||'silver'}catch(_){}
+  const box=M.drawSync(X,{shipId:'falcon',x,y,height:h,rotation:r+bank,time:G.time||0,engineId,colorId:shipColorId,showGlow:true,showEngineFlame:true});
+  const p=G.player;if(box&&p&&p.shield>0){X.save();X.globalCompositeOperation='lighter';X.strokeStyle='#8deaff99';X.lineWidth=1.3;X.shadowBlur=14;X.shadowColor='#42d7ff';X.beginPath();X.ellipse(x,y,box.w*.45,box.h*.38,0,0,Math.PI*2);X.stroke();X.restore()}
 });
-post('SHIPS ON');
-window.__SHIP_ASSETS_V107={version:131,mode:'modular-falcon-assets'};
+post('SHIPS ON');window.__SHIP_ASSETS_V107={version:133,mode:'modular-falcon-assets'};
 })();
