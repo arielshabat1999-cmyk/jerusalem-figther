@@ -10,7 +10,10 @@
     #load{position:fixed;inset:0;z-index:20;display:block;background:#01040a url('./assets/ui/A47595AD-6C81-41CC-9FD5-3EEDFA15C738.png?v=20260919clean') center/cover no-repeat;overflow:hidden}
     #load:before{content:"";position:absolute;inset:-20% 0 auto;height:22%;background:linear-gradient(180deg,transparent,#5deaff14,transparent);mix-blend-mode:screen;animation:loadScan99 4.8s linear infinite;pointer-events:none}
     .loadPanel99{position:absolute;left:11%;right:11%;bottom:11.05%;min-height:15%;display:flex;flex-direction:column;justify-content:center;padding:1% 4.5%;border:0;background:transparent;box-shadow:none;clip-path:none;text-align:center}
-    .loadTitle99{color:#efffff;font:1000 clamp(16px,5vw,31px)/1 system-ui,-apple-system,sans-serif;letter-spacing:.08em;text-shadow:0 0 12px #36dfff;margin-bottom:1.1vh}.loadTrack99{position:relative;height:1.45vh;min-height:14px;max-height:18px;border:2px solid #37dfff;background:transparent;box-shadow:0 0 10px #24dfff66;overflow:hidden}.loadTrack99 i{display:block;height:100%;width:3%;background:repeating-linear-gradient(90deg,#32dfff 0 18px,#90f7ff 18px 22px,#08283b 22px 25px);box-shadow:0 0 14px #3ceaff;transition:width .18s ease}.loadPct99{position:absolute;right:5%;top:50%;transform:translateY(-50%);color:#e8ffff;font:1000 clamp(14px,4vw,24px)/1 system-ui;text-shadow:0 0 10px #37dfff}.loadStatus99{display:none}
+    .loadTitle99{color:#efffff;font:1000 clamp(16px,5vw,31px)/1 system-ui,-apple-system,sans-serif;letter-spacing:.08em;text-shadow:0 0 12px #36dfff;margin-bottom:1.1vh}
+    .loadTrack99{position:relative;height:1.45vh;min-height:14px;max-height:18px;border:0;background:url('./assets/ui/loading-track.png?v=20260919bar1') center/100% 100% no-repeat;box-shadow:none;overflow:visible;--p:3%}
+    .loadTrack99 i{position:absolute;inset:0;display:block;width:100%!important;height:100%;background:url('./assets/ui/loading-fill.png?v=20260919bar1') center/100% 100% no-repeat;box-shadow:none;clip-path:inset(0 calc(100% - var(--p)) 0 0);transition:clip-path .18s ease}
+    .loadPct99{position:absolute;right:5%;top:50%;transform:translateY(-50%);color:#e8ffff;font:1000 clamp(14px,4vw,24px)/1 system-ui;text-shadow:0 0 10px #37dfff}.loadStatus99{display:none}
     @keyframes loadScan99{to{transform:translateY(600%)}}@media(min-aspect-ratio:3/4){#load{background-size:contain}.loadPanel99{width:min(500px,70vw);left:50%;right:auto;transform:translateX(-50%)}}@media(prefers-reduced-motion:reduce){#load:before{animation:none}}
     #game{position:fixed;inset:0;width:100%;height:100%;border:0;display:block;visibility:hidden;background:#01040a}
     #outerVersion{position:fixed;left:8px;top:max(8px,env(safe-area-inset-top));z-index:2147483647;padding:7px 10px;border:2px solid #9de5ff;border-radius:9px;background:#05070df2;color:#d9f6ff;font:900 11px/1 system-ui,-apple-system,sans-serif;letter-spacing:.11em;box-shadow:0 0 18px #68d7ff77;pointer-events:none;max-width:94vw;white-space:nowrap;transition:opacity .28s}
@@ -29,7 +32,7 @@
   (async()=>{
     const load=document.getElementById('load'),frame=document.getElementById('game'),fill99=document.getElementById('loadFill99'),pct99=document.getElementById('loadPct99'),status99=document.getElementById('loadStatus99');
     let revealed99=false;
-    let fetched99=0;const expected99=51,setLoad99=(n,s)=>{n=Math.max(3,Math.min(100,n|0));fill99.style.width=n+'%';pct99.textContent=n+'%';if(s)status99.textContent=s};
+    let fetched99=0;const expected99=51,setLoad99=(n,s)=>{n=Math.max(3,Math.min(100,n|0));fill99.parentElement.style.setProperty('--p',n+'%');pct99.textContent=n+'%';if(s)status99.textContent=s};
     revealGame99=()=>{
       if(revealed99||!frameLoaded99)return;
       if(modularState==='MODULAR SHIP ERROR'){setLoad99(100,'FALCON ASSET ERROR · REFRESH');badge.textContent='V131 LIVE · FALCON ERROR';return}
