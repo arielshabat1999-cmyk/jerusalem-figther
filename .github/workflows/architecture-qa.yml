@@ -44,11 +44,16 @@ jobs:
             await cutover.waitForFunction(()=>document.querySelector('#game')?.contentWindow?.GameSystems?.status?.().started?.length>0,null,{timeout:15000});
             const cut=await cutover.evaluate(()=>({engine:window.NEON_CUTOVER?.engine,player:!!document.querySelector('#game').contentWindow.WorldSystem.findByPlayerId('local-player')})); console.log('CUTOVER — '+JSON.stringify(cut));
             if(cut.engine!=='architecture'||!cut.player)cutoverErrors.push('production cutover invalid');
+            const primary=await browser.newPage({viewport:{width:390,height:844}}),primaryErrors=[]; primary.on('pageerror',e=>primaryErrors.push(String(e)));
+            await primary.goto('http://127.0.0.1:4173/index.html',{waitUntil:'networkidle'});
+            await primary.waitForFunction(()=>document.querySelector('#game')?.contentWindow?.GameSystems?.status?.().started?.length>0,null,{timeout:15000});
+            const main=await primary.evaluate(()=>({engine:window.NEON_CUTOVER?.engine,player:!!document.querySelector('#game').contentWindow.WorldSystem.findByPlayerId('local-player')})); console.log('PRIMARY — '+JSON.stringify(main));
+            if(main.engine!=='architecture'||!main.player)primaryErrors.push('primary index cutover invalid');
             const fallback=await browser.newPage({viewport:{width:390,height:844}}),fallbackErrors=[]; fallback.on('pageerror',e=>fallbackErrors.push(String(e)));
             await fallback.goto('http://127.0.0.1:4173/play.html?engine=legacy',{waitUntil:'domcontentloaded'});
             const fb=await fallback.evaluate(()=>({engine:window.NEON_CUTOVER?.engine,outer:document.querySelector('#game')?.contentWindow?.document?.querySelector('iframe')?.getAttribute('src')})); console.log('FALLBACK — '+JSON.stringify(fb));
-            if(fb.engine!=='legacy'||!String(fb.outer||'').includes('index.html?legacy-direct=1'))fallbackErrors.push('dedicated legacy fallback invalid');
+            if(fb.engine!=='legacy'||fb.outer!=='legacy-runtime.html')fallbackErrors.push('dedicated legacy fallback invalid');
             await browser.close();
-            if(errors.length||failed.length||migrationErrors.length||cutoverErrors.length||fallbackErrors.length){console.error([...errors,...migrationErrors,...cutoverErrors,...fallbackErrors].join('\n'));process.exit(1)}
+            if(errors.length||failed.length||migrationErrors.length||cutoverErrors.length||primaryErrors.length||fallbackErrors.length){console.error([...errors,...migrationErrors,...cutoverErrors,...primaryErrors,...fallbackErrors].join('\n'));process.exit(1)}
           })().catch(e=>{console.error(e);process.exit(1)});
           NODE
