@@ -1,0 +1,13 @@
+/* Rank progression DATA. Safe to rebalance or replace from Remote Config later. */
+window.RankDefinitions={version:1,maxRank:50,objectivesRequired:4,ranks:{
+1:{nextRank:2,objectives:[['kills',50,'career','DESTROY 50 ENEMIES','✦'],['survival_seconds',120,'single_run','SURVIVE FOR 2 MINUTES','◷'],['run_level',5,'single_run','REACH LEVEL 5','⌃'],['distance',500,'career','TRAVEL 500 m','➤']]},
+2:{nextRank:3,objectives:[['kills',100,'career','DESTROY 100 ENEMIES','✦'],['survival_seconds',180,'single_run','SURVIVE FOR 3 MINUTES','◷'],['score',5000,'single_run','SCORE 5,000','◆'],['run_level',7,'single_run','REACH LEVEL 7','⌃']]},
+3:{nextRank:4,objectives:[['kills',150,'single_run','DESTROY 150 ENEMIES IN ONE RUN','✦'],['survival_seconds',240,'single_run','SURVIVE FOR 4 MINUTES','◷'],['distance',1000,'career','TRAVEL 1,000 m','➤'],['upgrades',8,'single_run','COLLECT 8 UPGRADES','⚡']]},
+4:{nextRank:5,objectives:[['kills',250,'career','DESTROY 250 ENEMIES','✦'],['survival_seconds',300,'single_run','SURVIVE FOR 5 MINUTES','◷'],['score',10000,'single_run','SCORE 10,000','◆'],['run_level',10,'single_run','REACH LEVEL 10','⌃']]},
+5:{nextRank:6,objectives:[['elite_kills',1,'career','DESTROY 1 ELITE','☠'],['kills',300,'single_run','DESTROY 300 ENEMIES IN ONE RUN','✦'],['distance',1500,'career','TRAVEL 1,500 m','➤'],['upgrades',12,'single_run','COLLECT 12 UPGRADES','⚡']]},
+6:{nextRank:7,objectives:[['survival_seconds',420,'single_run','SURVIVE FOR 7 MINUTES','◷'],['kills',500,'career','DESTROY 500 ENEMIES','✦'],['score',20000,'single_run','SCORE 20,000','◆'],['run_level',15,'single_run','REACH LEVEL 15','⌃']]},
+7:{nextRank:8,objectives:[['elite_kills',3,'career','DESTROY 3 ELITES','☠'],['distance',2500,'career','TRAVEL 2,500 m','➤'],['kills',400,'single_run','DESTROY 400 ENEMIES IN ONE RUN','✦'],['no_damage_seconds',60,'single_run','SURVIVE 60 SEC WITHOUT DAMAGE','♥']]},
+8:{nextRank:9,objectives:[['survival_seconds',600,'single_run','SURVIVE FOR 10 MINUTES','◷'],['score',35000,'single_run','SCORE 35,000','◆'],['run_level',20,'single_run','REACH LEVEL 20','⌃'],['elite_kills',5,'career','DESTROY 5 ELITES','☠']]},
+9:{nextRank:10,objectives:[['boss_kills',1,'career','DEFEAT 1 BOSS','♛'],['kills',750,'single_run','DESTROY 750 ENEMIES IN ONE RUN','✦'],['distance',4000,'single_run','TRAVEL 4,000 m IN ONE RUN','➤'],['score',50000,'single_run','SCORE 50,000 IN ONE RUN','◆']]},10:{nextRank:null,objectives:[]}}};
+for(const [rank,d] of Object.entries(window.RankDefinitions.ranks))d.objectives=d.objectives.map((o,i)=>({id:`r${rank}_${i+1}`,type:o[0],target:o[1],scope:o[2],label:o[3],icon:o[4],enabled:true}));
+window.GameConfig?.register('ranks',window.RankDefinitions);
