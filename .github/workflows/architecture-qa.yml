@@ -22,7 +22,7 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Serve game
         run: python3 -m http.server 4173 --directory neon-survivor > /tmp/neon-http.log 2>&1 &
-      - name: Run architecture regression page
+      - name: Run architecture regression and migration smoke tests
         run: |
           node <<'NODE'
           const { chromium } = require('playwright');
@@ -31,14 +31,21 @@ jobs:
             const page=await browser.newPage({viewport:{width:390,height:844}});
             const errors=[];
             page.on('pageerror',e=>errors.push(String(e)));
-            page.on('console',m=>{ if(m.type()==='error') errors.push(m.text()); });
+            page.on('console',m=>{if(m.type()==='error')errors.push(m.text())});
             await page.goto('http://127.0.0.1:4173/tests/architecture-tests.html',{waitUntil:'networkidle'});
             await page.waitForFunction(()=>Array.isArray(window.__ARCH_TEST_RESULTS__),null,{timeout:15000});
             const results=await page.evaluate(()=>window.__ARCH_TEST_RESULTS__);
             console.log(results.map(r=>r.join(' — ')).join('\n'));
-            if(errors.length) console.error('Browser errors:\n'+errors.join('\n'));
             const failed=results.filter(r=>r[0]!=='PASS');
+            const migration=await browser.newPage({viewport:{width:390,height:844}});
+            const migrationErrors=[];
+            migration.on('pageerror',e=>migrationErrors.push(String(e)));
+            await migration.goto('http://127.0.0.1:4173/migration.html',{waitUntil:'networkidle'});
+            await migration.waitForFunction(()=>document.querySelector('#game')?.contentWindow?.GameSystems?.status?.().started?.length>0,null,{timeout:15000});
+            const state=await migration.evaluate(()=>({mode:document.querySelector('#mode').textContent,systems:document.querySelector('#game').contentWindow.GameSystems.status().started.length,player:!!document.querySelector('#game').contentWindow.WorldSystem.findByPlayerId('local-player')}));
+            console.log('MIGRATION — '+JSON.stringify(state));
+            if(state.mode!=='ARCHITECTURE'||!state.player||state.systems<1)migrationErrors.push('migration architecture boot invalid');
             await browser.close();
-            if(errors.length||failed.length) process.exit(1);
+            if(errors.length||failed.length||migrationErrors.length){console.error([...errors,...migrationErrors].join('\n'));process.exit(1)}
           })().catch(e=>{console.error(e);process.exit(1)});
           NODE
