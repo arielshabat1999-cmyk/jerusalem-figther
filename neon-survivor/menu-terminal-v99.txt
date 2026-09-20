@@ -1,107 +1,43 @@
-/* V99 — selected command-terminal opening screen with live controls and stats */
+/* V132 — V3 modular main menu: clean background + live asset buttons/stats */
 ;(()=>{
-/* V120 SAFETY LAYER — dormant facade. Existing buttons keep their original handlers. */
-try{
-  if(!window.GameAPI){
-    const api={
-      version:120,
-      health(){
-        return {
-          ready:true,
-          state:typeof state==='string'?state:null,
-          start:typeof start==='function',
-          reset:typeof reset==='function',
-          renderShop:typeof renderShop==='function',
-          playButton:!!$('play'),
-          menu:!!$('menu'),
-          garage:!!$('upgrade')
-        };
-      },
-      startRun(source='api'){
-        try{if(typeof start!=='function')throw new Error('start unavailable');start();return true}
-        catch(e){console.error('GameAPI.startRun failed',source,e);return false}
-      },
-      showMenu(source='api'){
-        try{
-          state='menu';
-          $('hud').style.display='none';
-          $('over').classList.remove('show');
-          $('upgrade').classList.remove('show');
-          $('menu').classList.add('show');
-          return true
-        }catch(e){console.error('GameAPI.showMenu failed',source,e);return false}
-      },
-      openGarage(source='api'){
-        try{
-          if(!p&&typeof reset==='function')reset();
-          state='shop';
-          $('menu').classList.remove('show');
-          $('hud').style.display='none';
-          $('upgrade').classList.add('show');
-          if(typeof renderShop==='function')renderShop();
-          return true
-        }catch(e){console.error('GameAPI.openGarage failed',source,e);return false}
-      }
-    };
-    window.GameAPI=api;
-    try{parent.postMessage({source:'game-api-v120',status:'GAME API READY',health:api.health()},'*')}catch(_){}
-  }
-}catch(e){console.error('GAME API V120 SAFE FAIL',e)}
-
-const menu99=$('menu'),panel99=menu99&&menu99.querySelector('.panel.hero');
-if(!menu99||!panel99)return;
-
-const css99=document.createElement('style');
-css99.textContent=`
-#menu.menu99{z-index:145!important;display:none!important;padding:0!important;background:#01040a url('./assets/ui/menu-command-v106.webp?v=106') center/cover no-repeat!important;backdrop-filter:none!important;overflow:hidden}
-#menu.menu99.show{display:flex!important}
-#menu.menu99:before{content:"";position:absolute;z-index:1;inset:-18% 0 auto;height:24%;pointer-events:none;background:linear-gradient(180deg,transparent,#74efff18,transparent);mix-blend-mode:screen;animation:menuScan99 5.8s linear infinite}
-#menu.menu99:after{content:"";position:absolute;z-index:1;left:24%;right:24%;top:23%;height:29%;pointer-events:none;border-radius:50%;background:radial-gradient(ellipse,#38dfff13,transparent 68%);filter:blur(6px);animation:menuPulse99 2.6s ease-in-out infinite}
-@keyframes menuScan99{to{transform:translateY(510%)}}@keyframes menuPulse99{50%{opacity:.42;transform:scale(1.045)}}
-#menu.menu99 .panel.hero{position:absolute!important;z-index:3!important;inset:auto!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;width:max(100vw,56.285vh)!important;height:max(100vh,177.667vw)!important;max-width:none!important;padding:0!important;border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;clip-path:none!important;overflow:visible!important}
-#menu.menu99 .panel.hero:before,#menu.menu99 .panel.hero:after,#menu.menu99 .panel.hero>div:first-child,#menu.menu99 .sub,#menu.menu99 .hint,#menu.menu99 .specialNote75,#menu.menu99 .meteorNote79,#menu.menu99 .meteorBest79{display:none!important}
-#menu.menu99 .panel.hero>div:last-child{position:static!important}
-#menu.menu99 .btn,#menu.menu99 .menuGarage99,#menu.menu99 .menuObjectives99{position:absolute!important;z-index:8!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:#fff0!important;box-shadow:none!important;clip-path:none!important;color:transparent!important;font-size:0!important;pointer-events:auto!important;touch-action:manipulation!important;opacity:1!important}
-#menu.menu99 .btn:active,#menu.menu99 .menuGarage99:active,#menu.menu99 .menuObjectives99:active{background:#9ff3ff1b!important;box-shadow:inset 0 0 28px #7ef3ff55!important}
-#menu.menu99 #play{left:8.5%!important;right:8.5%!important;top:42.5%!important;width:auto!important;height:11.5%!important}
-#menu.menu99 .menuObjectives99{left:8.5%!important;right:8.5%!important;top:54.5%!important;height:7.2%!important;color:#dffcff!important;font:900 clamp(12px,3.5vw,18px)/1 system-ui,-apple-system,sans-serif!important;letter-spacing:.18em!important;border:1px solid #4fe9ff99!important;background:#03121bcc!important;box-shadow:inset 0 0 20px #28dfff18,0 0 14px #28dfff20!important}
-#menu.menu99 .menuGarage99{left:35.1%!important;top:63.0%!important;width:29.8%!important;height:8.2%!important}
-.menuStat99{position:absolute;z-index:7;display:grid;place-items:center;min-width:25%;height:3.2%;padding:0 4px;background:#06111bc9;color:#6ff2ff;font:900 clamp(10px,3vw,15px)/1 system-ui,-apple-system,sans-serif;letter-spacing:.08em;text-shadow:0 0 9px #35eaff;pointer-events:none}
-.menuStat99.distance99{left:4.8%;top:68.0%}.menuStat99.survival99{display:none}.menuStat99.credits99{left:37%;top:74.5%;min-width:26%}
-#objectives99{position:fixed;z-index:190;inset:0;display:none;background:#01040a;color:#dffcff}
-#objectives99.show{display:block}
-#objectives99 .objectivesBack99{position:absolute;left:max(20px,env(safe-area-inset-left));top:max(22px,env(safe-area-inset-top));width:58px;height:58px;border:1px solid #52eaff88;background:#06121ccc;color:#eaffff;font:500 34px/1 system-ui;box-shadow:inset 0 0 18px #31dfff18;touch-action:manipulation}
-@media(min-aspect-ratio:3/4){#menu.menu99{background-size:contain!important}#menu.menu99 .panel.hero{width:min(100vw,56.285vh)!important;height:min(100vh,177.667vw)!important}.menuStat99{font-size:12px}}
-@media(prefers-reduced-motion:reduce){#menu.menu99:before,#menu.menu99:after{animation:none!important}}
+try{if(!window.GameAPI){window.GameAPI={version:132,startRun(){try{start();return true}catch(e){return false}},showMenu(){try{state='menu';$('hud').style.display='none';$('over').classList.remove('show');$('upgrade').classList.remove('show');$('menu').classList.add('show');return true}catch(e){return false}},openGarage(){try{if(!p)reset();state='shop';$('menu').classList.remove('show');$('hud').style.display='none';$('upgrade').classList.add('show');renderShop();return true}catch(e){return false}}}}}catch(e){}
+const menu=$('menu'),panel=menu&&menu.querySelector('.panel.hero');if(!menu||!panel)return;
+const css=document.createElement('style');css.textContent=`
+#menu.menu132{z-index:145!important;display:none!important;padding:0!important;background:#01040a url('./assets/ui/FF455FC8-B826-418E-A839-617FE2459E98.png?v=132') center/cover no-repeat!important;overflow:hidden!important;backdrop-filter:none!important}
+#menu.menu132.show{display:flex!important}
+#menu.menu132:before{content:"";position:absolute;inset:-18% 0 auto;height:22%;pointer-events:none;background:linear-gradient(180deg,transparent,#75ecff16,transparent);mix-blend-mode:screen;animation:scan132 6s linear infinite}
+@keyframes scan132{to{transform:translateY(560%)}}
+#menu.menu132 .panel.hero{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;padding:0!important;border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;clip-path:none!important;overflow:visible!important;transform:none!important}
+#menu.menu132 .panel.hero:before,#menu.menu132 .panel.hero:after,#menu.menu132 .panel.hero>div:first-child,#menu.menu132 .sub,#menu.menu132 .hint,#menu.menu132 .specialNote75,#menu.menu132 .meteorNote79,#menu.menu132 .meteorBest79{display:none!important}
+#menu.menu132 .panel.hero>div:last-child{position:static!important}
+#menu.menu132 .btn,#menu.menu132 .menuGarage132,#menu.menu132 .menuObjectives132{position:absolute!important;z-index:8!important;margin:0!important;border:0!important;color:#eaffff!important;box-shadow:none!important;clip-path:none!important;touch-action:manipulation!important;background-color:transparent!important;background-repeat:no-repeat!important;background-position:center!important;background-size:100% 100%!important;text-shadow:0 0 10px #55eaff!important;font-family:system-ui,-apple-system,sans-serif!important;font-weight:900!important;letter-spacing:.13em!important}
+#menu.menu132 .btn:active,#menu.menu132 .menuGarage132:active,#menu.menu132 .menuObjectives132:active{filter:brightness(1.35)!important;transform:scale(.985)!important}
+#menu.menu132 #play{left:10%!important;top:48.5%!important;width:80%!important;height:9.8%!important;background-image:url('./assets/ui/primary_frame.png?v=132')!important;font-size:clamp(18px,5.2vw,28px)!important;padding:0 0 0 11%!important}
+#menu.menu132 #play:before{content:"";position:absolute;left:7%;top:19%;width:15%;height:62%;background:url('./assets/ui/icon_launch.png?v=132') center/contain no-repeat}
+#menu.menu132 #play:after{content:"LAUNCH";position:absolute;inset:0;display:grid;place-items:center;padding-left:10%}
+#menu.menu132 .menuObjectives132{left:10%!important;top:59.2%!important;width:38.5%!important;height:7.7%!important;background-image:url('./assets/ui/secondary_frame.png?v=132')!important;font-size:clamp(10px,2.7vw,15px)!important;padding-left:9%!important}
+#menu.menu132 .menuObjectives132:before{content:"";position:absolute;left:8%;top:22%;width:22%;height:56%;background:url('./assets/ui/icon_objectives.png?v=132') center/contain no-repeat}
+#menu.menu132 .menuGarage132{left:51.5%!important;top:59.2%!important;width:38.5%!important;height:7.7%!important;background-image:url('./assets/ui/secondary_frame.png?v=132')!important;font-size:clamp(10px,2.7vw,15px)!important;padding-left:9%!important}
+#menu.menu132 .menuGarage132:before{content:"";position:absolute;left:8%;top:22%;width:22%;height:56%;background:url('./assets/ui/icon_garage.png?v=132') center/contain no-repeat}
+.menuStats132{position:absolute;z-index:7;left:10%;top:69.1%;width:80%;height:8.2%;display:grid;grid-template-columns:1fr 1fr;gap:3%;pointer-events:none}
+.menuStat132{position:relative;display:flex;align-items:center;justify-content:center;padding-left:20%;background:url('./assets/ui/stat_frame.png?v=132') center/100% 100% no-repeat;color:#dffcff;font:900 clamp(10px,3vw,16px)/1 system-ui;letter-spacing:.07em;text-shadow:0 0 9px #35eaff}
+.menuStat132:before{content:"";position:absolute;left:8%;top:22%;width:25%;height:56%;background-position:center;background-size:contain;background-repeat:no-repeat}
+.menuStat132.distance132:before{background-image:url('./assets/ui/icon_distance.png?v=132')}.menuStat132.credits132:before{background-image:url('./assets/ui/icon_level.png?v=132')}
+#objectives132{position:fixed;z-index:190;inset:0;display:none;background:#01040a;color:#dffcff}#objectives132.show{display:block}
+#objectives132 .back132{position:absolute;left:max(20px,env(safe-area-inset-left));top:max(22px,env(safe-area-inset-top));width:58px;height:58px;border:1px solid #52eaff88;background:#06121ccc;color:#eaffff;font:500 34px/1 system-ui;box-shadow:inset 0 0 18px #31dfff18;touch-action:manipulation}
+@media(min-aspect-ratio:3/4){#menu.menu132{background-size:contain!important;background-color:#01040a!important}#menu.menu132 .panel.hero{left:50%!important;transform:translateX(-50%)!important;width:min(100vw,56.285vh)!important}}
+@media(prefers-reduced-motion:reduce){#menu.menu132:before{animation:none!important}}
 `;
-document.head.appendChild(css99);
-menu99.classList.add('menu99');
-
-const garage99=document.createElement('button');garage99.className='menuGarage99';garage99.type='button';garage99.setAttribute('aria-label','Open garage');panel99.appendChild(garage99);
-const objectivesBtn99=document.createElement('button');objectivesBtn99.className='menuObjectives99';objectivesBtn99.type='button';objectivesBtn99.textContent='OBJECTIVES';objectivesBtn99.setAttribute('aria-label','Open objectives');panel99.appendChild(objectivesBtn99);
-const objectives99=document.createElement('section');objectives99.id='objectives99';objectives99.setAttribute('aria-label','Objectives');
-const objectivesBack99=document.createElement('button');objectivesBack99.className='objectivesBack99';objectivesBack99.type='button';objectivesBack99.textContent='‹';objectivesBack99.setAttribute('aria-label','Back to main menu');objectives99.appendChild(objectivesBack99);document.body.appendChild(objectives99);
-const distance99=document.createElement('div');distance99.className='menuStat99 distance99';
-const survival99=document.createElement('div');survival99.className='menuStat99 survival99';
-const credits99=document.createElement('div');credits99.className='menuStat99 credits99';
-panel99.append(distance99,survival99,credits99);
-
-function time99(v){v=Math.max(0,Math.floor(+v||0));return String(Math.floor(v/60)).padStart(2,'0')+':'+String(v%60).padStart(2,'0')}
-function stats99(){
- let d=0,m=0,c=0;try{d=+localStorage.NSbestDistance||0;m=+localStorage.NSmeteorBest79||0;c=+localStorage.NScredits||0}catch(_){}
- distance99.textContent=Math.floor(d).toLocaleString()+' m';survival99.textContent=time99(m);credits99.textContent=Math.floor(c).toLocaleString()+' ⬡';
-}
-stats99();
-
-objectivesBtn99.onclick=e=>{e.preventDefault();menu99.classList.remove('show');objectives99.classList.add('show')};
-objectivesBack99.onclick=e=>{e.preventDefault();objectives99.classList.remove('show');state='menu';menu99.classList.add('show');stats99()};
-
-let fromMenu99=false;
-function closeGarage99(){fromMenu99=false;$('upgrade').classList.remove('show');$('hud').style.display='none';state='menu';menu99.classList.add('show');stats99()}
-garage99.onclick=e=>{e.preventDefault();if(!p)reset();fromMenu99=true;state='shop';menu99.classList.remove('show');$('hud').style.display='none';$('upgrade').classList.add('show');try{renderShop()}catch(_){}};
-for(const id of ['garageBack7','continue']){const b=$(id);if(!b)continue;const old=b.onclick;b.onclick=function(e){if(fromMenu99){if(e){e.preventDefault();e.stopPropagation()}closeGarage99();return}if(old)return old.call(this,e)}}
-
-for(const id of ['play']){const b=$(id);if(!b)continue;b.addEventListener('click',()=>{stats99()},{capture:true})}
-const show99=new MutationObserver(()=>{if(menu99.classList.contains('show'))stats99()});show99.observe(menu99,{attributes:true,attributeFilter:['class']});
+document.head.appendChild(css);menu.classList.add('menu132');
+const garage=document.createElement('button');garage.className='menuGarage132';garage.type='button';garage.textContent='GARAGE';garage.setAttribute('aria-label','Open garage');panel.appendChild(garage);
+const objectivesBtn=document.createElement('button');objectivesBtn.className='menuObjectives132';objectivesBtn.type='button';objectivesBtn.textContent='OBJECTIVES';objectivesBtn.setAttribute('aria-label','Open objectives');panel.appendChild(objectivesBtn);
+const objectives=document.createElement('section');objectives.id='objectives132';const back=document.createElement('button');back.className='back132';back.type='button';back.textContent='‹';objectives.appendChild(back);document.body.appendChild(objectives);
+const statsWrap=document.createElement('div');statsWrap.className='menuStats132';const distance=document.createElement('div');distance.className='menuStat132 distance132';const credits=document.createElement('div');credits.className='menuStat132 credits132';statsWrap.append(distance,credits);panel.appendChild(statsWrap);
+function stats(){let d=0,c=0;try{d=+localStorage.NSbestDistance||0;c=+localStorage.NScredits||0}catch(_){}distance.textContent=Math.floor(d).toLocaleString()+' m';credits.textContent=Math.floor(c).toLocaleString()+' ⬡'}stats();
+objectivesBtn.onclick=e=>{e.preventDefault();menu.classList.remove('show');objectives.classList.add('show')};back.onclick=e=>{e.preventDefault();objectives.classList.remove('show');state='menu';menu.classList.add('show');stats()};
+let fromMenu=false;function closeGarage(){fromMenu=false;$('upgrade').classList.remove('show');$('hud').style.display='none';state='menu';menu.classList.add('show');stats()}
+garage.onclick=e=>{e.preventDefault();if(!p)reset();fromMenu=true;state='shop';menu.classList.remove('show');$('hud').style.display='none';$('upgrade').classList.add('show');try{renderShop()}catch(_){}};
+for(const id of ['garageBack7','continue']){const b=$(id);if(!b)continue;const old=b.onclick;b.onclick=function(e){if(fromMenu){if(e){e.preventDefault();e.stopPropagation()}closeGarage();return}if(old)return old.call(this,e)}}
+const play=$('play');if(play)play.addEventListener('click',stats,{capture:true});new MutationObserver(()=>{if(menu.classList.contains('show'))stats()}).observe(menu,{attributes:true,attributeFilter:['class']});
 try{parent.postMessage({source:'menu-terminal-v99',status:'MENU ON'},'*')}catch(_){}
 })();
