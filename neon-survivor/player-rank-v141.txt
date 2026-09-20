@@ -1,0 +1,22 @@
+/* V141 — persistent player rank HUD; in-run only */
+;(()=>{
+  const root=document.createElement('button');
+  root.id='playerRank141';
+  root.type='button';
+  root.setAttribute('aria-label','Player rank');
+  root.innerHTML='<img src="./assets/ui/player-ranks/rank_01.png?v=141" alt=""><span class="rankText141"><b>RANK 1</b><small>LEVEL 1</small><i><em></em></i></span>';
+  const style=document.createElement('style');
+  style.textContent=`
+  #playerRank141{position:fixed;z-index:120;left:max(10px,env(safe-area-inset-left));bottom:max(12px,env(safe-area-inset-bottom));display:none;align-items:center;gap:7px;width:auto;height:58px;padding:0;border:0;background:transparent;color:#eaffff;font-family:system-ui,-apple-system,sans-serif;text-align:left;filter:drop-shadow(0 0 7px #1adfff55);touch-action:manipulation}
+  #playerRank141.rankOn141{display:flex}
+  #playerRank141>img{display:block;width:54px;height:54px;object-fit:contain;flex:0 0 54px}
+  #playerRank141 .rankText141{display:flex;flex-direction:column;justify-content:center;min-width:78px;height:50px}
+  #playerRank141 b{font:900 11px/1.05 system-ui;letter-spacing:.1em;color:#eaffff;text-shadow:0 0 7px #35dfff}
+  #playerRank141 small{margin-top:4px;font:800 8px/1 system-ui;letter-spacing:.12em;color:#7edce9}
+  #playerRank141 i{display:block;width:78px;height:4px;margin-top:5px;border:1px solid #2e8ca2;background:#041119;overflow:hidden;box-shadow:0 0 5px #28dfff44}
+  #playerRank141 i em{display:block;width:0%;height:100%;background:#62ecff;box-shadow:0 0 6px #62ecff}
+  `;
+  document.head.appendChild(style);document.body.appendChild(root);
+  function sync141(){let active=false;try{active=state==='play'||state==='boss'}catch(_){}root.classList.toggle('rankOn141',active)}
+  sync141();setInterval(sync141,120);
+})();
