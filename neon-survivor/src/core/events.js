@@ -1,0 +1,2 @@
+/* Core Event Bus — systems communicate through events instead of monkey-patching each other. */
+window.GameEvents=(()=>{const listeners=new Map();return Object.freeze({on(type,fn){if(!listeners.has(type))listeners.set(type,new Set());listeners.get(type).add(fn);return()=>listeners.get(type)?.delete(fn)},once(type,fn){const off=this.on(type,p=>{off();fn(p)});return off},emit(type,payload={}){for(const fn of [...(listeners.get(type)||[])]){try{fn(payload)}catch(e){console.error('[GameEvents]',type,e)}}},clear(type){type?listeners.delete(type):listeners.clear()}})})();
