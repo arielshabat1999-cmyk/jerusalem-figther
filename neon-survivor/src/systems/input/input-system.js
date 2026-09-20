@@ -1,0 +1,1 @@
+(()=>{const state={moveX:0,moveY:0,fire:false,aimX:0,aimY:-1};const system={id:'input',dependsOn:[],start(){},set(patch={}){Object.assign(state,patch);GameEvents.emit('input:changed',{...state})},snapshot:()=>({...state}),reset(){Object.assign(state,{moveX:0,moveY:0,fire:false,aimX:0,aimY:-1})}};GameSystems.register(system);window.InputSystem=system})();
