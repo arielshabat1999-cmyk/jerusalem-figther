@@ -1,0 +1,6 @@
+(()=>{const items={
+'ship.nova':{type:'ship',rarity:'common',acquisition:{type:'starter'}},'ship.viper':{type:'ship',rarity:'epic',acquisition:{type:'rank',rank:10}},'ship.titan':{type:'ship',rarity:'legendary',acquisition:{type:'purchase',price:{currency:'gems',amount:250}}},
+'color.cyan':{type:'color',rarity:'common',acquisition:{type:'rank',rank:2}},'color.gold':{type:'color',rarity:'epic',acquisition:{type:'rank',rank:7}},
+'decal.rank_5':{type:'decal',rarity:'rare',acquisition:{type:'rank',rank:5}},'shot.tracer':{type:'shot',rarity:'rare',acquisition:{type:'rank',rank:3}},'shot.pulse':{type:'shot',rarity:'epic',acquisition:{type:'rank',rank:8}},
+'background.deep_space':{type:'background',rarity:'rare',acquisition:{type:'rank',rank:4}},'background.nebula':{type:'background',rarity:'epic',acquisition:{type:'rank',rank:9}},'aura.blue':{type:'aura',rarity:'rare',acquisition:{type:'rank',rank:6}}
+};const catalog={schemaVersion:1,rarities:['common','rare','epic','legendary'],items};GameConfig?.register('customization',catalog);window.CustomizationCatalog=catalog})();
