@@ -1,13 +1,22 @@
-/* V145 — Player Rank modular bootstrap. Kept at legacy filename so index.html needs no invasive change. */
+/* V146 — Player Rank modular bootstrap. Kept at legacy filename so index.html needs no invasive change. */
 ;(async()=>{
   try{
-    const loadText=async f=>{const r=await fetch('./'+f+'?v=20260920v145',{cache:'no-store'});if(!r.ok)throw new Error(f+' '+r.status);return r.text()};
+    /* One-time migration/reset requested during Rank 1 testing.
+       Only Player Rank data is touched; all other game saves remain intact. */
+    const RESET_MARKER='NS_playerRank_reset_v146_done';
+    if(localStorage.getItem(RESET_MARKER)!=='1'){
+      localStorage.removeItem('NS_playerRank_v143');
+      localStorage.setItem(RESET_MARKER,'1');
+      console.log('PLAYER RANK V146 ONE-TIME RESET COMPLETE');
+    }
+
+    const loadText=async f=>{const r=await fetch('./'+f+'?v=20260920v146',{cache:'no-store'});if(!r.ok)throw new Error(f+' '+r.status);return r.text()};
     const config=await loadText('player-rank-config-v143.js');
     (0,eval)(config);
     const renderer=await loadText('player-rank-renderer-v145.txt');
     (0,eval)(renderer);
     const tracker=await loadText('player-rank-tracker-v144.txt');
     (0,eval)(tracker);
-    console.log('PLAYER RANK V145 READY');
-  }catch(e){console.error('PLAYER RANK V145 FAILED',e)}
+    console.log('PLAYER RANK V146 READY');
+  }catch(e){console.error('PLAYER RANK V146 FAILED',e)}
 })();
