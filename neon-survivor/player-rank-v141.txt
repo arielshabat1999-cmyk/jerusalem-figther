@@ -1,22 +1,26 @@
-/* V141 — persistent player rank HUD; in-run only */
+/* V142 — persistent player rank HUD + objective pause panel; in-run only */
 ;(()=>{
   const root=document.createElement('button');
-  root.id='playerRank141';
-  root.type='button';
-  root.setAttribute('aria-label','Player rank');
-  root.innerHTML='<img src="./assets/ui/player-ranks/rank_01.png?v=141" alt=""><span class="rankText141"><b>RANK 1</b><small>LEVEL 1</small><i><em></em></i></span>';
-  const style=document.createElement('style');
-  style.textContent=`
+  root.id='playerRank141';root.type='button';root.setAttribute('aria-label','Player rank');
+  root.innerHTML='<img src="./assets/ui/player-ranks/rank_01.png?v=142" alt=""><span class="rankText141"><b>RANK 1</b><small>LEVEL 1</small><i><em></em></i></span>';
+
+  const overlay=document.createElement('div');overlay.id='rankObjectives142';overlay.setAttribute('aria-hidden','true');
+  overlay.innerHTML='<section class="rankBubble142"><button class="rankClose142" type="button" aria-label="Close">×</button><h2>OBJECTIVE</h2><div class="rankObjective142"><span>◷</span><div><b>SURVIVE FOR 5 MINUTES</b><i><em></em></i></div><strong>0 / 300</strong></div><div class="rankObjective142"><span>⌃</span><div><b>REACH LEVEL 10</b><i><em></em></i></div><strong>0 / 10</strong></div><div class="rankObjective142"><span>✦</span><div><b>DESTROY 500 ENEMIES</b><i><em></em></i></div><strong>0 / 500</strong></div></section>';
+
+  const style=document.createElement('style');style.textContent=`
   #playerRank141{position:fixed;z-index:120;left:max(10px,env(safe-area-inset-left));bottom:max(12px,env(safe-area-inset-bottom));display:none;align-items:center;gap:7px;width:auto;height:58px;padding:0;border:0;background:transparent;color:#eaffff;font-family:system-ui,-apple-system,sans-serif;text-align:left;filter:drop-shadow(0 0 7px #1adfff55);touch-action:manipulation}
-  #playerRank141.rankOn141{display:flex}
-  #playerRank141>img{display:block;width:54px;height:54px;object-fit:contain;flex:0 0 54px}
-  #playerRank141 .rankText141{display:flex;flex-direction:column;justify-content:center;min-width:78px;height:50px}
-  #playerRank141 b{font:900 11px/1.05 system-ui;letter-spacing:.1em;color:#eaffff;text-shadow:0 0 7px #35dfff}
-  #playerRank141 small{margin-top:4px;font:800 8px/1 system-ui;letter-spacing:.12em;color:#7edce9}
-  #playerRank141 i{display:block;width:78px;height:4px;margin-top:5px;border:1px solid #2e8ca2;background:#041119;overflow:hidden;box-shadow:0 0 5px #28dfff44}
-  #playerRank141 i em{display:block;width:0%;height:100%;background:#62ecff;box-shadow:0 0 6px #62ecff}
+  #playerRank141.rankOn141{display:flex}#playerRank141>img{display:block;width:54px;height:54px;object-fit:contain;flex:0 0 54px}#playerRank141 .rankText141{display:flex;flex-direction:column;justify-content:center;min-width:78px;height:50px}#playerRank141 b{font:900 11px/1.05 system-ui;letter-spacing:.1em;color:#eaffff;text-shadow:0 0 7px #35dfff}#playerRank141 small{margin-top:4px;font:800 8px/1 system-ui;letter-spacing:.12em;color:#7edce9}#playerRank141 i{display:block;width:78px;height:4px;margin-top:5px;border:1px solid #2e8ca2;background:#041119;overflow:hidden;box-shadow:0 0 5px #28dfff44}#playerRank141 i em{display:block;width:0%;height:100%;background:#62ecff;box-shadow:0 0 6px #62ecff}
+  #rankObjectives142{position:fixed;z-index:300;inset:0;display:none;align-items:center;justify-content:center;padding:18px;background:#01040a66;backdrop-filter:blur(2px);font-family:system-ui,-apple-system,sans-serif;color:#eaffff}#rankObjectives142.open142{display:flex}
+  .rankBubble142{position:relative;width:min(88vw,430px);padding:24px 18px 20px;border:1px solid #65dfff66;border-radius:24px;background:linear-gradient(180deg,#07121ddd,#030912e8);box-shadow:0 0 32px #25cfff2b,inset 0 0 28px #4bdfff0c;backdrop-filter:blur(12px)}
+  .rankBubble142 h2{margin:0 0 18px 4px;font:900 19px/1 system-ui;letter-spacing:.09em;color:#dffcff;text-shadow:0 0 10px #4be8ff}.rankClose142{position:absolute;right:12px;top:9px;width:34px;height:34px;border:0;background:transparent;color:#8edce8;font:300 28px/1 system-ui;touch-action:manipulation}
+  .rankObjective142{height:58px;margin:9px 0;display:grid;grid-template-columns:38px 1fr auto;gap:9px;align-items:center;padding:8px 12px;border:1px solid #3d8ba144;border-radius:18px;background:#06101a99}.rankObjective142>span{font:900 21px/1 system-ui;color:#a8eaff;text-align:center}.rankObjective142>div{min-width:0}.rankObjective142 b{display:block;font:800 10px/1.1 system-ui;letter-spacing:.045em;color:#dffcff;white-space:nowrap}.rankObjective142 strong{font:800 11px/1 system-ui;color:#c8edff;white-space:nowrap}.rankObjective142 i{display:block;height:3px;margin-top:7px;border-radius:3px;background:#102733;overflow:hidden}.rankObjective142 i em{display:block;width:0%;height:100%;background:#55eaff;box-shadow:0 0 6px #55eaff}
   `;
-  document.head.appendChild(style);document.body.appendChild(root);
-  function sync141(){let active=false;try{active=state==='play'||state==='boss'}catch(_){}root.classList.toggle('rankOn141',active)}
-  sync141();setInterval(sync141,120);
+  document.head.appendChild(style);document.body.append(root,overlay);
+
+  let previousState142=null,open142=false;
+  function isRun142(){try{return state==='play'||state==='boss'}catch(_){return false}}
+  function show142(){if(open142||!isRun142())return;previousState142=state;open142=true;try{state='rankObjectives'}catch(_){}overlay.classList.add('open142');overlay.setAttribute('aria-hidden','false');root.classList.remove('rankOn141')}
+  function hide142(){if(!open142)return;open142=false;overlay.classList.remove('open142');overlay.setAttribute('aria-hidden','true');try{state=previousState142==='boss'?'boss':'play'}catch(_){}previousState142=null;sync141()}
+  root.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();show142()});overlay.querySelector('.rankClose142').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();hide142()});overlay.addEventListener('click',e=>{if(e.target===overlay)hide142()});
+  function sync141(){root.classList.toggle('rankOn141',!open142&&isRun142())}sync141();setInterval(sync141,120);
 })();
