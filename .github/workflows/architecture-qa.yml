@@ -1,0 +1,37 @@
+name: Architecture QA
+on:
+  push:
+    branches: [architecture-phase-1]
+  pull_request:
+  workflow_dispatch:
+jobs:
+  architecture-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install Playwright
+        run: |
+          npm init -y
+          npm install --save-dev playwright
+          npx playwright install --with-deps chromium
+      - name: Serve game
+        run: python3 -m http.server 4173 --directory neon-survivor > /tmp/neon-http.log 2>&1 &
+      - name: Run architecture, product flow and cutover QA
+        run: |
+          node <<'NODE'
+          const { chromium }=require('playwright');
+          (async()=>{const browser=await chromium.launch({headless:true}); const errs=[];
+          async function arch(url){const p=await browser.newPage({viewport:{width:390,height:844}});p.on('pageerror',e=>errs.push(url+': '+e));await p.goto(url,{waitUntil:'networkidle'});await p.waitForFunction(()=>document.querySelector('#game')?.contentWindow?.GameSystems?.status?.().started?.length>0,null,{timeout:15000});return p}
+          const tests=await browser.newPage();await tests.goto('http://127.0.0.1:4173/tests/architecture-tests.html',{waitUntil:'networkidle'});await tests.waitForFunction(()=>Array.isArray(window.__ARCH_TEST_RESULTS__));const results=await tests.evaluate(()=>window.__ARCH_TEST_RESULTS__);console.log(results.map(r=>r.join(' — ')).join('\n'));if(results.some(r=>r[0]!=='PASS'))errs.push('architecture regression failed');
+          const migration=await arch('http://127.0.0.1:4173/migration.html');const m=await migration.evaluate(()=>{const w=document.querySelector('#game').contentWindow;return{mode:document.querySelector('#mode').textContent,systems:w.GameSystems.status().started.length,flow:w.AppFlowSystem.snapshot().state,player:!!w.WorldSystem.findByPlayerId('local-player')}});console.log('MIGRATION — '+JSON.stringify(m));if(m.mode!=='ARCHITECTURE'||m.systems<1||m.flow!=='home'||m.player)errs.push('migration home-first boot invalid');
+          const primary=await arch('http://127.0.0.1:4173/index.html');const w=await primary.$eval('#game',e=>e.contentWindow);let state=await primary.evaluate(()=>document.querySelector('#game').contentWindow.AppFlowSystem.snapshot().state);if(state!=='home')errs.push('primary did not boot home');
+          async function click(action,expected){await primary.evaluate(a=>document.querySelector('#game').contentWindow.document.querySelector(`[data-action="${a}"]`)?.click(),action);await primary.waitForFunction(s=>document.querySelector('#game').contentWindow.AppFlowSystem.snapshot().state===s,expected);console.log('FLOW — '+action+' -> '+expected)}
+          await click('profile','profile');await click('home','home');await click('garage','garage');await click('home','home');await click('shop','shop');await click('home','home');await click('stats','stats');await click('home','home');await click('leaderboard','leaderboard');await click('home','home');await click('play','mode-select');await click('solo','playing');
+          const playing=await primary.evaluate(()=>{const w=document.querySelector('#game').contentWindow;return{player:!!w.WorldSystem.findByPlayerId('local-player'),shell:w.document.querySelector('#app-shell')?.style.display}});console.log('PLAYING — '+JSON.stringify(playing));if(!playing.player||playing.shell!=='none')errs.push('playing flow invalid');
+          const fallback=await browser.newPage();await fallback.goto('http://127.0.0.1:4173/play.html?engine=legacy',{waitUntil:'domcontentloaded'});const fb=await fallback.evaluate(()=>({engine:window.NEON_CUTOVER?.engine,outer:document.querySelector('#game')?.contentWindow?.document?.querySelector('iframe')?.getAttribute('src')}));console.log('FALLBACK — '+JSON.stringify(fb));if(fb.engine!=='legacy'||fb.outer!=='legacy-runtime.html')errs.push('legacy fallback invalid');
+          await browser.close();if(errs.length){console.error(errs.join('\n'));process.exit(1)}})().catch(e=>{console.error(e);process.exit(1)});
+          NODE
