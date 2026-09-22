@@ -1,2 +1,3 @@
-/* Data-driven knobs for exact legacy gameplay. Null/default values preserve V77 behavior. */
-window.LegacyGameplayConfig={schemaVersion:1,waves:{enabled:true,defaults:{groupSize:null,enemyCap:null,spawnDelay:null,retryDelay:null,formation:{xPadding:38,minSpacing:42,yMin:-225,yMax:-68,targetYMin:.17,targetYMax:.48}},stages:{}},enemies:{overrides:{}},asteroids:{overrides:{}},bosses:{overrides:{}}};
+/* Data-driven knobs for exact legacy gameplay. Null/default values preserve original behavior. */
+window.LegacyGameplayConfig={schemaVersion:2,waves:{enabled:true,defaults:{groupSize:null,enemyCap:null,spawnDelay:null,retryDelay:null,enemyPool:null,enemySequence:null,formation:{xPadding:38,minSpacing:42,yMin:-225,yMax:-68,targetYMin:.17,targetYMax:.48}},stages:{}},enemies:{overrides:{}},asteroids:{overrides:{}},bosses:{overrides:{}}};
+/* enemyPool example: {striker:4,sweeper:2,mortar:1}. enemySequence example: ['striker','striker','sweeper']. Both are optional; null keeps legacy random enemy selection. */
