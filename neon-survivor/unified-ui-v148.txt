@@ -1,0 +1,30 @@
+/* V148 — one visual language across every non-gameplay screen */
+;(()=>{const css=document.createElement('style');css.textContent=`
+:root{--ui148-bg:#01040a;--ui148-cyan:#eaffff;--ui148-muted:#79b8c6;--ui148-glow:#55eaff}
+/* Main-menu background becomes the shared screen background. Gameplay/HUD stay untouched. */
+#upgrade,#over,#objectives132,#leaderboard132,#settings132,.menuStub132,.levelTerminal94,.levelup94,.gameover76,.sectorResume98{background-color:var(--ui148-bg)!important;background-image:url('./assets/ui/FF455FC8-B826-418E-A839-617FE2459E98.png?v=148')!important;background-position:center!important;background-size:cover!important;background-repeat:no-repeat!important;backdrop-filter:none!important}
+/* Remove old card language where screens sit on top of the shared background. */
+#upgrade>.panel,#over>.panel,.menuStub132>.panel,.levelTerminal94 .panel,.levelup94 .panel,.gameover76 .panel{background:transparent!important;border:0!important;box-shadow:none!important;clip-path:none!important}
+/* Shared typography */
+#upgrade,#over,.menuStub132,.levelTerminal94,.levelup94,.gameover76,.sectorResume98{color:var(--ui148-cyan)!important;text-shadow:0 0 10px #35eaff33}
+#upgrade h1,#upgrade h2,#upgrade h3,#over h1,#over h2,#over h3,.menuStub132 .stubTitle132,.levelTerminal94 h1,.levelTerminal94 h2,.levelup94 h1,.gameover76 h1{color:var(--ui148-cyan)!important;letter-spacing:.13em!important;text-shadow:0 0 12px #35eaff!important}
+/* Every normal action uses the main-menu secondary frame. */
+#upgrade button,#over button,.menuStub132 button,.levelTerminal94 button,.levelup94 button,.gameover76 button,.sectorResume98 button{border:0!important;border-radius:0!important;clip-path:none!important;box-shadow:none!important;background-color:transparent!important;background-image:url('./assets/ui/secondary_frame.png?v=148')!important;background-position:center!important;background-size:100% 100%!important;background-repeat:no-repeat!important;color:var(--ui148-cyan)!important;font-family:system-ui,-apple-system,sans-serif!important;font-weight:900!important;letter-spacing:.1em!important;text-shadow:0 0 10px var(--ui148-glow)!important;touch-action:manipulation!important}
+#upgrade button:active,#over button:active,.menuStub132 button:active,.levelTerminal94 button:active,.levelup94 button:active,.gameover76 button:active,.sectorResume98 button:active{filter:brightness(1.38)!important;transform:scale(.985)!important}
+/* Primary actions get the same primary frame as LAUNCH. */
+#continue,#restart,#retry,#resume,#levelContinue94,.primary,.primaryBtn,.confirm,.buy,.equip,.select,.selected{background-image:url('./assets/ui/primary_frame.png?v=148')!important;color:#fff!important}
+/* Stat/readout boxes reuse menu stat frame. */
+.stat,.stats,.statBox,.readout,.summary,.reward,.objectiveCard,.settingRow,.garageStat,.levelStat{border:0!important;border-radius:0!important;background-color:transparent!important;background-image:url('./assets/ui/stat_frame.png?v=148')!important;background-position:center!important;background-size:100% 100%!important;background-repeat:no-repeat!important;box-shadow:none!important}
+/* Settings difficulty remains the same component family. */
+#settings132 .diffBtn144{background-image:url('./assets/ui/secondary_frame.png?v=148')!important}#settings132 .diffBtn144.active{background-image:url('./assets/ui/primary_frame.png?v=148')!important}#settings132 .diffValue144{background-image:url('./assets/ui/stat_frame.png?v=148')!important}
+/* Scan-light used by main menu, shared subtly on full screens. */
+#upgrade:before,#over:before,.menuStub132:before,.levelTerminal94:before,.levelup94:before,.gameover76:before{content:"";position:absolute;z-index:0;left:0;right:0;top:-18%;height:22%;pointer-events:none;background:linear-gradient(180deg,transparent,#75ecff16,transparent);mix-blend-mode:screen;animation:uiScan148 6s linear infinite}@keyframes uiScan148{to{transform:translateY(560%)}}
+#upgrade>* ,#over>* ,.menuStub132>* ,.levelTerminal94>* ,.levelup94>* ,.gameover76>*{position:relative;z-index:1}
+@media(min-aspect-ratio:3/4){#upgrade,#over,#objectives132,#leaderboard132,#settings132,.menuStub132,.levelTerminal94,.levelup94,.gameover76,.sectorResume98{background-size:contain!important;background-color:#01040a!important}}
+@media(prefers-reduced-motion:reduce){#upgrade:before,#over:before,.menuStub132:before,.levelTerminal94:before,.levelup94:before,.gameover76:before{animation:none!important}}
+`;document.head.appendChild(css);
+/* Catch screens/modals created later and give generic action buttons the shared frame without changing gameplay controls. */
+function mark(root=document){for(const el of root.querySelectorAll?.('.modal,.screen,.overlay,.panel')||[]){if(el.closest('#hud')||el.closest('#game'))continue;if(el.id==='menu'||el.closest('#menu'))continue;el.classList.add('ui148Surface')}}
+mark();new MutationObserver(ms=>{for(const m of ms)for(const n of m.addedNodes)if(n.nodeType===1){mark(n);if(n.matches?.('.modal,.screen,.overlay,.panel')&&!n.closest('#hud')&&!n.closest('#menu'))n.classList.add('ui148Surface')}}).observe(document.body,{childList:true,subtree:true});
+try{parent.postMessage({source:'unified-ui-v148',status:'UNIFIED UI READY'},'*')}catch(_){}
+})();
