@@ -1,0 +1,26 @@
+
+/* LEGACY <-> ARCHITECTURE BRIDGE V1
+   Observes exact gameplay without replacing movement/combat/rendering.
+   Configuration channel is intentionally additive so gameplay parity stays intact. */
+(()=>{
+  const HOST_SOURCE='architecture-host', SOURCE='legacy-architecture-bridge';
+  let hostState={loadout:{},rank:1,gameplayConfig:null}, started=false, lastSent=0, lastScore=-1,lastLevel=-1;
+  const send=(type,payload={})=>{try{parent.postMessage({source:SOURCE,type,...payload},'*')}catch(_){}};
+  function num(names,fallback=0){for(const n of names){try{const v=window[n];if(Number.isFinite(+v))return +v}catch(_){}}return fallback}
+  function bool(names){for(const n of names){try{if(typeof window[n]==='boolean')return window[n]}catch(_){}}return null}
+  function snapshot(){
+    const score=num(['score','SCORE','runScore'],0),level=Math.max(1,num(['stage','level','currentStage','STAGE'],1)),time=Math.max(0,num(['runTime','survivalTime','elapsed','gameTime'],0)),distance=Math.max(0,num(['distance','runDistance'],0));
+    return {score,level,time,distance,kills:num(['kills','killCount','runKills'],0),bossKills:num(['bossKills','bossKillCount'],0)};
+  }
+  function active(){const dead=bool(['gameOver','GAME_OVER','dead']);if(dead===true)return false;const paused=bool(['paused']);return paused!==true}
+  function tick(ts){
+    const s=snapshot(),isActive=active();
+    if(!started&&isActive){started=true;send('run-start',{legacyVersion:'v141'})}
+    if(started&&ts-lastSent>250){lastSent=ts;if(s.score!==lastScore||s.level!==lastLevel||s.time>0){lastScore=s.score;lastLevel=s.level;send('run-state',s)}}
+    if(started&&!isActive){started=false;send('run-end',{...s,reason:'legacy-game-over'})}
+    requestAnimationFrame(tick)
+  }
+  addEventListener('message',e=>{const d=e.data;if(!d||d.source!==HOST_SOURCE)return;if(d.type==='host-state'){hostState={...hostState,...d};window.__ARCHITECTURE_HOST_STATE__=hostState;window.__ARCHITECTURE_GAMEPLAY_CONFIG__=d.gameplayConfig||hostState.gameplayConfig||null;try{dispatchEvent(new CustomEvent('architecture:host-state',{detail:hostState}))}catch(_){}}});
+  window.LegacyArchitectureBridge={state:()=>structuredClone(hostState),config:()=>hostState.gameplayConfig,reportEnd:payload=>{started=false;send('run-end',{...snapshot(),...payload})}};
+  send('ready',{legacyVersion:'v141',capabilities:['run-state','host-state','gameplay-config']});requestAnimationFrame(tick);
+})();
