@@ -1,0 +1,18 @@
+/* Gameplay Config Runtime V1 — applies architecture data without replacing legacy gameplay. */
+;(()=>{
+const cfg=()=>window.__ARCHITECTURE_GAMEPLAY_CONFIG__||{};
+const merge=(...xs)=>Object.assign({},...xs.filter(x=>x&&typeof x==='object'));
+const finite=v=>v!==null&&v!==undefined&&Number.isFinite(+v);
+function playerCfg(){const c=cfg().player||{},id=p?.shipType||equippedShip||'falcon';return merge(c.defaults,c.ships?.[id])}
+function applyPlayer(){if(!p)return;const c=playerCfg();if(finite(c.hp)){const ratio=p.hp/Math.max(1,p.max);p.max=Math.max(1,+c.hp);p.hp=Math.max(1,Math.min(p.max,p.max*ratio))}if(finite(c.speed))p.spd=+c.speed;if(finite(c.fireRate))p.rate=Math.max(.01,+c.fireRate);if(finite(c.damage))p.dmg=+c.damage;if(finite(c.projectileSpeed))p.bs=+c.projectileSpeed;if(finite(c.cannons))p.n=Math.max(1,Math.floor(+c.cannons));if(finite(c.spread))p.spread=+c.spread;if(finite(c.maxShield))p.maxShield=Math.max(0,+c.maxShield);if(finite(c.shield))p.shield=Math.max(0,Math.min(p.maxShield,+c.shield));if(finite(c.resist))p.resist=Math.max(0,+c.resist);if(finite(c.miningDamage))p.mineMul=Math.max(0,+c.miningDamage);if(finite(c.scoreMultiplier))p.scoreMul=Math.max(0,+c.scoreMultiplier);p.__archPlayerConfig=1}
+const resetBaseCfg=reset;reset=function(){resetBaseCfg();applyPlayer()};
+const equipBaseCfg=typeof equipShip==='function'?equipShip:null;if(equipBaseCfg) equipShip=function(id){const r=equipBaseCfg(id);applyPlayer();return r};
+const hurtBaseCfg=hurt;hurt=function(n){const c=playerCfg(),before=p?.inv||0,r=hurtBaseCfg(n);if(p&&finite(c.invulnerabilityAfterHit)&&p.inv>before)p.inv=Math.max(p.inv,+c.invulnerabilityAfterHit);return r};
+const aliases={dart:'striker',drone:'sweeper',bomber:'mortar',sniper:'phantom',tank:'gunship',striker:'striker',sweeper:'sweeper',mortar:'mortar',phantom:'phantom',gunship:'gunship'};
+function enemyCfg(e){const c=cfg().enemies||{},id=aliases[e?.type]||e?.type||'gunship';return merge(c.defaults,c.overrides?.[id],c.overrides?.[e?.type])}
+function applyEnemy(e){if(!e||e.boss||e.boss5||e.__archEnemyConfig)return e;const c=enemyCfg(e);if(finite(c.hpMultiplier)){e.hp*=+c.hpMultiplier;e.max*=+c.hpMultiplier}if(finite(c.damageMultiplier))e.dmg*=+c.damageMultiplier;if(finite(c.speedMultiplier))e.spd*=+c.speedMultiplier;if(finite(c.fireRateMultiplier))e.fireRate*=+c.fireRateMultiplier;if(finite(c.shotDamageMultiplier))e.shotDmg*=+c.shotDamageMultiplier;if(finite(c.rewardMultiplier)){e.val=Math.round((e.val||0)*+c.rewardMultiplier);e.credit=Math.round((e.credit||0)*+c.rewardMultiplier)}e.__archEnemyConfig=1;return e}
+const updateBaseCfg=update;update=function(dt){updateBaseCfg(dt);for(const e of E)applyEnemy(e)};
+function controlCfg(){return playerCfg()}
+addEventListener('pointermove',e=>{if(!drag32||drag32.id!==e.pointerId||!p)return;const c=controlCfg();if(!finite(c.dragX)&&!finite(c.dragY)&&!finite(c.yMin)&&!finite(c.yMax))return;/* gameplay-v32 remains owner; values are exposed for its configurable control adapter */},{passive:true});
+window.LegacyGameplayConfigRuntime={playerConfig:playerCfg,enemyConfig:enemyCfg,applyPlayer,applyEnemy,snapshot:()=>({player:playerCfg(),config:cfg()})};
+})();
