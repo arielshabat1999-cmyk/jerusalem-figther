@@ -1,0 +1,13 @@
+/* V153 — hard enemy authority firewall. Loaded LAST. */
+;(()=>{
+const AUTH='wave-director-v153';
+/* All legacy/module calls to enemy() are disabled. WaveDirector retained the raw factory before this firewall loaded. */
+try{enemy=function(){return null}}catch(_){}
+function isBoss153(e){return !!(e&&(e.boss||e.boss5||e.isBoss||e.type==='boss'))}
+function sanitize153(){if(!Array.isArray(E))return;for(let i=E.length-1;i>=0;i--){const e=E[i];if(!e)continue;if(isBoss153(e))continue;if(e.__enemyAuthority!==AUTH){E.splice(i,1)}}const c=window.LegacyWaveDirector?.difficulty?.();if(!c)return;const cap=Math.max(1,Math.round(c.cap));let regular=E.filter(e=>e&&!isBoss153(e));if(regular.length>cap){let excess=regular.length-cap;for(let i=E.length-1;i>=0&&excess>0;i--){const e=E[i];if(e&&!isBoss153(e)){E.splice(i,1);excess--}}}}
+/* Run after every update wrapper, including modules loaded after the old base game. */
+const updateAuthorityBase=update;update=function(dt){updateAuthorityBase(dt);if(state==='play'||state==='sector')sanitize153()};
+const resetAuthorityBase=reset;reset=function(){resetAuthorityBase();if(Array.isArray(E))E.length=0;spawn=999};
+window.EnemyAuthority={version:153,owner:AUTH,sanitize:sanitize153,status:()=>{const all=Array.isArray(E)?E:[],bosses=all.filter(isBoss153).length,authorized=all.filter(e=>e&&!isBoss153(e)&&e.__enemyAuthority===AUTH).length,unauthorized=all.filter(e=>e&&!isBoss153(e)&&e.__enemyAuthority!==AUTH).length;return{difficulty:window.LegacyWaveDirector?.difficulty?.()?.level||null,total:all.length,authorized,bosses,unauthorized,owner:AUTH}}};
+try{parent.postMessage({source:'enemy-authority-v153',status:'SINGLE ENEMY AUTHORITY READY'},'*')}catch(_){}
+})();
