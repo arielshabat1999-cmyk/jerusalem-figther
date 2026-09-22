@@ -6,13 +6,13 @@ const names=['basalt','iron','ice','shard','crater','hunter','colossus'],imgs={}
 const glow={basalt:'#7d8790',iron:'#c4d0d6',ice:'#76e8ff',shard:'#ff6537',crater:'#c79a68',hunter:'#ff512d',colossus:'#ff3028'};
 for(const id of names)jobs.push(new Promise((resolve,reject)=>{const im=new Image();imgs[id]=im;im.onload=resolve;im.onerror=reject;im.src='./assets/asteroids/'+id+'.webp?v='+VERSION}));
 Promise.all(jobs).catch(e=>console.error('V59 asteroid asset load',e));
-
-function choose59(){const r=Math.random();return r<.23?'basalt':r<.40?'iron':r<.55?'ice':r<.71?'shard':r<.84?'crater':r<.96?'hunter':'colossus'}
+const finite59=v=>v!==null&&v!==undefined&&Number.isFinite(+v),cfg59=id=>{const c=window.__ARCHITECTURE_GAMEPLAY_CONFIG__?.asteroids||{};return Object.assign({},c.defaults||{},c.overrides?.[id]||{})};
+function choose59(){const base={basalt:.23,iron:.17,ice:.15,shard:.16,crater:.13,hunter:.12,colossus:.04},items=[];for(const id of names){const c=cfg59(id);if(c.enabled===false)continue;const mul=finite59(c.weightMultiplier)?Math.max(0,+c.weightMultiplier):1,w=base[id]*mul;if(w>0)items.push([id,w])}if(!items.length)return'basalt';let total=items.reduce((n,x)=>n+x[1],0),r=Math.random()*total;for(const [id,w] of items){r-=w;if(r<=0)return id}return items[items.length-1][0]}
 const obstacle59base=obstacle;
 obstacle=function(){
   const before=O.length;obstacle59base();if(O.length===before)return;
   const o=O[O.length-1];if(!o||o.type!=='asteroid')return;
-  const id=choose59();o.astKind32=id;o.ast59=id;o.vx59=0;o.aimed59=false;
+  const id=choose59(),c=cfg59(id);o.astKind32=id;o.ast59=id;o.vx59=0;o.aimed59=false;
   if(id==='basalt')Object.assign(o,{r:R(24,43),speed59:R(5,22),spin:R(-.72,.72)});
   else if(id==='iron')Object.assign(o,{r:R(30,49),speed59:R(-28,-10),spin:R(-.38,.38)});
   else if(id==='ice')Object.assign(o,{r:R(25,45),speed59:R(30,58),spin:R(-1.05,1.05)});
@@ -20,30 +20,16 @@ obstacle=function(){
   else if(id==='crater')Object.assign(o,{r:R(43,64),speed59:R(-18,4),spin:R(-.34,.34)});
   else if(id==='hunter')Object.assign(o,{r:R(28,41),speed59:R(58,86),spin:R(-.48,.48),aimed59:true,hunter59:true});
   else Object.assign(o,{r:cl(W*.245,84,114),speed59:R(-52,-34),spin:R(-.13,.13),colossus59:true});
+  if(finite59(c.sizeMultiplier))o.r*=Math.max(.1,+c.sizeMultiplier);if(finite59(c.speedMultiplier))o.speed59*=+c.speedMultiplier;
+  if(finite59(c.aimChanceMultiplier)&&id==='shard')o.aimed59=Math.random()<Math.min(1,.58*Math.max(0,+c.aimChanceMultiplier));
   const hpMul=id==='iron'?2.8:id==='ice'?1.05:id==='shard'?.82:id==='crater'?2.2:id==='hunter'?1.75:id==='colossus'?6.4:1.55;
-  o.hp=o.r*hpMul+stage*(id==='colossus'?18:5);o.max=o.hp;o.credit=Math.max(3,Math.round(o.r*(id==='colossus'?.28:.13)));
+  o.hp=o.r*hpMul+stage*(id==='colossus'?18:5);o.max=o.hp;if(finite59(c.hpMultiplier)){o.hp*=+c.hpMultiplier;o.max*=+c.hpMultiplier}o.credit=Math.max(3,Math.round(o.r*(id==='colossus'?.28:.13)));if(finite59(c.rewardMultiplier))o.credit=Math.max(0,Math.round(o.credit*+c.rewardMultiplier));if(finite59(c.damageMultiplier))o.damageMultiplier59=+c.damageMultiplier;
   o.x=cl(o.x,o.r+6,W-o.r-6);o.y=-o.r-45;
   if(o.aimed59&&p){const time=id==='hunter'?R(1.65,2.25):R(1.35,2.0);o.vx59=(p.x-o.x)/time}
   if(o.colossus59){flashStage('COLOSSUS ASTEROID');shake=Math.max(shake,8)}
 };
-
 const update59base=update;
-update=function(dt){
-  update59base(dt);
-  if(!p||(state!=='play'&&state!=='sector'))return;
-  for(const o of O){
-    if(!o||o.type!=='asteroid'||!o.ast59)continue;
-    if(o.hunter59){const desired=cl((p.x-o.x)*1.05,-135,135);o.vx59+=(desired-o.vx59)*Math.min(1,dt*.95)}
-    o.x+=(o.vx59||0)*dt;o.y+=(o.speed59||0)*dt;
-  }
-};
-
-bridge.setAsteroid(function(o){
-  const id=o.ast59||o.astKind32||'basalt',im=imgs[id];if(!im||!im.complete||!im.naturalWidth)return;
-  const mul=id==='shard'?2.35:id==='hunter'?2.18:id==='colossus'?2.08:2.12;
-  const w=o.r*mul,h=w*(im.naturalHeight/im.naturalWidth),hit=o.hit>0;
-  ctx.save();ctx.translate(o.x,o.y);ctx.rotate(o.rot||0);ctx.globalAlpha=hit?.66:1;ctx.shadowBlur=id==='colossus'?18:id==='ice'||id==='hunter'?10:5;ctx.shadowColor=hit?'#ffffff':glow[id];ctx.drawImage(im,-w/2,-h/2,w,h);
-  if(o.hunter59){ctx.globalCompositeOperation='lighter';ctx.globalAlpha=.26+.1*Math.sin(bridge.time*6);ctx.strokeStyle='#ff6b3e';ctx.lineWidth=1.2;ctx.beginPath();ctx.ellipse(0,0,w*.47,h*.46,0,0,Math.PI*2);ctx.stroke()}
-  ctx.restore();
-});
+update=function(dt){update59base(dt);if(!p||(state!=='play'&&state!=='sector'))return;for(const o of O){if(!o||o.type!=='asteroid'||!o.ast59)continue;if(o.hunter59){const desired=cl((p.x-o.x)*1.05,-135,135);o.vx59+=(desired-o.vx59)*Math.min(1,dt*.95)}o.x+=(o.vx59||0)*dt;o.y+=(o.speed59||0)*dt}}
+bridge.setAsteroid(function(o){const id=o.ast59||o.astKind32||'basalt',im=imgs[id];if(!im||!im.complete||!im.naturalWidth)return;const mul=id==='shard'?2.35:id==='hunter'?2.18:id==='colossus'?2.08:2.12;const w=o.r*mul,h=w*(im.naturalHeight/im.naturalWidth),hit=o.hit>0;ctx.save();ctx.translate(o.x,o.y);ctx.rotate(o.rot||0);ctx.globalAlpha=hit?.66:1;ctx.shadowBlur=id==='colossus'?18:id==='ice'||id==='hunter'?10:5;ctx.shadowColor=hit?'#ffffff':glow[id];ctx.drawImage(im,-w/2,-h/2,w,h);if(o.hunter59){ctx.globalCompositeOperation='lighter';ctx.globalAlpha=.26+.1*Math.sin(bridge.time*6);ctx.strokeStyle='#ff6b3e';ctx.lineWidth=1.2;ctx.beginPath();ctx.ellipse(0,0,w*.47,h*.46,0,0,Math.PI*2);ctx.stroke()}ctx.restore()});
+window.LegacyAsteroidConfig={config:cfg59};
 })();
