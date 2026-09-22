@@ -1,81 +1,25 @@
-/* V77 — denser regular-sector formations with guarded mobile performance */
+/* V77 — exact legacy formations + optional architecture config */
 ;(()=>{
 let pressure57=0,tier57=0,cooldown57=1.4,waveSerial57=0;
 const spawnOne57=enemy;
-
+const cfg57=()=>window.__ARCHITECTURE_GAMEPLAY_CONFIG__?.waves||null;
+const stageCfg57=()=>{const c=cfg57();return c?.stages?.[stage]||c?.stages?.[String(stage)]||null};
+const val57=(key,fallback)=>{const s=stageCfg57(),c=cfg57(),v=s?.[key]??c?.defaults?.[key];return v==null?fallback:v};
+const form57=()=>{const c=cfg57(),s=stageCfg57();return {...(c?.defaults?.formation||{}),...(s?.formation||{})}};
 function regular57(){return E.filter(e=>e&&!e.boss&&!e.boss5)}
-function strengthen57(e){
-  if(!e||e.boss||e.boss5)return;
-  const hpMul=1.28+tier57*.46,dmgMul=1.16+tier57*.22,fireMul=Math.max(.65,.96-tier57*.04);
-  e.hp*=hpMul;e.max*=hpMul;e.dmg*=dmgMul;e.shotDmg*=dmgMul;e.fireRate*=fireMul;
-  e.val=Math.round((e.val||10)*(1+tier57*.18));e.credit=Math.round((e.credit||4)*(1+tier57*.10));
-  e.threatTier57=tier57;
-  if(e.flow10){e.flow10.hold*=Math.min(1.55,1+tier57*.07);e.flow10.fire*=fireMul}
-}
-function formation57(e,i,count,usedX){
-  if(!e||!e.flow10)return;
-  let x=R(38,W-38);
-  for(let tries=0;tries<8&&usedX.some(v=>Math.abs(v-x)<42);tries++)x=R(38,W-38);
-  usedX.push(x);
-  const y=R(-225,-68)-Math.floor(i/6)*24,f=e.flow10;
-  e.x=x;e.y=y;f.x=x;f.y=y;f.anchorX=x;
-  f.targetY=H*R(.17,.48);
-  f.seed=waveSerial57*.71+i*1.37+R(0,.8);
-}
-function groupSize57(){
-  const r=Math.random();
-  if(stage===1)return r<.58?1:2;
-  if(stage===2)return r<.38?1:r<.80?2:3;
-  if(stage<=4)return r<.25?2:r<.70?3:4;
-  if(stage<=7)return r<.18?2:r<.48?3:r<.80?4:5;
-  return r<.14?2:r<.38?3:r<.66?4:r<.88?5:6;
-}
-function cap57(){
-  if(stage===1)return 5;
-  if(stage===2)return 7;
-  if(stage<=4)return 9;
-  if(stage<=7)return 11;
-  return Math.min(16,12+Math.floor((stage-8)/3));
-}
-function nextDelay57(){
-  if(stage===1)return R(1.7,2.5);
-  if(stage===2)return R(1.5,2.3);
-  if(stage<=4)return R(1.3,2.0);
-  return R(1.1,1.8);
-}
-function spawnWave57(){
-  const active=regular57().length;
-  const count=Math.max(0,Math.min(groupSize57(),cap57()-active));
-  if(!count){cooldown57=stage===1?R(.72,1.05):R(.58,.90);return}
-  waveSerial57++;const usedX=[];
-  for(let i=0;i<count;i++){
-    const before=E.length;spawnOne57();
-    const e=E[E.length-1];if(E.length===before||!e)continue;
-    strengthen57(e);formation57(e,i,count,usedX);
-  }
-  if(count>=4)flashStage('HOSTILE FORMATION INBOUND');
-  if(stage>1){
-    pressure57++;
-    if(pressure57>=12){pressure57=0;tier57++;flashStage('ENEMY SYSTEMS EVOLVED')}
-  }
-  cooldown57=nextDelay57();
-}
-
-const update57base=update;
-update=function(dt){
-  spawn=999;
-  update57base(dt);
-  spawn=999;
-  if(!p||state!=='play')return;
-  /* V53 reserves the last pixels of a sector for clearing before the boss. */
-  if(distance>=stage*STAGE_M-3)return;
-  cooldown57-=dt;
-  if(cooldown57<=0)spawnWave57();
-};
-
-const checkpoint57base=checkpoint;
-checkpoint=function(){checkpoint57base();if(state==='play'){spawn=999;cooldown57=.65}};
-
-const reset57base=reset;
-reset=function(){pressure57=0;tier57=0;waveSerial57=0;reset57base();spawn=999;cooldown57=1.4};
+function strengthen57(e){if(!e||e.boss||e.boss5)return;const hpMul=1.28+tier57*.46,dmgMul=1.16+tier57*.22,fireMul=Math.max(.65,.96-tier57*.04);e.hp*=hpMul;e.max*=hpMul;e.dmg*=dmgMul;e.shotDmg*=dmgMul;e.fireRate*=fireMul;e.val=Math.round((e.val||10)*(1+tier57*.18));e.credit=Math.round((e.credit||4)*(1+tier57*.10));e.threatTier57=tier57;if(e.flow10){e.flow10.hold*=Math.min(1.55,1+tier57*.07);e.flow10.fire*=fireMul}}
+function formation57(e,i,count,usedX){if(!e||!e.flow10)return;const fcfg=form57(),pad=+fcfg.xPadding||38,spacing=+fcfg.minSpacing||42,yMin=Number.isFinite(+fcfg.yMin)?+fcfg.yMin:-225,yMax=Number.isFinite(+fcfg.yMax)?+fcfg.yMax:-68,tMin=Number.isFinite(+fcfg.targetYMin)?+fcfg.targetYMin:.17,tMax=Number.isFinite(+fcfg.targetYMax)?+fcfg.targetYMax:.48;let x=R(pad,W-pad);for(let tries=0;tries<8&&usedX.some(v=>Math.abs(v-x)<spacing);tries++)x=R(pad,W-pad);usedX.push(x);const y=R(yMin,yMax)-Math.floor(i/6)*24,f=e.flow10;e.x=x;e.y=y;f.x=x;f.y=y;f.anchorX=x;f.targetY=H*R(tMin,tMax);f.seed=waveSerial57*.71+i*1.37+R(0,.8)}
+function legacyGroup57(){const r=Math.random();if(stage===1)return r<.58?1:2;if(stage===2)return r<.38?1:r<.80?2:3;if(stage<=4)return r<.25?2:r<.70?3:4;if(stage<=7)return r<.18?2:r<.48?3:r<.80?4:5;return r<.14?2:r<.38?3:r<.66?4:r<.88?5:6}
+function groupSize57(){const v=val57('groupSize',null);if(Number.isFinite(+v))return Math.max(0,Math.floor(+v));return legacyGroup57()}
+function legacyCap57(){if(stage===1)return 5;if(stage===2)return 7;if(stage<=4)return 9;if(stage<=7)return 11;return Math.min(16,12+Math.floor((stage-8)/3))}
+function cap57(){const v=val57('enemyCap',null);return Number.isFinite(+v)?Math.max(1,Math.floor(+v)):legacyCap57()}
+function legacyDelay57(){if(stage===1)return R(1.7,2.5);if(stage===2)return R(1.5,2.3);if(stage<=4)return R(1.3,2.0);return R(1.1,1.8)}
+function range57(v,fallback){if(Number.isFinite(+v))return Math.max(.05,+v);if(Array.isArray(v)&&v.length>=2&&Number.isFinite(+v[0])&&Number.isFinite(+v[1]))return R(+v[0],+v[1]);if(v&&Number.isFinite(+v.min)&&Number.isFinite(+v.max))return R(+v.min,+v.max);return fallback()}
+function nextDelay57(){return range57(val57('spawnDelay',null),legacyDelay57)}
+function retryDelay57(){return range57(val57('retryDelay',null),()=>stage===1?R(.72,1.05):R(.58,.90))}
+function spawnWave57(){const config=cfg57();if(config?.enabled===false){cooldown57=.5;return}const active=regular57().length,count=Math.max(0,Math.min(groupSize57(),cap57()-active));if(!count){cooldown57=retryDelay57();return}waveSerial57++;const usedX=[];for(let i=0;i<count;i++){const before=E.length;spawnOne57();const e=E[E.length-1];if(E.length===before||!e)continue;strengthen57(e);formation57(e,i,count,usedX)}if(count>=4)flashStage('HOSTILE FORMATION INBOUND');if(stage>1){pressure57++;if(pressure57>=12){pressure57=0;tier57++;flashStage('ENEMY SYSTEMS EVOLVED')}}cooldown57=nextDelay57()}
+const update57base=update;update=function(dt){spawn=999;update57base(dt);spawn=999;if(!p||state!=='play')return;if(distance>=stage*STAGE_M-3)return;cooldown57-=dt;if(cooldown57<=0)spawnWave57()};
+const checkpoint57base=checkpoint;checkpoint=function(){checkpoint57base();if(state==='play'){spawn=999;cooldown57=.65}};
+const reset57base=reset;reset=function(){pressure57=0;tier57=0;waveSerial57=0;reset57base();spawn=999;cooldown57=1.4};
+window.LegacyWaveDirector={config:cfg57,stageConfig:stageCfg57,debug:()=>({stage,pressure:pressure57,tier:tier57,cooldown:cooldown57,wave:waveSerial57,active:regular57().length,cap:cap57()})};
 })();
