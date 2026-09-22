@@ -1,0 +1,2 @@
+/* Data-driven knobs for exact legacy gameplay. Null/default values preserve V77 behavior. */
+window.LegacyGameplayConfig={schemaVersion:1,waves:{enabled:true,defaults:{groupSize:null,enemyCap:null,spawnDelay:null,retryDelay:null,formation:{xPadding:38,minSpacing:42,yMin:-225,yMax:-68,targetYMin:.17,targetYMax:.48}},stages:{}},enemies:{overrides:{}},asteroids:{overrides:{}},bosses:{overrides:{}}};
