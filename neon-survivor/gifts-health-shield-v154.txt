@@ -1,0 +1,5 @@
+/* V154 — gifts are recovery only: HEALTH or SHIELD. No weapon/stat upgrades. */
+;(()=>{
+collectGift=function(g){if(!p||!g)return;const hpMissing=Math.max(0,(p.max||0)-(p.hp||0)),shieldMax=Math.max(1,p.maxShield||60),shieldMissing=Math.max(0,shieldMax-(p.shield||0));let giveHealth;if(hpMissing<=0&&shieldMissing>0)giveHealth=false;else if(shieldMissing<=0&&hpMissing>0)giveHealth=true;else giveHealth=Math.random()<.55;let label,col;if(giveHealth){const amount=Math.min(hpMissing,Math.max(24,Math.round((p.max||100)*.30)));p.hp=Math.min(p.max,p.hp+amount);label=amount>0?'HP +'+amount:'HP FULL';col='#74ff9b'}else{const amount=Math.min(shieldMissing,36);p.shield=Math.min(shieldMax,(p.shield||0)+amount);label=amount>0?'SHIELD +'+amount:'SHIELD FULL';col='#63eaff'}popText(g.x,g.y-10,label,col,18);puff(g.x,g.y,22,col,1.1);shake=Math.max(shake,4);ui()};
+window.GiftSystem154={rewards:['health','shield']};
+})();
