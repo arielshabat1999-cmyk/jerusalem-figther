@@ -1,0 +1,3 @@
+Ship 01 asset mapping
+Base source blob: 4c9d71c6b123e9044d5fde18e0b2a28cf0e1bccd
+Mask source blob: e3de61adab0ea75a18f87ca8931ad17de4e377e3
