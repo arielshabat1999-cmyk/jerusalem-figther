@@ -1,21 +1,22 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><meta name="theme-color" content="#01040a"><title>Neon Survivor V161</title><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#01040a}#game{position:fixed;inset:0;width:100%;height:100%;border:0;background:#01040a}#outerVersion{position:fixed;left:8px;top:8px;z-index:99999;color:#d9f6ff;background:#05070df2;border:1px solid #9de5ff;padding:5px 8px;font:900 10px system-ui;pointer-events:none}</style></head><body><div id="outerVersion">V161 LIVE</div><iframe id="game" allow="autoplay; fullscreen"></iframe><script>(async()=>{const V='20260923v161',f=document.getElementById('game'),get=async n=>(await fetch('./'+n+'?v='+V,{cache:'no-store'})).text();
-const files=['bridge-v42.txt','shop-v3a.txt','shop-v3b.txt','combat-v4.txt','progress-v5.txt','fix-v6.txt','garage-v7.txt','garage-v7b.txt','garage-library-v107.txt','compact-v8.txt','enemy-flow-v10.txt','weapon-evolution-v11.txt','visual-v12.txt','visual-polish-v13.txt','final-polish-v15.txt','time-survival-v108.txt'];
-const deferredFiles=['gameplay-v32.txt','cinematic-v48-clean.txt','gifts-v55.txt','ships-v107.txt','ship-modular-v120.txt','bosses-v51.txt','enemies-v52.txt','asteroids-v59.txt','stage-flow-v53.txt','wave-director-v77.txt','hud-polish-v61.txt','debris-v78.txt','arsenal-v63.txt','weapon-odyssey-v73.txt','gameover-v76.txt','destruction-fx-v80.txt','deep-space-v81.txt','combat-director-v82.txt','evolution-director-v83.txt','performance-v84.txt','cosmic-background-v86.txt','xp-builds-v87.txt','neon-ui-v89.txt','combat-art-v90.txt','levelup-reference-v94.txt','hud-reactor-v97.txt','sector-resume-v98.txt','menu-terminal-v99.txt','garage-shell-v118.txt','player-rank-v141.txt','legacy-architecture-bridge-v1.txt','gameplay-config-runtime-v1.txt','settings-difficulty-v144.txt','unified-ui-v148.txt','menu-player-card-v150.txt','enemy-authority-v153.txt','gifts-health-shield-v154.txt','objectives-system-v154.txt','objective-mission-card-v155.txt','player-rank-tracker-v144.txt'];
-/* V161 boot order: start every request together, but only block first paint on the base menu bundle. */
-const partPromise=Promise.all(Array.from({length:7},(_,i)=>get('v2part'+i+'.txt')));
-const corePromise=Promise.all(files.map(async n=>[n,await get(n)]));
-const deferredPromise=Promise.all(deferredFiles.map(async n=>[n,await get(n)]));
-const [parts,coreEntries]=await Promise.all([partPromise,corePromise]);
-const x=Object.fromEntries(coreEntries);
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><meta name="theme-color" content="#01040a"><title>Neon Survivor V162</title><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#01040a}#game{position:fixed;inset:0;width:100%;height:100%;border:0;background:#01040a}#outerVersion{position:fixed;left:8px;top:8px;z-index:99999;color:#d9f6ff;background:#05070df2;border:1px solid #9de5ff;padding:5px 8px;font:900 10px system-ui;pointer-events:none}</style></head><body><div id="outerVersion">V162 LIVE</div><iframe id="game" allow="autoplay; fullscreen"></iframe><script>(async()=>{const V='20260923v162',f=document.getElementById('game'),BG='./assets/ui/FF455FC8-B826-418E-A839-617FE2459E98.png?v=162',get=async n=>(await fetch('./'+n+'?v='+V,{cache:'no-store'})).text();
+/* V162: show the FINAL menu artwork immediately; never expose the legacy menu. */
+const boot=document.createElement('div');boot.id='boot162';boot.innerHTML='<div class="boot162bg"></div>';
+const st=document.createElement('style');st.textContent='#boot162{position:fixed;z-index:20;inset:0;background:#01040a;overflow:hidden}.boot162bg{position:absolute;inset:0;background:#01040a url("'+BG+'") center/cover no-repeat}@media(min-aspect-ratio:3/4){.boot162bg{background-size:contain}}';document.head.appendChild(st);document.body.appendChild(boot);
+const bgReady=new Promise(resolve=>{const im=new Image();im.onload=im.onerror=resolve;im.src=BG});
+const partsP=Promise.all(Array.from({length:7},(_,i)=>get('v2part'+i+'.txt')));
+const coreNames=['bridge-v42.txt','shop-v3a.txt','shop-v3b.txt','combat-v4.txt','progress-v5.txt','fix-v6.txt','garage-v7.txt','garage-v7b.txt','garage-library-v107.txt','compact-v8.txt','enemy-flow-v10.txt','weapon-evolution-v11.txt','visual-v12.txt','visual-polish-v13.txt','final-polish-v15.txt','time-survival-v108.txt'];
+const menuNames=['menu-terminal-v99.txt','unified-ui-v148.txt','menu-player-card-v150.txt'];
+const heavyNames=['gameplay-v32.txt','cinematic-v48-clean.txt','gifts-v55.txt','ships-v107.txt','ship-modular-v120.txt','bosses-v51.txt','enemies-v52.txt','asteroids-v59.txt','stage-flow-v53.txt','wave-director-v77.txt','hud-polish-v61.txt','debris-v78.txt','arsenal-v63.txt','weapon-odyssey-v73.txt','gameover-v76.txt','destruction-fx-v80.txt','deep-space-v81.txt','combat-director-v82.txt','evolution-director-v83.txt','performance-v84.txt','cosmic-background-v86.txt','xp-builds-v87.txt','neon-ui-v89.txt','combat-art-v90.txt','levelup-reference-v94.txt','hud-reactor-v97.txt','sector-resume-v98.txt','garage-shell-v118.txt','player-rank-v141.txt','legacy-architecture-bridge-v1.txt','gameplay-config-runtime-v1.txt','settings-difficulty-v144.txt','enemy-authority-v153.txt','gifts-health-shield-v154.txt','objectives-system-v154.txt','objective-mission-card-v155.txt','player-rank-tracker-v144.txt'];
+const fetchMap=async names=>Object.fromEntries(await Promise.all(names.map(async n=>[n,await get(n)])));
+const coreP=fetchMap(coreNames),menuP=fetchMap(menuNames),heavyP=fetchMap(heavyNames);
+await bgReady; /* background is first visible milestone */
+const [parts,x,m]=await Promise.all([partsP,coreP,menuP]);
 let html=parts.join(''),k=html.lastIndexOf('})();');if(k<0)throw Error('game closure not found');
 const compat='\nconst bridgeEnemy65=drawEnemy;function drawBoss(e){bridgeEnemy65(e)}function enemyLaser(b){if(!b)return;X.save();X.fillStyle="#ff7288";X.beginPath();X.arc(b.x,b.y,Math.max(2,b.r||3),0,Math.PI*2);X.fill();X.restore()}\n';
-/* Paint the main background + base menu/buttons now. Heavy systems are intentionally absent from this first srcdoc. */
-html=html.slice(0,k)+compat+x['bridge-v42.txt']+'\n'+files.slice(1).map(n=>x[n]).join('\n')+'\n'+html.slice(k);
-const loaded=new Promise(resolve=>{f.addEventListener('load',resolve,{once:true})});
-f.srcdoc=html;
-await loaded;
-/* Give Safari/iPhone a real paint opportunity before parsing/evaluating the rest of the game. */
+/* Install FINAL menu CSS/buttons before the iframe can ever paint its old menu. */
+html=html.slice(0,k)+compat+x['bridge-v42.txt']+'\n'+coreNames.slice(1).map(n=>x[n]).join('\n')+'\n'+menuNames.map(n=>m[n]).join('\n')+'\n'+html.slice(k);
+const loaded=new Promise(resolve=>f.addEventListener('load',resolve,{once:true}));f.srcdoc=html;await loaded;
 await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
-const deferredEntries=await deferredPromise;
-setTimeout(()=>{try{const code=deferredEntries.map(([,src])=>src).join('\n');f.contentWindow.eval(code+'\n//# sourceURL=neon-deferred-v161.js');}catch(e){console.error('V161 BACKGROUND LOAD',e)}},0);
-})().catch(e=>{document.getElementById('outerVersion').textContent='V161 LOAD ERROR';console.error(e)});</script></body></html>
+boot.remove(); /* reveal only the completed current menu */
+const h=await heavyP;setTimeout(()=>{try{f.contentWindow.eval(heavyNames.map(n=>h[n]).join('\n')+'\n//# sourceURL=neon-background-v162.js')}catch(e){console.error('V162 BACKGROUND LOAD',e)}},0);
+})().catch(e=>{document.getElementById('outerVersion').textContent='V162 LOAD ERROR';console.error(e)});</script></body></html>
