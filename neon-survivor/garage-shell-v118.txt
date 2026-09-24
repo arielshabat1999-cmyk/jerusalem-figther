@@ -27,7 +27,24 @@
   .g118ColorTitle{position:absolute;left:5%;right:5%;top:36%;text-align:center}
   .g118Launch{position:absolute;left:20%;right:20%;bottom:5%;height:18%;border:2px solid #ff9b31;background:linear-gradient(180deg,#a64b0d,#491902);color:#fff6e7;font:1000 clamp(15px,4.5vw,23px)/1 system-ui;letter-spacing:.18em;box-shadow:0 0 20px #ff740059,inset 0 0 16px #ffad2230;touch-action:manipulation}
   .g118Back:active,.g118Launch:active{filter:brightness(1.25);transform:translateY(1px)}
-  @media(min-aspect-ratio:3/4){.g118{width:min(100vw,56.3dvh);margin:auto}}
+  /* Garage visual redesign V1 — presentation only; existing mechanics stay intact */
+  .g118Top{left:5%;right:5%;top:max(2%,env(safe-area-inset-top));height:5.8%;grid-template-columns:12% 1fr auto}
+  .g118Back{border-color:#5ceaff80;background:#07131be6;box-shadow:0 0 12px #28dfff26,inset 0 0 14px #000}
+  .g118Title b{text-shadow:0 0 14px #4deaff55}.g118Title span{color:#65dff0}
+  .g118Wallet{border-color:#45dff05c;background:#041018d9}
+  .g118Hangar{left:5%;right:5%;top:9%;height:48%;border:0;background:radial-gradient(ellipse at 50% 62%,#27dfff18 0,transparent 48%);box-shadow:none;overflow:visible}
+  .g118Hangar:before{left:15%;right:15%;bottom:6%;height:11%;border:2px solid #ff9a2f8c;background:transparent;box-shadow:0 0 22px #ff7a0030}
+  .g118Hangar:after{top:5%;bottom:18%;opacity:.7}
+  .g118Ship{top:42%;width:min(72%,350px);height:63%}
+  .g118ShipMeta{bottom:8%}.g118ShipMeta b{font-size:clamp(20px,5.6vw,30px)}.g118ShipMeta span{color:#61e5f6}
+  .g118Dock{left:5%;right:5%;top:58.5%;bottom:2.5%;border:1px solid #45dff052;background:linear-gradient(180deg,#06131bd9,#03070bd9);box-shadow:0 0 24px #21dfff16,inset 0 0 28px #000;clip-path:polygon(10px 0,calc(100% - 10px) 0,100% 10px,100% calc(100% - 10px),calc(100% - 10px) 100%,10px 100%,0 calc(100% - 10px),0 10px)}
+  .g118Dock:before{height:2px;background:linear-gradient(90deg,transparent,#45eaff,#fff,#45eaff,transparent);box-shadow:0 0 10px #31e3ff}
+  .g118DockTitle{top:5%}.g118DockTitle b,.g118ColorTitle b{font-size:10px;color:#dffcff}.g118DockTitle span,.g118ColorTitle span{color:#5597a5}
+  .g118Engines{top:14%;height:15%;gap:5px}.g118Engine{border-color:#294b56;background:#061117c7}
+  .g118ColorTitle{top:34%}
+  .g118Colors{top:43%;height:24%;left:3%;right:3%}
+  .g118Launch{left:18%;right:18%;bottom:5%;height:16%;border-color:#57eaff;background:linear-gradient(180deg,#0a4050,#061820);box-shadow:0 0 18px #31e4ff42,inset 0 0 16px #43e9ff1c;color:#ecfdff}
+    @media(min-aspect-ratio:3/4){.g118{width:min(100vw,56.3dvh);margin:auto}}
   `;
   document.head.appendChild(style);
 
