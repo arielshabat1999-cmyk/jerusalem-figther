@@ -44,6 +44,16 @@
   .g118ColorTitle{top:34%}
   .g118Colors{top:43%;height:24%;left:3%;right:3%}
   .g118Launch{left:18%;right:18%;bottom:5%;height:16%;border-color:#57eaff;background:linear-gradient(180deg,#0a4050,#061820);box-shadow:0 0 18px #31e4ff42,inset 0 0 16px #43e9ff1c;color:#ecfdff}
+  /* Category hub */
+  .g118Top{top:max(1.3%,env(safe-area-inset-top));height:5.2%;grid-template-columns:44px 1fr auto}.g118Back{font-size:26px;border-radius:4px}.g118Wallets{height:78%}.g118Wallet{min-width:54px;padding:0 7px;font-size:10px}
+  .g118CategoryHub{position:absolute;left:5%;right:5%;top:10%;height:45%;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .g118Cat{position:relative;border:1px solid #3cdff06b;background:linear-gradient(180deg,#0a1c24e8,#040a0ee8);color:#eaffff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;clip-path:polygon(8px 0,calc(100% - 8px) 0,100% 8px,100% calc(100% - 8px),calc(100% - 8px) 100%,8px 100%,0 calc(100% - 8px),0 8px);box-shadow:inset 0 0 20px #000,0 0 12px #1bdfff14;touch-action:manipulation}
+  .g118Cat:before{content:"";position:absolute;left:14%;right:14%;top:0;height:1px;background:#55eaff;box-shadow:0 0 8px #55eaff}.g118CatIcon{font-size:25px;line-height:1;filter:drop-shadow(0 0 7px #43eaff)}.g118Cat b{font-size:9px;letter-spacing:.13em}.g118Cat span{font-size:6px;color:#5d9ca8;letter-spacing:.12em}.g118Cat:active{filter:brightness(1.35);transform:scale(.98)}
+  .g118PanelBack{position:absolute;z-index:8;left:4%;top:7%;width:42px;height:32px;border:1px solid #4be7f08c;background:#06151c;color:#eaffff;font-size:22px;display:none}.g118Dock.mode-open .g118PanelBack{display:block}
+  .g118Dock.mode-home .g118DockTitle,.g118Dock.mode-home .g118Engines,.g118Dock.mode-home .g118ColorTitle,.g118Dock.mode-home .g118Colors{display:none!important}
+  .g118Dock.mode-open .g118CategoryHub{display:none!important}.g118Dock.mode-engine .g118ColorTitle,.g118Dock.mode-engine .g118Colors{display:none!important}.g118Dock.mode-color .g118DockTitle,.g118Dock.mode-color .g118Engines{display:none!important}
+  .g118Dock.mode-engine .g118DockTitle,.g118Dock.mode-color .g118ColorTitle{top:9%}.g118Dock.mode-engine .g118Engines{top:22%;height:28%}.g118Dock.mode-color .g118Colors{top:22%;height:30%}.g118Dock.mode-color .g118ColorTitle{display:block}
+  .g118Launch{bottom:5%;height:16%}
     @media(min-aspect-ratio:3/4){.g118{width:min(100vw,56.3dvh);margin:auto}}
   `;
   document.head.appendChild(style);
@@ -95,7 +105,14 @@
           <div class="g118Wallets"><div id="g118Dia" class="g118Wallet dia">0</div><div id="g118Coin" class="g118Wallet coin">0</div></div>
         </div>
         <section class="g118Hangar"><div class="g118Ship"><canvas id="g118ShipCanvas" aria-label="Equipped modular Falcon"></canvas></div><div class="g118ShipMeta"><b id="g118ShipName">SHIP</b><span id="g118ShipRole">BASE HULL</span></div><div class="g118Empty"><i></i><b>GARAGE PREVIEW</b><span>SHIP SYSTEM COMING NEXT</span></div></section>
-        <section class="g118Dock">
+        <section class="g118Dock mode-home">
+  <button id="g118PanelBack" class="g118PanelBack" aria-label="Back to categories">‹</button>
+  <div class="g118CategoryHub">
+    <button class="g118Cat" data-panel="color"><i class="g118CatIcon">◉</i><b>SHIP COLOR</b><span>HULL FINISH</span></button>
+    <button class="g118Cat" data-panel="engine"><i class="g118CatIcon">♨</i><b>ENGINE FLAME</b><span>THRUSTER COLOR</span></button>
+    <button class="g118Cat" data-panel="aura"><i class="g118CatIcon">✦</i><b>AURA</b><span>SHIP GLOW</span></button>
+    <button class="g118Cat" data-panel="special"><i class="g118CatIcon">◆</i><b>SPECIAL</b><span>MATERIAL</span></button>
+  </div>
   <div class="g118DockTitle"><b>ENGINE FLAME</b><span>SELECT THRUSTER COLOR</span></div>
   <div id="g118Engines" class="g118Engines">
     <button class="g118Engine" data-engine="blue"><i style="background:#35d8ff;color:#35d8ff"></i><span>BLUE</span></button>
@@ -131,6 +148,16 @@
     let currentEngine=selectedEngine118(),currentColor=selectedColor118();
     window.__FALCON_ENGINE_ID=currentEngine;
     window.__FALCON_COLOR_ID=currentColor;
+
+    const dock=shell.querySelector('.g118Dock');
+    const openGaragePanel118=(panel)=>{
+      if(!dock)return;
+      dock.classList.remove('mode-home','mode-open','mode-engine','mode-color','mode-aura','mode-special');
+      dock.classList.add('mode-open','mode-'+panel);
+    };
+    const closeGaragePanel118=()=>{if(!dock)return;dock.classList.remove('mode-open','mode-engine','mode-color','mode-aura','mode-special');dock.classList.add('mode-home')};
+    shell.querySelectorAll('.g118Cat').forEach(b=>b.onclick=()=>openGaragePanel118(b.dataset.panel));
+    const panelBack=shell.querySelector('#g118PanelBack');if(panelBack)panelBack.onclick=closeGaragePanel118;
 
     const engineButtons=[...shell.querySelectorAll('.g118Engine')];
     const colorButtons=[...shell.querySelectorAll('.g118Color')];
