@@ -37,8 +37,8 @@
   .g118Hangar:after{top:5%;bottom:18%;opacity:.7}
   .g118Ship{top:42%;width:min(72%,350px);height:63%}
   .g118ShipMeta{bottom:8%}.g118ShipMeta b{font-size:clamp(20px,5.6vw,30px)}.g118ShipMeta span{color:#61e5f6}
-  .g118Dock{left:5%;right:5%;top:58.5%;bottom:2.5%;border:1px solid #45dff052;background:linear-gradient(180deg,#06131bd9,#03070bd9);box-shadow:0 0 24px #21dfff16,inset 0 0 28px #000;clip-path:polygon(10px 0,calc(100% - 10px) 0,100% 10px,100% calc(100% - 10px),calc(100% - 10px) 100%,10px 100%,0 calc(100% - 10px),0 10px)}
-  .g118Dock:before{height:2px;background:linear-gradient(90deg,transparent,#45eaff,#fff,#45eaff,transparent);box-shadow:0 0 10px #31e3ff}
+  .g118Dock{left:5%;right:5%;top:58.5%;bottom:2.5%;border:0;background:transparent;box-shadow:none;clip-path:none}
+  .g118Dock:before{display:none}
   .g118DockTitle{top:5%}.g118DockTitle b,.g118ColorTitle b{font-size:10px;color:#dffcff}.g118DockTitle span,.g118ColorTitle span{color:#5597a5}
   .g118Engines{top:14%;height:15%;gap:5px}.g118Engine{border-color:#294b56;background:#061117c7}
   .g118ColorTitle{top:34%}
@@ -52,7 +52,7 @@
   .g118PanelBack{position:absolute;z-index:8;left:4%;top:7%;width:42px;height:32px;border:1px solid #4be7f08c;background:#06151c;color:#eaffff;font-size:22px;display:none}.g118Dock.mode-open .g118PanelBack{display:block}
   .g118Dock.mode-home .g118DockTitle,.g118Dock.mode-home .g118Engines,.g118Dock.mode-home .g118ColorTitle,.g118Dock.mode-home .g118Colors{display:none!important}
   .g118Dock.mode-open .g118CategoryHub{display:none!important}.g118AuraPanel,.g118SpecialPanel{display:none}.g118Dock.mode-engine .g118ColorTitle,.g118Dock.mode-engine .g118Colors{display:none!important}.g118Dock.mode-color .g118DockTitle,.g118Dock.mode-color .g118Engines{display:none!important}.g118Dock.mode-aura .g118AuraPanel,.g118Dock.mode-special .g118SpecialPanel{display:grid}
-  .g118AuraPanel,.g118SpecialPanel{position:absolute;left:0;right:0;top:18%;height:36%;grid-auto-flow:column;grid-auto-columns:38%;grid-template-columns:none;gap:9px;overflow-x:auto;overflow-y:hidden;padding:3px 22%;scroll-snap-type:x mandatory;scroll-padding-inline:22%;-webkit-overflow-scrolling:touch;scrollbar-width:none;mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}.g118AuraPanel::-webkit-scrollbar,.g118SpecialPanel::-webkit-scrollbar{display:none}.g118AuraBtn,.g118SpecialBtn{scroll-snap-align:center}.g118AuraBtn,.g118SpecialBtn{border:1px solid #315966;background:#061117d9;color:#dffcff;font:800 6px/1 system-ui;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}.g118AuraBtn i{width:24px;height:24px;border-radius:50%;border:2px solid #dff8ff;box-shadow:0 0 10px currentColor}.g118AuraBtn.on,.g118SpecialBtn.on{border-color:#55eaff;box-shadow:0 0 14px #36e4ff55,inset 0 0 12px #12303a}.g118SpecialBtn{font-size:8px;letter-spacing:.08em}.g118Dock.mode-engine .g118DockTitle,.g118Dock.mode-color .g118ColorTitle{top:9%}.g118Dock.mode-engine .g118Engines{top:22%;height:28%}.g118Dock.mode-color .g118Colors{top:22%;height:30%}.g118Dock.mode-color .g118ColorTitle{display:block}
+  .g118AuraPanel,.g118SpecialPanel{position:absolute;left:0;right:0;top:18%;height:36%;grid-auto-flow:column;grid-auto-columns:38%;grid-template-columns:none;gap:9px;overflow-x:auto;overflow-y:hidden;padding:3px 22%;scroll-snap-type:x mandatory;scroll-padding-inline:22%;-webkit-overflow-scrolling:touch;scrollbar-width:none;mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}.g118AuraPanel::-webkit-scrollbar,.g118SpecialPanel::-webkit-scrollbar{display:none}.g118AuraBtn,.g118SpecialBtn{scroll-snap-align:center}.g118AuraBtn,.g118SpecialBtn{border:1px solid #315966;background:#061117d9;color:#dffcff;font:800 6px/1 system-ui;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}.g118AuraBtn i{width:30px;height:30px;border-radius:50%;border:2px solid #dff8ff;background:var(--aura);color:var(--aura);box-shadow:0 0 14px currentColor}.g118AuraBtn.on,.g118SpecialBtn.on{border-color:#55eaff;box-shadow:0 0 14px #36e4ff55,inset 0 0 12px #12303a}.g118SpecialBtn{font-size:8px;letter-spacing:.08em}.g118Dock.mode-engine .g118DockTitle,.g118Dock.mode-color .g118ColorTitle{top:9%}.g118Dock.mode-engine .g118Engines{top:20%;height:32%;overflow-x:auto;overflow-y:hidden;justify-content:flex-start;padding:3px 22%;gap:9px;scroll-snap-type:x mandatory;scroll-padding-inline:22%;scrollbar-width:none}.g118Dock.mode-engine .g118Engine{flex:0 0 38%;scroll-snap-align:center}.g118Dock.mode-color .g118Colors{top:20%;height:32%}.g118Dock.mode-color .g118ColorTitle{display:block}
   .g118Launch{bottom:5%;height:16%}
     @media(min-aspect-ratio:3/4){.g118{width:min(100vw,56.3dvh);margin:auto}}
   `;
@@ -114,8 +114,12 @@
     <button class="g118Cat" data-panel="aura"><i class="g118CatIcon">✦</i><b>AURA</b><span>SHIP GLOW</span></button>
     <button class="g118Cat" data-panel="special"><i class="g118CatIcon">◆</i><b>SPECIAL</b><span>MATERIAL</span></button>
   </div>
-  <div class="g118AuraPanel" id="g118AuraPanel"></div>
-  <div class="g118SpecialPanel" id="g118SpecialPanel"></div>
+  <div class="g118AuraPanel" id="g118AuraPanel">
+    <button class="g118AuraBtn" data-aura="white" style="--aura:#fff"><i></i><span>WHITE</span></button><button class="g118AuraBtn" data-aura="blue" style="--aura:#168cff"><i></i><span>BLUE</span></button><button class="g118AuraBtn" data-aura="cyan" style="--aura:#00eaff"><i></i><span>CYAN</span></button><button class="g118AuraBtn" data-aura="green" style="--aura:#26ff72"><i></i><span>GREEN</span></button><button class="g118AuraBtn" data-aura="yellow" style="--aura:#ffe23b"><i></i><span>YELLOW</span></button><button class="g118AuraBtn" data-aura="orange" style="--aura:#ff8a18"><i></i><span>ORANGE</span></button><button class="g118AuraBtn" data-aura="red" style="--aura:#ff3434"><i></i><span>RED</span></button><button class="g118AuraBtn" data-aura="pink" style="--aura:#ff4fcf"><i></i><span>PINK</span></button><button class="g118AuraBtn" data-aura="violet" style="--aura:#9b4dff"><i></i><span>VIOLET</span></button><button class="g118AuraBtn" data-aura="purple" style="--aura:#652cff"><i></i><span>PURPLE</span></button>
+  </div>
+  <div class="g118SpecialPanel" id="g118SpecialPanel">
+    <button class="g118SpecialBtn" data-special="none">NONE</button><button class="g118SpecialBtn" data-special="carbon">CARBON</button><button class="g118SpecialBtn" data-special="steel">STEEL</button><button class="g118SpecialBtn" data-special="copper">COPPER</button><button class="g118SpecialBtn" data-special="gold">GOLD</button>
+  </div>
   <div class="g118DockTitle"><b>ENGINE FLAME</b><span>SELECT THRUSTER COLOR</span></div>
   <div id="g118Engines" class="g118Engines">
     <button class="g118Engine" data-engine="blue"><i style="background:#35d8ff;color:#35d8ff"></i><span>BLUE</span></button>
@@ -153,37 +157,18 @@
     window.__FALCON_COLOR_ID=currentColor;
 
     const auraHost=shell.querySelector('#g118AuraPanel'),specialHost=shell.querySelector('#g118SpecialPanel');
-    const fillExtraPanels118=()=>{
-      const M=window.__SHIP_MODULAR_V120;
-      if(!M)return false;
-      if(auraHost&&!auraHost.children.length)auraHost.innerHTML=Object.values(M.auraOptions||{}).map(o=>'<button class="g118AuraBtn" data-aura="'+o.id+'"><i style="background:'+o.color+';color:'+o.color+'"></i><span>'+o.name+'</span></button>').join('');
-      if(specialHost&&!specialHost.children.length)specialHost.innerHTML=Object.values(M.specialOptions||{}).map(o=>'<button class="g118SpecialBtn" data-special="'+o.id+'">'+o.name+'</button>').join('');
-      return !!((auraHost&&auraHost.children.length)||(specialHost&&specialHost.children.length));
-    };
-    fillExtraPanels118();
-    const M118=window.__SHIP_MODULAR_V120;
     let currentAura='cyan',currentSpecial='none';try{currentAura=localStorage.NSFalconAura||'cyan';currentSpecial=localStorage.NSFalconSpecial||'none'}catch(_){}
-    if(M118&&auraHost){auraHost.innerHTML=Object.values(M118.auraOptions||{}).map(o=>'<button class="g118AuraBtn" data-aura="'+o.id+'"><i style="background:'+o.color+';color:'+o.color+'"></i><span>'+o.name+'</span></button>').join('')}
-    if(M118&&specialHost){specialHost.innerHTML=Object.values(M118.specialOptions||{}).map(o=>'<button class="g118SpecialBtn" data-special="'+o.id+'">'+o.name+'</button>').join('')}
     const syncAura118=()=>shell.querySelectorAll('.g118AuraBtn').forEach(b=>b.classList.toggle('on',b.dataset.aura===currentAura));
     const syncSpecial118=()=>shell.querySelectorAll('.g118SpecialBtn').forEach(b=>b.classList.toggle('on',b.dataset.special===currentSpecial));
-    syncAura118();syncSpecial118();
-    shell.querySelectorAll('.g118AuraBtn').forEach(b=>b.onclick=async()=>{currentAura=b.dataset.aura;try{localStorage.NSFalconAura=currentAura}catch(_){}syncAura118();try{await drawFalcon118(shipCanvas,currentEngine,currentColor)}catch(e){console.error(e)}});
-    shell.querySelectorAll('.g118SpecialBtn').forEach(b=>b.onclick=async()=>{currentSpecial=b.dataset.special;try{localStorage.NSFalconSpecial=currentSpecial}catch(_){}syncSpecial118();try{await drawFalcon118(shipCanvas,currentEngine,currentColor)}catch(e){console.error(e)}});
+    const bindExtra118=()=>{
+      shell.querySelectorAll('.g118AuraBtn').forEach(b=>b.onclick=async()=>{currentAura=b.dataset.aura;try{localStorage.NSFalconAura=currentAura}catch(_){}syncAura118();try{await drawFalcon118(shipCanvas,currentEngine,currentColor)}catch(e){console.error(e)}});
+      shell.querySelectorAll('.g118SpecialBtn').forEach(b=>b.onclick=async()=>{currentSpecial=b.dataset.special;try{localStorage.NSFalconSpecial=currentSpecial}catch(_){}syncSpecial118();try{await drawFalcon118(shipCanvas,currentEngine,currentColor)}catch(e){console.error(e)}});
+    };
+    syncAura118();syncSpecial118();bindExtra118();
 
     const dock=shell.querySelector('.g118Dock');
     const openGaragePanel118=(panel)=>{
       if(!dock)return;
-      fillExtraPanels118();
-      if(panel==='aura'||panel==='special'){
-        const host=panel==='aura'?auraHost:specialHost;
-        if(host&&host.children.length){
-          let current=panel==='aura'?currentAura:currentSpecial;
-          host.querySelectorAll(panel==='aura'?'.g118AuraBtn':'.g118SpecialBtn').forEach(b=>{
-            b.onclick=async()=>{if(panel==='aura'){currentAura=b.dataset.aura;try{localStorage.NSFalconAura=currentAura}catch(_){}syncAura118()}else{currentSpecial=b.dataset.special;try{localStorage.NSFalconSpecial=currentSpecial}catch(_){}syncSpecial118()}try{await drawFalcon118(shipCanvas,currentEngine,currentColor)}catch(e){console.error(e)}};
-          });
-        }
-      }
       dock.classList.remove('mode-home','mode-open','mode-engine','mode-color','mode-aura','mode-special');
       dock.classList.add('mode-open','mode-'+panel);
     };
