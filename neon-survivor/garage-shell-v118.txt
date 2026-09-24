@@ -51,8 +51,8 @@
   .g118Cat:before{content:"";position:absolute;left:14%;right:14%;top:0;height:1px;background:#55eaff;box-shadow:0 0 8px #55eaff}.g118CatIcon{font-size:25px;line-height:1;filter:drop-shadow(0 0 7px #43eaff)}.g118Cat b{font-size:9px;letter-spacing:.13em}.g118Cat span{font-size:6px;color:#5d9ca8;letter-spacing:.12em}.g118Cat:active{filter:brightness(1.35);transform:scale(.98)}
   .g118PanelBack{position:absolute;z-index:8;left:4%;top:7%;width:42px;height:32px;border:1px solid #4be7f08c;background:#06151c;color:#eaffff;font-size:22px;display:none}.g118Dock.mode-open .g118PanelBack{display:block}
   .g118Dock.mode-home .g118DockTitle,.g118Dock.mode-home .g118Engines,.g118Dock.mode-home .g118ColorTitle,.g118Dock.mode-home .g118Colors{display:none!important}
-  .g118Dock.mode-open .g118CategoryHub{display:none!important}.g118Dock.mode-engine .g118ColorTitle,.g118Dock.mode-engine .g118Colors{display:none!important}.g118Dock.mode-color .g118DockTitle,.g118Dock.mode-color .g118Engines{display:none!important}
-  .g118Dock.mode-engine .g118DockTitle,.g118Dock.mode-color .g118ColorTitle{top:9%}.g118Dock.mode-engine .g118Engines{top:22%;height:28%}.g118Dock.mode-color .g118Colors{top:22%;height:30%}.g118Dock.mode-color .g118ColorTitle{display:block}
+  .g118Dock.mode-open .g118CategoryHub{display:none!important}.g118AuraPanel,.g118SpecialPanel{display:none}.g118Dock.mode-engine .g118ColorTitle,.g118Dock.mode-engine .g118Colors{display:none!important}.g118Dock.mode-color .g118DockTitle,.g118Dock.mode-color .g118Engines{display:none!important}.g118Dock.mode-aura .g118AuraPanel,.g118Dock.mode-special .g118SpecialPanel{display:grid}
+  .g118AuraPanel,.g118SpecialPanel{position:absolute;left:6%;right:6%;top:20%;height:34%;grid-template-columns:repeat(5,1fr);gap:6px}.g118AuraBtn,.g118SpecialBtn{border:1px solid #315966;background:#061117d9;color:#dffcff;font:800 6px/1 system-ui;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}.g118AuraBtn i{width:24px;height:24px;border-radius:50%;border:2px solid #dff8ff;box-shadow:0 0 10px currentColor}.g118AuraBtn.on,.g118SpecialBtn.on{border-color:#55eaff;box-shadow:0 0 14px #36e4ff55,inset 0 0 12px #12303a}.g118SpecialBtn{font-size:8px;letter-spacing:.08em}.g118Dock.mode-engine .g118DockTitle,.g118Dock.mode-color .g118ColorTitle{top:9%}.g118Dock.mode-engine .g118Engines{top:22%;height:28%}.g118Dock.mode-color .g118Colors{top:22%;height:30%}.g118Dock.mode-color .g118ColorTitle{display:block}
   .g118Launch{bottom:5%;height:16%}
     @media(min-aspect-ratio:3/4){.g118{width:min(100vw,56.3dvh);margin:auto}}
   `;
@@ -73,7 +73,8 @@
     const M=window.__SHIP_MODULAR_V120;
     if(!M||typeof M.renderCanvas!=='function')return;
     const eid=engineId||selectedEngine118(),cid=colorId||selectedColor118();
-    await M.renderCanvas(shipCanvas,{shipId:'falcon',engineId:eid,colorId:cid,showGlow:true,showEngineFlame:true,time:0});
+    let auraId='cyan',specialId='none';try{auraId=localStorage.NSFalconAura||'cyan';specialId=localStorage.NSFalconSpecial||'none'}catch(_){}
+    await M.renderCanvas(shipCanvas,{shipId:'falcon',engineId:eid,colorId:cid,auraId,specialId,showGlow:true,showEngineFlame:true,time:0});
   }
   async function settleGarage118(shipCanvas){
     const M=window.__SHIP_MODULAR_V120;
@@ -113,6 +114,8 @@
     <button class="g118Cat" data-panel="aura"><i class="g118CatIcon">✦</i><b>AURA</b><span>SHIP GLOW</span></button>
     <button class="g118Cat" data-panel="special"><i class="g118CatIcon">◆</i><b>SPECIAL</b><span>MATERIAL</span></button>
   </div>
+  <div class="g118AuraPanel" id="g118AuraPanel"></div>
+  <div class="g118SpecialPanel" id="g118SpecialPanel"></div>
   <div class="g118DockTitle"><b>ENGINE FLAME</b><span>SELECT THRUSTER COLOR</span></div>
   <div id="g118Engines" class="g118Engines">
     <button class="g118Engine" data-engine="blue"><i style="background:#35d8ff;color:#35d8ff"></i><span>BLUE</span></button>
@@ -148,6 +151,17 @@
     let currentEngine=selectedEngine118(),currentColor=selectedColor118();
     window.__FALCON_ENGINE_ID=currentEngine;
     window.__FALCON_COLOR_ID=currentColor;
+
+    const M118=window.__SHIP_MODULAR_V120;
+    const auraHost=shell.querySelector('#g118AuraPanel'),specialHost=shell.querySelector('#g118SpecialPanel');
+    let currentAura='cyan',currentSpecial='none';try{currentAura=localStorage.NSFalconAura||'cyan';currentSpecial=localStorage.NSFalconSpecial||'none'}catch(_){}
+    if(M118&&auraHost){auraHost.innerHTML=Object.values(M118.auraOptions||{}).map(o=>'<button class="g118AuraBtn" data-aura="'+o.id+'"><i style="background:'+o.color+';color:'+o.color+'"></i><span>'+o.name+'</span></button>').join('')}
+    if(M118&&specialHost){specialHost.innerHTML=Object.values(M118.specialOptions||{}).map(o=>'<button class="g118SpecialBtn" data-special="'+o.id+'">'+o.name+'</button>').join('')}
+    const syncAura118=()=>shell.querySelectorAll('.g118AuraBtn').forEach(b=>b.classList.toggle('on',b.dataset.aura===currentAura));
+    const syncSpecial118=()=>shell.querySelectorAll('.g118SpecialBtn').forEach(b=>b.classList.toggle('on',b.dataset.special===currentSpecial));
+    syncAura118();syncSpecial118();
+    shell.querySelectorAll('.g118AuraBtn').forEach(b=>b.onclick=async()=>{currentAura=b.dataset.aura;try{localStorage.NSFalconAura=currentAura}catch(_){}syncAura118();try{await drawFalcon118(shipCanvas,currentEngine,currentColor)}catch(e){console.error(e)}});
+    shell.querySelectorAll('.g118SpecialBtn').forEach(b=>b.onclick=async()=>{currentSpecial=b.dataset.special;try{localStorage.NSFalconSpecial=currentSpecial}catch(_){}syncSpecial118();try{await drawFalcon118(shipCanvas,currentEngine,currentColor)}catch(e){console.error(e)}});
 
     const dock=shell.querySelector('.g118Dock');
     const openGaragePanel118=(panel)=>{
