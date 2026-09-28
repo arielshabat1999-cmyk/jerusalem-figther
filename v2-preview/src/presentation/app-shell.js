@@ -4,37 +4,35 @@ function money(){return`<div class="ns-wallet"><span class="coin">◉ ${EconomyS
 function button(label,action,cls=''){return`<button class="ns-btn ${cls}" data-action="${action}">${label}</button>`}
 function itemName(id=''){return id.split('.').slice(1).join(' ').replaceAll('_',' ').toUpperCase()||'UNKNOWN'}
 function playerProgress(){const p=window.PlayerProgressionSystem?.snapshot?.()||{};const level=Number(p.playerLevel??p.level??1)||1;const current=Number(p.currentLevelXP??p.levelXP??0)||0;const needed=Math.max(1,Number(p.nextLevelXP??p.levelXPNeeded??900)||900);return{level,current,needed,pct:Math.max(0,Math.min(100,current/needed*100))}}
-function rankText(){const r=RankSystem.snapshot?.()||{};if(r.label)return String(r.label).toUpperCase();if(r.name)return String(r.name).toUpperCase();return`RANK ${r.rank||1}`}
+function rankText(){const r=RankSystem.snapshot?.()||{};if(r.label)return String(r.label).toUpperCase();if(r.name)return String(r.name).toUpperCase();return`RANK ${r.rank||1}`}function equippedShipAsset(){const loadout=CustomizationSystem.loadout?.()||{},shipKey=String(loadout.ship||'ship.nova').split('.').pop();const content=GameConfig.get('content')||{},ship=content.ships?.[shipKey]||content.ships?.starter,asset=content.assets?.[ship?.assetId];return asset?.src||'assets/ships/nova-normal.webp'}function icon(kind){const paths={garage:'M5 19V9l7-5 7 5v10h-5v-6h-4v6H5zm-2 2h18',objectives:'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 4a6 6 0 1 1 0 12 6 6 0 0 1 0-12zm0 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6z',profile:'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-7 8c.5-4 3.1-6 7-6s6.5 2 7 6H5z',leaderboard:'M6 4h3v4H6V4zm9 0h3v7h-3V4zm-4 0h3v10h-3V4zM4 16h16v4H4v-4z'};return`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${paths[kind]||paths.profile}"/></svg>`}
 function shell(title,body,back='home'){return`<section class="ns-screen"><header><button class="ns-back" data-action="${back}">‹</button><h2>${title}</h2>${money()}</header>${body}</section>`}
 function home(){
- const p=ProfileSystem.snapshot(),progress=playerProgress(),run=RunCommands.snapshot(),continuing=!!run?.active;
+ const p=ProfileSystem.snapshot(),progress=playerProgress(),run=RunCommands.snapshot(),continuing=!!run?.active,shipSrc=equippedShipAsset();
  return`<section class="ns-screen ns-home">
-   <div class="ns-home-space" aria-hidden="true"><i class="planet planet-a"></i><i class="planet planet-b"></i><i class="nebula"></i><i class="starfield"></i></div>
+   <div class="ns-home-art" aria-hidden="true"><span class="ns-home-nebula"></span><span class="ns-home-planet"></span><span class="ns-home-asteroids"></span><span class="ns-home-stars"></span></div>
    <header class="ns-home-top">
-     <button class="ns-settings" aria-label="Settings" data-action="settings">⚙</button>
-     <button class="ns-player-status" data-action="profile" aria-label="Player profile">
+     <button class="ns-settings" aria-label="Settings" data-action="settings"><span>⚙</span></button>
+     <button class="ns-player-status" data-action="profile" aria-label="Open player profile">
        <span class="ns-avatar-mini">◈</span>
-       <span class="ns-player-copy"><b>LV ${progress.level}</b><small>${rankText()}</small></span>
+       <span class="ns-player-copy"><strong>${p.displayName||'PILOT'}</strong><b>LV ${progress.level}</b><small>${rankText()}</small></span>
        <span class="ns-player-xp"><i style="width:${progress.pct}%"></i></span>
      </button>
      ${money()}
    </header>
    <div class="ns-brand" aria-label="Neon Survivor"><strong>NEON</strong><span>SURVIVOR</span></div>
    <div class="ns-hero">
-      <div class="ns-orbit"></div>
+      <div class="ns-orbit ns-orbit-a"></div><div class="ns-orbit ns-orbit-b"></div>
       <div class="ns-hero-glow"></div>
-      <img class="ns-hero-ship" src="assets/ships/nova-normal.webp" alt="Equipped ship">
+      <img class="ns-hero-ship" src="${shipSrc}" alt="Equipped ship">
       <div class="ns-engine engine-left"></div><div class="ns-engine engine-right"></div>
    </div>
-   <div class="ns-home-rank"><small>PLAYER LEVEL</small><b>LV ${progress.level}</b><span>${rankText()}</span></div>
    <div class="ns-primary">${button(continuing?'CONTINUE':'PLAY',continuing?'continue':'play','accent home-play')}</div>
    <nav class="ns-home-nav" aria-label="Main menu">
-      <button data-action="garage"><span class="nav-icon">△</span><b>GARAGE</b></button>
-      <button data-action="objectives"><span class="nav-icon">◎</span><b>OBJECTIVES</b></button>
-      <button data-action="profile"><span class="nav-icon">◉</span><b>PROFILE</b></button>
-      <button data-action="leaderboard"><span class="nav-icon">♛</span><b>LEADERBOARD</b></button>
+      <button data-action="garage"><span class="nav-icon">${icon('garage')}</span><b>GARAGE</b></button>
+      <button data-action="objectives"><span class="nav-icon">${icon('objectives')}</span><b>OBJECTIVES</b></button>
+      <button data-action="profile"><span class="nav-icon">${icon('profile')}</span><b>PROFILE</b></button>
+      <button data-action="leaderboard"><span class="nav-icon">${icon('leaderboard')}</span><b>LEADERBOARD</b></button>
    </nav>
-   <div class="ns-home-footer">PILOT: ${p.displayName||'PILOT'}</div>
  </section>`
 }
 function garageCard(v){const p=v.acquisition?.price,locked=!v.owned&&!v.eligibility?.met;let action=v.equipped?'<span class="ns-equipped">EQUIPPED</span>':v.owned?button('EQUIP',`equip:${v.id}`,'mini'):v.acquisition?.type==='purchase'&&p?button(`${p.currency==='gems'?'◆':'◉'} ${p.amount}`,`buy:${v.id}`,v.affordable&&!locked?'mini':'mini disabled'):`<span class="ns-lock">${locked?'LOCKED':'REWARD'}</span>`;return`<article class="ns-item ${v.equipped?'selected':''}"><div class="ns-item-art">${v.type==='ship'?'▲':v.type==='color'?'●':v.type==='decal'?'✦':v.type==='shot'?'⌁':v.type==='background'?'▧':v.type==='aura'?'◌':'⚡'}</div><div><b>${itemName(v.id)}</b><small>${String(v.rarity||'common').toUpperCase()}</small></div>${action}</article>`}
