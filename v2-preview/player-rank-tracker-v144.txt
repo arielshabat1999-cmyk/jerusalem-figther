@@ -1,0 +1,15 @@
+/* V144 — live Player Rank objective tracker. Keeps tracking separate from objective config. */
+;(()=>{
+  if(!window.PlayerRank)return;
+  let run={kills:0,upgrades:0,survival:0,noDamage:0,lastDistance:0,lastScore:0,lastLevel:1};
+  const originalReset144=reset,originalKill144=kill,originalHurt144=hurt,originalUpdate144=update;
+  function objectives144(){const d=window.PlayerRank.get(),c=window.PLAYER_RANK_CONFIG,r=c&&c.ranks&&c.ranks[d.rank];return r?r.objectives.filter(o=>o.enabled!==false):[]}
+  function setType144(type,value,scope){for(const o of objectives144())if(o.type===type&&(!scope||o.scope===scope))window.PlayerRank.setProgress(o.id,value)}
+  function addType144(type,amount,scope){for(const o of objectives144())if(o.type===type&&(!scope||o.scope===scope))window.PlayerRank.addProgress(o.id,amount)}
+  reset=function(){originalReset144.apply(this,arguments);run={kills:0,upgrades:0,survival:0,noDamage:0,lastDistance:0,lastScore:0,lastLevel:1};};
+  kill=function(e){originalKill144.apply(this,arguments);run.kills++;addType144('kills',1,'career');setType144('kills',run.kills,'single_run');if(e&&(e.type==='elite'||e.elite===true||e.isElite===true))addType144('elite_kills',1,'career');if(e&&(e.type==='boss'||e.boss===true||e.isBoss===true))addType144('boss_kills',1,'career');};
+  hurt=function(n){const hp=p&&p.hp,shield=p&&p.shield;originalHurt144.apply(this,arguments);if(p&&((hp!=null&&p.hp<hp)||(shield!=null&&p.shield<shield)))run.noDamage=0;};
+  update=function(dt){const playable=state==='play'||state==='sector'||state==='boss';originalUpdate144.apply(this,arguments);if(!playable||!p)return;run.survival+=dt;run.noDamage+=dt;setType144('survival_seconds',run.survival,'single_run');setType144('no_damage_seconds',run.noDamage,'single_run');const d=Math.max(0,+distance||0);setType144('distance',d,'single_run');if(d>run.lastDistance){addType144('distance',d-run.lastDistance,'career');run.lastDistance=d}const s=Math.max(0,+score||0);setType144('score',s,'single_run');run.lastScore=s;try{if(typeof L!=='undefined'){run.lastLevel=Math.max(run.lastLevel,+L||1);setType144('run_level',run.lastLevel,'single_run')}}catch(_){} };
+  // Upgrade systems can call this stable hook whenever the player accepts an upgrade.
+  window.PlayerRankTrack={upgrade(){run.upgrades++;setType144('upgrades',run.upgrades,'single_run')},eliteKill(){addType144('elite_kills',1,'career')},bossKill(){addType144('boss_kills',1,'career')},snapshot:()=>({...run})};
+})();

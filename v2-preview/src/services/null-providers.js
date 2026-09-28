@@ -1,0 +1,2 @@
+/* Explicit offline providers let the architecture run before a production backend is selected. */
+window.OfflineServices=Object.freeze({install(){if(!GameServices.has('telemetry'))GameServices.provide('telemetry',{event(){}});if(!GameServices.has('remoteConfig'))GameServices.provide('remoteConfig',{async fetch(){return GameConfig.snapshot()}});if(!GameServices.has('catalog'))GameServices.provide('catalog',{async fetch(){return GameConfig.get('content')}})}});

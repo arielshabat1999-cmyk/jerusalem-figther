@@ -1,0 +1,45 @@
+/* V98 — sector resume guard: normalize distance after shop/warp so wave spawning cannot stall */
+;(()=>{
+let emptyPlay98=0;
+function normalizeSectorDistance98(){
+  if(!p||state!=='play')return;
+  const start=Math.max(0,(stage-1)*STAGE_M+1);
+  const end=stage*STAGE_M-4;
+  if(distance>=end||distance<Math.max(0,(stage-1)*STAGE_M-20)){
+    distance=start;
+    spawn=Math.min(spawn,.8);
+    obspawn=Math.min(obspawn,1.0);
+    emptyPlay98=0;
+  }
+}
+
+const leaveShop98base=leaveShop;
+leaveShop=function(){
+  leaveShop98base();
+  normalizeSectorDistance98();
+};
+
+const checkpoint98base=checkpoint;
+checkpoint=function(){
+  checkpoint98base();
+  emptyPlay98=0;
+};
+
+const update98base=update;
+update=function(dt){
+  update98base(dt);
+  if(!p||state!=='play'){emptyPlay98=0;return}
+  const regular=E.filter(e=>e&&!e.boss&&!e.boss5).length;
+  if(regular===0)emptyPlay98+=dt;else emptyPlay98=0;
+  /* Recovery only for the broken boundary state: no hostiles for several seconds while distance is pinned at sector end. */
+  if(emptyPlay98>4.5&&distance>=stage*STAGE_M-4){
+    normalizeSectorDistance98();
+    spawn=0;
+    emptyPlay98=0;
+    try{flashStage('HOSTILES INBOUND')}catch(_){}
+  }
+};
+
+const reset98base=reset;
+reset=function(){emptyPlay98=0;reset98base()};
+})();

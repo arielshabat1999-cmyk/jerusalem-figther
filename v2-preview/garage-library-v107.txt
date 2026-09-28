@@ -1,0 +1,32 @@
+/* V107 — Garage base ship library: five canonical hulls */
+;(()=>{
+if(typeof SHIPS==='undefined')return;
+const LIB107={
+  falcon:{name:'FALCON',cost:0,desc:'Modular interceptor hull. First ship in the new modular fleet.',hp:92,spd:272,rate:.17,dmg:15,role:'MODULAR INTERCEPTOR'}
+}
+Object.keys(SHIPS).forEach(k=>delete SHIPS[k]);Object.assign(SHIPS,LIB107);
+try{
+  /* V121 one-time starter migration: make the new Falcon the active first ship. */
+  let migrateFalcon121=false;
+  try{migrateFalcon121=localStorage.NSFalconV121Migrated!=='1'}catch(_){}
+  if(migrateFalcon121){
+    if(Array.isArray(ownedShips)&&!ownedShips.includes('falcon'))ownedShips.unshift('falcon');
+    equippedShip='falcon';
+    if(typeof p!=='undefined'&&p)p.shipType='falcon';
+    try{localStorage.NSFalconV121Migrated='1'}catch(_){}
+  }
+  if(Array.isArray(ownedShips)){
+    const keep=ownedShips.filter(id=>SHIPS[id]);
+    ownedShips.splice(0,ownedShips.length,...(keep.length?keep:['falcon']));
+  }
+  if(typeof equippedShip==='string'&&!SHIPS[equippedShip])equippedShip='falcon';
+  if(typeof p!=='undefined'&&p&&p.shipType&&!SHIPS[p.shipType])p.shipType=equippedShip||'falcon';
+  if(typeof shipIndex3!=='undefined'){const ids=Object.keys(SHIPS),current=(typeof p!=='undefined'&&p&&p.shipType)||equippedShip||'falcon',at=ids.indexOf(current);shipIndex3=Math.max(0,at)}
+  if(typeof saveProfile==='function')saveProfile();
+}catch(_){ }
+window.__SHIP_LIBRARY_V107={version:107,ids:Object.keys(LIB107),ships:LIB107};
+const tag=document.createElement('div');tag.className='shipLibrary107';tag.textContent='BASE HULL LIBRARY · 5 SHIPS';
+const box=document.querySelector('.ship7Box');if(box)box.insertBefore(tag,box.firstChild);
+const css=document.createElement('style');css.textContent=`.shipLibrary107{text-align:center;padding:7px 10px 2px;color:#79dfff;font:900 7px/1 system-ui;letter-spacing:.28em;text-shadow:0 0 10px #25dfff}.ship7Desc:before{content:'BASE HULL · ';color:#4cb7d1;font-weight:900}`;document.head.appendChild(css);
+try{renderShop()}catch(_){ }
+})();

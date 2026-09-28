@@ -1,0 +1,21 @@
+/* V42 bridge: installed before legacy patches inside the base game IIFE */
+;(()=>{
+try{
+  window.__V42={
+    ctx:X,canvas:C,
+    get W(){return W},get H(){return H},get scroll(){return scroll},get time(){return t},
+    get player(){return p},get touch(){return touch},get keys(){return keys},get boost(){return boostTimer},get stage(){return stage},get state(){return state},
+    getBackground(){return background},setBackground(v){background=v},
+    getShip(){return ship},setShip(v){ship=v},
+    getEnemy(){return drawEnemy},setEnemy(v){drawEnemy=v},
+    getAsteroid(){return asteroid},setAsteroid(v){asteroid=v},
+    getGift(){return giftBox},setGift(v){giftBox=v},
+    getLaser(){return laser},setLaser(v){laser=v},
+    getEnemyLaser(){return enemyLaser},setEnemyLaser(v){enemyLaser=v}
+  };
+  try{parent.postMessage({source:'cinematic-v42',status:'BRIDGE ON'},'*')}catch(_){}
+}catch(e){
+  try{parent.postMessage({source:'cinematic-v42',status:'BRIDGE ERROR'},'*')}catch(_){}
+  console.error('V42 bridge',e)
+}
+})();

@@ -1,0 +1,22 @@
+/* V51 — five real boss ship assets */
+;(()=>{
+const G=window.__V42;if(!G)return;
+const X=G.ctx,VERSION='20260913v51';
+const paths={dread:'dreadnought.webp',ravager:'ravager.webp',wraith:'wraith.webp',hive:'hive-carrier.webp',siege:'siege-titan.webp'};
+const glow={dread:'#ff4058',ravager:'#27dfff',wraith:'#cf4fff',hive:'#66ff4d',siege:'#ff982f'},imgs={},jobs=[];
+function post(status){try{parent.postMessage({source:'bosses-v51',status},'*')}catch(_){}}
+for(const [id,file] of Object.entries(paths))jobs.push(new Promise((resolve,reject)=>{const im=new Image();imgs[id]=im;im.onload=resolve;im.onerror=reject;im.src='./assets/bosses/'+file+'?v='+VERSION}));
+post('LOADING');
+Promise.all(jobs).then(()=>post('BOSSES ON')).catch(e=>{console.error('V51 boss asset load',e);post('BOSS ERROR')});
+const previous=G.getEnemy();
+G.setEnemy(function(e){
+  if(!e||(!e.boss&&!e.boss5)){previous(e);return}
+  const id=(e.boss32&&e.boss32.id)||['dread','ravager','wraith','hive','siege'][(Math.max(1,G.stage)-1)%5],im=imgs[id];
+  if(!im||!im.complete||!im.naturalWidth)return;
+  const maxW=Math.min(G.W*.88,(e.r||58)*(id==='siege'?5.0:id==='wraith'?4.1:5.45)),maxH=Math.min(G.H*.29,238),ar=im.naturalWidth/im.naturalHeight;
+  let w=maxW,h=w/ar;if(h>maxH){h=maxH;w=h*ar}
+  const pulse=.92+.08*Math.sin(G.time*3.4),hit=e.hit>0;
+  X.save();X.translate(e.x,e.y);X.shadowBlur=hit?30:18*pulse;X.shadowColor=hit?'#ffffff':glow[id];X.globalAlpha=hit?.72:1;X.drawImage(im,-w/2,-h/2,w,h);
+  X.globalCompositeOperation='lighter';X.globalAlpha=.14+.06*pulse;X.strokeStyle=glow[id];X.lineWidth=2;X.beginPath();X.ellipse(0,0,w*.48,h*.45,0,0,Math.PI*2);X.stroke();X.restore();
+});
+})();

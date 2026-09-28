@@ -1,0 +1,80 @@
+/* V79 — endless meteor-only survival mode */
+;(()=>{
+const startBase79=start,updateBase79=update,uiBase79=ui,gameoverBase79=gameover,collectGiftBase79=collectGift;
+let meteor79=false,elapsed79=0,spawnCd79=.65,giftCd79=8,dodged79=0,uiCd79=0,lock79=false;
+let best79=0;try{best79=+localStorage.NSmeteorBest79||0}catch(_){}
+const css79=document.createElement('style');
+css79.textContent='#meteor79{margin-top:10px;background:linear-gradient(110deg,#ff8a24,#ff334f 53%,#872dff);box-shadow:0 0 28px #ff542f55}.meteorNote79{margin:8px 0 0;text-align:center;color:#ffc18f;font-size:9px;font-weight:900;letter-spacing:.16em}.meteorTime79{color:#ffab57!important;text-shadow:0 0 13px #ff542f}.meteorBest79{margin-top:7px;text-align:center;color:#819bb8;font-size:9px;letter-spacing:.12em}.meteorBest79 b{color:#ffc06f}';
+document.head.appendChild(css79);
+const special79=$('special75'),anchor79=special79?special79.nextSibling:$('play');
+const btn79=document.createElement('button');btn79.id='meteor79';btn79.className='btn';btn79.textContent='METEOR RUSH';
+anchor79.parentNode.insertBefore(btn79,anchor79.nextSibling);
+const note79=document.createElement('div');note79.className='meteorNote79';note79.textContent='DODGE · SURVIVE · NO HOSTILE SHIPS';
+btn79.parentNode.insertBefore(note79,btn79.nextSibling);
+const bestLine79=document.createElement('div');bestLine79.className='meteorBest79';bestLine79.innerHTML='BEST SURVIVAL · <b id="meteorBest79">'+format79(best79)+'</b>';
+note79.parentNode.insertBefore(bestLine79,note79.nextSibling);
+function format79(s){s=Math.max(0,Math.floor(s||0));return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
+function decorate79(){if(!meteor79)return;$('stage').textContent='RUSH';$('dist').textContent=format79(elapsed79);$('dist').classList.add('meteorTime79');$('stageprog').style.width=Math.min(100,(elapsed79%60)/.6)+'%'}
+ui=function(){uiBase79();if(meteor79)decorate79();else $('dist').classList.remove('meteorTime79')};
+function newMeteor79(){
+ if(O.filter(o=>o&&o.type==='asteroid').length>=22)return;
+ let o=null,tries=0;
+ while(!o&&tries++<8){const n=O.length;obstacle();const made=O.splice(n);o=made.find(x=>x&&x.type==='asteroid')||null}
+ if(!o)return;o.meteor79=1;
+ const danger=Math.min(12,elapsed79/22);o.speed59=(o.speed59||0)+25+danger*14+R(-8,18);
+ if(Math.random()<Math.min(.68,.20+elapsed79/240)){o.aimed59=true;const flight=cl(2.4-danger*.07,1.35,2.4);o.vx59=cl((p.x-o.x)/flight,-155-danger*5,155+danger*5)}
+ O.push(o);
+}
+function meteorBurst79(){
+ const danger=Math.min(12,elapsed79/22),r=Math.random();let count=r<.52?1:r<.78?2:r<.93?3:Math.min(6,4+Math.floor(danger/5));
+ count=Math.min(count,22-O.filter(o=>o&&o.type==='asteroid').length);for(let i=0;i<count;i++)newMeteor79();if(count>=4)flashStage('METEOR STORM')
+}
+function newGift79(){
+ if(G.length>=2)return;giftDrop(R(36,W-36),-38);const g=G[G.length-1];if(!g)return;
+ const n=Math.floor(Math.random()*3);g.meteorGift79=n===0?'weapon':n===1?'health':'agility';g.kind=n===0?'weapon':n===1?'survival':'ability'
+}
+collectGift=function(g){
+ if(!meteor79||!g||!g.meteorGift79){collectGiftBase79(g);return}
+ if(g.meteorGift79==='weapon'){collectGiftBase79(g);return}
+ if(g.meteorGift79==='health'){
+  const heal=Math.round(Math.min(48,Math.max(0,p.max-p.hp)));p.hp=Math.min(p.max,p.hp+48);if(!heal)p.shield=Math.min(p.maxShield,(p.shield||0)+48);
+  popText(g.x,g.y-12,heal?'HULL +'+heal:'SHIELD +48','#65ff9b',18);puff(g.x,g.y,22,'#65ff9b',1.1)
+ }else{p.spd=Math.min(390,p.spd*1.10);p.dodge=Math.max(p.dodge||0,6);popText(g.x,g.y-12,'AGILITY +10%','#8b7cff',18);puff(g.x,g.y,22,'#8b7cff',1.1)}
+ shake=Math.max(shake,4);ui()
+};
+function launch79(){
+ meteor79=false;elapsed79=0;spawnCd79=.55;giftCd79=7;dodged79=0;uiCd79=0;lock79=false;
+ const over=$('finalOver76');if(over)over.classList.remove('show');startBase79();meteor79=true;stage=1;distance=0;E.length=0;O.length=0;G.length=0;
+ spawn=obspawn=dropSpawn=999;flashStage('METEOR RUSH · SURVIVE');ui()
+}
+update=function(dt){
+ if(!meteor79){updateBase79(dt);return}if(state!=='play'){updateBase79(dt);return}
+ elapsed79+=dt;stage=1;distance=Math.min(distance,STAGE_M*.2);spawn=obspawn=dropSpawn=999;const before=new Set(O);updateBase79(dt);
+ if(state!=='play')return;E.length=0;stage=1;if(distance>STAGE_M*.22)distance=0;spawn=obspawn=dropSpawn=999;
+ for(const o of before)if(o&&o.meteor79&&!O.includes(o)&&o.y>H)dodged79++;
+ spawnCd79-=dt;if(spawnCd79<=0){meteorBurst79();const danger=Math.min(1,elapsed79/240);spawnCd79=R(.82,1.24)*(1-danger*.62)}
+ giftCd79-=dt;if(giftCd79<=0){newGift79();giftCd79=R(11,16)}
+ uiCd79-=dt;if(uiCd79<=0){uiCd79=.1;decorate79()}
+};
+function bindRestart79(mode){
+ const old=$('restart76');if(!old)return;const fresh=old.cloneNode(true);old.replaceWith(fresh);fresh.textContent=mode==='meteor'?'RESTART METEOR RUSH':'RESTART';
+ const go=()=>{if(lock79)return;lock79=true;if(mode==='meteor')launch79();else{const target=mode==='special'?$('special75'):$('play');if(target)target.click()}setTimeout(()=>lock79=false,450)};
+ fresh.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();go()});fresh.addEventListener('pointerup',e=>{if(e.pointerType==='touch'){e.preventDefault();e.stopPropagation();go()}},{passive:false})
+}
+gameover=function(){
+ const wasMeteor=meteor79,time79=elapsed79;gameoverBase79();meteor79=false;const panel=$('finalOver76');
+ if(wasMeteor){
+  if(time79>best79){best79=time79;try{localStorage.NSmeteorBest79=best79}catch(_){}}
+  const rows=panel?panel.querySelectorAll('.result'):[];
+  if(rows[0]){rows[0].querySelector('span').textContent='SURVIVAL TIME';rows[0].querySelector('b').textContent=format79(time79)}
+  if(rows[1]){rows[1].querySelector('span').textContent='SCORE';rows[1].querySelector('b').textContent=(score|0).toLocaleString()}
+  if(rows[2]){rows[2].querySelector('span').textContent='METEORS DODGED';rows[2].querySelector('b').textContent=String(dodged79)}
+  const eye=panel&&panel.querySelector('.eyebrow');if(eye)eye.textContent='METEOR RUSH ENDED';$('meteorBest79').textContent=format79(best79);bindRestart79('meteor')
+ }else{
+  const special=$('stage')&&$('stage').textContent==='1/1',rows=panel?panel.querySelectorAll('.result'):[];
+  if(rows[0])rows[0].querySelector('span').textContent='SECTOR REACHED';if(rows[2])rows[2].querySelector('span').textContent='DISTANCE';
+  const eye=panel&&panel.querySelector('.eyebrow');if(eye)eye.textContent='MISSION ENDED';bindRestart79(special?'special':'classic')
+ }
+};
+btn79.onclick=launch79;try{parent.postMessage({source:'meteor-rush-v79',status:'METEOR ON'},'*')}catch(_){}
+})();

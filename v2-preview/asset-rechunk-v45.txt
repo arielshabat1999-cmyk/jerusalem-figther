@@ -1,0 +1,27 @@
+/* V46 base64 repair: normalize the full atlas stream, restore only final padding, then re-slice on legal 4-char boundaries */
+;(()=>{
+try{
+  const src=[window.B17C0,window.B17C1,window.B17C2,window.B17C3,window.B17C4,window.B17C5];
+  if(src.some(v=>typeof v!=='string'||v.length<100)) throw new Error('missing source chunk');
+  let all=src.join('').replace(/\s+/g,'').replace(/-/g,'+').replace(/_/g,'/');
+  if(!all.length) throw new Error('empty atlas stream');
+  all=all.replace(/=/g,'');
+  while(all.length%4) all+='=';
+  const pad=(all.match(/=+$/)||[''])[0];
+  const core=pad?all.slice(0,-pad.length):all;
+  const step=Math.max(4,Math.floor((core.length/6)/4)*4);
+  window.B17C0=core.slice(0,step);
+  window.B17C1=core.slice(step,step*2);
+  window.B17C2=core.slice(step*2,step*3);
+  window.B17C3=core.slice(step*3,step*4);
+  window.B17C4=core.slice(step*4,step*5);
+  window.B17C5=core.slice(step*5)+pad;
+  const out=[window.B17C0,window.B17C1,window.B17C2,window.B17C3,window.B17C4,window.B17C5];
+  if(out.some(v=>v.length%4!==0)) throw new Error('alignment failed '+out.map(v=>v.length%4).join(','));
+  for(const q of out) atob(q);
+  try{parent.postMessage({source:'cinematic-v42',status:'REPAIR OK'},'*')}catch(_){}
+}catch(e){
+  console.error('V46 atlas repair failed',e);
+  try{parent.postMessage({source:'cinematic-v42',status:'REPAIR ERROR'},'*')}catch(_){}
+}
+})();

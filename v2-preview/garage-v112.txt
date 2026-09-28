@@ -1,0 +1,60 @@
+/* V113 — approved Garage artwork used as the exact visual source of truth; live controls layered over it */
+;(()=>{
+const root=document.getElementById('upgrade');if(!root)return;
+const ART='data:image/webp;base64,'+(window.__GARAGE_ART_PARTS||[]).join('');
+const ids=()=>typeof SHIPS!=='undefined'?Object.keys(SHIPS):['falcon','vanguard','titan','phantom','nova'];
+let saved={ship:(typeof equippedShip==='string'?equippedShip:'falcon'),color:'default',skin:'default',livery:'none',trail:'default',shot:'default',engineGlow:'default'};
+try{saved={...saved,...JSON.parse(localStorage.NSgarageSelection||'{}')}}catch(_){}
+window.garageSelection={...saved};
+let diamonds=Math.max(0,parseInt(localStorage.NSdiamonds||'0',10)||0);window.diamonds=diamonds;
+window.playerCurrencies={get coins(){return typeof credits==='number'?credits:0},get diamonds(){return diamonds}};
+window.addDiamonds=n=>{diamonds=Math.max(0,diamonds+(Number(n)||0));localStorage.NSdiamonds=String(diamonds);renderGarage112();return diamonds};
+window.spendDiamonds=n=>{n=Math.max(0,Number(n)||0);if(diamonds<n)return false;diamonds-=n;localStorage.NSdiamonds=String(diamonds);renderGarage112();return true};
+
+const css=document.createElement('style');css.textContent=`
+#upgrade{padding:0!important;background:#050607!important;overflow:hidden!important}
+.g112{position:relative;width:100%;height:100dvh;overflow:hidden;background:#030405;color:#fff;isolation:isolate}
+.g112Art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;pointer-events:none;user-select:none}
+.g112Tint{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,#0000 0 72%,#0000000d 100%)}
+.g112Hit{position:absolute;z-index:20;background:transparent;border:0}
+.g112Back{left:2.1%;top:1.2%;width:10.8%;height:6.1%}
+.g112Save{left:29.5%;bottom:2.1%;width:40.5%;height:6.0%}
+.g112Reset{left:3.2%;bottom:2.35%;width:21%;height:5.5%}
+.g112Wallet{position:absolute;z-index:12;top:2.25%;height:3.45%;display:flex;align-items:center;justify-content:center;padding:0 10px;background:#0a0c0f;border:1px solid #ff8f2f73;font:900 clamp(10px,2.7vw,17px)/1 system-ui;letter-spacing:.03em;box-shadow:inset 0 0 14px #000}
+.g112Coins{left:61.0%;width:13.2%}.g112Diamonds{left:78.0%;width:11.5%}.g112Wallet.coin{color:#f8f6ef}.g112Wallet.diamond{color:#dffcff}
+.g112Wallet:before{margin-right:7px;font-size:1.05em}.g112Wallet.coin:before{content:'⬡';color:#ffac37}.g112Wallet.diamond:before{content:'♦';color:#45e8ff;text-shadow:0 0 10px #24dfff}
+.g112ShipZone{position:absolute;z-index:10;left:22%;top:8%;width:56%;height:36%;pointer-events:none}
+.g112ShipZone canvas{width:100%!important;height:100%!important;display:block!important;animation:g112Float 3.8s ease-in-out infinite;filter:drop-shadow(0 8px 12px #32dfff65) drop-shadow(0 0 12px #23dfff44);transform-origin:50% 52%}
+@keyframes g112Float{0%,100%{transform:translateY(4px) rotate(-.55deg)}50%{transform:translateY(-7px) rotate(.55deg)}}
+.g112Engine{position:absolute;z-index:11;left:50%;top:37.2%;width:12%;height:6%;transform:translateX(-50%);pointer-events:none;background:radial-gradient(ellipse at 50% 0,#eaffff 0,#58e7ff 16%,#10bfff80 34%,transparent 70%);filter:blur(2px);animation:g112Pulse 1.1s ease-in-out infinite alternate}
+@keyframes g112Pulse{from{opacity:.42;transform:translateX(-50%) scaleY(.84)}to{opacity:.9;transform:translateX(-50%) scaleY(1.16)}}
+.g112RowsMask{position:absolute;z-index:8;left:42.2%;right:4.2%;top:46.1%;height:42.2%;pointer-events:none}
+.g112BlankRow{position:absolute;left:0;right:0;height:5.55%;background:linear-gradient(90deg,#111417f4,#08090af7);border:1px solid #52402f;box-shadow:inset 0 0 0 1px #000,0 0 8px #ff7b0019}
+.g112BlankRow:nth-child(1){top:6.9%}.g112BlankRow:nth-child(2){top:20.9%}.g112BlankRow:nth-child(3){top:34.9%}.g112BlankRow:nth-child(4){top:48.9%}.g112BlankRow:nth-child(5){top:62.9%}.g112BlankRow:nth-child(6){top:76.9%}
+.g112BlankSlots{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;height:100%;padding:5px 10% 5px 7%}.g112BlankSlots i{display:block;border:1px solid #474b4e;background:linear-gradient(145deg,#181a1c,#08090a);box-shadow:inset 0 0 12px #000}.g112BlankSlots i:first-child{border:2px solid #ff962f;box-shadow:0 0 10px #ff75006b,inset 0 0 10px #ff8a171c}
+.g112ShipStrip{position:absolute;z-index:15;left:42.2%;right:4.1%;top:46.05%;height:5.7%;display:grid;grid-template-columns:7% repeat(5,1fr) 7%;gap:4px;padding:4px;background:linear-gradient(90deg,#101215f5,#060708f8);border:1px solid #57422d;box-shadow:inset 0 0 0 1px #000,0 0 10px #ff7a0022}
+.g112Arrow{border:0;background:#17191b;color:#ff9b35;font-size:clamp(20px,5vw,34px);text-shadow:0 0 8px #ff6f00}
+.g112ShipBtn{border:1px solid #464a4d;background:linear-gradient(145deg,#17191b,#090a0b);padding:2px;overflow:hidden;position:relative}
+.g112ShipBtn img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 5px #34dfff80)}
+.g112ShipBtn.on{border:2px solid #ff982f;box-shadow:0 0 11px #ff720080,inset 0 0 9px #ff8a171e}
+.g112Name{position:absolute;z-index:13;left:5.3%;top:36.8%;min-width:20%;color:#fff;font:900 clamp(14px,4.6vw,28px)/1 system-ui;letter-spacing:.16em;text-shadow:0 0 7px #000}
+.g112Hidden{display:none!important}
+.g112Flash{position:absolute;z-index:30;inset:0;pointer-events:none;opacity:0;background:radial-gradient(circle at 50% 33%,#67efff33,transparent 28%)}.g112Flash.on{animation:g112Flash .45s ease-out}@keyframes g112Flash{0%{opacity:.9}100%{opacity:0}}
+`;document.head.appendChild(css);
+
+root.innerHTML='<div class="g112"><img class="g112Art" src="'+ART+'" alt=""><div class="g112Tint"></div><button id="garageBack7" class="g112Hit g112Back" aria-label="Back"></button><button id="g112Reset" class="g112Hit g112Reset" aria-label="Reset"></button><button id="g112Save" class="g112Hit g112Save" aria-label="Save"></button><div id="g112Coins" class="g112Wallet g112Coins coin">0</div><div id="g112Diamonds" class="g112Wallet g112Diamonds diamond">0</div><div class="g112ShipZone"><canvas id="shipMain7"></canvas></div><div class="g112Engine"></div><canvas id="shipLeft7" class="g112Hidden"></canvas><canvas id="shipRight7" class="g112Hidden"></canvas><div id="shipName7" class="g112Name">FALCON</div><div class="g112RowsMask"><div class="g112BlankRow"><div class="g112BlankSlots"><i></i><i></i><i></i><i></i></div></div><div class="g112BlankRow"><div class="g112BlankSlots"><i></i><i></i><i></i><i></i></div></div><div class="g112BlankRow"><div class="g112BlankSlots"><i></i><i></i><i></i><i></i></div></div><div class="g112BlankRow"><div class="g112BlankSlots"><i></i><i></i><i></i><i></i></div></div><div class="g112BlankRow"><div class="g112BlankSlots"><i></i><i></i><i></i><i></i></div></div><div class="g112BlankRow"><div class="g112BlankSlots"><i></i><i></i><i></i><i></i></div></div></div><div id="g112ShipStrip" class="g112ShipStrip"></div><div id="g112Flash" class="g112Flash"></div></div>';
+
+function selectedShip(){const a=ids();if(typeof shipIndex3==='number'&&a.length)return a[((shipIndex3%a.length)+a.length)%a.length];return garageSelection.ship||a[0]}
+function drawSoon(){setTimeout(()=>{try{window.__SHIP_ASSETS_V107&&window.__SHIP_ASSETS_V107.drawGarage()}catch(_){}},0)}
+function setShip(id,saveNow=false){const a=ids(),i=a.indexOf(id);if(i<0)return;if(typeof shipIndex3==='number')shipIndex3=i;garageSelection.ship=id;try{if(p)p.shipType=id}catch(_){};renderGarage112();drawSoon();const f=document.getElementById('g112Flash');if(f){f.classList.remove('on');void f.offsetWidth;f.classList.add('on')}if(saveNow)save112()}
+function cycle(dir){const a=ids();if(!a.length)return;const i=a.indexOf(selectedShip());setShip(a[(i+dir+a.length)%a.length])}
+function close112(){root.classList.remove('show');const boss=typeof E!=='undefined'&&E.some(e=>e&&(e.boss||e.boss5||e.boss32));state=boss?'boss':'play';last=performance.now();try{ui()}catch(_){}}
+function save112(){garageSelection.ship=selectedShip();saved={...garageSelection};localStorage.NSgarageSelection=JSON.stringify(saved);try{equippedShip=saved.ship;localStorage.NSequippedShip=equippedShip;if(p)p.shipType=equippedShip;if(Array.isArray(ownedShips)&&!ownedShips.includes(equippedShip))ownedShips.push(equippedShip);localStorage.NSownedShips=JSON.stringify(ownedShips)}catch(_){};const f=document.getElementById('g112Flash');if(f){f.classList.remove('on');void f.offsetWidth;f.classList.add('on')}}
+function reset112(){garageSelection={...saved};setShip(saved.ship||ids()[0])}
+window.renderGarage112=function(){const sid=selectedShip(),a=ids();const c=document.getElementById('g112Coins'),d=document.getElementById('g112Diamonds'),n=document.getElementById('shipName7'),strip=document.getElementById('g112ShipStrip');if(c)c.textContent=typeof credits==='number'?Math.floor(credits).toLocaleString():'0';if(d)d.textContent=diamonds.toLocaleString();if(n)n.textContent=((typeof SHIPS!=='undefined'&&SHIPS[sid]&&SHIPS[sid].name)||sid).toUpperCase();if(strip){strip.innerHTML='<button class="g112Arrow" data-d="-1">‹</button>'+a.map(id=>'<button class="g112ShipBtn '+(id===sid?'on':'')+'" data-id="'+id+'" aria-label="'+id+'"><img src="./assets/ships/base/'+id+'.svg?v=20260918v113"></button>').join('')+'<button class="g112Arrow" data-d="1">›</button>';strip.querySelectorAll('.g112ShipBtn').forEach(b=>b.onclick=()=>setShip(b.dataset.id));strip.querySelectorAll('.g112Arrow').forEach(b=>b.onclick=()=>cycle(Number(b.dataset.d)||1))}drawSoon()};
+try{renderShop=renderGarage112}catch(_){}
+document.getElementById('garageBack7').onclick=close112;document.getElementById('g112Save').onclick=save112;document.getElementById('g112Reset').onclick=reset112;
+renderGarage112();
+let tries=0;const wait=setInterval(()=>{tries++;renderGarage112();if(window.__SHIP_ASSETS_V107||tries>40)clearInterval(wait)},120);
+try{parent.postMessage({source:'garage-v112',status:'GARAGE ART ON'},'*')}catch(_){}
+})();
