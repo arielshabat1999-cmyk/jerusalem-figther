@@ -4,15 +4,17 @@
   const test=(name,fn)=>{try{const r=fn();if(r===false)throw Error('assertion failed');results.push(['PASS',name])}catch(e){results.push(['FAIL',name,e.message])}};
   try{
     localStorage.clear();
-    for(const src of ARCHITECTURE_MODULES)await new Promise((ok,fail)=>{const s=document.createElement('script');s.src='../'+src+'?test=4';s.onload=ok;s.onerror=()=>fail(Error('load '+src));document.head.appendChild(s)});
+    for(const src of ARCHITECTURE_MODULES)await new Promise((ok,fail)=>{const s=document.createElement('script');s.src='../'+src+'?test=5';s.onload=ok;s.onerror=()=>fail(Error('load '+src));document.head.appendChild(s)});
     await GameBootstrap.start();
     OfflineServices.install();
     SessionSystem.begin({playerId:'test-player',gameMode:'solo',authority:'local'});
     GameModeSystem.activate('solo');
 
     test('dependency graph resolves',()=>GameSystems.status().started.length>0);
-    test('flight tuning config loaded',()=>GameConfig.get('flight')?.schemaVersion===1);
-    test('flight tuning is centralized',()=>GameConfig.get('flight')?.player?.forwardSpeed>0&&GameConfig.get('flight')?.enemyAI?.engageMaxSeconds>0);
+    test('flight tuning config loaded',()=>GameConfig.get('flight')?.schemaVersion===2);
+    test('relative drag tuning is centralized',()=>GameConfig.get('flight')?.player?.baseMoveSpeed>0&&GameConfig.get('flight')?.player?.relativeDragSensitivityX>0&&GameConfig.get('flight')?.player?.followResponse>0);
+    test('admin tuning service loaded',()=>typeof AdminTuningService?.set==='function');
+    test('admin dashboard exposes initial movement speed',()=>AdminTuningService.schema().groups.some(g=>g.fields.some(f=>f.id==='flight.player.baseMoveSpeed')));
     test('rank starts clean',()=>RankSystem.snapshot().rank===1);
     test('rank has four objectives',()=>RankSystem.snapshot().objectives.length===4);
 
@@ -22,13 +24,27 @@
     test('player spawned exactly once',()=>!!p&&WorldSystem.listByType('player').length===1);
     test('world type index works',()=>WorldSystem.listByType('player')[0]===p);
     test('world player index works',()=>WorldSystem.findByPlayerId('test-player')===p);
+    test('player movement multipliers are separated',()=>p.data.mobilityMultiplier>0&&p.data.runSpeedMultiplier===1);
 
     const startX=p.transform.x,startDistance=RunCommands.snapshot().distance;
-    InputSystem.set({targetX:startX+80,targetY:p.transform.y,targetActive:true});
+    InputSystem.beginRelativeDrag();
+    InputSystem.addRelativeDrag(80,0);
     SimulationSystem.tick(.1);
-    test('direct-touch movement contract moves player',()=>p.transform.x>startX);
+    test('relative-drag movement contract moves player',()=>p.transform.x>startX);
     test('run distance advances from forward flight',()=>RunCommands.snapshot().distance>startDistance);
-    InputSystem.set({targetActive:false});
+    test('movement snapshot exposes base and effective speed',()=>SimulationSystem.movementSnapshot().baseMoveSpeed>0&&SimulationSystem.movementSnapshot().effectiveMoveSpeed>0);
+    InputSystem.endRelativeDrag();
+
+    const baseConfigSpeed=GameConfig.get('flight').player.baseMoveSpeed;
+    const beforeRunMult=p.data.runSpeedMultiplier;
+    UpgradeSystem.select('speed_10',p.entityId);
+    test('run speed upgrade changes only run multiplier',()=>p.data.runSpeedMultiplier>beforeRunMult&&GameConfig.get('flight').player.baseMoveSpeed===baseConfigSpeed);
+
+    const adminBefore=AdminTuningService.get('flight.player.baseMoveSpeed');
+    AdminTuningService.set('flight.player.baseMoveSpeed',adminBefore+25);
+    test('admin initial speed writes through GameConfig',()=>GameConfig.get('flight').player.baseMoveSpeed===adminBefore+25);
+    AdminTuningService.reset('flight.player.baseMoveSpeed');
+    test('admin reset restores configured default',()=>GameConfig.get('flight').player.baseMoveSpeed===FlightConfigDefaults.player.baseMoveSpeed);
 
     const beforeShots=ProjectileSystem.snapshot().length;
     AutoFireSystem.tick(performance.now()+5000);
@@ -63,6 +79,7 @@
     test('restart creates one clean player',()=>!!p&&WorldSystem.listByType('player').length===1);
     test('restart clears previous world',()=>WorldSystem.count()<=before);
     test('enemy AI runtime clears between runs',()=>EnemyAISystem.runtimeCount()===0);
+    test('run speed multiplier resets with new player',()=>p.data.runSpeedMultiplier===1);
     test('weapon reset exists',()=>typeof WeaponSystem.reset==='function');
     test('upgrade choice API exists',()=>typeof UpgradeChoiceSystem.select==='function');
 
