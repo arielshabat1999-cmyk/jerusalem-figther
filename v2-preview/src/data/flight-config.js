@@ -1,13 +1,15 @@
 /* Authoritative gameplay tuning for the vertical-flight core loop. Keep balance values out of systems. */
 (()=>{const defaults={
-  schemaVersion:1,
+  schemaVersion:2,
   player:{
     forwardSpeed:120,
-    touchFollowSpeed:520,
-    touchFollowGain:12,
-    touchStopDistance:2,
-    screenMargins:{left:28,right:28,top:90,bottom:86},
-    spawn:{x:0,yViewportRatio:.30,maxY:300},
+    baseMoveSpeed:850,
+    relativeDragSensitivityX:1.04,
+    relativeDragSensitivityY:.98,
+    followResponse:25,
+    touchStopDistance:1.5,
+    movementArea:{leftMargin:28,rightMargin:28,minYViewportRatio:.36,maxYViewportRatio:.85},
+    spawn:{x:0,screenYRatio:.72},
     autoFireDirection:{x:0,y:-1}
   },
   difficulty:{
