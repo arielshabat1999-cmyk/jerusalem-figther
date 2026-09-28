@@ -38,7 +38,7 @@ function home(){
 function garageCategories(){return (GameConfig.get('garage')?.ui?.categories||[]).filter(x=>['ship','color','decal','shot','background'].includes(x.id))}
 function garageItems(type){const rarity=GameConfig.get('garage')?.rarityOrder||{};return CustomizationSystem.catalog(type).sort((a,b)=>{const state=v=>v.owned?0:v.eligibility?.met?1:2;return state(a)-state(b)||(rarity[a.rarity]??9)-(rarity[b.rarity]??9)||a.id.localeCompare(b.id)})}
 function selectGarageDefault(type){const items=garageItems(type),equipped=items.find(x=>x.equipped);garageSelectedId=(equipped||items[0]||{}).id||null}
-function garageRequirement(v){const r=v?.acquisition?.requirement;if(!r)return v?.acquisition?.type==='reward'?'REWARD ITEM':'';if(r.type==='rank')return`UNLOCKS AT LEVEL ${r.rank}`;if(r.type==='owns')return`REQUIRES ${itemName(r.itemId)}`;return v?.eligibility?.met?'AVAILABLE':'REQUIREMENT LOCKED'}
+function garageRequirement(v){const r=v?.acquisition?.requirement;if(!r)return v?.acquisition?.type==='reward'?'REWARD ITEM':'';if(r.type==='rank')return`REQUIRES RANK ${r.rank}`;if(r.type==='owns')return`REQUIRES ${itemName(r.itemId)}`;return v?.eligibility?.met?'AVAILABLE':'REQUIREMENT LOCKED'}
 function garageShipKey(itemId){return ShipUpgradeSystem.shipKeyFromItem(itemId)}
 function garageShipMeta(itemId){return GameConfig.get('garage')?.ships?.[garageShipKey(itemId)]||null}
 function garageAsset(v){if(v?.type!=='ship')return null;const key=garageShipKey(v.id),content=GameConfig.get('content')||{},asset=content.assets?.[content.ships?.[key]?.assetId];return asset?.src||'assets/ships/nova-normal.webp'}
