@@ -110,3 +110,118 @@ filter:drop-shadow(0 0 9px rgba(180,76,255,.18));opacity:.95}
 @keyframes orbitSpin{to{transform:rotate(341deg)}}@keyframes orbitSpinReverse{to{transform:rotate(-379deg)}}
 @media(max-width:380px){.ns-player-status{max-width:180px!important}.ns-player-copy strong{max-width:110px}.ns-home .ns-wallet span{padding:0 7px!important}.ns-brand strong{font-size:43px!important}.ns-hero-ship{width:122px!important}}
 @media(max-height:740px){.ns-brand{margin-top:4px!important}.ns-brand strong{font-size:40px!important}.ns-brand span{font-size:10px!important;margin-top:8px!important}.ns-hero-ship{width:112px!important}.ns-orbit{width:220px!important}.ns-home-nav button{min-height:56px!important}.ns-home .home-play{min-height:49px!important}.ns-home-top{min-height:46px!important}}
+
+
+/* ===== HOME PIXEL POLISH / build 9 — tuned from iPhone screenshot ===== */
+.ns-home{
+  background:
+    radial-gradient(ellipse at 15% 27%,rgba(167,58,255,.24),transparent 26%),
+    radial-gradient(ellipse at 83% 28%,rgba(25,180,255,.18),transparent 28%),
+    radial-gradient(ellipse at 50% 61%,rgba(24,62,130,.20),transparent 36%),
+    linear-gradient(180deg,#02040c 0%,#06101e 48%,#02050c 100%)!important;
+}
+.ns-home-art:before,.ns-home-stars{
+  opacity:.82!important;
+  background-size:49px 57px,79px 91px,121px 133px!important;
+}
+.ns-home-stars{opacity:.42!important}
+.ns-home-nebula{
+  top:17%!important;height:42%!important;left:-36%!important;width:178%!important;
+  opacity:.82!important;filter:blur(16px)!important;
+  background:linear-gradient(90deg,transparent 0%,rgba(123,38,210,.08) 12%,rgba(239,73,255,.42) 35%,rgba(55,166,255,.34) 61%,transparent 90%)!important;
+}
+.ns-home-planet{right:-23%!important;top:24%!important;width:min(64vw,330px)!important;opacity:.96}
+.ns-home-asteroids{opacity:1!important;filter:drop-shadow(0 0 13px rgba(152,74,255,.24))!important}
+
+.ns-home-top{
+  padding:0 1px!important;
+  grid-template-columns:44px minmax(0,1fr) auto!important;
+  gap:9px!important;
+}
+.ns-settings{
+  width:44px!important;height:44px!important;
+  border-radius:8px!important;
+  clip-path:polygon(14% 0,86% 0,100% 14%,100% 86%,86% 100%,14% 100%,0 86%,0 14%)!important;
+  box-shadow:0 0 0 1px #13344b inset,0 0 20px #24cfff24!important
+}
+.ns-player-status{
+  max-width:235px!important;height:45px!important;border-radius:8px!important;
+  clip-path:polygon(4% 0,96% 0,100% 18%,100% 82%,96% 100%,4% 100%,0 82%,0 18%)!important;
+  padding-left:6px!important
+}
+.ns-avatar-mini{border-radius:50%!important}
+.ns-player-copy strong{font-size:10px!important}
+.ns-player-copy b{font-size:11px!important}
+.ns-home .ns-wallet span{
+  min-width:61px;justify-content:center;border-radius:8px!important;
+  clip-path:polygon(10% 0,90% 0,100% 18%,100% 82%,90% 100%,10% 100%,0 82%,0 18%)!important;
+}
+.ns-brand{margin-top:clamp(14px,2.5vh,24px)!important}
+.ns-brand strong{
+  font-size:clamp(56px,16vw,84px)!important;
+  letter-spacing:.035em!important;
+  transform:scaleX(1.09)!important;
+  text-shadow:0 0 7px rgba(255,255,255,.26),0 0 21px rgba(67,187,255,.34),0 0 38px rgba(124,76,255,.16)!important;
+}
+.ns-brand span{
+  font-size:clamp(14px,4.2vw,21px)!important;
+  letter-spacing:.48em!important;
+  margin-top:12px!important
+}
+
+.ns-hero{
+  margin-top:-1.5vh!important;
+  transform:translateY(-1.5vh);
+}
+.ns-orbit{width:min(72vw,325px)!important}
+.ns-orbit-b{width:min(55vw,248px)!important}
+.ns-hero-glow{width:min(62vw,278px)!important;opacity:.92!important}
+.ns-hero-ship{
+  width:clamp(154px,45vw,218px)!important;
+  filter:drop-shadow(0 20px 23px #000d) drop-shadow(0 0 21px #5ee4ffcc)!important;
+}
+.ns-engine{
+  width:9px!important;height:27%!important;top:60%!important;
+  box-shadow:0 0 16px #55dcffcc!important
+}
+.engine-left{margin-left:-28px!important}.engine-right{margin-left:28px!important}
+
+.ns-home .ns-primary{
+  width:min(86%,388px)!important;
+  margin:0 auto clamp(10px,1.5vh,16px)!important
+}
+.ns-home .home-play{
+  min-height:clamp(62px,8vh,72px)!important;
+  border:2px solid #82eeff!important;
+  background:linear-gradient(100deg,#0875c8 0%,#1b5ef0 48%,#7d40e6 100%)!important;
+  box-shadow:
+    0 0 0 2px rgba(46,143,210,.35),
+    0 0 32px rgba(24,135,255,.48),
+    0 0 46px rgba(166,63,255,.22),
+    inset 0 0 26px rgba(255,255,255,.18)!important;
+}
+
+.ns-home-nav{gap:8px!important}
+.ns-home-nav button{
+  min-height:clamp(72px,9.3vh,86px)!important;
+  border-width:1.5px!important;
+  padding-top:10px!important;
+  background:linear-gradient(180deg,rgba(10,28,52,.97),rgba(4,10,24,.99))!important;
+}
+.ns-home-nav .nav-icon{
+  width:28px!important;height:28px!important;display:grid!important;place-items:center!important;
+  margin-bottom:2px
+}
+.ns-home-nav .nav-icon svg{width:28px!important;height:28px!important;display:block!important}
+.ns-home-nav b{font-size:clamp(7px,1.95vw,9.5px)!important}
+
+@media(max-height:780px){
+  .ns-brand strong{font-size:48px!important}
+  .ns-brand span{font-size:11px!important}
+  .ns-hero{transform:translateY(-1vh)!important}
+  .ns-hero-ship{width:138px!important}
+  .ns-orbit{width:248px!important}
+  .ns-orbit-b{width:190px!important}
+  .ns-home .home-play{min-height:54px!important}
+  .ns-home-nav button{min-height:62px!important}
+}
