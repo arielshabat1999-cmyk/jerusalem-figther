@@ -55,3 +55,58 @@
 @keyframes homeStars{to{transform:translateY(72px)}}@keyframes heroBreath{50%{transform:scale(1.08);opacity:.72}}@keyframes shipFloat{50%{transform:translateY(-5px) scale(1.03)}}@keyframes enginePulse{to{height:25%;opacity:1}}@keyframes playShine{0%,72%{transform:translateX(-115%)}88%,100%{transform:translateX(115%)}}
 @media(max-height:700px){.ns-brand{margin-top:3px}.ns-brand strong{font-size:38px}.ns-brand span{font-size:11px;margin-top:7px}.ns-home-rank{padding:7px 12px}.ns-home-nav button{min-height:52px}.ns-home .home-play{min-height:48px}.ns-hero-ship{width:94px}.ns-home-footer{display:none}}
 @media(min-width:700px){.ns-home{max-width:520px!important;margin:auto}.ns-home:before{content:"";position:fixed;inset:0;z-index:-3;background:#02040c}}
+
+
+/* ===== HOME FINAL ART PASS / build 8 ===== */
+.ns-home{min-height:100dvh!important;height:100dvh!important;overflow:hidden!important;padding:max(10px,env(safe-area-inset-top)) clamp(12px,3.2vw,18px) max(12px,env(safe-area-inset-bottom))!important;background:#02040c!important;gap:0!important}
+.ns-home-art{position:absolute;inset:0;z-index:-3;overflow:hidden;pointer-events:none;background:
+radial-gradient(ellipse at 18% 32%,rgba(195,65,255,.20),transparent 27%),
+radial-gradient(ellipse at 78% 35%,rgba(30,183,255,.20),transparent 30%),
+radial-gradient(ellipse at 48% 62%,rgba(24,57,121,.22),transparent 35%),
+linear-gradient(180deg,#01030a 0%,#071020 49%,#02050d 100%)}
+.ns-home-art:before,.ns-home-stars{content:"";position:absolute;inset:-8%;background-image:
+radial-gradient(circle,#fff 0 1.1px,transparent 1.4px),
+radial-gradient(circle,#67dcff 0 .9px,transparent 1.25px),
+radial-gradient(circle,#d56fff 0 .8px,transparent 1.15px);
+background-size:67px 73px,101px 113px,149px 163px;background-position:9px 13px,31px 49px,81px 25px;opacity:.58;animation:homeStars 21s linear infinite}
+.ns-home-stars{opacity:.24;transform:scale(1.22);filter:blur(.2px);animation-duration:34s}
+.ns-home-nebula{position:absolute;left:-32%;top:19%;width:165%;height:34%;transform:rotate(-19deg);background:linear-gradient(90deg,transparent 0%,rgba(157,41,255,.02) 10%,rgba(224,62,255,.34) 36%,rgba(66,168,255,.28) 62%,transparent 88%);filter:blur(20px);opacity:.62}
+.ns-home-planet{position:absolute;right:-31%;top:24%;width:min(58vw,300px);aspect-ratio:1;border-radius:50%;background:
+radial-gradient(circle at 34% 31%,rgba(103,161,214,.88) 0%,rgba(47,77,111,.92) 35%,rgba(12,25,45,.98) 67%,#02040a 78%);box-shadow:inset 35px -18px 65px rgba(0,0,0,.82),0 0 0 1px rgba(94,214,255,.34),0 0 38px rgba(57,181,255,.18)}
+.ns-home-asteroids{position:absolute;inset:0;background:
+radial-gradient(ellipse at 8% 42%,#0b0d18 0 2.4%,transparent 2.8%),
+radial-gradient(ellipse at 91% 54%,#0d101b 0 2.8%,transparent 3.2%),
+radial-gradient(ellipse at 83% 69%,#090b15 0 1.7%,transparent 2.1%),
+radial-gradient(ellipse at 14% 74%,#10121d 0 2.2%,transparent 2.6%);
+filter:drop-shadow(0 0 9px rgba(180,76,255,.18));opacity:.95}
+.ns-home-top{z-index:10!important;display:grid!important;grid-template-columns:44px minmax(0,1fr) auto!important;align-items:center!important;gap:8px!important;min-height:52px!important}
+.ns-settings{width:42px!important;height:42px!important;border-radius:12px!important;border:1px solid #42d6ff99!important;background:linear-gradient(180deg,#0b2440ee,#050d1bee)!important;box-shadow:0 0 0 1px #23466588 inset,0 0 20px #23c9ff19!important;color:#eafdff!important;font-size:19px!important}
+.ns-settings span{display:block;filter:drop-shadow(0 0 5px #6de3ff)}
+.ns-player-status{height:43px!important;min-width:0!important;max-width:225px!important;padding:4px 10px 4px 5px!important;border:1px solid #2fcfff66!important;border-radius:12px!important;background:linear-gradient(180deg,rgba(10,29,52,.92),rgba(5,13,27,.94))!important;grid-template-columns:32px minmax(0,1fr)!important;grid-template-rows:1fr 1fr!important;column-gap:7px!important;box-shadow:inset 0 1px #ffffff0d,0 0 17px #14b8ff13!important}
+.ns-avatar-mini{width:30px!important;height:30px!important;border:1px solid #4fdcff!important;background:radial-gradient(circle,#12456c,#071422)!important;box-shadow:0 0 12px #4fdcff38!important}
+.ns-player-copy{display:grid!important;grid-template-columns:auto auto!important;grid-template-rows:1fr 1fr!important;align-items:end!important;gap:0 7px!important;min-width:0!important;line-height:1!important}
+.ns-player-copy strong{grid-column:1/3;display:block;min-width:0;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:9px;letter-spacing:.08em;color:#f2fbff}
+.ns-player-copy b{font-size:10px!important;letter-spacing:.08em!important}.ns-player-copy small{font-size:6px!important;letter-spacing:.1em!important;color:#a7c7dc!important;white-space:nowrap}
+.ns-player-xp{left:43px!important;right:10px!important;bottom:4px!important;height:2px!important;background:#ffffff14!important}.ns-player-xp i{background:linear-gradient(90deg,#42e5ff,#8a5cff)!important}
+.ns-home .ns-wallet{gap:5px!important}.ns-home .ns-wallet span{height:34px;box-sizing:border-box;display:flex;align-items:center;padding:0 9px!important;border-radius:11px!important;background:linear-gradient(180deg,rgba(11,29,52,.92),rgba(5,12,25,.95))!important;border:1px solid #335476!important;font-size:10px!important;box-shadow:inset 0 1px #ffffff0d!important}.ns-home .ns-wallet .coin{color:#ffd866!important}.ns-home .ns-wallet .gem{color:#dcc8ff!important}
+.ns-brand{margin-top:clamp(10px,2.0vh,20px)!important;z-index:6!important;line-height:.82!important;filter:drop-shadow(0 0 24px rgba(71,189,255,.22))!important}
+.ns-brand strong{font-size:clamp(47px,14.5vw,76px)!important;letter-spacing:.055em!important;font-weight:1000!important;font-style:normal!important;background:linear-gradient(180deg,#fff 0%,#d9f7ff 28%,#59c7ff 61%,#9b77ff 100%)!important;-webkit-background-clip:text!important;background-clip:text!important;color:transparent!important;text-shadow:0 0 24px rgba(62,180,255,.18)!important;transform:scaleX(1.06)}
+.ns-brand span{margin-top:11px!important;font-size:clamp(13px,4vw,20px)!important;letter-spacing:.45em!important;padding-left:.45em!important;color:#ff70e9!important;text-shadow:0 0 14px #ff3fd777!important}
+.ns-hero{flex:1 1 auto!important;margin:0!important;min-height:0!important;display:grid!important;place-items:center!important;transform-origin:50% 80%!important}
+.ns-hero-glow{width:min(54vw,245px)!important;background:radial-gradient(circle,rgba(95,219,255,.25),rgba(83,70,255,.12) 40%,transparent 73%)!important;filter:blur(13px)!important}
+.ns-orbit{width:min(66vw,300px)!important;border-color:rgba(78,211,255,.42)!important;border-left-color:transparent!important;border-bottom-color:rgba(192,86,255,.18)!important;box-shadow:0 0 34px rgba(41,181,255,.08),inset 0 0 28px rgba(97,68,255,.06)!important}
+.ns-orbit-a{animation:orbitSpin 28s linear infinite}.ns-orbit-b{width:min(49vw,220px)!important;border-style:dashed!important;opacity:.72;animation:orbitSpinReverse 18s linear infinite}
+.ns-hero-ship{width:clamp(128px,38vw,188px)!important;filter:drop-shadow(0 18px 20px #000c) drop-shadow(0 0 18px #53d7ffb8)!important;animation:shipFloat 3.1s ease-in-out infinite!important}
+.ns-engine{top:59%!important;width:8px!important;height:24%!important;background:linear-gradient(180deg,#f5ffff,#6fe7ff 17%,rgba(68,117,255,.9) 55%,transparent)!important;filter:blur(2.2px)!important;box-shadow:0 0 13px #56dcff99!important}.engine-left{margin-left:-23px!important}.engine-right{margin-left:23px!important}
+.ns-home-rank,.ns-home-footer{display:none!important}
+.ns-home .ns-primary{width:min(82%,365px)!important;margin:0 auto clamp(8px,1.2vh,13px)!important;z-index:7!important}
+.ns-home .home-play{min-height:clamp(57px,7.4vh,68px)!important;border-radius:4px!important;clip-path:polygon(5% 0,95% 0,100% 24%,100% 76%,95% 100%,5% 100%,0 76%,0 24%)!important;border:1px solid #80ecff!important;background:linear-gradient(105deg,#086bb7 0%,#2059ec 53%,#7b3ddb 100%)!important;font-size:clamp(18px,5vw,24px)!important;letter-spacing:.25em!important;padding-left:.25em!important;box-shadow:0 0 0 2px #2b80b455,0 0 30px #1a7cff4b,0 0 42px #a23dff20,inset 0 0 24px #ffffff17!important}
+.ns-home-nav{grid-template-columns:repeat(4,1fr)!important;gap:7px!important;margin-top:0!important;z-index:7!important}
+.ns-home-nav button{min-height:clamp(65px,8.6vh,80px)!important;padding:8px 3px 7px!important;border-radius:3px!important;clip-path:polygon(9% 0,91% 0,100% 14%,100% 86%,91% 100%,9% 100%,0 86%,0 14%)!important;border:1px solid rgba(84,188,255,.46)!important;background:linear-gradient(180deg,rgba(10,27,49,.94),rgba(5,11,25,.97))!important;box-shadow:inset 0 0 18px #0ea5e90d,0 0 14px #20b8ff0c!important}
+.ns-home-nav button:nth-child(even){border-color:rgba(175,91,255,.5)!important;box-shadow:inset 0 0 18px #7c3aed0e,0 0 14px #a855f70b!important}
+.ns-home-nav .nav-icon{width:24px;height:24px!important;display:block!important;color:#71ddff!important}.ns-home-nav .nav-icon svg{width:24px;height:24px;fill:currentColor;filter:drop-shadow(0 0 6px currentColor)}.ns-home-nav button:nth-child(even) .nav-icon{color:#c77dff!important}
+.ns-home-nav b{font-size:clamp(7px,1.8vw,9px)!important;letter-spacing:.065em!important;color:#f2f9ff!important}
+.ns-home.is-launching .ns-brand,.ns-home.is-launching .ns-home-top,.ns-home.is-launching .ns-primary,.ns-home.is-launching .ns-home-nav{opacity:0!important;transform:translateY(-8px)!important;pointer-events:none!important}.ns-home.is-launching .ns-hero{transform:translateY(31vh) scale(.76)!important}.ns-home.is-launching .ns-orbit{opacity:0!important}.ns-home.is-launching .ns-hero-glow{opacity:.45!important;transform:scale(.7)!important}
+@keyframes orbitSpin{to{transform:rotate(341deg)}}@keyframes orbitSpinReverse{to{transform:rotate(-379deg)}}
+@media(max-width:380px){.ns-player-status{max-width:180px!important}.ns-player-copy strong{max-width:110px}.ns-home .ns-wallet span{padding:0 7px!important}.ns-brand strong{font-size:43px!important}.ns-hero-ship{width:122px!important}}
+@media(max-height:740px){.ns-brand{margin-top:4px!important}.ns-brand strong{font-size:40px!important}.ns-brand span{font-size:10px!important;margin-top:8px!important}.ns-hero-ship{width:112px!important}.ns-orbit{width:220px!important}.ns-home-nav button{min-height:56px!important}.ns-home .home-play{min-height:49px!important}.ns-home-top{min-height:46px!important}}
