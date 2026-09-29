@@ -1,7 +1,7 @@
 name: Architecture QA
 on:
   push:
-    branches: [architecture-phase-1]
+    branches: [main, architecture-phase-1]
   pull_request:
   workflow_dispatch:
 jobs:
