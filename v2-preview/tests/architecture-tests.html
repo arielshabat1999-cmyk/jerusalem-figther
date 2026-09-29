@@ -95,6 +95,8 @@
     test('cloud snapshot v2 is complete',()=>{const s=CloudSaveService.localSnapshot();return s.schemaVersion===2&&!!s.progression?.achievements&&!!s.progression?.mastery&&!!s.economy?.wallet&&!!s.economy?.ap&&!!s.ownership?.inventory});
     test('production authority protects economy',()=>AuthorityPolicy.productionBoundary().server.includes('economy'));
     test('backend policy requires idempotency domains',()=>ServiceRequestPolicy.idempotencyDomains.includes('purchases')&&ServiceRequestPolicy.idempotencyDomains.includes('leaderboards'));
+    test('cloud save exposes account binding guard',()=>typeof CloudSaveService.bindCurrentAccount==='function'&&typeof CloudSaveService.binding==='function');
+    test('cloud restore is explicit opt-in',()=>CloudSaveService.pull.constructor.name==='AsyncFunction');
     GameClock.stop();
   }catch(e){results.push(['FAIL','boot',e.stack||e.message])}
   const pass=results.filter(r=>r[0]==='PASS').length,fail=results.length-pass;
