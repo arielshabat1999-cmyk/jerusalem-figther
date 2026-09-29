@@ -1,7 +1,11 @@
-/* Central economy tuning. Prices/rewards belong here or in data catalogs, never in gameplay logic. */
-(()=>{const config={schemaVersion:1,
+/* Central tuning only. No balances live here: EconomySystem is the sole Coins/Diamonds authority; APSystem is the sole AP authority. */
+(()=>{const config={schemaVersion:2,
 playerLevelReward:{coins:1000,gems:2},
 prestige:{milestones:[50,75,100,150,200],reward:{coins:30000,gems:100}},
+shipPurchase:{
+'ship.viper':{currency:'coins',amount:15000},'ship.bastion':{currency:'coins',amount:30000},'ship.raptor':{currency:'coins',amount:30000},'ship.vector':{currency:'coins',amount:50000},'ship.wraith':{currency:'coins',amount:75000},'ship.arrow':{currency:'coins',amount:100000},'ship.eclipse':{currency:'gems',amount:250},'ship.mantis':{currency:'coins',amount:140000},'ship.odyssey':{currency:'coins',amount:180000},'ship.paradox':{currency:'coins',amount:225000},'ship.spectre':{currency:'coins',amount:275000}},
 shipUpgrade:{2:{coins:2500,gems:1},3:{coins:8000,gems:2},4:{coins:25000,gems:5},5:{coins:75000,gems:10}},
-railgunUpgrade:{2:{coins:1500},3:{coins:3500},4:{coins:7000},5:{coins:12000}}
+railgunUpgrade:{2:{coins:1500},3:{coins:3500},4:{coins:7000},5:{coins:12000}},
+objectiveXP:{dailyDefault:120,weeklyDefault:350,playerDefault:180,player:{'p.kills.75':140,'p.distance.3000':150,'p.survive.300':180,'p.score.15000':190,'p.elites.3':220,'p.upgrades.10':180,'p.nodamage.60':260,'p.boss.1':300}},
+achievementAP:{'a.kills.100':10,'a.kills.500':20,'a.kills.1000':30,'a.kills.5000':45,'a.kills.10000':65,'a.distance.5000':10,'a.distance.25000':25,'a.distance.100000':45,'a.elites.5':15,'a.elites.25':35,'a.elites.100':60,'a.boss.1':20,'a.boss.10':50,'a.boss.50':75,'a.nodamage.180':40,...Object.fromEntries(Array.from({length:14},(_,i)=>['a.mastery.'+(i+1),15+i*5]))}
 };window.EconomyTuning=config;GameConfig?.register('economyTuning',config)})();
