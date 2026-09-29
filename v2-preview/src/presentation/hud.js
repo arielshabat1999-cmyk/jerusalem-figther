@@ -1,5 +1,5 @@
 (()=>{
-let hud=null,toastTimer=null;
+let hud=null,toastTimer=null,pauseOverlay=null;
 const q=s=>hud?.querySelector(s);const setText=(s,v)=>{const el=q(s);if(el)el.textContent=v};const setScale=(s,v)=>{const el=q(s);if(el)el.style.transform=`scaleX(${v})`};
 const clamp=(n,a=0,b=1)=>Math.max(a,Math.min(b,n));
 function playerLevelFromLifetimeXP(xp=0){
@@ -46,6 +46,10 @@ function render(){
   const cd=GameState.get().ui?.railgunCooldownRemaining;
   setText('.run-railgun-cd',state==='COOLDOWN'&&Number.isFinite(cd)?Math.ceil(cd):'');
 }
+function pauseRun(){if(!runIsActive())return;GameClock.pause('pause-menu');if(pauseOverlay)pauseOverlay.classList.add('show')}
+function resumeRun(){GameClock.resume('pause-menu');if(pauseOverlay)pauseOverlay.classList.remove('show')}
+function restartRun(){if(pauseOverlay)pauseOverlay.classList.remove('show');GameClock.resume('pause-menu');RunCommands.end({reason:'restart'});AppFlowSystem.replay()}
+function quitRun(){if(pauseOverlay)pauseOverlay.classList.remove('show');GameClock.resume('pause-menu');RunCommands.end({reason:'quit'});AppFlowSystem.home()}
 function toast(text){
   const t=q('.run-toast');if(!t)return;t.textContent=text;t.classList.add('show');
   clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2200);
@@ -81,6 +85,11 @@ const system={id:'hud',dependsOn:['run','economy','world'],start(){
   .run-railgun.state-cooldown{filter:saturate(.25);opacity:.62;border-color:#526878;box-shadow:none}
   .run-toast{position:absolute;left:50%;top:16%;transform:translate(-50%,-6px);padding:9px 13px;border-radius:12px;background:#06101add;font-size:10px;font-weight:900;letter-spacing:.08em;opacity:0;transition:.18s}
   .run-toast.show{opacity:1;transform:translate(-50%,0)}
+  #run-pause-overlay{position:fixed;inset:0;z-index:80;display:none;place-items:center;padding:24px;background:#020711b8;backdrop-filter:blur(12px);pointer-events:auto;color:#fff;font-family:Inter,system-ui,-apple-system,sans-serif}
+  #run-pause-overlay.show{display:grid}
+  .pause-panel{width:min(360px,100%);text-align:center;padding:30px 24px;border:1px solid #ffffff1f;border-radius:24px;background:#07111ee8;box-shadow:0 24px 70px #000a}
+  .pause-panel small{font-size:11px;letter-spacing:.22em;color:#7ddfff}.pause-panel h2{margin:8px 0 24px;font-size:34px;letter-spacing:.08em}
+  .pause-actions{display:grid;gap:11px}.pause-actions button{height:54px;border-radius:15px;border:1px solid #ffffff20;background:#101d2b;color:#fff;font:800 14px Inter,system-ui;letter-spacing:.08em}.pause-actions .resume{background:#d6a83d;color:#080b10;border-color:#f2cd68}.pause-actions .quit{color:#ff8896}
   @media(max-width:380px){.run-top{left:18px;right:18px}.run-actions{gap:14px}.run-icon-btn{width:42px;height:42px;font-size:27px}.run-right{width:116px}.run-bar{height:10px}.run-wallet{margin-left:29px}.run-wallet span{font-size:14px}.run-center-stats .time{font-size:23px}.run-center-stats .distance{font-size:15px}.run-railgun{right:20px;width:94px;height:94px}}
 `;document.head.appendChild(style);
   hud=document.createElement('div');hud.id='run-hud';hud.innerHTML=`
@@ -108,12 +117,14 @@ const system={id:'hud',dependsOn:['run','economy','world'],start(){
     <button class="run-railgun state-ready" aria-label="Railgun"><span class="run-railgun-icon">ϟ</span><span class="run-railgun-name">RAILGUN</span><span class="run-railgun-state">READY</span><span class="run-railgun-cd"></span></button>
     <div class="run-toast"></div>`;
   document.body.appendChild(hud);
-  q('.run-pause').onclick=()=>{if(GameClock.paused){GameClock.resume('hud');q('.run-pause').textContent='Ⅱ'}else{GameClock.pause('hud');q('.run-pause').textContent='▶'}};
+  pauseOverlay=document.createElement('div');pauseOverlay.id='run-pause-overlay';pauseOverlay.innerHTML='<section class="pause-panel"><small>RUN PAUSED</small><h2>PAUSE</h2><div class="pause-actions"><button class="resume" data-pause-action="resume">RESUME</button><button data-pause-action="restart">RESTART RUN</button><button class="quit" data-pause-action="quit">QUIT TO HOME</button></div></section>';document.body.appendChild(pauseOverlay);
+  pauseOverlay.addEventListener('click',e=>{const a=e.target.closest('[data-pause-action]')?.dataset.pauseAction;if(a==='resume')resumeRun();else if(a==='restart')restartRun();else if(a==='quit')quitRun()});
+  q('.run-pause').onclick=pauseRun;
   q('.run-objectives').onclick=()=>{GameClock.pause('objectives');AppFlowSystem.objectives()};
   q('.run-railgun').onclick=()=>{if(railgunState()==='READY')toast('RAILGUN SYSTEM · COMING NEXT')};
   ['run:started','run:time-changed','run:distance-changed','run:level-changed','run:score-changed','economy:balance-changed','combat:damage-applied','combat:entity-healed','railgun:state-changed','state:changed'].forEach(n=>GameEvents.on(n,render));
   GameEvents.on('run:started',()=>{setVisible(true);render();requestAnimationFrame(syncVisibility)});
-  GameEvents.on('run:ended',()=>setVisible(false));
+  GameEvents.on('run:ended',()=>{setVisible(false);pauseOverlay?.classList.remove('show')});
   GameEvents.on('app-flow:changed',()=>{syncVisibility();render()});
   render();syncVisibility();setInterval(()=>{if(runIsActive()){syncVisibility();render()}},500);
 },render,toast};
