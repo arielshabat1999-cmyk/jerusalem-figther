@@ -124,6 +124,11 @@ function profile(){
    <div class="profile-identity"><small>PILOT</small><h1>${p.displayName||'PILOT'}</h1><span>${rankText()}</span></div>
    <button class="profile-edit" data-action="profile-edit">${profileEditing?'CLOSE':'EDIT'}</button>
  </div>
+  <div class="profile-edit-panel" ${profileEditing?'':'hidden'}>
+   <label>PILOT NAME</label>
+   <div class="ns-name-row"><input id="pilot-name" maxlength="18" value="${String(p.displayName).replaceAll('"','&quot;')}">${button('SAVE','save-name','mini')}</div><label>COUNTRY</label><div class="ns-name-row"><select id="pilot-country">${COUNTRY_OPTIONS.map(([code,label])=>`<option value="${code}" ${p.countryCode===code?'selected':''}>${label}</option>`).join('')}</select>${button('SAVE','save-country','mini')}</div>
+   <small>PLAYER ID</small><code>${a.playerId}</code>
+ </div>
  <div class="profile-meta"><div><small>TITLE</small><b>${title?.label||'ROOKIE'}</b></div><div><small>PRESTIGE</small><b>${prestige.label}</b></div></div><div class="profile-level-card">
    <div><small>PLAYER LEVEL</small><b>LV ${pr.playerLevel}</b></div>
    <div class="profile-xp-copy"><span>${pr.currentLevelXP.toLocaleString()} / ${pr.nextLevelXP.toLocaleString()} XP</span><strong>${Math.floor(xpPct)}%</strong></div>
@@ -148,11 +153,7 @@ function profile(){
  <div class="profile-meta"><div><small>COUNTRY</small><b>${countryFlag(p.countryCode)} ${countryLabel(p.countryCode)}</b></div><div><small>ACCOUNT</small><b>${a.authenticated?String(a.provider).toUpperCase():'GUEST'}</b></div>
    <div><small>JOINED</small><b>${joined}</b></div>
  </div>
- <div class="profile-edit-panel" ${profileEditing?'':'hidden'}>
-   <label>PILOT NAME</label>
-   <div class="ns-name-row"><input id="pilot-name" maxlength="18" value="${String(p.displayName).replaceAll('"','&quot;')}">${button('SAVE','save-name','mini')}</div><label>COUNTRY</label><div class="ns-name-row"><select id="pilot-country">${COUNTRY_OPTIONS.map(([code,label])=>`<option value="${code}" ${p.countryCode===code?'selected':''}>${label}</option>`).join('')}</select>${button('SAVE','save-country','mini')}</div>
-   <small>PLAYER ID</small><code>${a.playerId}</code>
- </div>
+
  </section>`}
 function objectiveCard(o,xp){const pct=Math.max(0,Math.min(100,(o.target?o.value/o.target:0)*100));return`<article class="objective-card ${o.complete?'complete':''}"><div class="objective-icon">${o.icon||'◎'}</div><div class="objective-copy"><b>${o.label}</b><small>${Math.floor(o.value).toLocaleString()} / ${Math.floor(o.target).toLocaleString()}</small><div class="objective-track"><i style="width:${pct}%"></i></div></div><div class="objective-reward"><span>+${xp}</span><small>PLAYER XP</small></div></article>`}
 function achievementCard(a){const hidden=a.hidden&&!a.complete;if(hidden)return`<article class="achievement-card hidden"><div class="achievement-icon">?</div><div><b>HIDDEN ACHIEVEMENT</b><small>Complete the secret condition to reveal it.</small></div><span>LOCKED</span></article>`;const pct=Math.max(0,Math.min(100,(a.target?a.value/a.target:0)*100)),parts=[];if(a.reward?.coins)parts.push('◉ '+a.reward.coins);if(a.reward?.gems)parts.push('◆ '+a.reward.gems);if(a.reward?.ap)parts.push('AP '+a.reward.ap);return`<article class="achievement-card ${a.complete?'complete':''}"><div class="achievement-icon">${a.icon||'✦'}</div><div class="achievement-copy"><b>${a.label}</b><small>${a.description||''}</small><div class="achievement-progress"><i style="width:${pct}%"></i></div><em>${Math.floor(a.value).toLocaleString()} / ${Math.floor(a.target).toLocaleString()}</em></div><span>${a.complete?'UNLOCKED':parts.join(' · ')}</span></article>`}
