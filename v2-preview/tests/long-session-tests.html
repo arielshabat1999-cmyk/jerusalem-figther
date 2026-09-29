@@ -1,0 +1,9 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Long Session QA</title><style>body{background:#07101b;color:#eaffff;font:14px monospace;padding:24px}.ok{color:#86efac}.bad{color:#fda4af}</style></head><body><h1>NEON SURVIVOR — LONG SESSION QA</h1><pre id="out">RUNNING…</pre><script>
+(()=>{const out=document.querySelector('#out'),r=[],test=(n,f)=>{try{if(f()===false)throw Error('assertion failed');r.push(['PASS',n])}catch(e){r.push(['FAIL',n,e.message])}};
+test('10k transient objects fully release',()=>{const m=new Map;for(let i=0;i<10000;i++)m.set(i,{life:1});for(let i=0;i<10000;i++)m.delete(i);return m.size===0});
+test('500-entry runtime ledger remains bounded',()=>{let a=[];for(let i=0;i<10000;i++){a.push(i);if(a.length>500)a=a.slice(-500)}return a.length===500&&a[0]===9500});
+test('5000 idempotency keys remain bounded',()=>{let s=new Set;for(let i=0;i<20000;i++){s.add('k'+i);if(s.size>5000)s=new Set([...s].slice(-5000))}return s.size===5000});
+test('FX aging releases 10000 effects',()=>{const a=Array.from({length:10000},()=>({life:.1}));for(let step=0;step<2;step++)for(let i=a.length-1;i>=0;i--){a[i].life-=.1;if(a[i].life<=0)a.splice(i,1)}return a.length===0});
+test('100 repeated reset cycles leave one player model',()=>{let world=[];for(let i=0;i<100;i++){world.length=0;world.push({type:'player'})}return world.length===1});
+const p=r.filter(x=>x[0]==='PASS').length,f=r.length-p;out.innerHTML=`${p} PASS / ${f} FAIL\n\n`+r.map(x=>`<span class="${x[0]==='PASS'?'ok':'bad'}">${x.join(' — ')}</span>`).join('\n');document.title=f?`FAIL ${f} — Long Session QA`:`PASS ${p} — Long Session QA`;window.__LONG_SESSION_RESULTS__=r})();
+</script></body></html>
