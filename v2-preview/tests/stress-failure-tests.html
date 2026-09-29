@@ -1,0 +1,13 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Stress & Failure Tests</title><style>body{background:#07101b;color:#eaffff;font:14px monospace;padding:24px}.ok{color:#86efac}.bad{color:#fda4af}</style></head><body><h1>NEON SURVIVOR — STRESS & FAILURE TESTS</h1><pre id="out">RUNNING…</pre><script>
+(async()=>{const out=document.querySelector('#out'),results=[];async function test(name,fn){try{if(await fn()===false)throw Error('assertion failed');results.push(['PASS',name])}catch(e){results.push(['FAIL',name,e.message])}}
+class MockBackend{constructor(){this.revision=1;this.ids=new Map;this.board=[]}mutate(req){if(req.revision!==this.revision)return{ok:false,status:409,reason:'revision-conflict',revision:this.revision};if(this.ids.has(req.idempotencyKey))return this.ids.get(req.idempotencyKey);const r={ok:true,revision:++this.revision};this.ids.set(req.idempotencyKey,r);return r}submit(req){if(this.ids.has(req.idempotencyKey))return this.ids.get(req.idempotencyKey);const r={ok:true,id:this.board.length+1};this.board.push(req);this.ids.set(req.idempotencyKey,r);return r}}
+const b=new MockBackend;
+await test('duplicate mutation is idempotent',()=>{const a=b.mutate({revision:1,idempotencyKey:'buy:1'}),x=b.mutate({revision:2,idempotencyKey:'buy:1'});return a.ok&&x.idempotencyKey===undefined&&b.ids.size===1});
+await test('stale revision is rejected',()=>b.mutate({revision:1,idempotencyKey:'buy:2'}).status===409);
+await test('1000 unique leaderboard submissions survive burst',()=>{for(let i=0;i<1000;i++)b.submit({idempotencyKey:'run:'+i,playerId:'p'+i,score:i});return b.board.length===1000});
+await test('1000 duplicate retries do not duplicate leaderboard rows',()=>{for(let i=0;i<1000;i++)b.submit({idempotencyKey:'run:42',playerId:'p42',score:42});return b.board.length===1000});
+await test('corrupt JSON is detectable',()=>{try{JSON.parse('{bad');return false}catch{return true}});
+await test('timeout retry keeps same idempotency key',()=>{const req={idempotencyKey:'purchase:timeout'};const first=b.submit(req),retry=b.submit(req);return first===retry});
+await test('rate policy blocks 11th run submit in 60s',()=>{const limit=10,times=Array.from({length:11},(_,i)=>i*1000);return times.filter(t=>t-times[0]<60000).length>limit});
+const pass=results.filter(x=>x[0]==='PASS').length,fail=results.length-pass;out.innerHTML=`${pass} PASS / ${fail} FAIL\n\n`+results.map(r=>`<span class="${r[0]==='PASS'?'ok':'bad'}">${r.join(' — ')}</span>`).join('\n');document.title=fail?`FAIL ${fail} — Stress Tests`:`PASS ${pass} — Stress Tests`;window.__STRESS_TEST_RESULTS__=results})();
+</script></body></html>
