@@ -130,7 +130,7 @@ function profile(){
    <label>COUNTRY</label>
    <div class="ns-name-row"><select id="pilot-country">${COUNTRY_OPTIONS.map(([code,label])=>`<option value="${code}" ${p.countryCode===code?'selected':''}>${label}</option>`).join('')}</select></div>
    ${profileError?`<small class="profile-edit-error" role="alert">${profileError}</small>`:''}${button('SAVE CHANGES','save-profile','mini')}
-   <small>PLAYER ID</small><code>${a.playerId}</code>
+   <small>PLAYER ID</small><code>${p.playerId}</code>
  </div>
  <div class="profile-meta"><div><small>TITLE</small><b>${title?.label||'ROOKIE'}</b></div><div><small>PRESTIGE</small><b>${prestige.label}</b></div></div><div class="profile-level-card">
    <div><small>PLAYER LEVEL</small><b>LV ${pr.playerLevel}</b></div>
