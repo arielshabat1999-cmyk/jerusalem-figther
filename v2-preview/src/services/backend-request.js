@@ -1,0 +1,2 @@
+/* Shared request envelope for production providers. Providers may map this to HTTP/RPC/vendor SDK calls. */
+window.BackendRequest=Object.freeze({id(prefix='req'){return `${prefix}_${crypto?.randomUUID?.()||Date.now()+'_'+Math.random().toString(36).slice(2)}`},envelope(domain,payload={},opts={}){const playerId=window.AccountSystem?.playerId?.()||null;return{schemaVersion:1,requestId:opts.requestId||this.id(domain),idempotencyKey:opts.idempotencyKey||null,playerId,clientTime:Date.now(),clientRevision:opts.revision??null,domain,payload:structuredClone(payload)}}});
