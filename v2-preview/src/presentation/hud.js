@@ -20,10 +20,7 @@ function permanentLevel(){
   if(Number.isFinite(p.lifetimeXP))return playerLevelFromLifetimeXP(p.lifetimeXP);
   return Number.isFinite(p.playerLevel)?p.playerLevel:1;
 }
-function railgunState(){
-  const ui=GameState.get().ui||{},s=ui.railgunState||'READY';
-  return ['READY','DEPLOY','ACTIVE','COOLDOWN'].includes(s)?s:'READY';
-}
+function railgunState(){return window.RailgunSystem?.snapshot?.().state||'READY'}
 function render(){
   if(!hud)return;
   const r=RunCommands.snapshot()||{},eco=EconomySystem.snapshot?.()||{balances:{}},p=player();
@@ -43,7 +40,7 @@ function render(){
   const state=railgunState(),btn=q('.run-railgun');
   if(btn){btn.dataset.state=state;btn.className=`run-railgun state-${state.toLowerCase()}`;}
   setText('.run-railgun-state',state);
-  const cd=GameState.get().ui?.railgunCooldownRemaining;
+  const cd=window.RailgunSystem?.snapshot?.().cooldownLeft;
   setText('.run-railgun-cd',state==='COOLDOWN'&&Number.isFinite(cd)?Math.ceil(cd):'');
 }
 function pauseRun(){if(!runIsActive())return;GameClock.pause('pause-menu');if(pauseOverlay)pauseOverlay.classList.add('show')}
@@ -121,8 +118,8 @@ const system={id:'hud',dependsOn:['run','economy','world'],start(){
   pauseOverlay.addEventListener('click',e=>{const a=e.target.closest('[data-pause-action]')?.dataset.pauseAction;if(a==='resume')resumeRun();else if(a==='restart')restartRun();else if(a==='quit')quitRun()});
   q('.run-pause').onclick=pauseRun;
   q('.run-objectives').onclick=()=>{GameClock.pause('objectives');AppFlowSystem.objectives()};
-  q('.run-railgun').onclick=()=>{if(railgunState()==='READY')toast('RAILGUN SYSTEM · COMING NEXT')};
-  ['run:started','run:time-changed','run:distance-changed','run:level-changed','run:score-changed','economy:balance-changed','combat:damage-applied','combat:entity-healed','railgun:state-changed','state:changed'].forEach(n=>GameEvents.on(n,render));
+  q('.run-railgun').onclick=()=>{window.RailgunSystem?.activate?.()};
+  ['run:started','run:time-changed','run:distance-changed','run:level-changed','run:score-changed','economy:balance-changed','combat:damage-applied','combat:entity-healed','railgun:state','state:changed'].forEach(n=>GameEvents.on(n,render));
   GameEvents.on('run:started',()=>{setVisible(true);render();requestAnimationFrame(syncVisibility)});
   GameEvents.on('run:ended',()=>{setVisible(false);pauseOverlay?.classList.remove('show')});
   GameEvents.on('app-flow:changed',()=>{syncVisibility();render()});
