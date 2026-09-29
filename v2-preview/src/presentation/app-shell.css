@@ -384,3 +384,6 @@ background-size:71px 83px,111px 127px,157px 173px;background-position:11px 19px,
 .ns-home-art,.mode-space-art{display:none!important}
 #sharedStarfield{display:block;background:#020611}
 #gameCanvas{background:transparent!important}
+
+/* Build 92: Profile editor is an immediate, visible expansion below identity. */
+.profile-edit-panel:not([hidden]){display:block;scroll-margin-top:max(72px,env(safe-area-inset-top));animation:profileEditOpen .16s ease-out}.profile-edit-panel .ns-name-row{margin-bottom:11px}.profile-edit-panel input,.profile-edit-panel select{min-height:40px;box-sizing:border-box;border:1px solid #315770;background:#040d16;color:#eefaff;border-radius:8px;padding:0 10px;font-size:14px}.profile-edit-panel select{flex:1;min-width:0}.profile-edit-panel .ns-btn.mini{min-width:64px}@keyframes profileEditOpen{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
