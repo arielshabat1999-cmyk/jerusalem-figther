@@ -2,7 +2,7 @@
 (async()=>{const out=document.querySelector('#out'),results=[];async function test(name,fn){try{if(await fn()===false)throw Error('assertion failed');results.push(['PASS',name])}catch(e){results.push(['FAIL',name,e.message])}}
 class MockBackend{constructor(){this.revision=1;this.ids=new Map;this.board=[]}mutate(req){if(req.revision!==this.revision)return{ok:false,status:409,reason:'revision-conflict',revision:this.revision};if(this.ids.has(req.idempotencyKey))return this.ids.get(req.idempotencyKey);const r={ok:true,revision:++this.revision};this.ids.set(req.idempotencyKey,r);return r}submit(req){if(this.ids.has(req.idempotencyKey))return this.ids.get(req.idempotencyKey);const r={ok:true,id:this.board.length+1};this.board.push(req);this.ids.set(req.idempotencyKey,r);return r}}
 const b=new MockBackend;
-await test('duplicate mutation is idempotent',()=>{const a=b.mutate({revision:1,idempotencyKey:'buy:1'}),x=b.mutate({revision:2,idempotencyKey:'buy:1'});return a.ok&&x.idempotencyKey===undefined&&b.ids.size===1});
+await test('duplicate mutation is idempotent',()=>{const a=b.mutate({revision:1,idempotencyKey:'buy:1'}),x=b.mutate({revision:2,idempotencyKey:'buy:1'});return a.ok&&x===a&&b.ids.size===1});
 await test('stale revision is rejected',()=>b.mutate({revision:1,idempotencyKey:'buy:2'}).status===409);
 await test('1000 unique leaderboard submissions survive burst',()=>{for(let i=0;i<1000;i++)b.submit({idempotencyKey:'run:'+i,playerId:'p'+i,score:i});return b.board.length===1000});
 await test('1000 duplicate retries do not duplicate leaderboard rows',()=>{for(let i=0;i<1000;i++)b.submit({idempotencyKey:'run:42',playerId:'p42',score:42});return b.board.length===1000});
