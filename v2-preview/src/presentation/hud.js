@@ -108,7 +108,8 @@ const system={id:'hud',dependsOn:['run','economy','world'],start(){
     <button class="run-railgun state-ready" aria-label="Railgun"><span class="run-railgun-icon">ϟ</span><span class="run-railgun-name">RAILGUN</span><span class="run-railgun-state">READY</span><span class="run-railgun-cd"></span></button>
     <div class="run-toast"></div>`;
   document.body.appendChild(hud);
-  q('.run-pause').onclick=()=>GameEvents.emit('ui:pause-requested',{source:'run-hud'});\n  q('.run-objectives').onclick=()=>GameEvents.emit('ui:objectives-requested',{source:'run-hud'});
+  q('.run-pause').onclick=()=>GameEvents.emit('ui:pause-requested',{source:'run-hud'});
+  q('.run-objectives').onclick=()=>GameEvents.emit('ui:objectives-requested',{source:'run-hud'});
   q('.run-railgun').onclick=()=>{if(railgunState()==='READY')GameEvents.emit('railgun:activate-requested',{source:'run-hud'})};
   ['run:started','run:time-changed','run:distance-changed','run:level-changed','run:score-changed','economy:balance-changed','combat:damage-applied','combat:entity-healed','railgun:state-changed','state:changed'].forEach(n=>GameEvents.on(n,render));
   GameEvents.on('run:started',()=>{setVisible(true);render()});
