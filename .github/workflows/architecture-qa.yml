@@ -31,7 +31,7 @@ jobs:
             p.on('pageerror',e=>errors.push('pageerror: '+e.message));
             p.on('console',m=>{if(m.type()==='error')errors.push('console: '+m.text())});
             const started=Date.now();
-            await p.goto('http://127.0.0.1:4173/index.html?v=20260929-95',{waitUntil:'domcontentloaded'});
+            await p.goto('http://127.0.0.1:4173/index.html?v=20260929-96',{waitUntil:'domcontentloaded'});
             await p.waitForFunction(()=>window.GameBootstrap?.status==='ready'&&!document.querySelector('#boot')&&document.querySelector('#app-shell')?.dataset.renderOk==='true',null,{timeout:50000});
             console.log('BOOT_MS — '+(Date.now()-started));
             async function state(){return p.evaluate(()=>AppFlowSystem.snapshot().state)}
