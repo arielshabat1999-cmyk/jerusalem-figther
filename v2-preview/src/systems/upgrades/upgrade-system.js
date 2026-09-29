@@ -8,7 +8,7 @@ const catalog=[
 ['explosive_rounds','EXPLOSIVE ROUNDS','Weapon','Rounds create an explosion on impact.','explosive-rounds.webp','epic',35],
 ['homing_projectiles','HOMING PROJECTILES','Weapon','Projectiles gain target guidance.','homing-projectiles.webp','epic',30],
 ['ion_velocity','ION VELOCITY','Weapon','Increases projectile travel speed.','ion-velocity.webp','common',100],
-['missile_clock','MISSILE CLOCK','Special','Reduces missile cycle time.','missile-clock.webp','rare',60],
+['missile_clock','MISSILE SYSTEM','Special','Automatically launches missiles. Each level shortens launch interval.','missile-clock.webp','rare',60],
 ['chain_lightning','CHAIN LIGHTNING','Special','Energy can arc between nearby enemies.','chain-lightning.webp','epic',28],
 ['nova_pulse','NOVA FIELD','Special','Permanent close-range electric field. Each level expands its radius.','nova-pulse.webp','legendary',10],
 ['shield_capacitor','SHIELD CAPACITOR','Defense','Increases temporary run shield capacity.','shield-capacitor.webp','common',90],
@@ -28,9 +28,9 @@ heavy_caliber:e=>{e.data.damageMultiplier=(e.data.damageMultiplier||1)*1.15;e.da
 piercing_rounds:e=>e.data.pierceCount=(e.data.pierceCount||0)+1,
 explosive_rounds:e=>{e.data.explosionRadius=(e.data.explosionRadius||0)+54;e.data.explosionDamageRatio=Math.max(e.data.explosionDamageRatio||0,.45)},
 homing_projectiles:e=>e.data.homingStrength=(e.data.homingStrength||0)+1,
-missile_clock:e=>e.data.missileCooldownMultiplier=(e.data.missileCooldownMultiplier||1)*.88,
+missile_clock:(e,level)=>{e.data.missileLevel=level;e.data.missileInterval=[0,5.5,4.7,3.9,3.2,2.5][level]},
 chain_lightning:e=>{e.data.chainCount=(e.data.chainCount||0)+1;e.data.chainDamageRatio=Math.max(e.data.chainDamageRatio||0,.5)},
-nova_pulse:(e,level)=>{e.data.novaPulse=level;e.data.novaRadius=70+(level-1)*22;e.data.novaDamagePerSecond=18;e.data.novaFinal=level>=5},
+nova_pulse:(e,level)=>{e.data.novaPulse=level;e.data.novaRadius=70+(level-1)*22;e.data.novaDamagePerSecond=18},
 evasion_matrix:e=>e.data.evasionChance=Math.min(.35,(e.data.evasionChance||0)+.06)
 };
 const system={id:'upgrades',dependsOn:['world'],start(){for(const [id,name,category,description,icon,rarity,offerWeight] of catalog)system.register({id,name,category,description,icon:'assets/upgrade-icons-v102/'+icon,rarity,offerWeight,apply:apply[id]||((e)=>{e.data.evolutionTraits=e.data.evolutionTraits||{};e.data.evolutionTraits[id]=(e.data.evolutionTraits[id]||0)+1})});GameEvents.on('run:started',()=>{chosen.length=0;levels.clear()})},register(def){if(!def?.id||typeof def.apply!=='function')throw new Error('Invalid upgrade');defs.set(def.id,def)},get:id=>defs.get(id)||null,select(id,entityId){const d=defs.get(id),e=WorldSystem.get(entityId),before=levels.get(id)||0;if(!d||!e||before>=MAX_LEVEL)return false;const level=before+1;d.apply(e,level);levels.set(id,level);chosen.push(id);GameEvents.emit('upgrade:selected',{upgradeId:id,entityId,level,maxLevel:MAX_LEVEL,completed:level>=MAX_LEVEL,count:chosen.length,definition:{id:d.id,name:d.name,rarity:d.rarity}});return true},available:()=>[...defs.keys()].filter(id=>(levels.get(id)||0)<MAX_LEVEL),definitions:()=>[...defs.values()].filter(d=>(levels.get(d.id)||0)<MAX_LEVEL).map(d=>({id:d.id,name:d.name,category:d.category,description:d.description,icon:d.icon,rarity:d.rarity,offerWeight:d.offerWeight??100,level:levels.get(d.id)||0,nextLevel:(levels.get(d.id)||0)+1,maxLevel:MAX_LEVEL,isNew:!levels.get(d.id)})),snapshot:()=>({chosen:[...chosen],levels:Object.fromEntries(levels),maxLevel:MAX_LEVEL})};GameSystems.register(system);window.UpgradeSystem=system})();
