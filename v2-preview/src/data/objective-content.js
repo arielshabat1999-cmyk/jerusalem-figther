@@ -27,5 +27,19 @@
 {id:'a.distance.25000',metric:'distance',target:25000,scope:'career',label:'DEEP SPACE',description:'Travel 25,000 meters.',icon:'➤',reward:{coins:2000,ap:25}},
 {id:'a.elites.25',metric:'elite_kills',target:25,scope:'career',label:'ELITE BREAKER',description:'Destroy 25 elite enemies.',icon:'☠',reward:{gems:5,ap:35}},
 {id:'a.boss.10',metric:'boss_kills',target:10,scope:'career',label:'TITAN SLAYER',description:'Defeat 10 bosses.',icon:'♛',reward:{gems:10,ap:50}},
-{id:'a.secret.nodamage',metric:'no_damage_seconds',target:180,scope:'run',label:'UNTOUCHABLE',description:'Survive 3 minutes without taking damage.',icon:'?',hidden:true,reward:{gems:8,ap:40}}
+{id:'a.secret.nodamage',metric:'no_damage_seconds',target:180,scope:'run',label:'UNTOUCHABLE',description:'Survive 3 minutes without taking damage.',icon:'?',hidden:true,reward:{gems:8,ap:40}},
+{id:'a.mastery.1',metric:'mastery_ships',target:1,scope:'career',label:'SHIP MASTER 1',description:'Reach Mastery with 1 unique ship.',icon:'✦',reward:{ap:15}},
+{id:'a.mastery.2',metric:'mastery_ships',target:2,scope:'career',label:'SHIP MASTER 2',description:'Reach Mastery with 2 unique ships.',icon:'✦',reward:{ap:20}},
+{id:'a.mastery.3',metric:'mastery_ships',target:3,scope:'career',label:'SHIP MASTER 3',description:'Reach Mastery with 3 unique ships.',icon:'✦',reward:{ap:25}},
+{id:'a.mastery.4',metric:'mastery_ships',target:4,scope:'career',label:'SHIP MASTER 4',description:'Reach Mastery with 4 unique ships.',icon:'✦',reward:{ap:30}},
+{id:'a.mastery.5',metric:'mastery_ships',target:5,scope:'career',label:'SHIP MASTER 5',description:'Reach Mastery with 5 unique ships.',icon:'✦',reward:{ap:35}},
+{id:'a.mastery.6',metric:'mastery_ships',target:6,scope:'career',label:'SHIP MASTER 6',description:'Reach Mastery with 6 unique ships.',icon:'✦',reward:{ap:40}},
+{id:'a.mastery.7',metric:'mastery_ships',target:7,scope:'career',label:'SHIP MASTER 7',description:'Reach Mastery with 7 unique ships.',icon:'✦',reward:{ap:45}},
+{id:'a.mastery.8',metric:'mastery_ships',target:8,scope:'career',label:'SHIP MASTER 8',description:'Reach Mastery with 8 unique ships.',icon:'✦',reward:{ap:50}},
+{id:'a.mastery.9',metric:'mastery_ships',target:9,scope:'career',label:'SHIP MASTER 9',description:'Reach Mastery with 9 unique ships.',icon:'✦',reward:{ap:55}},
+{id:'a.mastery.10',metric:'mastery_ships',target:10,scope:'career',label:'SHIP MASTER 10',description:'Reach Mastery with 10 unique ships.',icon:'✦',reward:{ap:60}},
+{id:'a.mastery.11',metric:'mastery_ships',target:11,scope:'career',label:'SHIP MASTER 11',description:'Reach Mastery with 11 unique ships.',icon:'✦',reward:{ap:65}},
+{id:'a.mastery.12',metric:'mastery_ships',target:12,scope:'career',label:'SHIP MASTER 12',description:'Reach Mastery with 12 unique ships.',icon:'✦',reward:{ap:70}},
+{id:'a.mastery.13',metric:'mastery_ships',target:13,scope:'career',label:'SHIP MASTER 13',description:'Reach Mastery with 13 unique ships.',icon:'✦',reward:{ap:75}},
+{id:'a.mastery.14',metric:'mastery_ships',target:14,scope:'career',label:'SHIP MASTER 14',description:'Reach Mastery with 14 unique ships.',icon:'✦',reward:{ap:80}}
 ]};window.ObjectiveContent=catalog;GameConfig?.register('objectiveContent',catalog)})();
