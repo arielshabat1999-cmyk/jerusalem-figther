@@ -1,13 +1,11 @@
-window.AdminTuningSchema=Object.freeze({
-  schemaVersion:1,
-  groups:[{id:'economy',label:'ECONOMY',fields:[{id:'economy.playerLevelReward.coins',namespace:'economyTuning',path:['playerLevelReward','coins'],label:'Coins per Player Level',type:'number',min:0,max:100000,step:100},{id:'economy.playerLevelReward.gems',namespace:'economyTuning',path:['playerLevelReward','gems'],label:'Diamonds per Player Level',type:'number',min:0,max:1000,step:1},{id:'economy.railgun.lv2',namespace:'economyTuning',path:['railgunUpgrade','2','coins'],label:'Railgun LV2 price',type:'number',min:0,max:1000000,step:100},{id:'economy.railgun.lv3',namespace:'economyTuning',path:['railgunUpgrade','3','coins'],label:'Railgun LV3 price',type:'number',min:0,max:1000000,step:100},{id:'economy.railgun.lv4',namespace:'economyTuning',path:['railgunUpgrade','4','coins'],label:'Railgun LV4 price',type:'number',min:0,max:1000000,step:100},{id:'economy.railgun.lv5',namespace:'economyTuning',path:['railgunUpgrade','5','coins'],label:'Railgun LV5 price',type:'number',min:0,max:1000000,step:100}]},{
-    id:'player-movement',
-    label:'PLAYER MOVEMENT',
-    fields:[
-      {id:'flight.player.baseMoveSpeed',namespace:'flight',path:['player','baseMoveSpeed'],label:'Initial movement speed',type:'number',min:250,max:1600,step:25,unit:'px/s'},
-      {id:'flight.player.relativeDragSensitivityX',namespace:'flight',path:['player','relativeDragSensitivityX'],label:'Horizontal drag sensitivity',type:'number',min:.5,max:2,step:.02,unit:'x'},
-      {id:'flight.player.relativeDragSensitivityY',namespace:'flight',path:['player','relativeDragSensitivityY'],label:'Vertical drag sensitivity',type:'number',min:.5,max:2,step:.02,unit:'x'},
-      {id:'flight.player.followResponse',namespace:'flight',path:['player','followResponse'],label:'Follow response',type:'number',min:5,max:50,step:1,unit:'response'}
-    ]
-  }]
-});
+(()=>{const n=(id,path,label,opt={})=>({id:'economy.'+id,namespace:'economyTuning',path,label,type:'number',min:0,max:opt.max??1000000,step:opt.step??1,unit:opt.unit});const fields=[
+n('level.coins',['playerLevelReward','coins'],'Coins per Player Level',{step:100}),n('level.gems',['playerLevelReward','gems'],'Diamonds per Player Level'),
+n('prestige.coins',['prestige','reward','coins'],'Coins per Prestige',{step:1000}),n('prestige.gems',['prestige','reward','gems'],'Diamonds per Prestige'),
+...Object.keys(EconomyTuning.shipPurchase).map(id=>n('ship.'+id,['shipPurchase',id,'amount'],id.replace('ship.','').toUpperCase()+' purchase',{step:500})),
+...Object.keys(EconomyTuning.shipUpgrade).flatMap(l=>['coins','gems'].map(c=>n('upgrade.'+l+'.'+c,['shipUpgrade',String(l),c],`Ship LV${l} · ${c.toUpperCase()}`,{step:c==='coins'?100:1}))),
+...Object.keys(EconomyTuning.railgunUpgrade).map(l=>n('railgun.'+l,['railgunUpgrade',String(l),'coins'],`Railgun LV${l} price`,{step:100})),
+...Object.keys(EconomyTuning.customizationPurchase).map(id=>n('cosmetic.'+id,['customizationPurchase',id,'amount'],id.replace('.',' · ').toUpperCase(),{step:100})),
+n('objective.daily',['objectiveXP','dailyDefault'],'Daily Objective XP',{step:10}),n('objective.weekly',['objectiveXP','weeklyDefault'],'Weekly Objective XP',{step:10}),n('objective.player',['objectiveXP','playerDefault'],'Player Objective default XP',{step:10}),
+...Object.keys(EconomyTuning.objectiveXP.player||{}).map(id=>n('objective.'+id,['objectiveXP','player',id],id.toUpperCase()+' XP',{step:10})),
+...Object.keys(EconomyTuning.achievementAP||{}).map(id=>n('achievement.'+id,['achievementAP',id],id.toUpperCase()+' AP'))
+];window.AdminTuningSchema=Object.freeze({schemaVersion:2,groups:[{id:'economy',label:'ECONOMY & REWARDS',fields},{id:'player-movement',label:'PLAYER MOVEMENT',fields:[{id:'flight.player.baseMoveSpeed',namespace:'flight',path:['player','baseMoveSpeed'],label:'Initial movement speed',type:'number',min:250,max:1600,step:25,unit:'px/s'},{id:'flight.player.relativeDragSensitivityX',namespace:'flight',path:['player','relativeDragSensitivityX'],label:'Horizontal drag sensitivity',type:'number',min:.5,max:2,step:.02,unit:'x'},{id:'flight.player.relativeDragSensitivityY',namespace:'flight',path:['player','relativeDragSensitivityY'],label:'Vertical drag sensitivity',type:'number',min:.5,max:2,step:.02,unit:'x'},{id:'flight.player.followResponse',namespace:'flight',path:['player','followResponse'],label:'Follow response',type:'number',min:5,max:50,step:1,unit:'response'}]}]})})();
