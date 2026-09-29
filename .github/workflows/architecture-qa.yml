@@ -19,19 +19,74 @@ jobs:
           npm install --save-dev playwright
           npx playwright install --with-deps chromium
       - name: Serve game
-        run: python3 -m http.server 4173 --directory neon-survivor > /tmp/neon-http.log 2>&1 &
-      - name: Run architecture, product flow and cutover QA
+        run: python3 -m http.server 4173 --directory v2-preview > /tmp/neon-http.log 2>&1 &
+      - name: Run V2 Phase A runtime QA
         run: |
           node <<'NODE'
           const { chromium }=require('playwright');
-          (async()=>{const browser=await chromium.launch({headless:true}); const errs=[];
-          async function arch(url){const p=await browser.newPage({viewport:{width:390,height:844}});p.on('pageerror',e=>errs.push(url+': '+e));await p.goto(url,{waitUntil:'networkidle'});await p.waitForFunction(()=>document.querySelector('#game')?.contentWindow?.GameSystems?.status?.().started?.length>0,null,{timeout:15000});return p}
-          const tests=await browser.newPage();await tests.goto('http://127.0.0.1:4173/tests/architecture-tests.html',{waitUntil:'networkidle'});await tests.waitForFunction(()=>Array.isArray(window.__ARCH_TEST_RESULTS__));const results=await tests.evaluate(()=>window.__ARCH_TEST_RESULTS__);console.log(results.map(r=>r.join(' — ')).join('\n'));if(results.some(r=>r[0]!=='PASS'))errs.push('architecture regression failed');
-          const migration=await arch('http://127.0.0.1:4173/migration.html');const m=await migration.evaluate(()=>{const w=document.querySelector('#game').contentWindow;return{mode:document.querySelector('#mode').textContent,systems:w.GameSystems.status().started.length,flow:w.AppFlowSystem.snapshot().state,player:!!w.WorldSystem.findByPlayerId('local-player')}});console.log('MIGRATION — '+JSON.stringify(m));if(m.mode!=='ARCHITECTURE'||m.systems<1||m.flow!=='home'||m.player)errs.push('migration home-first boot invalid');
-          const primary=await arch('http://127.0.0.1:4173/index.html');const w=await primary.$eval('#game',e=>e.contentWindow);let state=await primary.evaluate(()=>document.querySelector('#game').contentWindow.AppFlowSystem.snapshot().state);if(state!=='home')errs.push('primary did not boot home');
-          async function click(action,expected){await primary.evaluate(a=>document.querySelector('#game').contentWindow.document.querySelector(`[data-action="${a}"]`)?.click(),action);await primary.waitForFunction(s=>document.querySelector('#game').contentWindow.AppFlowSystem.snapshot().state===s,expected);console.log('FLOW — '+action+' -> '+expected)}
-          await click('profile','profile');await click('home','home');await click('garage','garage');await click('home','home');await click('shop','shop');await click('home','home');await click('stats','stats');await click('home','home');await click('leaderboard','leaderboard');await click('home','home');await click('play','mode-select');await click('solo','playing');
-          const playing=await primary.evaluate(()=>{const w=document.querySelector('#game').contentWindow;return{player:!!w.WorldSystem.findByPlayerId('local-player'),shell:w.document.querySelector('#app-shell')?.style.display}});console.log('PLAYING — '+JSON.stringify(playing));if(!playing.player||playing.shell!=='none')errs.push('playing flow invalid');
-          const fallback=await browser.newPage();await fallback.goto('http://127.0.0.1:4173/play.html?engine=legacy',{waitUntil:'domcontentloaded'});const fb=await fallback.evaluate(()=>({engine:window.NEON_CUTOVER?.engine,outer:document.querySelector('#game')?.contentWindow?.document?.querySelector('iframe')?.getAttribute('src')}));console.log('FALLBACK — '+JSON.stringify(fb));if(fb.engine!=='legacy'||fb.outer!=='legacy-runtime.html')errs.push('legacy fallback invalid');
-          await browser.close();if(errs.length){console.error(errs.join('\n'));process.exit(1)}})().catch(e=>{console.error(e);process.exit(1)});
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const errors=[];
+            const p=await browser.newPage({viewport:{width:390,height:844}});
+            p.on('pageerror',e=>errors.push('pageerror: '+e.message));
+            p.on('console',m=>{if(m.type()==='error')errors.push('console: '+m.text())});
+            const started=Date.now();
+            await p.goto('http://127.0.0.1:4173/index.html?v=20260929-95',{waitUntil:'domcontentloaded'});
+            await p.waitForFunction(()=>window.GameBootstrap?.status==='ready'&&!document.querySelector('#boot')&&document.querySelector('#app-shell')?.dataset.renderOk==='true',null,{timeout:50000});
+            console.log('BOOT_MS — '+(Date.now()-started));
+            async function state(){return p.evaluate(()=>AppFlowSystem.snapshot().state)}
+            async function click(action,expected){
+              await p.locator(`[data-action="${action}"]`).first().click();
+              await p.waitForFunction(s=>AppFlowSystem.snapshot().state===s,expected);
+              const ok=await p.evaluate(()=>document.querySelector('#app-shell')?.dataset.renderOk==='true');
+              if(!ok)throw new Error(action+' rendered error state');
+              console.log('FLOW — '+action+' -> '+expected);
+            }
+            if(await state()!=='home')errors.push('boot did not land on home');
+            for(const target of ['profile','garage','objectives','leaderboard','settings']){
+              await click(target,target); await click('home','home');
+            }
+            await click('profile','profile');
+            await p.locator('[data-action="profile-edit"]').click();
+            if(!await p.locator('.profile-edit-panel:not([hidden])').count())errors.push('profile editor did not open');
+            if(await p.locator('[data-action="save-profile"]').count()!==1)errors.push('profile must have exactly one save button');
+            if(await p.locator('#pilot-country option').count()<240)errors.push('country selector incomplete');
+            const before=await p.evaluate(()=>ProfileSystem.snapshot());
+            await p.locator('#pilot-name').fill('QA PILOT');
+            await p.locator('#pilot-country').selectOption('US');
+            await p.locator('[data-action="save-profile"]').click();
+            await p.waitForFunction(()=>ProfileSystem.snapshot().displayName==='QA PILOT'&&ProfileSystem.snapshot().countryCode==='US');
+            const after=await p.evaluate(()=>ProfileSystem.snapshot());
+            if(before.playerId!==after.playerId)errors.push('profile edit changed playerId');
+            await click('home','home');
+            const homeIdentity=await p.locator('.ns-player-copy strong').textContent();
+            if(!homeIdentity.includes('QA PILOT')||!homeIdentity.includes('🇺🇸'))errors.push('home identity propagation failed');
+            await click('garage','garage');
+            const garageIdentity=await p.locator('.garage-player-chip b').textContent();
+            if(!garageIdentity.includes('QA PILOT')||!garageIdentity.includes('🇺🇸'))errors.push('garage identity propagation failed');
+            await click('profile','profile');
+            await click('home','home');
+            await click('leaderboard','leaderboard');
+            const boardIdentity=await p.locator('.leader-self-copy b').textContent();
+            if(!boardIdentity.includes('QA PILOT')||!boardIdentity.includes('🇺🇸'))errors.push('leaderboard identity propagation failed');
+            await click('home','home');
+            for(let i=0;i<6;i++){await p.locator('[data-action="profile"]').first().click();await p.locator('[data-action="home"]').first().click()}
+            if(await state()!=='home')errors.push('rapid navigation corrupted state');
+            await p.reload({waitUntil:'domcontentloaded'});
+            await p.waitForFunction(()=>window.GameBootstrap?.status==='ready'&&!document.querySelector('#boot'),null,{timeout:50000});
+            const persisted=await p.evaluate(()=>ProfileSystem.snapshot());
+            if(persisted.displayName!=='QA PILOT'||persisted.countryCode!=='US'||persisted.playerId!==after.playerId)errors.push('profile persistence failed after reload');
+            await p.evaluate(async old=>{await ProfileSystem.update({displayName:old.displayName,countryCode:old.countryCode})},before);
+            await p.reload({waitUntil:'domcontentloaded'});
+            await p.waitForFunction(()=>window.GameBootstrap?.status==='ready'&&!document.querySelector('#boot'),null,{timeout:50000});
+            const restored=await p.evaluate(()=>ProfileSystem.snapshot());
+            if(restored.displayName!==before.displayName||restored.countryCode!==before.countryCode||restored.playerId!==before.playerId)errors.push('QA cleanup failed');
+            await click('settings','settings'); await click('home','home');
+            await p.locator('[data-action="play"]').click();
+            await p.waitForFunction(()=>AppFlowSystem.snapshot().state==='playing',null,{timeout:5000});
+            console.log('FLOW — play -> playing (solo direct)');
+            await browser.close();
+            if(errors.length){console.error(errors.join('\n'));process.exit(1)}
+            console.log('PHASE A RUNTIME QA — PASS');
+          })().catch(e=>{console.error(e);process.exit(1)});
           NODE
