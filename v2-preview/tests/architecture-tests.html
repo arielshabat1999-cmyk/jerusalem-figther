@@ -91,6 +91,10 @@
     test('account identity exists',()=>!!AccountSystem.playerId());
     test('customization service loaded',()=>typeof CustomizationSystem.snapshot==='function');
     test('network validation loaded',()=>typeof CommandValidationSystem.validate==='function');
+    test('backend request envelope loaded',()=>typeof BackendRequest?.envelope==='function');
+    test('cloud snapshot v2 is complete',()=>{const s=CloudSaveService.localSnapshot();return s.schemaVersion===2&&!!s.progression?.achievements&&!!s.progression?.mastery&&!!s.economy?.wallet&&!!s.economy?.ap&&!!s.ownership?.inventory});
+    test('production authority protects economy',()=>AuthorityPolicy.productionBoundary().server.includes('economy'));
+    test('backend policy requires idempotency domains',()=>ServiceRequestPolicy.idempotencyDomains.includes('purchases')&&ServiceRequestPolicy.idempotencyDomains.includes('leaderboards'));
     GameClock.stop();
   }catch(e){results.push(['FAIL','boot',e.stack||e.message])}
   const pass=results.filter(r=>r[0]==='PASS').length,fail=results.length-pass;
