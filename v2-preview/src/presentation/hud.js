@@ -1,6 +1,6 @@
 (()=>{
 let hud=null,toastTimer=null;
-const q=s=>hud?.querySelector(s);
+const q=s=>hud?.querySelector(s);const setText=(s,v)=>{const el=q(s);if(el)el.textContent=v};const setScale=(s,v)=>{const el=q(s);if(el)el.style.transform=`scaleX(${v})`};
 const clamp=(n,a=0,b=1)=>Math.max(a,Math.min(b,n));
 function playerLevelFromLifetimeXP(xp=0){
   xp=Math.max(0,+xp||0);
@@ -28,23 +28,23 @@ function render(){
   if(!hud)return;
   const r=RunCommands.snapshot()||{},eco=EconomySystem.snapshot?.()||{balances:{}},p=player();
   const hp=p?.health,shield=p?.data?.shield;
-  q('[data-v="player-level"]').textContent=permanentLevel();
-  q('[data-v="evolution"]').textContent=r.level||1;
-  q('[data-v="time"]').textContent=fmtTime(r.time||0);
-  q('[data-v="distance"]').textContent=Math.round(r.distance||0);
-  q('[data-v="coins"]').textContent=eco.balances?.coins||0;
-  q('[data-v="gems"]').textContent=eco.balances?.gems||0;
+  setText('[data-v="player-level"]',permanentLevel());
+  setText('[data-v="evolution"]',r.level||1);
+  setText('[data-v="time"]',fmtTime(r.time||0));
+  setText('[data-v="distance"]',Math.round(r.distance||0));
+  setText('[data-v="coins"]',eco.balances?.coins||0);
+  setText('[data-v="gems"]',eco.balances?.gems||0);
   const hpRatio=hp?.max?clamp(hp.current/hp.max):1;
-  q('.run-hull-fill').style.transform=`scaleX(${hpRatio})`;
-  q('[data-v="hull"]').textContent=hp?`${Math.ceil(hp.current)} / ${Math.ceil(hp.max)}`:'—';
+  setScale('.run-hull-fill',hpRatio);
+  setText('[data-v="hull"]',hp?`${Math.ceil(hp.current)} / ${Math.ceil(hp.max)}`:'—');
   const shieldCurrent=typeof shield==='object'?shield.current:null,shieldMax=typeof shield==='object'?shield.max:null;
-  q('.run-shield-fill').style.transform=`scaleX(${shieldMax?clamp(shieldCurrent/shieldMax):0})`;
-  q('[data-v="shield"]').textContent=shieldMax?`${Math.ceil(shieldCurrent)} / ${Math.ceil(shieldMax)}`:'—';
+  setScale('.run-shield-fill',shieldMax?clamp(shieldCurrent/shieldMax):0);
+  setText('[data-v="shield"]',shieldMax?`${Math.ceil(shieldCurrent)} / ${Math.ceil(shieldMax)}`:'—');
   const state=railgunState(),btn=q('.run-railgun');
-  btn.dataset.state=state;btn.className=`run-railgun state-${state.toLowerCase()}`;
-  q('.run-railgun-state').textContent=state;
+  if(btn){btn.dataset.state=state;btn.className=`run-railgun state-${state.toLowerCase()}`;}
+  setText('.run-railgun-state',state);
   const cd=GameState.get().ui?.railgunCooldownRemaining;
-  q('.run-railgun-cd').textContent=state==='COOLDOWN'&&Number.isFinite(cd)?Math.ceil(cd):'';
+  setText('.run-railgun-cd',state==='COOLDOWN'&&Number.isFinite(cd)?Math.ceil(cd):'');
 }
 function toast(text){
   const t=q('.run-toast');if(!t)return;t.textContent=text;t.classList.add('show');
