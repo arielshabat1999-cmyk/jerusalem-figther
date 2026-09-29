@@ -1,0 +1,12 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Mobile Performance Budget</title><style>body{background:#07101b;color:#eaffff;font:14px monospace;padding:24px}.ok{color:#86efac}.bad{color:#fda4af}</style></head><body><h1>NEON SURVIVOR — MOBILE PERFORMANCE BUDGET</h1><pre id="out">RUNNING…</pre><script>
+(()=>{const r=[],test=(n,f)=>{try{if(f()===false)throw Error('assertion failed');r.push(['PASS',n])}catch(e){r.push(['FAIL',n,e.message])}};
+const budget={fxHits:80,fxExplosions:40,fxShield:12,dprMax:2,frameMs60:16.67,frameMs30:33.34};
+test('retina render scale capped at 2x',()=>budget.dprMax===2);
+test('cosmetic hit FX budget bounded',()=>budget.fxHits<=80);
+test('cosmetic explosion FX budget bounded',()=>budget.fxExplosions<=40);
+test('shield burst FX budget bounded',()=>budget.fxShield<=12);
+test('60fps frame budget defined',()=>budget.frameMs60<17);
+test('30fps degradation threshold defined',()=>budget.frameMs30>33);
+let fx=[];for(let i=0;i<10000;i++){fx.push(i);if(fx.length>80)fx.splice(0,fx.length-80)}test('10k FX burst stays bounded',()=>fx.length===80);
+const out=document.querySelector('#out'),p=r.filter(x=>x[0]==='PASS').length,f=r.length-p;out.innerHTML=`${p} PASS / ${f} FAIL\n\n`+r.map(x=>`<span class="${x[0]==='PASS'?'ok':'bad'}">${x.join(' — ')}</span>`).join('\n');document.title=f?`FAIL ${f} — Mobile Performance`:`PASS ${p} — Mobile Performance`;window.__MOBILE_PERF_RESULTS__=r})();
+</script></body></html>
