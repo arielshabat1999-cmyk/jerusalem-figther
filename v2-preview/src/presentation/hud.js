@@ -24,7 +24,7 @@ function railgunState(){return window.RailgunSystem?.snapshot?.().state||'READY'
 function render(){
   if(!hud)return;
   const r=RunCommands.snapshot()||{},eco=EconomySystem.snapshot?.()||{balances:{}},p=player();
-  const hp=p?.health,shield=p?.data?.shield;
+  const hp=p?.health,shield=p?.shield;
   setText('[data-v="player-level"]',permanentLevel());
   setText('[data-v="evolution"]',r.level||1);
   setText('[data-v="time"]',fmtTime(r.time||0));
@@ -119,7 +119,7 @@ const system={id:'hud',dependsOn:['run','economy','world'],start(){
   q('.run-pause').onclick=pauseRun;
   q('.run-objectives').onclick=()=>{GameClock.pause('objectives');AppFlowSystem.objectives()};
   q('.run-railgun').onclick=()=>{window.RailgunSystem?.activate?.()};
-  ['run:started','run:time-changed','run:distance-changed','run:level-changed','run:score-changed','economy:balance-changed','combat:damage-applied','combat:entity-healed','railgun:state','state:changed'].forEach(n=>GameEvents.on(n,render));
+  ['run:started','run:time-changed','run:distance-changed','run:level-changed','run:score-changed','economy:balance-changed','combat:damage-applied','combat:shield-damaged','combat:shield-broken','combat:shield-recharged','combat:shield-restored','combat:entity-healed','railgun:state','state:changed'].forEach(n=>GameEvents.on(n,render));
   GameEvents.on('run:started',()=>{setVisible(true);render();requestAnimationFrame(syncVisibility)});
   GameEvents.on('run:ended',()=>{setVisible(false);pauseOverlay?.classList.remove('show')});
   GameEvents.on('app-flow:changed',()=>{syncVisibility();render()});
