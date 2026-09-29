@@ -50,7 +50,7 @@ function toast(text){
   const t=q('.run-toast');if(!t)return;t.textContent=text;t.classList.add('show');
   clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2200);
 }
-function setVisible(on){if(hud)hud.classList.toggle('run-hud-visible',!!on)}
+function runIsActive(){try{return !!RunCommands.snapshot()?.active}catch{return false}}function syncVisibility(){setVisible(runIsActive()||AppFlowSystem?.snapshot?.().state==='playing')}function setVisible(on){if(hud)hud.classList.toggle('run-hud-visible',!!on)}
 const system={id:'hud',dependsOn:['run','economy','world'],start(){
   const style=document.createElement('style');style.textContent=`
   #run-hud{position:fixed;inset:0;z-index:20;pointer-events:none;color:#fff;font-family:Inter,system-ui,-apple-system,sans-serif;opacity:0;visibility:hidden;transition:opacity .18s ease;text-shadow:0 2px 8px #000}
@@ -112,10 +112,10 @@ const system={id:'hud',dependsOn:['run','economy','world'],start(){
   q('.run-objectives').onclick=()=>GameEvents.emit('ui:objectives-requested',{source:'run-hud'});
   q('.run-railgun').onclick=()=>{if(railgunState()==='READY')GameEvents.emit('railgun:activate-requested',{source:'run-hud'})};
   ['run:started','run:time-changed','run:distance-changed','run:level-changed','run:score-changed','economy:balance-changed','combat:damage-applied','combat:entity-healed','railgun:state-changed','state:changed'].forEach(n=>GameEvents.on(n,render));
-  GameEvents.on('run:started',()=>{setVisible(true);render()});
+  GameEvents.on('run:started',()=>{setVisible(true);render();requestAnimationFrame(syncVisibility)});
   GameEvents.on('run:ended',()=>setVisible(false));
-  GameEvents.on('app-flow:changed',e=>{const s=e?.state||AppFlowSystem?.snapshot?.().state;setVisible(s==='playing');render()});
-  render();setVisible(AppFlowSystem?.snapshot?.().state==='playing');
+  GameEvents.on('app-flow:changed',()=>{syncVisibility();render()});
+  render();syncVisibility();setInterval(()=>{if(runIsActive()){syncVisibility();render()}},500);
 },render,toast};
 GameSystems.register(system);window.HUDSystem=system;
 })();
