@@ -114,7 +114,7 @@ function shop(){const offers=ShopSystem.offers();return shell('SHOP',`<div class
 function stats(){const s=StatisticsSystem.snapshot(),cards=[['RUNS',s.runs],['KILLS',s.kills],['ELITES',s.eliteKills],['BOSSES',s.bossKills],['BEST SCORE',s.bestScore],['BEST LEVEL',s.bestLevel],['BEST DISTANCE',Math.round(s.bestDistance)],['PLAY TIME',`${Math.floor(s.totalPlaySeconds/60)}m`]];return shell('STATISTICS',`<div class="ns-stat-hero"><small>CAREER RANK</small><strong>${RankSystem.snapshot().rank||1}</strong></div><div class="ns-stat-grid">${cards.map(([k,v])=>`<div><small>${k}</small><b>${v}</b></div>`).join('')}</div>`)}
 function results(){const a=AppFlowSystem.snapshot().results||{},r=a.run||RunCommands.snapshot()||{},victory=a.victory!==false;return shell(victory?'RUN COMPLETE':'RUN SUMMARY',`<div class="ns-results-hero"><small>${victory?'MISSION COMPLETE':'RUN SUMMARY'}</small><strong>${Math.round(r.score||0).toLocaleString()}</strong><span>FINAL SCORE</span></div><div class="ns-result-row"><div><small>EVOLUTION</small><b>LV ${r.level||1}</b></div><div><small>TIME</small><b>${Math.floor((r.time||0)/60)}:${String(Math.floor((r.time||0)%60)).padStart(2,'0')}</b></div><div><small>DISTANCE</small><b>${Math.round(r.distance||0).toLocaleString()}</b></div></div><div class="ns-results-actions">${button('PLAY AGAIN','replay','accent')}${button('GARAGE','garage')}${button('HOME','home')}</div>`)}
 function profile(){
- const p=ProfileSystem.snapshot(),a=AccountSystem.snapshot(),pr=PlayerProgressionSystem.snapshot(),s=StatisticsSystem.snapshot(),loadout=CustomizationSystem.loadout(),shipId=loadout.ship||'ship.nova',shipKey=ShipUpgradeSystem.shipKeyFromItem(shipId),meta=GameConfig.get('garage')?.ships?.[shipKey],ship=CustomizationSystem.item(shipId),shipArt=garageAsset(ship),joined=p.createdAt?new Date(p.createdAt).toLocaleDateString(undefined,{year:'numeric',month:'short'}):'—';
+ const p=ProfileSystem.snapshot(),a=AccountSystem.snapshot(),pr=PlayerProgressionSystem.snapshot(),prestige=PrestigeSystem.snapshot(),title=TitleSystem.equipped(),s=StatisticsSystem.snapshot(),loadout=CustomizationSystem.loadout(),shipId=loadout.ship||'ship.nova',shipKey=ShipUpgradeSystem.shipKeyFromItem(shipId),meta=GameConfig.get('garage')?.ships?.[shipKey],ship=CustomizationSystem.item(shipId),shipArt=garageAsset(ship),joined=p.createdAt?new Date(p.createdAt).toLocaleDateString(undefined,{year:'numeric',month:'short'}):'—';
  const xpPct=Math.max(0,Math.min(100,(pr.progress||0)*100)),playH=Math.floor((s.totalPlaySeconds||0)/3600),playM=Math.floor(((s.totalPlaySeconds||0)%3600)/60);
  return`<section class="ns-screen ns-profile-screen">
  <header class="profile-top"><button class="ns-back" data-action="home">‹</button><h2>PROFILE</h2>${money()}</header>
@@ -123,7 +123,7 @@ function profile(){
    <div class="profile-identity"><small>PILOT</small><h1>${p.displayName||'PILOT'}</h1><span>${rankText()}</span></div>
    <button class="profile-edit" data-action="profile-edit">EDIT</button>
  </div>
- <div class="profile-level-card">
+ <div class="profile-meta"><div><small>TITLE</small><b>${title?.label||'ROOKIE'}</b></div><div><small>PRESTIGE</small><b>${prestige.label}</b></div></div><div class="profile-level-card">
    <div><small>PLAYER LEVEL</small><b>LV ${pr.playerLevel}</b></div>
    <div class="profile-xp-copy"><span>${pr.currentLevelXP.toLocaleString()} / ${pr.nextLevelXP.toLocaleString()} XP</span><strong>${Math.floor(xpPct)}%</strong></div>
    <div class="profile-xp-track"><i style="width:${xpPct}%"></i></div>
