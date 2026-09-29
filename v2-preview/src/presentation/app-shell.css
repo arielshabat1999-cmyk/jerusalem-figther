@@ -259,3 +259,34 @@ linear-gradient(180deg,rgba(8,28,50,.75),rgba(3,10,20,.9));box-shadow:inset 0 0 
 .garage-reveal{text-align:center}.garage-reveal img{position:relative;z-index:2;width:min(58vw,250px);filter:drop-shadow(0 22px 20px #000d) drop-shadow(0 0 28px #58ddff);animation:revealShip .55s cubic-bezier(.17,.8,.22,1)}.garage-reveal-glow{position:absolute;width:min(74vw,340px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#42d7ff38,#7c3aed1e 43%,transparent 70%);filter:blur(10px);animation:heroBreath 1.6s ease-in-out infinite}.garage-reveal small{position:relative;z-index:2;color:#6ee8ff!important;font-size:8px!important;letter-spacing:.25em!important;margin-top:16px}.garage-reveal h2{position:relative;z-index:2;font-size:25px;margin:7px 0 14px;letter-spacing:.1em;text-shadow:0 0 17px #50d9ff}.garage-reveal button{position:relative;z-index:2;width:min(84%,350px)}
 @keyframes garageFloat{50%{transform:translateY(-6px) rotate(.3deg)}}@keyframes revealShip{from{opacity:0;transform:scale(.72) translateY(28px)}to{opacity:1;transform:none}}
 @media(max-height:760px){.garage-showroom{height:23vh;min-height:150px}.garage-hero-ship{width:118px}.garage-title{min-height:38px}.garage-stats>div{min-height:38px}.garage-upgrade{padding:4px}.garage-slider{min-height:66px}.garage-category{min-height:62px}.garage-product{min-height:78px;grid-template-rows:38px auto auto auto}.garage-product-art img{max-height:37px}.garage-main-action{min-height:36px}.garage-main-action .ns-btn.garage-action{min-height:36px!important}}
+
+
+/* ===== GARAGE / STORE — mobile balance polish build 10 ===== */
+.ns-garage-screen{display:flex!important;flex-direction:column!important}
+.garage-showroom{height:31vh!important;min-height:205px!important;max-height:300px!important}
+.garage-hero-ship{width:clamp(150px,44vw,210px)!important}
+.garage-title{min-height:54px!important}
+.garage-title h1{font-size:clamp(20px,5.6vw,27px)!important}
+.garage-stats>div{min-height:50px!important}
+.garage-stats b{font-size:14px!important}
+.garage-upgrades{gap:6px!important}
+.garage-upgrade{min-height:64px!important;padding:7px 6px!important}
+.garage-upgrade>b{font-size:13px!important}
+.garage-upgrade>span{font-size:6px!important}
+.garage-main-action{min-height:50px!important}
+.garage-main-action .ns-btn.garage-action,.garage-state{min-height:46px!important}
+.garage-slider{margin-top:auto!important;min-height:102px!important;align-items:stretch!important;padding-bottom:2px!important}
+.garage-category{flex-basis:118px!important;min-height:96px!important}
+.garage-category span{font-size:24px!important}
+.garage-category b{font-size:7px!important}
+.garage-product{flex-basis:116px!important;min-height:96px!important}
+@media(max-height:900px){
+  .garage-showroom{height:28vh!important;min-height:180px!important}
+  .garage-hero-ship{width:140px!important}
+  .garage-title{min-height:45px!important}
+  .garage-stats>div{min-height:44px!important}
+  .garage-upgrade{min-height:58px!important}
+  .garage-main-action{min-height:42px!important}
+  .garage-slider{min-height:88px!important}
+  .garage-category{min-height:82px!important}
+}
