@@ -7,7 +7,7 @@ on:
 jobs:
   architecture-smoke:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -28,20 +28,34 @@ jobs:
             const browser=await chromium.launch({headless:true});
             const p=await browser.newPage({viewport:{width:390,height:844}});
             const errors=[];p.on('pageerror',e=>errors.push('pageerror: '+e.message));p.on('console',m=>{if(m.type()==='error')errors.push('console: '+m.text())});
-            async function boot(){await p.goto('http://127.0.0.1:4173/index.html?v=run-crash-qa',{waitUntil:'domcontentloaded'});const f=p.frames().find(x=>x!==p.mainFrame());await f.waitForFunction(()=>window.GameBootstrap?.status==='ready'&&!document.querySelector('#boot'),null,{timeout:50000});return f}
-            async function start(f){await f.locator('[data-action="play"]').click();await f.waitForFunction(()=>AppFlowSystem.snapshot().state==='playing'&&RunCommands.snapshot()?.active&&GameClock.running&&!GameClock.paused,null,{timeout:5000});const t=await f.evaluate(()=>RunCommands.snapshot().time);await f.waitForTimeout(700);const t2=await f.evaluate(()=>RunCommands.snapshot().time);if(!(t2>t))throw new Error('RUN FROZEN: run time did not advance')}
+            async function boot(){await p.goto('http://127.0.0.1:4173/index.html?v=run-torture-qa',{waitUntil:'domcontentloaded'});const f=p.frames().find(x=>x!==p.mainFrame());await f.waitForFunction(()=>window.GameBootstrap?.status==='ready'&&!document.querySelector('#boot'),null,{timeout:50000});return f}
+            async function start(f){await f.locator('[data-action="play"]').click();await f.waitForFunction(()=>AppFlowSystem.snapshot().state==='playing'&&RunCommands.snapshot()?.active&&GameClock.running&&!GameClock.paused,null,{timeout:5000});await assertMoving(f,'start')}
+            async function assertMoving(f,label){const a=await f.evaluate(()=>RunCommands.snapshot().time);await f.waitForTimeout(300);const b=await f.evaluate(()=>RunCommands.snapshot().time);if(!(b>a))throw new Error(label+': RUN FROZEN')}
+            async function assertClean(f,label){const s=await f.evaluate(()=>({players:WorldSystem.listByType('player').length,paused:GameClock.paused,reasons:GameClock.pauseReasons,run:RunCommands.snapshot()}));if(s.players!==1)throw new Error(label+': duplicate/missing player '+s.players);if(s.paused)throw new Error(label+': leaked pause '+JSON.stringify(s.reasons));if(!s.run?.active)throw new Error(label+': no active run');await assertMoving(f,label)}
             let f=await boot();await start(f);
-            // pause/resume
-            await f.locator('.run-pause').click();if(!await f.evaluate(()=>GameClock.paused&&GameClock.hasPauseReason('pause-menu')))throw new Error('pause-menu did not pause');await f.locator('[data-pause-action="resume"]').click();await f.waitForTimeout(300);if(await f.evaluate(()=>GameClock.paused))throw new Error('resume left clock paused');
-            // Evolution deck open/close with no choice
-            await f.locator('.evo-tab').click();if(!await f.evaluate(()=>GameClock.hasPauseReason('evolution-deck')))throw new Error('evolution deck did not own pause');await f.locator('.evo-tab').click();await f.waitForTimeout(250);if(await f.evaluate(()=>GameClock.paused))throw new Error('evolution close leaked pause');
-            // restart stress
-            for(let i=0;i<5;i++){await f.locator('.run-pause').click();await f.locator('[data-pause-action="restart"]').click();await f.waitForFunction(()=>RunCommands.snapshot()?.active&&!GameClock.paused,null,{timeout:3000});const a=await f.evaluate(()=>RunCommands.snapshot().time);await f.waitForTimeout(250);const b=await f.evaluate(()=>RunCommands.snapshot().time);if(!(b>a))throw new Error('restart '+i+' froze simulation')}
-            // hard reload while a run is active: boot must recover to a usable home, then a new run must move
-            await p.reload({waitUntil:'domcontentloaded'});f=p.frames().find(x=>x!==p.mainFrame());await f.waitForFunction(()=>window.GameBootstrap?.status==='ready'&&!document.querySelector('#boot'),null,{timeout:50000});if(await f.evaluate(()=>GameClock.running||GameClock.paused))throw new Error('reload leaked clock state before run');await start(f);
-            // repeated reload/start cycles
-            for(let i=0;i<3;i++){await p.reload({waitUntil:'domcontentloaded'});f=p.frames().find(x=>x!==p.mainFrame());await f.waitForFunction(()=>window.GameBootstrap?.status==='ready'&&!document.querySelector('#boot'),null,{timeout:50000});await start(f)}
-            const entities=await f.evaluate(()=>({players:WorldSystem.listByType('player').length,run:RunCommands.snapshot(),clock:{running:GameClock.running,paused:GameClock.paused,reasons:GameClock.pauseReasons}}));if(entities.players!==1)throw new Error('expected one player entity, got '+entities.players);console.log('RUN STATE',JSON.stringify(entities));
-            await browser.close();if(errors.length){console.error(errors.join('\n'));process.exit(1)}console.log('RUN CRASH + RELOAD QA — PASS');
+            // Basic pause ownership.
+            await f.locator('.run-pause').click();if(!await f.evaluate(()=>GameClock.hasPauseReason('pause-menu')))throw new Error('pause-menu missing');await f.locator('[data-pause-action="resume"]').click();await assertClean(f,'pause-resume');
+            await f.locator('.evo-tab').click();if(!await f.evaluate(()=>GameClock.hasPauseReason('evolution-deck')))throw new Error('evolution pause missing');await f.locator('.evo-tab').click();await f.waitForTimeout(250);await assertClean(f,'evolution-close');
+            // Restart while Evolution owns pause.
+            await f.locator('.evo-tab').click();await f.evaluate(()=>GameplayLifecycle.restart());await f.waitForTimeout(200);await assertClean(f,'restart-with-evolution-open');
+            // Rapid duplicate commands must not leave duplicate players or pauses.
+            for(let i=0;i<10;i++){await f.evaluate(()=>{GameplayLifecycle.restart();GameplayLifecycle.restart()});await f.waitForTimeout(80);await assertClean(f,'double-restart-'+i)}
+            // Level-up/evolution queue under active combat simulation; closing must release only its pause.
+            await f.evaluate(()=>{for(let i=0;i<6;i++)GameEvents.emit('run:level-up',{level:2+i})});
+            if(await f.evaluate(()=>UpgradeChoiceSystem.pending())!==6)throw new Error('level-up queue lost choices');
+            await f.locator('.evo-tab').click();if(!await f.evaluate(()=>GameClock.paused&&UpgradeChoiceSystem.isOpen()))throw new Error('queued evolution did not pause');await f.locator('.evo-tab').click();await f.waitForTimeout(250);if(await f.evaluate(()=>UpgradeChoiceSystem.pending())!==6)throw new Error('closing deck consumed choices');await assertClean(f,'queued-evolution-close');
+            // Restart must clear pending Evolution state and its pause.
+            await f.evaluate(()=>GameplayLifecycle.restart());await f.waitForTimeout(150);if(await f.evaluate(()=>UpgradeChoiceSystem.pending())!==0)throw new Error('restart leaked evolution choices');await assertClean(f,'restart-clears-evolution');
+            // Objectives pause must be owned and resume must clean it.
+            await f.evaluate(()=>{GameClock.pause('objectives');AppFlowSystem.objectives()});if(!await f.evaluate(()=>GameClock.hasPauseReason('objectives')))throw new Error('objectives did not pause');await f.evaluate(()=>AppFlowSystem.resume());await assertClean(f,'objectives-resume');
+            // Combined pause reasons: closing Evolution must not resume an independently paused game.
+            await f.evaluate(()=>GameClock.pause('pause-menu'));await f.locator('.evo-tab').click();await f.locator('.evo-tab').click();await f.waitForTimeout(220);if(!await f.evaluate(()=>GameClock.paused&&GameClock.hasPauseReason('pause-menu')&&!GameClock.hasPauseReason('evolution-deck')))throw new Error('pause ownership collision');await f.evaluate(()=>GameClock.resume('pause-menu'));await assertClean(f,'multi-pause-release');
+            // 30 complete restart cycles to expose stale entities/listeners/state.
+            for(let i=0;i<30;i++){await f.evaluate(()=>GameplayLifecycle.restart());await f.waitForTimeout(45);await assertClean(f,'restart-stress-'+i)}
+            // Hard reload cycles. Fresh boot must have no clock state, then new run must be healthy.
+            for(let i=0;i<5;i++){await p.reload({waitUntil:'domcontentloaded'});f=p.frames().find(x=>x!==p.mainFrame());await f.waitForFunction(()=>window.GameBootstrap?.status==='ready'&&!document.querySelector('#boot'),null,{timeout:50000});const pre=await f.evaluate(()=>({running:GameClock.running,paused:GameClock.paused,reasons:GameClock.pauseReasons}));if(pre.running||pre.paused||pre.reasons.length)throw new Error('reload-'+i+': leaked clock '+JSON.stringify(pre));await start(f);await assertClean(f,'reload-run-'+i)}
+            // Final state invariants.
+            const final=await f.evaluate(()=>({players:WorldSystem.listByType('player').length,run:RunCommands.snapshot(),clock:{running:GameClock.running,paused:GameClock.paused,reasons:GameClock.pauseReasons},pending:UpgradeChoiceSystem.pending()}));console.log('FINAL RUN STATE',JSON.stringify(final));
+            await browser.close();if(errors.length){console.error(errors.join('\n'));process.exit(1)}console.log('DEEP RUN TORTURE QA — PASS');
           })().catch(e=>{console.error(e);process.exit(1)});
           NODE
