@@ -1,19 +1,19 @@
 (()=>{const defs=new Map(),chosen=[],levels=new Map(),MAX_LEVEL=5;
 const catalog=[
-['calibrated_core','CALIBRATED CORE','Weapon','+10% weapon damage per level.','calibrated-core.webp','common',100],
-['turbo_cycler','TURBO CYCLER','Weapon','+10% fire rate per level.','turbo-cycler.webp','common',100],
-['extra_cannon','EXTRA CANNON','Weapon','Adds shots each level; LV5 becomes an 8-shot wide fan.','extra-cannon.webp','rare',65],
-['heavy_caliber','HEAVY CALIBER','Weapon','Adds +5 flat damage per level.','heavy-caliber.webp','rare',75],
-['piercing_rounds','PIERCING ROUNDS','Weapon','Adds one penetrated enemy per level.','piercing-rounds.webp','rare',70],
-['explosive_rounds','EXPLOSIVE ROUNDS','Weapon','Increases explosion radius; enemies inside also take damage.','explosive-rounds.webp','epic',35],
-['homing_projectiles','TARGET GUIDANCE','Weapon','More shots aim at enemies when fired; shots do not track afterward.','homing-projectiles.webp','epic',30],
-['ion_velocity','ION VELOCITY','Weapon','+10% projectile speed per level.','ion-velocity.webp','common',100],
-['missile_clock','MISSILE SYSTEM','Special','Automatic missiles fire faster each level; LV4 fires 2 and LV5 fires 3.','missile-clock.webp','rare',60],
-['chain_lightning','CHAIN LIGHTNING','Special','Adds one additional lightning jump per level.','chain-lightning.webp','epic',28],
-['nova_pulse','NOVA FIELD','Special','Permanent close-range electric field; each level expands its radius.','nova-pulse.webp','legendary',10],
-['shield_capacitor','SHIELD CAPACITOR','Defense','+15% shield capacity per level.','shield-capacitor.webp','common',90],
-['shield_regeneration','SHIELD REGENERATION','Defense','Improves shield recharge speed only.','shield-regeneration.webp','rare',65],
-['thruster_tuning','THRUSTER TUNING','Mobility','+8% movement speed per level.','thruster-tuning.webp','common',90]
+['calibrated_core','OVERDRIVE','Weapon','More Weapon Damage','calibrated-core.webp','common',100],
+['turbo_cycler','RAPID','Weapon','Faster Fire Rate','turbo-cycler.webp','common',100],
+['extra_cannon','MULTISHOT','Weapon','More Cannons','extra-cannon.webp','rare',65],
+['heavy_caliber','CALIBER','Weapon','Heavier Damage','heavy-caliber.webp','rare',75],
+['piercing_rounds','PIERCE','Weapon','Pierce More Enemies','piercing-rounds.webp','rare',70],
+['explosive_rounds','BLAST','Weapon','Explosive Shots','explosive-rounds.webp','epic',35],
+['homing_projectiles','HOMING','Weapon','Shots Track Enemies','homing-projectiles.webp','epic',30],
+['ion_velocity','VELOCITY','Weapon','Faster Projectiles','ion-velocity.webp','common',100],
+['missile_clock','MISSILES','Special','Homing Missiles','missile-clock.webp','rare',60],
+['chain_lightning','ARC','Special','Chain More Enemies','chain-lightning.webp','epic',28],
+['nova_pulse','NOVA','Special','Damaging Energy Field','nova-pulse.webp','legendary',10],
+['shield_capacitor','BARRIER','Defense','Stronger Shields','shield-capacitor.webp','common',90],
+['shield_regeneration','RECHARGE','Defense','Faster Shield Recharge','shield-regeneration.webp','rare',65],
+['thruster_tuning','THRUST','Mobility','Faster Movement','thruster-tuning.webp','common',90]
 ];
 const apply={
 calibrated_core:(e,l)=>e.data.damageMultiplier=1+.10*l,
