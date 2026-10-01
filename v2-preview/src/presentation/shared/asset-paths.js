@@ -1,1 +1,1 @@
-(()=>{window.PresentationAssets=Object.freeze({playerIdentityFrame:'assets/ui/home/player-identity/player-identity-frame.png',rankIcon:n=>`assets/icons/ranks/rank_${String(n).padStart(2,'0')}.png`});})();
+(()=>{window.PresentationAssets=Object.freeze({playerIdentityFrame:'assets/ui/home/player-identity/F51B9911-C6BA-4CEC-AB1F-1E33175DF25D.png',rankIcon:n=>`assets/icons/ranks/rank_${String(n).padStart(2,'0')}.png`});})();
