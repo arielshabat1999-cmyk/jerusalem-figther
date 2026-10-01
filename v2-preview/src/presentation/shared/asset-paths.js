@@ -1,0 +1,1 @@
+(()=>{window.PresentationAssets=Object.freeze({playerIdentityFrame:'assets/ui/home/player-identity/player-identity-frame.png',rankIcon:n=>`assets/icons/ranks/rank_${String(n).padStart(2,'0')}.png`});})();
