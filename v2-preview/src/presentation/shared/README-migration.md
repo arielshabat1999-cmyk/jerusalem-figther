@@ -1,0 +1,1 @@
+Migrate presentation one component at a time. Keep the current working owner until the replacement passes QA; then remove legacy presentation for that component. Never rebuild all screens in one migration.
