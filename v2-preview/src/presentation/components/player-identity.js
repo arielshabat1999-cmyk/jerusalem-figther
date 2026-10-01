@@ -1,12 +1,21 @@
 (()=>{
 'use strict';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const rankFamily=level=>{const names=['Recruit','Cadet','Pilot','Striker','Vanguard','Hunter','Ace','Elite','Commander','Legend'];const i=Math.max(0,Math.min(9,Math.floor((level-1)/5)));const roman=['I','II','III','IV','V'][Math.max(0,Math.min(4,(level-1)%5))];return`${names[i]} ${roman}`.toUpperCase()};
-function snapshot(){const p=window.ProfileSystem?.snapshot?.()||{},prog=window.PlayerProgressionSystem?.snapshot?.()||{},rank=window.RankSystem?.snapshot?.()||{};const level=Math.max(1,Number(prog.playerLevel??prog.level??1)||1),cur=Math.max(0,Number(prog.currentLevelXP??prog.levelXP??0)||0),needed=Math.max(1,Number(prog.nextLevelXP??prog.levelXPNeeded??900)||900);return{displayName:p.displayName||'PILOT',level,pct:Math.max(0,Math.min(100,cur/needed*100)),rankLabel:String(rank.label||rank.name||rankFamily(level)).toUpperCase(),rankNo:Math.max(1,Number(rank.rank||level)||1)}}
-function renderCard(card){if(!card)return;const s=snapshot(),sig=`${s.displayName}|${s.level}|${s.rankLabel}|${s.rankNo}|${s.pct.toFixed(2)}`;if(card.dataset.identitySignature===sig)return;card.dataset.identitySignature=sig;const rankAsset='assets/ui/player-ranks/rank_'+String(s.rankNo).padStart(2,'0')+'.png';card.innerHTML=`<span class="ns-avatar-mini"><img src="${rankAsset}" alt="${esc(s.rankLabel)} emblem" onerror="this.style.display='none'"></span><span class="ns-player-copy"><strong>${esc(s.displayName)}</strong><small>${esc(s.rankLabel)}</small><b>LV ${s.level}</b></span><span class="ns-player-xp"><i style="width:${s.pct.toFixed(2)}%"></i></span>`}
-function refresh(){renderCard(document.querySelector('.ns-home .ns-player-status'))}
-function bind(){if(window.__playerIdentityBound)return;window.__playerIdentityBound=true;const names=['app:ready','app-flow:changed','state:changed','progression:xp-changed','progression:level-changed','rank:changed','profile:changed'];names.forEach(n=>window.GameEvents?.on?.(n,()=>requestAnimationFrame(refresh)));document.addEventListener('click',()=>requestAnimationFrame(refresh),{passive:true});refresh()}
-const observer=new MutationObserver(()=>{const card=document.querySelector('.ns-home .ns-player-status');if(card&&!card.dataset.identitySignature)renderCard(card)});observer.observe(document.body,{childList:true,subtree:true});
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
-window.PlayerIdentityComponent={refresh,snapshot};
+function template(s){return `<span class="ns-avatar-mini"><img src="${esc(s.rankAsset)}" alt="${esc(s.rankLabel)} emblem" onerror="this.hidden=true"></span><span class="ns-player-copy"><strong>${esc(s.displayName)}</strong><small>${esc(s.rankLabel)}</small><b>LV ${s.level}</b></span><span class="ns-player-xp" role="progressbar" aria-label="Player level progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${s.xpPercent.toFixed(0)}"><i style="width:${s.xpPercent.toFixed(2)}%"></i></span>`}
+function render(){
+ const card=document.querySelector('.ns-home .ns-player-status');
+ if(!card||!window.PlayerIdentityAdapter)return;
+ const s=PlayerIdentityAdapter.snapshot();
+ const signature=`${s.displayName}|${s.level}|${s.rankLabel}|${s.rankNo}|${s.xpPercent.toFixed(2)}`;
+ if(card.dataset.identitySignature===signature)return;
+ card.dataset.identitySignature=signature;
+ card.innerHTML=template(s);
+}
+function start(){
+ if(window.__playerIdentityComponentStarted)return;
+ window.__playerIdentityComponentStarted=true;
+ ['app-flow:changed','profile:updated','progression:rank-progress','progression:rank-up','player-progression:xp-changed','player-progression:level-up'].forEach(name=>window.GameEvents?.on?.(name,()=>requestAnimationFrame(render)));
+ render();
+}
+window.PlayerIdentityComponent=Object.freeze({start,render});
 })();
