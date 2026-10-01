@@ -4,7 +4,7 @@
   const test=(name,fn)=>{try{const r=fn();if(r===false)throw Error('assertion failed');results.push(['PASS',name])}catch(e){results.push(['FAIL',name,e.message])}};
   try{
     localStorage.clear();
-    for(const src of ARCHITECTURE_MODULES)await new Promise((ok,fail)=>{const s=document.createElement('script');s.src='../'+src+'?test=5';s.onload=ok;s.onerror=()=>fail(Error('load '+src));document.head.appendChild(s)});
+    for(const src of ARCHITECTURE_MODULES)await new Promise((ok,fail)=>{const s=document.createElement('script');s.src='../'+src+'?test=6';s.onload=ok;s.onerror=()=>fail(Error('load '+src));document.head.appendChild(s)});
     await GameBootstrap.start();
     OfflineServices.install();
     SessionSystem.begin({playerId:'test-player',gameMode:'solo',authority:'local'});
@@ -17,6 +17,10 @@
     test('admin dashboard exposes initial movement speed',()=>AdminTuningService.schema().groups.some(g=>g.fields.some(f=>f.id==='flight.player.baseMoveSpeed')));
     test('rank starts clean',()=>RankSystem.snapshot().rank===1);
     test('rank has four objectives',()=>RankSystem.snapshot().objectives.length===4);
+    test('wave tree service loaded',()=>typeof WaveTreeService?.active==='function'&&typeof WaveTreeService?.snapshot==='function');
+    const waveTree=WaveTreeService.active();
+    test('active wave tree is valid',()=>!!waveTree?.id&&Array.isArray(waveTree.nodes)&&waveTree.nodes.length>0);
+    test('wave tree nodes reference valid formations',()=>waveTree.nodes.every(n=>n.type==='formation'?!!FormationCatalog.formations[n.formationId]:n.type==='random'&&Array.isArray(n.pool)&&n.pool.length>0&&n.pool.every(id=>!!FormationCatalog.formations[id])));
 
     GameplayLifecycle.newRun();
     GameClock.pause('tests');
@@ -25,6 +29,7 @@
     test('world type index works',()=>WorldSystem.listByType('player')[0]===p);
     test('world player index works',()=>WorldSystem.findByPlayerId('test-player')===p);
     test('player movement multipliers are separated',()=>p.data.mobilityMultiplier>0&&p.data.runSpeedMultiplier===1);
+    test('spawn director is driven by active wave tree',()=>SpawnDirector.snapshot().treeId===waveTree.id&&SpawnDirector.snapshot().nodeIndex===0);
 
     const startX=p.transform.x,startDistance=RunCommands.snapshot().distance;
     InputSystem.beginRelativeDrag();
@@ -57,10 +62,6 @@
     test('enemy AI owns transient runtime state',()=>EnemyAISystem.runtimeCount()>0&&!!EnemyAISystem.snapshot(aiEnemy.entityId));
     test('enemy content data is not polluted by AI runtime',()=>!('aiPhase' in aiEnemy.data)&&!('aiClock' in aiEnemy.data)&&!('engageTime' in aiEnemy.data));
 
-    const d0=SpawnDirector.difficultyFor({time:0,distance:0});
-    const d1=SpawnDirector.difficultyFor({time:90,distance:10000});
-    test('difficulty derives from time and distance',()=>d1>d0);
-
     const e=SpawnSystem.enemy('scout',{x:p.transform.x+20,y:p.transform.y});
     test('enemy index updated',()=>WorldSystem.listByType('enemy').includes(e));
     const hp=p.health.current;
@@ -80,6 +81,7 @@
     test('restart clears previous world',()=>WorldSystem.count()<=before);
     test('enemy AI runtime clears between runs',()=>EnemyAISystem.runtimeCount()===0);
     test('run speed multiplier resets with new player',()=>p.data.runSpeedMultiplier===1);
+    test('wave director resets to first node',()=>SpawnDirector.snapshot().nodeIndex===0&&SpawnDirector.snapshot().treeId===WaveTreeService.active().id);
     test('weapon reset exists',()=>typeof WeaponSystem.reset==='function');
     test('upgrade choice API exists',()=>typeof UpgradeChoiceSystem.select==='function');
 
