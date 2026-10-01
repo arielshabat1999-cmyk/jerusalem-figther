@@ -1,0 +1,1 @@
+(()=>{window.NeonPresentation=Object.freeze({architecture:'v2-presentation',version:1,canonicalBranch:'main'});})();
